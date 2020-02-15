@@ -1,0 +1,14 @@
+PELITILANNE
+KENTAN NIMI: "nimi"
+YKSIKOIDEN SIJOITTELU:
+PELAAJA
+YKSIKKO
+("x-koordinaatti", "y-koordinaatti")
+("yksikön tyyppi", "elama", "energia", "vuoro kaytetty/kayttamaton")
+...
+TIETOKONE
+YKSIKKO
+("x-koordinaatti", "y-koordinaatti")
+("yksikön tyyppi", "elama", "energia", "vuoro kaytetty/kayttamaton")
+...
+LOPPU

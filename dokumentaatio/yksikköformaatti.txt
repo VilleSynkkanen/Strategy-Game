@@ -1,0 +1,12 @@
+YKSIKKO
+NIMI: "tyyppi"
+LIIKKUMISPISTEET: "numero"
+MAKSIMIELAMA: "numero"
+MAKSIMIENERGIA: "numero"
+HYOKKAYS: "numero"
+PUOLUSTUS: "numero"
+KANTAMA: "numero"
+...
+#kykyihin liittyviä numeroita tms.
+...
+LOPPU

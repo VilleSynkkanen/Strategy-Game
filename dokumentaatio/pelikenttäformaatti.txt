@@ -1,0 +1,19 @@
+PELIKENTTA
+NIMI: "nimi"
+KOKO: "x * y"
+RUUDUT:		
+(1, 1, "maaston tyyppi")
+(2, 1, "maaston tyyppi")
+...
+(x, 1, "maaston tyyppi")
+...
+(x, y, "maaston tyyppi")
+YKSIKOIDEN ASETTELUALUEET:
+PELAAJA: 
+x: ("alaraja", "yläraja")
+y: ("alaraja", "yläraja")
+TIETOKONE: 
+x: ("alaraja", "yläraja")
+y: ("alaraja", "yläraja")
+LOPPU
+
