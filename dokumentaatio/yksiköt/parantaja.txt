@@ -1,0 +1,11 @@
+Parantaja
+-ei hyökkäystä
+-liikkuu melko hitaasti
+-heikko puolustus
+-matalahko elämä
+
+-passiivinen kyky: 
+
+-"hyökkäys": 
+-kyky 1: ???
+-kyky 2: ???

@@ -1,0 +1,15 @@
+Tykistö
+-pitkä kantama
+-liikkuu hitaasti
+-vahva hyökkäys
+-heikko puolustus
+-matala elämä
+
+-passiivinen kyky: pystyy ampumaan kaikkien maastojen yli
+
+-kyky 1 (pommitus): ampuu kohdealuetta (monta ruutua). Kohdealueen puolustusarvo laskee
+pysyvästi (jos se on > 0) ja liikkumisen hinta nousee. Alueella olevat yksiköt ottavat vahinkoa
+(myös omat yksiköt)
+
+-kyky 2 (kanisterilaukaus): lyhyempi kantama. Ampuu lähellä olevaa vihollista. Kohde ottaa ylimääräistä vahinkoa.
+Aiheuttaa verenvuotoa ja vähentää hyökkäystä X vuoron ajaksi.

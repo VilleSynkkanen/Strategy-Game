@@ -1,0 +1,13 @@
+Jalkaväki
+-lähitaistelu
+-liikkuu hitaasti
+-vahva hyökkäys
+-vahva puolustus
+-korkea elämä
+
+-passiivinen kyky: ???
+
+-kyky 1 (kilpiseinä): Parantaa puolustusta X vuoron ajaksi, vähentää liikkumispisteitä
+
+-kyky 2 (rynnäkkö): Valitsee kohteen enintään Y ruudun päässä. Liikkuu kohteen viereen
+ja hyökkää sen kimppuun. Tekee bonusvahinkoa ja "tainnuttaa" yksikön 1 vuoron ajaksi

@@ -6,6 +6,7 @@ MAKSIMIENERGIA: "numero"
 HYOKKAYS: "numero"
 PUOLUSTUS: "numero"
 KANTAMA: "numero"
+PISTEHINTA: "numero"
 ...
 #kykyihin liittyviä numeroita tms.
 ...

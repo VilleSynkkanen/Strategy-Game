@@ -1,0 +1,11 @@
+Ratsuväki
+-lähitaistelu
+-liikkuu nopeasti
+-keskivahva hyökkäys
+-keskivahva puolustus
+-keskiverto elämä
+
+-passiivinen kyky: voi liikkua myös kyvyn käyttämisen/hyökkäyksen jälkeen 
+
+-kyky 1: ???
+-kyky 2: ???

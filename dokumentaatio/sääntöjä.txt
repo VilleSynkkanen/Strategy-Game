@@ -1,0 +1,3 @@
+-yksikkö voi liikkua ja sitten käyttää kyvyn/hyökätä TAI vain käyttää kyvyn/hyökätä (pl ratsuväki)
+-vain yksi johtaja per pelaaja
+-ruutuun liikkumiseen tarvitaan VÄHINTÄÄN ruudun liikkumishinnan mukaiset liikkumispisteet
