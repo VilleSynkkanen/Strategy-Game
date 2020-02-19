@@ -1,11 +1,12 @@
 Parantaja
--ei hyökkäystä
+-hyökkäys: parantaa yhtä vahingoittunutta yksikköä
 -liikkuu melko hitaasti
 -heikko puolustus
 -matalahko elämä
 
--passiivinen kyky: 
+-passiivinen kyky: inspiroi läheisiä yksiköitä (parantaa hyökkäystä ja puolustusta)
 
--"hyökkäys": 
--kyky 1: ???
--kyky 2: ???
+-kyky 1(alueparannus): parantaa alueella olevia yksiköitä tietyn määrän X vuoron ajan
+
+-kyky 2(kirous): kiroaa yhden vihollisyksikön. Vihollisen puolustus ja hyökkäys ovat
+heikompia X vuoron ajan. Vihollinen taintuu yhden vuoron ajaksi, kun kirous loppuu.

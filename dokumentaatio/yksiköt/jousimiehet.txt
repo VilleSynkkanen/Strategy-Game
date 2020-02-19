@@ -5,7 +5,10 @@ Jousimiehet
 -heikohko puolustus
 -matalahko elämä
 
--passiivinen kyky: 
+-passiivinen kyky: Tekee bonusvahinkoa jalka- ja ratsuväkeen
 
--kyky 1: ???
--kyky 2: ???
+-kyky 1 (nuolisade): Ampuu kohdealuetta (itse valitut ruudut). Tekee vahinkoa kaikkiin alueella oleviin yksiköihin. 
+Aiheuttaa verenvuotoa X vuoron ajan
+
+-kyky 2 (kiilat): Pystyttää kiilat ruutuun, jossa on. Kiilat antavat pienen 
+puolustusbonuksen kaikkia yksiköitä vastaan ja suuren bonuksen ratsuväkeä vastaan

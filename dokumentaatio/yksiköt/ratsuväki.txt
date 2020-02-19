@@ -7,5 +7,7 @@ Ratsuväki
 
 -passiivinen kyky: voi liikkua myös kyvyn käyttämisen/hyökkäyksen jälkeen 
 
--kyky 1: ???
--kyky 2: ???
+-kyky 1(tiedustelu): Merkitsee kohteen. Kohteen puolustus kärsii X vuoron ajan.
+
+-kyky 2(kolmiokiila): Menee kiilaan X vuoron ajaksi. Kiilassa ollessaan puolustus vähenee hiukan,
+mutta vahinko kasvaa merkittävästi
