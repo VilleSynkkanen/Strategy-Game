@@ -1,0 +1,13 @@
+Silta
+Tasanko
+Pelto
+Kukkulat
+Vuoret
+Vesi(joki)
+
+Parametrit:
+LIIKKUMISEN HINTA: "numero"
+HYOKKAYSKERROIN: "numero"
+PUOLUSTUSKERROIN: "numero"
+LAPINAKYVYYS: "kylla/ei"
+
