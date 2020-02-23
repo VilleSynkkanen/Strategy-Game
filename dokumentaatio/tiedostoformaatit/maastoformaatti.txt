@@ -1,5 +1,6 @@
 MAASTO
 TYYPPI: "tyyppi"
+LIIKKUMINEN: "kylla/ei"
 LIIKKUMISEN HINTA: "numero"
 HYOKKAYSKERROIN: "numero"
 PUOLUSTUSKERROIN: "numero"

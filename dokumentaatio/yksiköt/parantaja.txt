@@ -6,7 +6,7 @@ Parantaja
 
 -passiivinen kyky: inspiroi läheisiä yksiköitä (parantaa hyökkäystä ja puolustusta)
 
--kyky 1(alueparannus): parantaa alueella olevia yksiköitä tietyn määrän X vuoron ajan
+-kyky 1(alueparannus): parantaa alueella olevia yksiköitä tietyn määrän X vuoron ajan (heal over time)
 
 -kyky 2(kirous): kiroaa yhden vihollisyksikön. Vihollisen puolustus ja hyökkäys ovat
 heikompia X vuoron ajan. Vihollinen taintuu yhden vuoron ajaksi, kun kirous loppuu.

@@ -6,6 +6,7 @@ Vuoret
 Vesi(joki)
 
 Parametrit:
+LIIKKUMINEN: "kylla/ei"
 LIIKKUMISEN HINTA: "numero"
 HYOKKAYSKERROIN: "numero"
 PUOLUSTUSKERROIN: "numero"

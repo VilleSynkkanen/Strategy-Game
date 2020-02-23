@@ -1,3 +1,3 @@
 # Strategiapeli Y2
 
-Commit testi
+Yleis- ja tekninen suunnitelma löytyvät kansiosta "/dokumentaatio/suunnitelmat".
