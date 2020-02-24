@@ -1,2 +1,2 @@
--yksikkö voi liikkua ja sitten käyttää kyvyn/hyökätä TAI vain käyttää kyvyn/hyökätä (pl ratsuväki)
+-yksikkö voi liikkua ja sitten käyttää kyvyn/hyökätä TAI vain käyttää kyvyn/hyökätä (pl. ratsuväki)
 -ruutuun liikkumiseen tarvitaan VÄHINTÄÄN ruudun liikkumishinnan mukaiset liikkumispisteet
