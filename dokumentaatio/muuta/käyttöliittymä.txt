@@ -1,0 +1,13 @@
+Napit
+-hyökkäys
+-kyky 1
+-kyky 2
+-yksikön tiedot
+-seuraava yksikkö
+-edellinen yksikkö
+-päätä vuoro
+-tallenna peli
+Muuta
+-yksikön elämä
+-yksikön energia
+-vuoroa jäljellä
