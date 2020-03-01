@@ -1,5 +1,12 @@
 Käyttöliittymä & polunhaku
--???
+-maastojen väritys/kuva (ruutugrafiikka)
+-polunhaku
+	-visualisaatio
+-kartan luku tiedostosta
+-ohjetekstin paikka (alhaalla?)
+-koodin siistiminen
+-käyttöliittymän parantelu
+-polunhaun testaus
 
 
 Buttons:

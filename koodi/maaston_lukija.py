@@ -1,0 +1,50 @@
+import os
+from maasto import Maasto
+
+class Maaston_lukija:
+
+    def __init__(self):
+        self.maastot = {}                   #sanakirja, johon lisätään maastot (avain = maaston nimi)
+        tiedostot = os.scandir('maastot/')
+
+        # lukee jokaisesta tiedostosta maaston tiedot
+        # tietojen järjestyksellä ei ole väliä
+
+        for tiedosto in tiedostot:
+            lue = open(tiedosto, 'r')
+            tyyppi = ""
+            liikkuminen = True
+            liikkumisen_hinta = 1
+            hyokkayskerroin = 1
+            puolustuskerroin = 1
+            lapinakyvyys = True
+            for rivi in lue:
+                rivi = rivi.rstrip()
+                rivi = rivi.split(':')
+                i = 0
+                while i < len(rivi):
+                    rivi[i] = rivi[i].strip()
+                    i += 1
+                if rivi[0] == "TYYPPI":
+                    tyyppi = rivi[1]
+                elif rivi[0] == "LIIKKUMINEN":
+                    if rivi[1] == "ei":
+                        liikkuminen = False
+                elif rivi[0] == "LIIKKUMISEN HINTA":
+                    liikkumisen_hinta = int(rivi[1])
+                elif rivi[0] == "HYOKKAYSKERROIN":
+                    hyokkayskerroin = float(rivi[1])
+                elif rivi[0] == "PUOLUSTUSKERROIN":
+                    puolustuskerroin = float(rivi[1])
+                elif rivi[0] == "LAPINAKYVYYS":
+                    if rivi[1] == "ei":
+                        lapinakyvyys = False
+                elif rivi[0] == "LOPPU":
+                    break
+
+            # luo uuden maasto-instanssin, johon tiedot säilötään
+            # luotu maasto lisätään sanakirjaan, josta se voiddan myöhemmin lukea
+            maasto = Maasto(tyyppi, liikkuminen, liikkumisen_hinta, hyokkayskerroin, puolustuskerroin, lapinakyvyys)
+            self.maastot[tyyppi] = maasto
+
+
