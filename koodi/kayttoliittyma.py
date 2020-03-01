@@ -2,8 +2,7 @@ from PyQt5 import QtWidgets, QtCore, QtGui, Qt
 
 class Kayttoliittyma(QtWidgets.QMainWindow):
     '''
-    The class GUI handles the drawing of a RobotWorld and allows user to
-    interact with it.
+    The class GUI handles the drawing of the board and buttons
     '''
     def __init__(self, pelinohjain):
         super().__init__()

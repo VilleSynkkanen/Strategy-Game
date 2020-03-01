@@ -4,7 +4,7 @@ from kayttoliittyma import Kayttoliittyma
 
 class Ruutugrafiikka:
 
-    def __init__(self, koordinaatit, koko, kayttoliittyma):
+    def __init__(self, koordinaatit, koko, kayttoliittyma, vari):
         self.kayttoliittyma = kayttoliittyma
 
         # määritellään, onko  kartan x- vai y-koko suurempi ja tallennetaan suurempi pituus
@@ -16,13 +16,14 @@ class Ruutugrafiikka:
 
         self.koko = self.kayttoliittyma.scene_size / pidempi_sivu
         self.koordinaatit = koordinaatit
-        self.väri = None        #implement
+        self.vari = vari
         self.piirra_ruutu()
 
     def piirra_ruutu(self):
-        brush = QtGui.QBrush(QtGui.QColor(10, 10, 10))
+        brush = QtGui.QBrush(QtGui.QColor(self.vari[0], self.vari[1], self.vari[2]))
         ruutu = QtWidgets.QGraphicsRectItem(self.koordinaatit.x * self.koko, self.koordinaatit.y * self.koko,
                                             self.koko, self.koko)
+        ruutu.setBrush(brush)
         self.kayttoliittyma.scene.addItem(ruutu)
 
     def paivita_grafiikka(self):

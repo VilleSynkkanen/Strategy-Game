@@ -8,20 +8,21 @@ class Ruutu:
         self.tyyppi = tyyppi
         self.kayttoliittyma = kayttoliittyma
         self.koordinaatit = koordinaatit
-        self.grafiikka = self.luo_grafiikka(koko)
+        self.grafiikka = None
         self.kartta = None  # etsitään myöhemmin
         self.maasto = None  # luodaan myöhemmin
         self.naapurit = []  # etsitään myöhemmin
 
     def luo_grafiikka(self, koko):
-        grafiikka = Ruutugrafiikka(self.koordinaatit, koko, self.kayttoliittyma)
+        grafiikka = Ruutugrafiikka(self.koordinaatit, koko, self.kayttoliittyma, self.maasto.vari)
         return grafiikka
 
     def luo_maasto(self):
         maastot = self.kayttoliittyma.pelinohjain.maaston_lukija.maastot
         ominaisuudet = maastot[self.tyyppi]
         self.maasto = Maasto(ominaisuudet.tyyppi, ominaisuudet.liikkuminen, ominaisuudet.liikkumisen_hinta,
-                             ominaisuudet.hyokkayskerroin, ominaisuudet.puolustuskerroin, ominaisuudet.lapinakyvyys)
+                             ominaisuudet.hyokkayskerroin, ominaisuudet.puolustuskerroin, ominaisuudet.vari,
+                             ominaisuudet.lapinakyvyys)
 
     def etsi_naapurit(self):
         self.kartta = self.kayttoliittyma.pelinohjain.kartta

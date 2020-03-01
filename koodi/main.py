@@ -1,6 +1,5 @@
 import sys
 from PyQt5.QtWidgets import QApplication
-
 from pelinohjain import Pelinohjain
 
 def main():

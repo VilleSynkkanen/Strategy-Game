@@ -20,10 +20,11 @@ class Pelinohjain:
         # maastojen lukeminen
         self.maaston_lukija = Maaston_lukija()
 
-        # tehdään vasta koko kartan luomisen jälkeen
+        # tehdään vasta koko kartan luomisen jälkeen, kun kaikki ruudut ovat paikallaan
         for ruutu in self.kartta.ruudut:
             ruutu.etsi_naapurit()
             ruutu.luo_maasto()
+            ruutu.luo_grafiikka(self.kartta.ruudun_koko)
 
 
 

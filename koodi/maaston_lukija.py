@@ -17,6 +17,7 @@ class Maaston_lukija:
             liikkumisen_hinta = 1
             hyokkayskerroin = 1
             puolustuskerroin = 1
+            vari = []
             lapinakyvyys = True
             for rivi in lue:
                 rivi = rivi.rstrip()
@@ -39,12 +40,20 @@ class Maaston_lukija:
                 elif rivi[0] == "LAPINAKYVYYS":
                     if rivi[1] == "ei":
                         lapinakyvyys = False
+                elif rivi[0] == "VARI":
+                    rivi[1] = rivi[1].split(",")
+                    i = 0
+                    while i < len(rivi[1]):
+                        rivi[1][i] = int(rivi[1][i].strip())
+                        i += 1
+                    vari = rivi[1]
                 elif rivi[0] == "LOPPU":
                     break
 
             # luo uuden maasto-instanssin, johon tiedot säilötään
             # luotu maasto lisätään sanakirjaan, josta se voiddan myöhemmin lukea
-            maasto = Maasto(tyyppi, liikkuminen, liikkumisen_hinta, hyokkayskerroin, puolustuskerroin, lapinakyvyys)
+            maasto = Maasto(tyyppi, liikkuminen, liikkumisen_hinta, hyokkayskerroin, puolustuskerroin, vari, lapinakyvyys)
             self.maastot[tyyppi] = maasto
+            lue.close() # muista sulkea aina
 
 

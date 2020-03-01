@@ -1,5 +1,4 @@
 Käyttöliittymä & polunhaku
--maastojen väritys/kuva (ruutugrafiikka)
 -polunhaku
 	-visualisaatio
 -kartan luku tiedostosta
