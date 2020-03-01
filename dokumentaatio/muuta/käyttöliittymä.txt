@@ -2,7 +2,11 @@ Napit
 -hyökkäys
 -kyky 1
 -kyky 2
+-peru valinta
 -yksikön tiedot
+	-tiedot tulevat pelilokin paikalle
+	-kyvyt
+	-numerot
 -seuraava yksikkö
 -edellinen yksikkö
 -päätä vuoro
@@ -10,4 +14,7 @@ Napit
 Muuta
 -yksikön elämä
 -yksikön energia
--vuoroa jäljellä
+-vuoroa jäljellä?
+-ohjeteksti?
+-peliloki
+	-tyhjenee tietyin väliajoin
