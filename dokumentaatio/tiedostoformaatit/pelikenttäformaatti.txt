@@ -1,7 +1,7 @@
 PELIKENTTA
 NIMI: "nimi"
 KOKO: "x * y"
-RUUDUT:		
+RUUDUT:			# tyhjät maastot luetaan tasangoiksi
 (1, 1, "maaston tyyppi")
 (2, 1, "maaston tyyppi")
 ...

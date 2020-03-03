@@ -8,7 +8,7 @@ def main():
     # Every Qt application must have one instance of QApplication.
     global app  # Use global to prevent crashing on exit
     app = QApplication(sys.argv)
-    pelinphjain = Pelinohjain()
+    pelinojain = Pelinohjain()
 
     # Start the Qt event loop. (i.e. make it possible to interact with the gui)
     sys.exit(app.exec_())

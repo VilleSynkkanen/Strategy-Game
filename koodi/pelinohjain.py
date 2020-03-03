@@ -13,8 +13,8 @@ class Pelinohjain:
 
         # kartan lukeminen
         self.kartan_lukija = Kartan_lukija()
-        ruudut = self.kartan_lukija.lue_kartta()
-        self.koko = (self.kartan_lukija.koko_x(), self.kartan_lukija.koko_y())
+        self.nimi, x, y, ruudut, yksikot = self.kartan_lukija.lue_kartta("testikentta.txt")
+        self.koko = (x, y)
         self.kartta = Kartta(self.koko[0], self.koko[1], ruudut, self.kayttoliittyma)
 
         # maastojen lukeminen

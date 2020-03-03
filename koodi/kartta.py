@@ -13,6 +13,6 @@ class Kartta:
         for i in range(0, x, 1):
             for j in range(0, y, 1):
                 koordinaatit = Koordinaatit(i, j)
-                ruutu = Ruutu(koordinaatit, self.ruudun_koko, "tasanko", self.kayttoliittyma)   # placeholder tyyppi
+                ruutu = Ruutu(koordinaatit, self.ruudun_koko, ruudut[i][j], self.kayttoliittyma)   # placeholder tyyppi
                 lista.append(ruutu)
         return lista

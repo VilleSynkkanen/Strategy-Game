@@ -1,12 +1,10 @@
 Käyttöliittymä & polunhaku
 -polunhaku
 	-visualisaatio
--kartan luku tiedostosta
 -ohjetekstin paikka (alhaalla?)
--koodin siistiminen
 -käyttöliittymän parantelu
 -polunhaun testaus
-
+-koodin siistiminen
 
 Buttons:
 -ability buttton: call method in selected unit for target selection
