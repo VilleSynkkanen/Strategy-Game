@@ -30,7 +30,18 @@ class Pelinohjain:
         for ruutu in self.kartta.ruudut:
             ruutu.etsi_naapurit()
 
+
+        # polunhaku testi
         self.polunhaku = Polunhaku(self.kartta.ruudut)
+
+        #print(self.kartta.ruudut[3].koordinaatit.x, " ", self.kartta.ruudut[3].koordinaatit.y)
+        #print(self.kartta.ruudut[40].koordinaatit.x, " ", self.kartta.ruudut[40].koordinaatit.y)
+
+        came, cost = self.polunhaku.a_star_search(self.kartta.ruudut[3], self.kartta.ruudut[250])
+
+        path = self.polunhaku.reconstruct_path(came, self.kartta.ruudut[3], self.kartta.ruudut[250])
+        for ruutu in path:
+            print("x:", ruutu.koordinaatit.x + 1, "y:", ruutu.koordinaatit.y + 1)
 
 
 

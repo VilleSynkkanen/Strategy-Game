@@ -1,21 +1,20 @@
 from ruutu import Ruutu
 from koordinaatit import Koordinaatit
 from polunhakujono import Polunhakujono
-import heapq
 
 
 
 class Polunhaku:
 
     '''
-    osa koodista ja algoritmin periaate perustuu seuraaviin sivustoihin:
-    https://www.geeksforgeeks.org/a-search-algorithm/
+    osa koodista ja algoritmin periaate perustuu seuraavaan sivustoon:
     https://www.redblobgames.com/pathfinding/a-star/implementation.html
     '''
 
     def __init__(self, ruudut):
         # ruudut toimivat polunhaun graafina
-        self.ruudut = ruudut
+        self.ruudut = ruudut        # ei välttämättä tarvita
+        #staticmethodien käyttö???
 
     def a_star_search(self, alku, loppu):
         frontier = Polunhakujono()
@@ -31,7 +30,7 @@ class Polunhaku:
             if current == loppu:
                 break
 
-            # current = ruutu (?)
+            # current = ruutu
             for next in current.naapurit:
                 new_cost = cost_so_far[current] + next.maasto.liikkumisen_hinta
                 if next not in cost_so_far or new_cost < cost_so_far[next]:
