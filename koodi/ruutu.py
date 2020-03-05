@@ -14,7 +14,7 @@ class Ruutu:
         self.naapurit = []  # etsitään myöhemmin
 
     def luo_grafiikka(self, koko):
-        grafiikka = Ruutugrafiikka(self.koordinaatit, koko, self.kayttoliittyma, self.maasto.vari)
+        grafiikka = Ruutugrafiikka(self.koordinaatit, koko, self.kayttoliittyma, self.maasto.vari, self)
         return grafiikka
 
     def luo_maasto(self):
@@ -36,8 +36,7 @@ class Ruutu:
 
         self.naapurit = []
         for ruutu in self.kartta.ruudut:
-            if (ruutu.koordinaatit.x, ruutu.koordinaatit.y) in naapuri_koordinaatit:
+            if (ruutu.koordinaatit.x, ruutu.koordinaatit.y) in naapuri_koordinaatit and ruutu.maasto.liikkuminen == True:
                 self.naapurit.append(ruutu)
-
 
 

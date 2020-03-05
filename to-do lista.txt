@@ -1,6 +1,6 @@
 Käyttöliittymä & polunhaku
 -polunhaku
-	-visualisaatio
+	-visualisaatio: liikkumisen hintojen printtaus
 -ohjetekstin paikka (alhaalla?)
 -käyttöliittymän parantelu
 -polunhaun testaus

@@ -2,6 +2,7 @@ from kartta import Kartta
 from kartan_lukija import Kartan_lukija
 from kayttoliittyma import Kayttoliittyma
 from maaston_lukija import Maaston_lukija
+from polunhaku import Polunhaku
 
 class Pelinohjain:
 
@@ -22,9 +23,14 @@ class Pelinohjain:
 
         # tehdään vasta koko kartan luomisen jälkeen, kun kaikki ruudut ovat paikallaan
         for ruutu in self.kartta.ruudut:
-            ruutu.etsi_naapurit()
             ruutu.luo_maasto()
             ruutu.luo_grafiikka(self.kartta.ruudun_koko)
+
+        # maastot täytyy luoda ensin, jotta saadaan naapurit, joihin liikkuminen on mahdollista
+        for ruutu in self.kartta.ruudut:
+            ruutu.etsi_naapurit()
+
+        self.polunhaku = Polunhaku(self.kartta.ruudut)
 
 
 
