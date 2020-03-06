@@ -2,8 +2,6 @@ from ruutu import Ruutu
 from koordinaatit import Koordinaatit
 from polunhakujono import Polunhakujono
 
-
-
 class Polunhaku:
 
     '''
@@ -11,50 +9,51 @@ class Polunhaku:
     https://www.redblobgames.com/pathfinding/a-star/implementation.html
     '''
 
-    def __init__(self, ruudut):
-        # ruudut toimivat polunhaun graafina
-        self.ruudut = ruudut        # ei välttämättä tarvita
-        #staticmethodien käyttö???
+    def hae_polkua(self, alku, loppu):
+        jono = Polunhakujono()
+        jono.lisaa(alku, 0)
+        tulopaikat = {}
+        hinta_tahan_mennessa = {}
+        tulopaikat[alku] = None
+        hinta_tahan_mennessa[alku] = 0
 
-    def a_star_search(self, alku, loppu):
-        frontier = Polunhakujono()
-        frontier.put(alku, 0)
-        came_from = {}
-        cost_so_far = {}
-        came_from[alku] = None
-        cost_so_far[alku] = 0
+        while not jono.tyhja():
+            nykyinen = jono.poista()
 
-        while not frontier.empty():
-            current = frontier.get()
-
-            if current == loppu:
+            if nykyinen == loppu:
                 break
 
-            # current = ruutu
-            for next in current.naapurit:
-                new_cost = cost_so_far[current] + next.maasto.liikkumisen_hinta
-                if next not in cost_so_far or new_cost < cost_so_far[next]:
-                    cost_so_far[next] = new_cost
-                    priority = new_cost + self.heuristic(loppu, next)
-                    frontier.put(next, priority)
-                    came_from[next] = current
+            # nykyinen = ruutu
+            for seuraava in nykyinen.naapurit:
+                uusi_hinta = hinta_tahan_mennessa[nykyinen] + seuraava.maasto.liikkumisen_hinta
+                if seuraava not in hinta_tahan_mennessa or uusi_hinta < hinta_tahan_mennessa[seuraava]:
+                    hinta_tahan_mennessa[seuraava] = uusi_hinta
+                    prioriteetti = uusi_hinta + self.heuristiikka(loppu, seuraava)
+                    jono.lisaa(seuraava, prioriteetti)
+                    tulopaikat[seuraava] = nykyinen
 
-        return came_from, cost_so_far
+        return tulopaikat, hinta_tahan_mennessa
 
-    def reconstruct_path(self, came_from, start, goal):
-        current = goal
-        path = []
-        while current != start:
-            path.append(current)
-            current = came_from[current]
-        path.append(start)  # optional
-        path.reverse()  # optional
-        return path
+    # rakentaa tiedoistaan polkulistan ja palauttaa sen
+    def rakenna_polku(self, tulopaikat, alku, maali):
+        nykyinen = maali
+        polku = []
+        while nykyinen != alku:
+            polku.append(nykyinen)
+            nykyinen = tulopaikat[nykyinen]
+        polku.append(alku)
+        polku.reverse()
+        return polku
+
+    # laskee ruutuun liikkumisen hinnan
+    def laske_hinta(self, hinta_tahan_mennessa, maali):
+        for elementti in hinta_tahan_mennessa:
+            if elementti == maali:
+                hinta = hinta_tahan_mennessa[elementti]
+        return hinta
 
     # heuristiikan laskeminen, voi liikkua vain neljään suuntaan
-    def heuristic(self, paikka, kohde):
+    def heuristiikka(self, paikka, kohde):
         x = abs(paikka.koordinaatit.x - kohde.koordinaatit.x)
         y = abs(paikka.koordinaatit.y - kohde.koordinaatit.y)
         return x + y
-
-

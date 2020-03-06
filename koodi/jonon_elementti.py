@@ -1,5 +1,7 @@
 class Jonon_elementti:
 
-    def __init__(self, prioriteetti, elementti):
-        self.prioriteetti = prioriteetti
+    # prioriteettijonon elementti
+
+    def __init__(self, elementti, prioriteetti):
         self.elementti = elementti
+        self.prioriteetti = prioriteetti

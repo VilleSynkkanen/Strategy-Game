@@ -14,8 +14,7 @@ class Ruutu:
         self.naapurit = []  # etsitään myöhemmin
 
     def luo_grafiikka(self, koko):
-        grafiikka = Ruutugrafiikka(self.koordinaatit, koko, self.kayttoliittyma, self.maasto.vari, self)
-        return grafiikka
+        self.grafiikka = Ruutugrafiikka(self.koordinaatit, koko, self.kayttoliittyma, self.maasto.vari, self)
 
     def luo_maasto(self):
         maastot = self.kayttoliittyma.pelinohjain.maaston_lukija.maastot

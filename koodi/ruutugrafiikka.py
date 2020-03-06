@@ -19,7 +19,7 @@ class Ruutugrafiikka(QtWidgets.QGraphicsRectItem):
 
         self.koko = self.kayttoliittyma.scene_size / pidempi_sivu
         self.koordinaatit = koordinaatit
-        self.vari = vari
+        self.vari = vari    # self.vari = alkuperäinen väri
 
         # teksti
         self.teksti = QtWidgets.QGraphicsTextItem("", self)
@@ -27,13 +27,6 @@ class Ruutugrafiikka(QtWidgets.QGraphicsRectItem):
         self.teksti.setFont(QtGui.QFont("Times", 12))
 
         self.piirra_ruutu()
-
-        # teksti testi
-        if(self.ruutu.maasto.liikkuminen):
-            self.nayta_numero(self.ruutu.maasto.liikkumisen_hinta)
-        else:
-            self.nayta_numero("#")
-
 
     def piirra_ruutu(self):
         brush = QtGui.QBrush(QtGui.QColor(self.vari[0], self.vari[1], self.vari[2]))
@@ -46,7 +39,16 @@ class Ruutugrafiikka(QtWidgets.QGraphicsRectItem):
         pass
 
     def mousePressEvent(self, *args, **kwargs):
-        print(self.ruutu.maasto.liikkumisen_hinta)      # polunhaun testausta varten
+        if self.ruutu.maasto.liikkuminen:
+            self.kayttoliittyma.pelinohjain.polunhaku_testi(self.ruutu)     # polunhaun testausta varten
 
-    def nayta_numero(self, numero):
-        self.teksti.setPlainText(str(numero))           # polunhaun testausta varten
+    def maarita_teksti(self, teksti):
+        self.teksti.setPlainText(str(teksti))           # polunhaun testausta varten
+
+    def muuta_vari(self, vari):
+        brush = QtGui.QBrush(QtGui.QColor(vari[0], vari[1], vari[2]))
+        self.setBrush(brush)
+
+    def palauta_vari(self):
+        brush = QtGui.QBrush(QtGui.QColor(self.vari[0], self.vari[1], self.vari[2]))
+        self.setBrush(brush)

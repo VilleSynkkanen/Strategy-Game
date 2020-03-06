@@ -13,13 +13,12 @@ class Kayttoliittyma(QtWidgets.QMainWindow):
         self.centralWidget().setLayout(main_layout)
 
         # set window
-        self.setGeometry(90, 160, 1300, 900)
+        self.setGeometry(0, 0, self.scene_size + 420, self.scene_size)
         self.setWindowTitle('Strategiapeli')
         self.show()
 
         # Add a scene for drawing 2d objects
         self.scene = QtWidgets.QGraphicsScene()
-        self.scene.setSceneRect(0, 0, self.scene_size, self.scene_size)
 
         # Add a view for showing the scene
         self.view = QtWidgets.QGraphicsView(self.scene, self)
@@ -101,6 +100,23 @@ class Kayttoliittyma(QtWidgets.QMainWindow):
                                  "-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\n", self)
         button_layout.addWidget(label,6, 0, 6, 2, alignment=QtCore.Qt.AlignTop)
         label.setStyleSheet("font: 10pt Arial")
+
+    def set_scene_rect(self, x, y):
+        # rectin skaalauskertoimet
+        if x > y:
+            y /= x
+            x = 1
+        else:
+            x /= y
+            y = 1
+        self.scene.setSceneRect(0, 0, self.scene_size * x, self.scene_size * y)
+        #self.setGeometry(0, 0, self.scene_size * x + 420, self.scene_size * y + 20)
+
+        # keskelle liikuttaminen
+        res_x = 1920
+        res_y = 1080
+        self.move((res_x / 2) - (self.frameSize().width() / 2),
+                  (res_y / 2) - (self.frameSize().height() / 2))
 
 
     def test1(self):

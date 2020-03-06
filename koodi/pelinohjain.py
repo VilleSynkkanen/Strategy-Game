@@ -18,6 +18,8 @@ class Pelinohjain:
         self.koko = (x, y)
         self.kartta = Kartta(self.koko[0], self.koko[1], ruudut, self.kayttoliittyma)
 
+        self.kayttoliittyma.set_scene_rect(self.koko[0], self.koko[1])
+
         # maastojen lukeminen
         self.maaston_lukija = Maaston_lukija()
 
@@ -31,21 +33,16 @@ class Pelinohjain:
             ruutu.etsi_naapurit()
 
 
-        # polunhaku testi
-        self.polunhaku = Polunhaku(self.kartta.ruudut)
+        # polunhaku
+        self.polunhaku = Polunhaku()
 
-        #print(self.kartta.ruudut[3].koordinaatit.x, " ", self.kartta.ruudut[3].koordinaatit.y)
-        #print(self.kartta.ruudut[40].koordinaatit.x, " ", self.kartta.ruudut[40].koordinaatit.y)
-
-        came, cost = self.polunhaku.a_star_search(self.kartta.ruudut[3], self.kartta.ruudut[250])
-
-        path = self.polunhaku.reconstruct_path(came, self.kartta.ruudut[3], self.kartta.ruudut[250])
-        for ruutu in path:
-            print("x:", ruutu.koordinaatit.x + 1, "y:", ruutu.koordinaatit.y + 1)
-
-
-
-
+    def polunhaku_testi(self, aloitus):
+        for ruutu in self.kartta.ruudut:
+            if ruutu.maasto.liikkuminen:
+                ruudut, hinnat = self.polunhaku.hae_polkua(aloitus, ruutu)
+                #polku = self.polunhaku.rakenna_polku(ruudut, aloitus, ruutu)
+                hinta = self.polunhaku.laske_hinta(hinnat, ruutu)
+                ruutu.grafiikka.maarita_teksti(hinta)
 
 
 

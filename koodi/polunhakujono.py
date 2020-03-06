@@ -1,22 +1,26 @@
+from jonon_elementti import Jonon_elementti
+
 # prioriteettijono polunhakua varten
 class Polunhakujono:
     def __init__(self):
-        self.queue = []
+        self.jono = []
 
-    def empty(self):
-        return len(self.queue) == []
+    # palauttaa, onko jono tyhjä
+    def tyhja(self):
+        return len(self.jono) == []
 
-    # for inserting an element in the queue
-    def put(self, item, priority):
-        self.queue.append((item, priority))     # tuplessa ruutu ja prioriteetti
+    # elementin lisääminen jonoon
+    def lisaa(self, elementti, prioriteetti):
+        jasen = Jonon_elementti(elementti, prioriteetti)
+        self.jono.append(jasen)     # tuplessa ruutu ja prioriteetti
 
-    # for popping an element based on Priority
-    def get(self):
+    # poistaa elementin, jolla on pienin prioriteetti
+    def poista(self):
         min = 0     # pienimmän indeksi
-        for i in range(len(self.queue)):
-            if self.queue[i][1] < self.queue[min][1]:
+        for i in range(len(self.jono)):
+            if self.jono[i].prioriteetti < self.jono[min].prioriteetti:
                 min = i
-        item = self.queue[min][0]
-        del self.queue[min]
-        return item
+        elementti = self.jono[min].elementti
+        del self.jono[min]
+        return elementti
 

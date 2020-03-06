@@ -1,10 +1,15 @@
 Käyttöliittymä & polunhaku
--polunhaku
-	-visualisaatio: liikkumisen hintojen printtaus
--ohjetekstin paikka (alhaalla?)
--käyttöliittymän parantelu
+-ohjetekstin paikka (alhaalla?, layout muutoksia?)
 -polunhaun testaus
 -koodin siistiminen
+
+Yksiköt:
+-grafiikka
+-perustoiminnot
+-valitseminen, liikuttelu
+-yksikköluokat
+-tiedostosta lukeminen
+-jne.
 
 Buttons:
 -ability buttton: call method in selected unit for target selection
