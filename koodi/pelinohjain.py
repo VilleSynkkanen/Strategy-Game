@@ -32,6 +32,8 @@ class Pelinohjain:
         for ruutu in self.kartta.ruudut:
             ruutu.etsi_naapurit()
 
+        self.kartta.lisaa_yksikot(yksikot)
+
 
         # polunhaku
         self.polunhaku = Polunhaku()

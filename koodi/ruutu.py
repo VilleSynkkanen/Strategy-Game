@@ -1,6 +1,7 @@
 from koordinaatit import Koordinaatit
 from maasto import Maasto
 from ruutugrafiikka import Ruutugrafiikka
+from yksikko import Yksikko
 
 class Ruutu:
 
@@ -12,6 +13,12 @@ class Ruutu:
         self.kartta = None  # etsitään myöhemmin
         self.maasto = None  # luodaan myöhemmin
         self.naapurit = []  # etsitään myöhemmin
+        self.yksikko = None
+
+    def lisaa_yksikko(self, tyyppi, omistaja):
+        self.yksikko = Yksikko(omistaja, self, self.kayttoliittyma)
+
+        # implemetoi eri tyyppisten yksiköiden luominen
 
     def luo_grafiikka(self, koko):
         self.grafiikka = Ruutugrafiikka(self.koordinaatit, koko, self.kayttoliittyma, self.maasto.vari, self)

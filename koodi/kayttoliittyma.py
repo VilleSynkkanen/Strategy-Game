@@ -101,6 +101,16 @@ class Kayttoliittyma(QtWidgets.QMainWindow):
         button_layout.addWidget(label,6, 0, 6, 2, alignment=QtCore.Qt.AlignTop)
         label.setStyleSheet("font: 10pt Arial")
 
+        ohjeteksti = QtWidgets.QLabel("OHJETEKSTI\n"
+                                      "-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\n"
+                                      "-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\n"
+                                      "-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\n"
+                                      "-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\n"
+                                      "-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\n"
+                                      "-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\n", self)
+        button_layout.addWidget(ohjeteksti, 11, 0, 1, 0, alignment=QtCore.Qt.AlignTop)
+        ohjeteksti.setStyleSheet("font: 10pt Arial")
+
     def set_scene_rect(self, x, y):
         # rectin skaalauskertoimet
         if x > y:

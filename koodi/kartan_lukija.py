@@ -1,4 +1,5 @@
 import os
+from koordinaatit import Koordinaatit
 
 class Kartan_lukija:
 
@@ -14,7 +15,7 @@ class Kartan_lukija:
     def lue_kartta(self, nimi):
         kartan_nimi = ""
         ruudut = []
-        yksikot = []
+        yksikot_sanakirja = {}
         x = 0
         y = 0
         tiedosto = open('kartat/' + nimi, 'r')
@@ -49,7 +50,33 @@ class Kartan_lukija:
                     koordinaatit = tiedosto.readline()
                     koordinaatit = koordinaatit.split(':')
                     if koordinaatit[0].strip() == "RUUDUTLOPPU":
-                        return kartan_nimi, x, y, ruudut, yksikot
+                        break
+
+            # yksiköt tallennetaan koordinaatti, omistaja -tupleina listaan, joka lisätään sanakirjaan
+            elif rivi[0] == "YKSIKOT":
+                yksikot = tiedosto.readline()
+                yksikot = yksikot.split(':')
+                while yksikot[0] != "RUUDUTLOPPU":
+                    tyyppi = yksikot[0].lower()
+                    i = 1
+                    lista = []
+                    while i < len(yksikot):
+                        yksikot[i] = yksikot[i].strip()
+                        yksikot[i] = yksikot[i].split(",")
+                        yksikot[i][0] = int(yksikot[i][0]) - 1
+                        yksikot[i][1] = int(yksikot[i][1]) - 1
+                        yksikko = (Koordinaatit(yksikot[i][0],  yksikot[i][1]), yksikot[i][2])
+                        lista.append(yksikko)
+                        i += 1
+                    yksikot_sanakirja[tyyppi] = lista
+                    yksikot = tiedosto.readline()
+                    yksikot = yksikot.split(':')
+                    if yksikot[0].strip() == "YKSIKOTLOPPU":
+                        break
+            elif rivi[0] == "LOPPU":
+                return kartan_nimi, x, y, ruudut, yksikot_sanakirja
+
+
 
 
     def koko_x(self):

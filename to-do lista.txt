@@ -1,7 +1,6 @@
 Käyttöliittymä & polunhaku
--ohjetekstin paikka (alhaalla?, layout muutoksia?)
 -polunhaun testaus
--koodin siistiminen
+-käyttöliittymän koodin siistiminen
 
 Yksiköt:
 -grafiikka
