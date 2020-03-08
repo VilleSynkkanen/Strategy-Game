@@ -10,5 +10,16 @@ Yksiköt:
 -tiedostosta lukeminen
 -jne.
 
+Seuraavaksi:
+-tiedot yksiköille luonnissa (kartan kautta)
+-valitseminen, liikuttelu (oman yksikön käyttöliittymä/grafiikka)
+-tooltip (+ elämäpalkki?)
+-yksikön tiedot (nappi)
+-värien muutokset eri tilanteissa (yksiköt + maastot)
+-hyökkäys- ja puolustussäännöt (suunnittelu + koodi)
+
+Korjauksia:
+-ei liikkumista yksiköiden läpi (polunhaku)
+
 Buttons:
 -ability buttton: call method in selected unit for target selection

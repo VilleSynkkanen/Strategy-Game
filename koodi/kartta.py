@@ -17,9 +17,14 @@ class Kartta:
                 lista.append(ruutu)
         return lista
 
-    def lisaa_yksikot(self, yksikot):
+    def lisaa_yksikot(self, yksikot, ominaisuudet):
+        # yksikot = yksiköiden sijainnit
+        # ominaisuudet = yksiköiden ominaisuudet (luettu tiedostoista)
+
+        # lisää ominaisuudet yksiköihin
+
         for elementti in yksikot:
             for yksikko in yksikot[elementti]:
                 for ruutu in self.ruudut:
                     if yksikko[0].x == ruutu.koordinaatit.x and yksikko[0].y == ruutu.koordinaatit.y:
-                        ruutu.lisaa_yksikko(yksikko, yksikko[1])
+                        ruutu.lisaa_yksikko(elementti, yksikko[1])

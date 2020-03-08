@@ -2,6 +2,11 @@ from koordinaatit import Koordinaatit
 from maasto import Maasto
 from ruutugrafiikka import Ruutugrafiikka
 from yksikko import Yksikko
+from jalkavaki import  Jalkavaki
+from ratsuvaki import  Ratsuvaki
+from jousimiehet import  Jousimiehet
+from tykisto import Tykisto
+from parantaja import Parantaja
 
 class Ruutu:
 
@@ -16,7 +21,16 @@ class Ruutu:
         self.yksikko = None
 
     def lisaa_yksikko(self, tyyppi, omistaja):
-        self.yksikko = Yksikko(omistaja, self, self.kayttoliittyma)
+        if tyyppi == "jalkavaki":
+            self.yksikko = Jalkavaki(omistaja, self, self.kayttoliittyma)
+        elif tyyppi == "ratsuvaki":
+            self.yksikko = Ratsuvaki(omistaja, self, self.kayttoliittyma)
+        elif tyyppi == "jousimiehet":
+            self.yksikko = Jousimiehet(omistaja, self, self.kayttoliittyma)
+        elif tyyppi == "tykisto":
+            self.yksikko = Tykisto(omistaja, self, self.kayttoliittyma)
+        elif tyyppi == "parantaja":
+            self.yksikko = Parantaja(omistaja, self, self.kayttoliittyma)
 
         # implemetoi eri tyyppisten yksiköiden luominen
 

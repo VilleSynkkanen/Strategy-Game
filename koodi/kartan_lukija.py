@@ -74,6 +74,7 @@ class Kartan_lukija:
                     if yksikot[0].strip() == "YKSIKOTLOPPU":
                         break
             elif rivi[0] == "LOPPU":
+                tiedosto.close()
                 return kartan_nimi, x, y, ruudut, yksikot_sanakirja
 
 

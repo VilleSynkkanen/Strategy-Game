@@ -1,0 +1,12 @@
+YKSIKÖT:
+Perusvärit
+-tietokone:
+-pelaaja
+
+-vuoro käytetty (pelaaja)
+-voi hyökätä (tietokone)
+
+MAASTOT:
+-perusvärit
+-voi liikkua/kohdistaa (joka maastolle eri)
+-vahingoittunut (joka maastolle eri, monta eri tasoa)

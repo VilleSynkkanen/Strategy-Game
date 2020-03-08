@@ -8,9 +8,8 @@ class Yksikko:
         self.kayttoliittyma = kayttoliittyma
         self.grafiikka = None
 
-        #self.luo_grafiikka()
-
-        print(self.ruutu.koordinaatit.x, " ", self.ruutu.koordinaatit.y, " ", self.omistaja)
-
     def luo_grafiikka(self):
-        self.grafiikka = Yksikkografiikka(self, self.ruutu.grafiikka.koko)
+        self.grafiikka = Yksikkografiikka(self, self.ruutu, self.kayttoliittyma, self.omistaja)
+
+    def luo_ominaisuudet(self):
+        pass
