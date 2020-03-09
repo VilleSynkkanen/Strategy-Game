@@ -24,7 +24,7 @@ class Polunhaku:
                 break
 
             # nykyinen = ruutu
-            for seuraava in nykyinen.naapurit:
+            for seuraava in nykyinen.vapaat_naapurit():
                 uusi_hinta = hinta_tahan_mennessa[nykyinen] + seuraava.maasto.liikkumisen_hinta
                 if seuraava not in hinta_tahan_mennessa or uusi_hinta < hinta_tahan_mennessa[seuraava]:
                     hinta_tahan_mennessa[seuraava] = uusi_hinta

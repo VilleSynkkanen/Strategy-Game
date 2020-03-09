@@ -59,4 +59,11 @@ class Ruutu:
             if (ruutu.koordinaatit.x, ruutu.koordinaatit.y) in naapuri_koordinaatit and ruutu.maasto.liikkuminen == True:
                 self.naapurit.append(ruutu)
 
+    def vapaat_naapurit(self):
+        vapaat = []
+        for naapuri in self.naapurit:
+            if naapuri.yksikko == None:
+                vapaat.append(naapuri)
+        return vapaat
+
 

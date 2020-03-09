@@ -1,5 +1,6 @@
 Käyttöliittymä & polunhaku
 -polunhaun testaus
+	-jos ruutu on täysin blokattu, mitä tapahtuu?
 -käyttöliittymän koodin siistiminen
 
 Yksiköt:

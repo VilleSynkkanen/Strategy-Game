@@ -44,7 +44,7 @@ class Pelinohjain:
 
     def polunhaku_testi(self, aloitus):
         for ruutu in self.kartta.ruudut:
-            if ruutu.maasto.liikkuminen:
+            if ruutu.maasto.liikkuminen and ruutu.yksikko == None:
                 ruudut, hinnat = self.polunhaku.hae_polkua(aloitus, ruutu)
                 #polku = self.polunhaku.rakenna_polku(ruudut, aloitus, ruutu)
                 hinta = self.polunhaku.laske_hinta(hinnat, ruutu)
