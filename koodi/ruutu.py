@@ -20,19 +20,18 @@ class Ruutu:
         self.naapurit = []  # etsitään myöhemmin
         self.yksikko = None
 
-    def lisaa_yksikko(self, tyyppi, omistaja):
+    def lisaa_yksikko(self, tyyppi, omistaja, ominaisuudet):
         if tyyppi == "jalkavaki":
-            self.yksikko = Jalkavaki(omistaja, self, self.kayttoliittyma)
+            self.yksikko = Jalkavaki(omistaja, self, self.kayttoliittyma, ominaisuudet)
         elif tyyppi == "ratsuvaki":
-            self.yksikko = Ratsuvaki(omistaja, self, self.kayttoliittyma)
+            self.yksikko = Ratsuvaki(omistaja, self, self.kayttoliittyma, ominaisuudet)
         elif tyyppi == "jousimiehet":
-            self.yksikko = Jousimiehet(omistaja, self, self.kayttoliittyma)
+            self.yksikko = Jousimiehet(omistaja, self, self.kayttoliittyma, ominaisuudet)
         elif tyyppi == "tykisto":
-            self.yksikko = Tykisto(omistaja, self, self.kayttoliittyma)
+            self.yksikko = Tykisto(omistaja, self, self.kayttoliittyma, ominaisuudet)
         elif tyyppi == "parantaja":
-            self.yksikko = Parantaja(omistaja, self, self.kayttoliittyma)
-
-        # implemetoi eri tyyppisten yksiköiden luominen
+            self.yksikko = Parantaja(omistaja, self, self.kayttoliittyma, ominaisuudet)
+        return self.yksikko
 
     def luo_grafiikka(self, koko):
         self.grafiikka = Ruutugrafiikka(self.koordinaatit, koko, self.kayttoliittyma, self.maasto.vari, self)
@@ -65,5 +64,11 @@ class Ruutu:
             if naapuri.yksikko == None:
                 vapaat.append(naapuri)
         return vapaat
+
+    def liiku_pois(self):
+        self.yksikko = None
+
+    def liiku_ruutuun(self, yksikko):
+        self.yksikko = yksikko
 
 

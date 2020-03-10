@@ -1,26 +1,20 @@
 Käyttöliittymä & polunhaku
 -polunhaun testaus
-	-jos ruutu on täysin blokattu, mitä tapahtuu?
+	-jos ruutu on täysin blokattu, kaataa ohjelman
 -käyttöliittymän koodin siistiminen
 
 Yksiköt:
--grafiikka
 -perustoiminnot
--valitseminen, liikuttelu
--yksikköluokat
--tiedostosta lukeminen
--jne.
 
 Seuraavaksi:
--tiedot yksiköille luonnissa (kartan kautta)
--valitseminen, liikuttelu (oman yksikön käyttöliittymä/grafiikka)
 -tooltip (+ elämäpalkki?)
 -yksikön tiedot (nappi)
 -värien muutokset eri tilanteissa (yksiköt + maastot)
 -hyökkäys- ja puolustussäännöt (suunnittelu + koodi)
+-hyökkääminen
 
-Korjauksia:
--ei liikkumista yksiköiden läpi (polunhaku)
+Muuta:
+-onko hyvä tapa muuttaa objektin arvoja suoraan sen ulkopuolelta?
 
 Buttons:
 -ability buttton: call method in selected unit for target selection

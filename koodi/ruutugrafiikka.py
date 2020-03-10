@@ -28,6 +28,9 @@ class Ruutugrafiikka(QtWidgets.QGraphicsRectItem):
 
         self.piirra_ruutu()
 
+        # värien määrittely
+        self.voi_liikkua_vari = QtGui.QColor(0.5 * self.vari[0], 0.5 * self.vari[1], 0.5 * self.vari[2])
+
     def piirra_ruutu(self):
         brush = QtGui.QBrush(QtGui.QColor(self.vari[0], self.vari[1], self.vari[2]))
         self.setRect(self.koordinaatit.x * self.koko, self.koordinaatit.y * self.koko,
@@ -39,16 +42,21 @@ class Ruutugrafiikka(QtWidgets.QGraphicsRectItem):
         pass
 
     def mousePressEvent(self, *args, **kwargs):
-        if self.ruutu.maasto.liikkuminen:
-            self.kayttoliittyma.pelinohjain.polunhaku_testi(self.ruutu)     # polunhaun testausta varten
+        if self.kayttoliittyma.valittu_yksikko is not None and self.ruutu in self.kayttoliittyma.valittu_yksikko.mahdolliset_ruudut:
+            self.kayttoliittyma.valittu_yksikko.liiku_ruutuun(self.ruutu)
 
     def maarita_teksti(self, teksti):
         self.teksti.setPlainText(str(teksti))           # polunhaun testausta varten
 
+    # muuta siten, että parametrina annetaan QColor
     def muuta_vari(self, vari):
         brush = QtGui.QBrush(QtGui.QColor(vari[0], vari[1], vari[2]))
         self.setBrush(brush)
 
     def palauta_vari(self):
         brush = QtGui.QBrush(QtGui.QColor(self.vari[0], self.vari[1], self.vari[2]))
+        self.setBrush(brush)
+
+    def voi_liikkua(self):
+        brush = QtGui.QBrush(self.voi_liikkua_vari)
         self.setBrush(brush)

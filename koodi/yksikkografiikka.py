@@ -2,18 +2,20 @@ from PyQt5 import QtWidgets, QtGui, QtCore
 
 class Yksikkografiikka(QtWidgets.QGraphicsPolygonItem):
 
-    def __init__(self, luokka, ruutu, kayttoliittyma, omistaja):
+    def __init__(self, luokka, ruutu, kayttoliittyma, omistaja, yksikko):
         super(Yksikkografiikka, self).__init__()
         # yksikön tyyppi luetaan sen luokan nimestä
         tyyppi = luokka.__class__.__name__
+        self.yksikko = yksikko
         self.koko = ruutu.kartta.ruudun_koko
         self.ruutu = ruutu
         self.kayttoliittyma = kayttoliittyma
         self.omistaja = omistaja
 
         # eri tilanteissa käytettävien värien määrittely
-        self.tietokoneen_vari = QtGui.QBrush(QtGui.QColor(255, 0, 0))
-        self.pelaajan_vari = QtGui.QBrush(QtGui.QColor(0, 0, 255))
+        self.tietokoneen_vari = QtGui.QBrush(QtGui.QColor(155, 0, 0))
+        self.pelaajan_vari = QtGui.QBrush(QtGui.QColor(0, 0, 155))
+        self.pelaaja_valittu_vari = QtGui.QBrush(QtGui.QColor(0, 0, 255))
 
         # brush
         if self.omistaja == "COM":
@@ -144,4 +146,19 @@ class Yksikkografiikka(QtWidgets.QGraphicsPolygonItem):
     def muuta_varia(self, vari):        # vari = QColor
         brush = QtGui.QBrush(vari)
         self.setBrush(brush)
+
+    def palauta_vari(self):
+        if self.omistaja == "COM":
+            brush = QtGui.QBrush(self.tietokoneen_vari_vari)
+        else:
+            brush = QtGui.QBrush(self.pelaajan_vari)
+        self.setBrush(brush)
+
+    def paivita_sijainti(self, ruutu):
+        self.ruutu = ruutu
+        self.setPos(self.ruutu.koordinaatit.x * self.koko, self.ruutu.koordinaatit.y * self.koko)
+
+    def mousePressEvent(self, *args, **kwargs):
+        if self.yksikko.omistaja == "PLR":
+            self.kayttoliittyma.valitse_yksikko(self.yksikko)
 

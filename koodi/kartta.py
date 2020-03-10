@@ -7,6 +7,8 @@ class Kartta:
         self.kayttoliittyma = kayttoliittyma
         self.ruudun_koko = 44
         self.ruudut = self.luo_ruudut(x, y, ruudut)
+        self.pelaajan_yksikot = []
+        self.tietokoneen_yksikot = []
 
     def luo_ruudut(self, x, y, ruudut):
         lista = []
@@ -24,7 +26,13 @@ class Kartta:
         # lisää ominaisuudet yksiköihin
 
         for elementti in yksikot:
+            # elementti = yksikön tyyppi
             for yksikko in yksikot[elementti]:
                 for ruutu in self.ruudut:
                     if yksikko[0].x == ruutu.koordinaatit.x and yksikko[0].y == ruutu.koordinaatit.y:
-                        ruutu.lisaa_yksikko(elementti, yksikko[1])
+                        luotu_yksikko = ruutu.lisaa_yksikko(elementti, yksikko[1], ominaisuudet[elementti])
+                        if luotu_yksikko.omistaja == "PLR":
+                            self.pelaajan_yksikot.append(luotu_yksikko)
+                        elif luotu_yksikko.omistaja == "COM":
+                            self.tietokoneen_yksikot.append(luotu_yksikko)
+

@@ -21,6 +21,7 @@ class Pelinohjain:
 
         self.kayttoliittyma.set_scene_rect(self.koko[0], self.koko[1])
 
+
         # maastojen lukeminen
         self.maaston_lukija = Maaston_lukija()
 
@@ -38,17 +39,30 @@ class Pelinohjain:
 
         self.kartta.lisaa_yksikot(yksikot, self.yksikoiden_lukija.yksikot)
 
-
         # polunhaku
         self.polunhaku = Polunhaku()
 
-    def polunhaku_testi(self, aloitus):
+    # laskee mahdolliset kohteet aloituksen ja liikkumispisteiden perusteella
+    def laske_polut(self, aloitus, liikkuminen):
+
+
+        mahdolliset_ruudut = []
         for ruutu in self.kartta.ruudut:
-            if ruutu.maasto.liikkuminen and ruutu.yksikko == None:
+            # rajoitetaan haku vain alueelle, jolle liikkumispisteet riittävät
+            if ruutu.maasto.liikkuminen and ruutu.yksikko == None and self.polunhaku.heuristiikka(aloitus, ruutu) <= liikkuminen:
                 ruudut, hinnat = self.polunhaku.hae_polkua(aloitus, ruutu)
-                #polku = self.polunhaku.rakenna_polku(ruudut, aloitus, ruutu)
-                hinta = self.polunhaku.laske_hinta(hinnat, ruutu)
-                ruutu.grafiikka.maarita_teksti(hinta)
+                if ruudut != False:
+                    #polku = self.polunhaku.rakenna_polku(ruudut, aloitus, ruutu)
+                    hinta = self.polunhaku.laske_hinta(hinnat, ruutu)
+                    if hinta <= liikkuminen:
+                        mahdolliset_ruudut.append(ruutu)
+        return mahdolliset_ruudut
+
+    def vuoron_alku(self):
+        # lasketaan kaikkien yksiköiden mahdolliset polut
+        self.kayttoliittyma.tyhjenna_valinta()
+        for yksikko in self.kartta.pelaajan_yksikot:
+            yksikko.palauta_liikkumispisteet()
 
 
 

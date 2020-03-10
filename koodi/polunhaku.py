@@ -16,12 +16,21 @@ class Polunhaku:
         hinta_tahan_mennessa = {}
         tulopaikat[alku] = None
         hinta_tahan_mennessa[alku] = 0
+        epaonnistumiset = 0
+        nyk_tulopaikat = len(tulopaikat)
 
         while not jono.tyhja():
             nykyinen = jono.poista()
 
             if nykyinen == loppu:
                 break
+            elif nyk_tulopaikat == len(tulopaikat):
+                epaonnistumiset += 1
+            nyk_tulopaikat = len(tulopaikat)
+            print(epaonnistumiset)
+            if epaonnistumiset > 50:
+                # jos tulopaikkojen kasvatus epäonnistuu tarpeeksi, todetaan, että ruutuun ei pääse
+                return False, False
 
             # nykyinen = ruutu
             for seuraava in nykyinen.vapaat_naapurit():

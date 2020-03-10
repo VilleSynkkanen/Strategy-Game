@@ -3,6 +3,7 @@ Perusvärit
 -tietokone:
 -pelaaja
 
+-valittu
 -vuoro käytetty (pelaaja)
 -voi hyökätä (tietokone)
 

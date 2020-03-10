@@ -51,5 +51,5 @@ class Yksikoiden_lukija:
             # luotu maasto lisätään sanakirjaan, josta se voiddan myöhemmin lukea
             yksikko = Yksikon_ominaisuudet(tyyppi, liikkumispisteet, max_elama, max_elama, max_energia, max_energia,
                                            hyokkays, puolustus, kantama, hinta, [])
-            self.yksikot[tyyppi] = yksikko
+            self.yksikot[tyyppi.lower()] = yksikko
             lue.close() # muista sulkea aina

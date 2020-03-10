@@ -8,6 +8,7 @@ class Kayttoliittyma(QtWidgets.QMainWindow):
         super().__init__()
         self.scene_size = 880       #kentän koko pikseleinä
         self.pelinohjain = pelinohjain
+        self.valittu_yksikko = None
         self.setCentralWidget(QtWidgets.QWidget()) # QMainWindown must have a centralWidget to be able to add layouts
         main_layout = QtWidgets.QHBoxLayout()  # Horizontal main layout
         self.centralWidget().setLayout(main_layout)
@@ -61,7 +62,7 @@ class Kayttoliittyma(QtWidgets.QMainWindow):
         button9.setStyleSheet("font: 10pt Arial")
 
         # connect button to function
-        button1.clicked.connect(self.test1)
+        button8.clicked.connect(self.test1)
 
         # add button widgets
         button_layout.addWidget(button1, 0, 0, 1, 2)
@@ -129,5 +130,27 @@ class Kayttoliittyma(QtWidgets.QMainWindow):
                   (res_y / 2) - (self.frameSize().height() / 2))
 
 
+    def valitse_yksikko(self, yksikko):
+        # valinnan muuttaminen
+        self.valittu_yksikko = yksikko
+        yksikko.grafiikka.muuta_varia(yksikko.grafiikka.pelaaja_valittu_vari)
+        for yks in self.pelinohjain.kartta.pelaajan_yksikot:
+            if yks != self.valittu_yksikko:
+                yks.grafiikka.muuta_varia(yks.grafiikka.pelaajan_vari)
+        for ruutu in self.pelinohjain.kartta.ruudut:
+            ruutu.grafiikka.palauta_vari()
+
+        # polkujen näyttäminen
+        if not self.valittu_yksikko.liikkuminen_kaytetty:
+            self.valittu_yksikko.laske_mahdolliset_ruudut()
+        self.valittu_yksikko.nayta_mahdolliset_ruudut()
+
+    def tyhjenna_valinta(self):
+        if self.valittu_yksikko is not None:
+            self.valittu_yksikko.grafiikka.palauta_vari()
+            self.valittu_yksikko = None
+
+
+    # vuoron aloitus testi
     def test1(self):
-        print("test button 1")
+        self.pelinohjain.vuoron_alku()
