@@ -11,9 +11,14 @@ Napit
 -edellinen yksikkö
 -päätä vuoro
 -tallenna peli
+
 Muuta
 -yksikön elämä
 -yksikön energia
+-liikkumispisteet
+-hyökkäys, puolustus
+-kjantama
+(kaikki mitä __str__:ssä on määritelty)
 -vuoroa jäljellä?
 -ohjeteksti?
 -peliloki

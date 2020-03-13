@@ -27,7 +27,6 @@ class Polunhaku:
             elif nyk_tulopaikat == len(tulopaikat):
                 epaonnistumiset += 1
             nyk_tulopaikat = len(tulopaikat)
-            print(epaonnistumiset)
             if epaonnistumiset > 50:
                 # jos tulopaikkojen kasvatus epäonnistuu tarpeeksi, todetaan, että ruutuun ei pääse
                 return False, False
