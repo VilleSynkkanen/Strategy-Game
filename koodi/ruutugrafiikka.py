@@ -42,7 +42,9 @@ class Ruutugrafiikka(QtWidgets.QGraphicsRectItem):
         pass
 
     def mousePressEvent(self, *args, **kwargs):
-        if self.kayttoliittyma.valittu_yksikko is not None and self.ruutu in self.kayttoliittyma.valittu_yksikko.mahdolliset_ruudut:
+        if self.kayttoliittyma.valittu_yksikko is not None and self.ruutu in \
+                self.kayttoliittyma.valittu_yksikko.mahdolliset_ruudut and \
+                self.kayttoliittyma.valitsee_hyokkayksen_kohdetta is False:
             self.kayttoliittyma.valittu_yksikko.liiku_ruutuun(self.ruutu)
 
     def maarita_teksti(self, teksti):

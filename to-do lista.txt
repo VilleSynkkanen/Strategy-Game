@@ -6,11 +6,16 @@ Yksiköt:
 -perustoiminnot
 
 Seuraavaksi:
--hyökkäys- ja puolustussäännöt (suunnittelu + koodi)
 -hyökkääminen
+	-muuta kaavaa: voima ei riipu lineaarisesti elämästä
+	-yksikön tuhoutuminen
+	-line of sight
+-yksikön käyttöliittymä
+	-tieto käytetystä liikkeestä/hyökkäyksestä
+	-muita tietoja??
 -edellinen ja seuraava: kun ei yksiköitä, älä valitse yksikköä, jolla ei ole toimintoja
 -värien muutokset eri tilanteissa (yksiköt + maastot)
--kyvyt
+-kyvyt, energia
 
 Muuta:
 -onko hyvä tapa muuttaa objektin arvoja suoraan sen ulkopuolelta?

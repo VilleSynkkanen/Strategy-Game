@@ -12,11 +12,11 @@ class Kayttoliittyma(QtWidgets.QMainWindow):
         # toimintaan liittyviä muuttujia
         self.valittu_yksikko = None
         self.yksikon_tiedot_aktiivinen = False
-
+        self.valitsee_hyokkayksen_kohdetta = False
 
         self.setCentralWidget(QtWidgets.QWidget()) # QMainWindown must have a centralWidget to be able to add layouts
-        main_layout = QtWidgets.QHBoxLayout()  # Horizontal main layout
-        self.centralWidget().setLayout(main_layout)
+        paa_layout = QtWidgets.QHBoxLayout()  # Horizontal main layout
+        self.centralWidget().setLayout(paa_layout)
 
         # set window
         self.setGeometry(0, 0, self.scene_size + 420, self.scene_size)
@@ -30,19 +30,19 @@ class Kayttoliittyma(QtWidgets.QMainWindow):
         self.view = QtWidgets.QGraphicsView(self.scene, self)
         self.view.adjustSize()
         self.view.show()
-        main_layout.addWidget(self.view)
+        paa_layout.addWidget(self.view)
         # main_layout.addStretch()
 
         nappi_layout = QtWidgets.QGridLayout()
-        main_layout.addLayout(nappi_layout)
+        paa_layout.addLayout(nappi_layout)
 
         # buttons
-        button1 = QtWidgets.QPushButton("HYÖKKÄÄ")
-        button1.setSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Preferred)
-        button2 = QtWidgets.QPushButton("KYKY 1")
-        button2.setSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Preferred)
-        button3 = QtWidgets.QPushButton("KYKY 2")
-        button3.setSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Preferred)
+        hyokkaa_nappi = QtWidgets.QPushButton("HYÖKKÄÄ")
+        hyokkaa_nappi.setSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Preferred)
+        kyky1_nappi = QtWidgets.QPushButton("KYKY 1")
+        kyky1_nappi.setSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Preferred)
+        kyky2_nappi = QtWidgets.QPushButton("KYKY 2")
+        kyky2_nappi.setSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Preferred)
         peru_valinta_nappi = QtWidgets.QPushButton("PERU VALINTA")
         peru_valinta_nappi.setSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Preferred)
         yksikon_tiedot_nappi = QtWidgets.QPushButton("YKSIKÖN TIEDOT")
@@ -56,9 +56,9 @@ class Kayttoliittyma(QtWidgets.QMainWindow):
         tallenna_peli_napi = QtWidgets.QPushButton("TALLENNA PELI")
         tallenna_peli_napi.setSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Preferred)
 
-        button1.setStyleSheet("font: 10pt Arial")
-        button2.setStyleSheet("font: 10pt Arial")
-        button3.setStyleSheet("font: 10pt Arial")
+        hyokkaa_nappi.setStyleSheet("font: 10pt Arial")
+        kyky1_nappi.setStyleSheet("font: 10pt Arial")
+        kyky2_nappi.setStyleSheet("font: 10pt Arial")
         peru_valinta_nappi.setStyleSheet("font: 10pt Arial")
         yksikon_tiedot_nappi.setStyleSheet("font: 10pt Arial")
         edellinen_yksikko_nappi.setStyleSheet("font: 10pt Arial")
@@ -67,6 +67,7 @@ class Kayttoliittyma(QtWidgets.QMainWindow):
         tallenna_peli_napi.setStyleSheet("font: 10pt Arial")
 
         # nappien yhdistäminen
+        hyokkaa_nappi.clicked.connect(self.hyokkaa)
         peru_valinta_nappi.clicked.connect(self.peru_valinta)
         paata_vuoro_nappi.clicked.connect(self.paata_vuoro)
         yksikon_tiedot_nappi.clicked.connect(self.yksikon_tiedot)
@@ -75,9 +76,9 @@ class Kayttoliittyma(QtWidgets.QMainWindow):
         tallenna_peli_napi.clicked.connect(self.tallenna_peli)
 
         # add button widgets
-        nappi_layout.addWidget(button1, 0, 0, 1, 2)
-        nappi_layout.addWidget(button2, 1, 0)
-        nappi_layout.addWidget(button3, 1, 1)
+        nappi_layout.addWidget(hyokkaa_nappi, 0, 0, 1, 2)
+        nappi_layout.addWidget(kyky1_nappi, 1, 0)
+        nappi_layout.addWidget(kyky2_nappi, 1, 1)
         nappi_layout.addWidget(peru_valinta_nappi, 2, 0)
         nappi_layout.addWidget(yksikon_tiedot_nappi, 2, 1)
         nappi_layout.addWidget(edellinen_yksikko_nappi, 3, 0)
@@ -142,6 +143,8 @@ class Kayttoliittyma(QtWidgets.QMainWindow):
 
     def tyhjenna_valinta(self):
         if self.valittu_yksikko is not None:
+            if self.valitsee_hyokkayksen_kohdetta == True:
+                self.valittu_yksikko.peru_hyokkayksen_kohteiden_nayttaminen()
             self.valittu_yksikko.grafiikka.palauta_vari()
             self.valittu_yksikko = None
             self.perustiedot.setText("")
@@ -150,7 +153,6 @@ class Kayttoliittyma(QtWidgets.QMainWindow):
 
             # näytä peliloki
             self.peliloki.setText("PELILOKI:\n")
-
 
     def paata_vuoro(self):
         self.pelinohjain.vuoron_alku()
@@ -166,11 +168,15 @@ class Kayttoliittyma(QtWidgets.QMainWindow):
 
     # kutsu vain, jos yksiköitä on ainakin yksi
     def edellinen_yksikko(self):
+        if len(self.pelinohjain.kartta.pelaajan_yksikot) == 0:
+            return
         i = 0
         if self.valittu_yksikko is None:
             self.valitse_yksikko(self.pelinohjain.kartta.pelaajan_yksikot[len(self.pelinohjain.kartta.pelaajan_yksikot) - 1])
             print("none")
         else:
+            if self.valitsee_hyokkayksen_kohdetta:
+                self.peru_valinta()
             while i < len(self.pelinohjain.kartta.pelaajan_yksikot):
                 if self.pelinohjain.kartta.pelaajan_yksikot[i] == self.valittu_yksikko:
                     print(i)
@@ -183,10 +189,14 @@ class Kayttoliittyma(QtWidgets.QMainWindow):
                 i += 1
 
     def seuraava_yksikko(self):
+        if len(self.pelinohjain.kartta.pelaajan_yksikot) == 0:
+            return
         i = 0
         if self.valittu_yksikko is None:
             self.valitse_yksikko(self.pelinohjain.kartta.pelaajan_yksikot[0])
         else:
+            if self.valitsee_hyokkayksen_kohdetta:
+                self.peru_valinta()
             while i < len(self.pelinohjain.kartta.pelaajan_yksikot):
                 if self.pelinohjain.kartta.pelaajan_yksikot[i] == self.valittu_yksikko:
                     if i + 1 == len(self.pelinohjain.kartta.pelaajan_yksikot):
@@ -200,11 +210,32 @@ class Kayttoliittyma(QtWidgets.QMainWindow):
         pass
 
     def peru_valinta(self):
-        if self.valittu_yksikko is not None:
+        if self.valitsee_hyokkayksen_kohdetta is True:
+            self.peru_kohteen_valinta()
+            self.valittu_yksikko.nayta_mahdolliset_ruudut()
+        elif self.valittu_yksikko is not None:
             self.tyhjenna_valinta()
 
+    def valitse_kohde(self):
+        self.valitsee_hyokkayksen_kohdetta = True
+        # värjää mahdolliset kohteet, poistaa ruutujen värjäyksen
+        self.valittu_yksikko.laske_hyokkayksen_kohteet()
+        self.valittu_yksikko.peru_mahdollisten_ruutujen_nayttaminen()
+
+    def peru_kohteen_valinta(self):
+        self.valittu_yksikko.peru_hyokkayksen_kohteiden_nayttaminen()
+        self.valitsee_hyokkayksen_kohdetta = False
+
+
     def hyokkaa(self):
-        pass
+        # määrittelee valitaanko kohdetta vai perutaanko valinta
+        if self.valittu_yksikko is not None and self.valitsee_hyokkayksen_kohdetta is False and \
+                self.valittu_yksikko.hyokkays_kaytetty is False:
+            self.valitse_kohde()
+        elif self.valitsee_hyokkayksen_kohdetta:
+            self.peru_kohteen_valinta()
+            self.valittu_yksikko.nayta_mahdolliset_ruudut()
+
 
     def kyky_1(self):
         pass

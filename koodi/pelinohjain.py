@@ -44,8 +44,6 @@ class Pelinohjain:
 
     # laskee mahdolliset kohteet aloituksen ja liikkumispisteiden perusteella
     def laske_polut(self, aloitus, liikkuminen):
-
-
         mahdolliset_ruudut = []
         for ruutu in self.kartta.ruudut:
             # rajoitetaan haku vain alueelle, jolle liikkumispisteet riittävät
