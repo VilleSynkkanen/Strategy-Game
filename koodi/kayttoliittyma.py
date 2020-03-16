@@ -88,18 +88,24 @@ class Kayttoliittyma(QtWidgets.QMainWindow):
 
         # unit info
         self.perustiedot = QtWidgets.QLabel("")
-        nappi_layout.addWidget(self.perustiedot, 5, 0, 1, 1)
-        self.perustiedot.setStyleSheet("font: 10pt Arial")
+        nappi_layout.addWidget(self.perustiedot, 5, 0, 1, 1, alignment=QtCore.Qt.AlignTop)
+        self.perustiedot.setStyleSheet("font: 9pt Arial")
         self.perustiedot.setSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Preferred)
+
+        # maaston info
+        self.maaston_tiedot = QtWidgets.QLabel("")
+        nappi_layout.addWidget(self.maaston_tiedot, 5, 1, 1, 1, alignment=QtCore.Qt.AlignTop)
+        self.maaston_tiedot.setStyleSheet("font: 9pt Arial")
+        self.maaston_tiedot.setSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Preferred)
 
         # game log test
         self.peliloki = QtWidgets.QLabel("PELILOKI:\n", self)
         nappi_layout.addWidget(self.peliloki,6, 0, 6, 2, alignment=QtCore.Qt.AlignTop)
-        self.peliloki.setStyleSheet("font: 10pt Arial")
+        self.peliloki.setStyleSheet("font: 9pt Arial")
 
         ohjeteksti = QtWidgets.QLabel("OHJETEKSTI\n", self)
         nappi_layout.addWidget(ohjeteksti, 11, 0, 1, 0, alignment=QtCore.Qt.AlignTop)
-        ohjeteksti.setStyleSheet("font: 10pt Arial")
+        ohjeteksti.setStyleSheet("font: 9pt Arial")
 
     def set_scene_rect(self, x, y):
         # rectin skaalauskertoimet
@@ -120,18 +126,27 @@ class Kayttoliittyma(QtWidgets.QMainWindow):
 
 
     def valitse_yksikko(self, yksikko):
+        self.tyhjenna_valinta()
         # valinnan muuttaminen
         self.valittu_yksikko = yksikko
 
+        liikuttu = "ei"
+        hyokatty = "ei"
+        if self.valittu_yksikko.liikkuminen_kaytetty:
+            liikuttu = "kyllä"
+        if self.valittu_yksikko.hyokkays_kaytetty:
+            hyokatty = "kyllä"
+
         # näytä tiedot
-        self.perustiedot.setText("Perustiedot:\n" + self.valittu_yksikko.ominaisuudet.__str__())
+        self.paivita_valitun_yksikon_tiedot()
 
         # näytä peliloki
         self.peliloki.setText("PELILOKI:\n")
 
         yksikko.grafiikka.muuta_varia(yksikko.grafiikka.pelaaja_valittu_vari)
+        # vanhan valinnan värin muutos tehdään, kun valinta tyhjennetään (jos yksikkö ei voi tehdä mitään, väri on eri)
         for yks in self.pelinohjain.kartta.pelaajan_yksikot:
-            if yks != self.valittu_yksikko:
+            if yks != self.valittu_yksikko and yks in self.pelinohjain.kartta.pelaajan_toimivat_yksikot:
                 yks.grafiikka.muuta_varia(yks.grafiikka.pelaajan_vari)
         for ruutu in self.pelinohjain.kartta.ruudut:
             ruutu.grafiikka.palauta_vari()
@@ -141,11 +156,29 @@ class Kayttoliittyma(QtWidgets.QMainWindow):
             self.valittu_yksikko.laske_mahdolliset_ruudut()
         self.valittu_yksikko.nayta_mahdolliset_ruudut()
 
+    def paivita_valitun_yksikon_tiedot(self):
+        liikuttu = "ei"
+        hyokatty = "ei"
+        if self.valittu_yksikko.liikkuminen_kaytetty:
+            liikuttu = "kyllä"
+        if self.valittu_yksikko.hyokkays_kaytetty:
+            hyokatty = "kyllä"
+
+        self.perustiedot.setText("Perustiedot:\n" + self.valittu_yksikko.ominaisuudet.__str__() +
+                                 "Liikkuminen käytetty: " + liikuttu + "\n"
+                                                                       "Hyökkäys käytetty: " + hyokatty)
+
+        self.maaston_tiedot.setText("Maaston tiedot:\n" + self.valittu_yksikko.ruutu.maasto.__str__())
+
     def tyhjenna_valinta(self):
         if self.valittu_yksikko is not None:
             if self.valitsee_hyokkayksen_kohdetta == True:
                 self.valittu_yksikko.peru_hyokkayksen_kohteiden_nayttaminen()
-            self.valittu_yksikko.grafiikka.palauta_vari()
+            if self.valittu_yksikko in self.pelinohjain.kartta.pelaajan_toimivat_yksikot:
+                self.valittu_yksikko.grafiikka.palauta_vari()
+            else:
+                self.valittu_yksikko.grafiikka.muuta_varia(self.valittu_yksikko.grafiikka.pelaaja_kaytetty_vari)
+                print("vari")
             self.valittu_yksikko = None
             self.perustiedot.setText("")
             for ruutu in self.pelinohjain.kartta.ruudut:
@@ -168,41 +201,41 @@ class Kayttoliittyma(QtWidgets.QMainWindow):
 
     # kutsu vain, jos yksiköitä on ainakin yksi
     def edellinen_yksikko(self):
-        if len(self.pelinohjain.kartta.pelaajan_yksikot) == 0:
+        if len(self.pelinohjain.kartta.pelaajan_toimivat_yksikot) == 0:
             return
         i = 0
         if self.valittu_yksikko is None:
-            self.valitse_yksikko(self.pelinohjain.kartta.pelaajan_yksikot[len(self.pelinohjain.kartta.pelaajan_yksikot) - 1])
-            print("none")
+            self.valitse_yksikko(self.pelinohjain.kartta.pelaajan_toimivat_yksikot[len(self.pelinohjain.kartta.
+                                                                                       pelaajan_toimivat_yksikot) - 1])
         else:
             if self.valitsee_hyokkayksen_kohdetta:
                 self.peru_valinta()
-            while i < len(self.pelinohjain.kartta.pelaajan_yksikot):
-                if self.pelinohjain.kartta.pelaajan_yksikot[i] == self.valittu_yksikko:
+            while i < len(self.pelinohjain.kartta.pelaajan_toimivat_yksikot):
+                if self.pelinohjain.kartta.pelaajan_toimivat_yksikot[i] == self.valittu_yksikko:
                     print(i)
                     if i == 0:
-                        self.valitse_yksikko(self.pelinohjain.kartta.pelaajan_yksikot
-                                             [len(self.pelinohjain.kartta.pelaajan_yksikot) - 1])
+                        self.valitse_yksikko(self.pelinohjain.kartta.pelaajan_toimivat_yksikot
+                                             [len(self.pelinohjain.kartta.pelaajan_toimivat_yksikot) - 1])
                         break
                     else:
-                        self.valitse_yksikko(self.pelinohjain.kartta.pelaajan_yksikot[i - 1])
+                        self.valitse_yksikko(self.pelinohjain.kartta.pelaajan_toimivat_yksikot[i - 1])
                 i += 1
 
     def seuraava_yksikko(self):
-        if len(self.pelinohjain.kartta.pelaajan_yksikot) == 0:
+        if len(self.pelinohjain.kartta.pelaajan_toimivat_yksikot) == 0:
             return
         i = 0
         if self.valittu_yksikko is None:
-            self.valitse_yksikko(self.pelinohjain.kartta.pelaajan_yksikot[0])
+            self.valitse_yksikko(self.pelinohjain.kartta.pelaajan_toimivat_yksikot[0])
         else:
             if self.valitsee_hyokkayksen_kohdetta:
                 self.peru_valinta()
-            while i < len(self.pelinohjain.kartta.pelaajan_yksikot):
-                if self.pelinohjain.kartta.pelaajan_yksikot[i] == self.valittu_yksikko:
-                    if i + 1 == len(self.pelinohjain.kartta.pelaajan_yksikot):
-                        self.valitse_yksikko(self.pelinohjain.kartta.pelaajan_yksikot[0])
+            while i < len(self.pelinohjain.kartta.pelaajan_toimivat_yksikot):
+                if self.pelinohjain.kartta.pelaajan_toimivat_yksikot[i] == self.valittu_yksikko:
+                    if i + 1 == len(self.pelinohjain.kartta.pelaajan_toimivat_yksikot):
+                        self.valitse_yksikko(self.pelinohjain.kartta.pelaajan_toimivat_yksikot[0])
                     else:
-                        self.valitse_yksikko(self.pelinohjain.kartta.pelaajan_yksikot[i + 1])
+                        self.valitse_yksikko(self.pelinohjain.kartta.pelaajan_toimivat_yksikot[i + 1])
                         break
                 i += 1
 
@@ -219,13 +252,12 @@ class Kayttoliittyma(QtWidgets.QMainWindow):
     def valitse_kohde(self):
         self.valitsee_hyokkayksen_kohdetta = True
         # värjää mahdolliset kohteet, poistaa ruutujen värjäyksen
-        self.valittu_yksikko.laske_hyokkayksen_kohteet()
         self.valittu_yksikko.peru_mahdollisten_ruutujen_nayttaminen()
+        self.valittu_yksikko.laske_hyokkayksen_kohteet(True)
 
     def peru_kohteen_valinta(self):
         self.valittu_yksikko.peru_hyokkayksen_kohteiden_nayttaminen()
         self.valitsee_hyokkayksen_kohdetta = False
-
 
     def hyokkaa(self):
         # määrittelee valitaanko kohdetta vai perutaanko valinta

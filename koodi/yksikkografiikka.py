@@ -15,9 +15,10 @@ class Yksikkografiikka(QtWidgets.QGraphicsPolygonItem):
         self.ylaosan_koko = 0.75        # alas jää 1 - ylaosan_koko ruutua elämänpalkille
 
         # eri tilanteissa käytettävien värien määrittely
-        self.tietokoneen_vari = QtGui.QBrush(QtGui.QColor(155, 0, 0))
-        self.pelaajan_vari = QtGui.QBrush(QtGui.QColor(0, 0, 155))
+        self.tietokoneen_vari = QtGui.QBrush(QtGui.QColor(180, 0, 0))
+        self.pelaajan_vari = QtGui.QBrush(QtGui.QColor(0, 0, 180))
         self.pelaaja_valittu_vari = QtGui.QBrush(QtGui.QColor(0, 0, 255))
+        self.pelaaja_kaytetty_vari = QtGui.QBrush(QtGui.QColor(0, 0, 80))
         self.voi_hyokata_vari = QtGui.QBrush(QtGui.QColor(255, 0, 0))
 
         # brush
@@ -155,12 +156,26 @@ class Yksikkografiikka(QtWidgets.QGraphicsPolygonItem):
         self.setToolTip(teksti)
 
     def paivita_tooltip(self):
+        if self.yksikko.ominaisuudet is not None:
+            self.aseta_tooltip(self.yksikko.__class__.__name__ + "\nElämä : " + str(self.yksikko.ominaisuudet.nyk_elama) +
+                               "/" + str(self.yksikko.ominaisuudet.max_elama) + "\nEnergia: " +
+                               str(self.yksikko.ominaisuudet.nyk_energia) + "/" + str(self.yksikko.ominaisuudet.max_energia))
+
+    def hyokkays_tootip(self, hyokkaaja_vahinko, puolustaja_vahinko):
         self.aseta_tooltip(self.yksikko.__class__.__name__ + "\nElämä : " + str(self.yksikko.ominaisuudet.nyk_elama) +
                            "/" + str(self.yksikko.ominaisuudet.max_elama) + "\nEnergia: " +
-                           str(self.yksikko.ominaisuudet.nyk_energia) + "/" + str(self.yksikko.ominaisuudet.max_energia))
+                           str(self.yksikko.ominaisuudet.nyk_energia) + "/" + str(
+            self.yksikko.ominaisuudet.max_energia) + "\nOdotettu vahinko:\nHyökkääjä: " + str(hyokkaaja_vahinko) +
+                           "\nPuolustaja: " + str(puolustaja_vahinko))
+
+    def poista(self):
+        self.elamapalkki = None
+        polygoni = QtGui.QPolygonF()
+        self.setPolygon(polygoni)
+
 
     def mousePressEvent(self, *args, **kwargs):
-        if self.yksikko.omistaja == "PLR":
+        if self.yksikko.omistaja == "PLR" and self.kayttoliittyma.valitsee_hyokkayksen_kohdetta is False:
             self.kayttoliittyma.valitse_yksikko(self.yksikko)
         elif self.yksikko.omistaja == "COM" and self.yksikko.kayttoliittyma.valitsee_hyokkayksen_kohdetta and \
                 self.yksikko in self.kayttoliittyma.valittu_yksikko.hyokkayksen_kohteet:

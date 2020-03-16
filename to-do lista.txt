@@ -7,18 +7,19 @@ Yksiköt:
 
 Seuraavaksi:
 -hyökkääminen
-	-muuta kaavaa: voima ei riipu lineaarisesti elämästä
-	-yksikön tuhoutuminen
-	-line of sight
--yksikön käyttöliittymä
-	-tieto käytetystä liikkeestä/hyökkäyksestä
-	-muita tietoja??
--edellinen ja seuraava: kun ei yksiköitä, älä valitse yksikköä, jolla ei ole toimintoja
--värien muutokset eri tilanteissa (yksiköt + maastot)
+	-line of sight 
 -kyvyt, energia
+
+Ideoita
+-flanking bonus hyökkäyksessä
+-muuta taisteluun liittyvää??
 
 Muuta:
 -onko hyvä tapa muuttaa objektin arvoja suoraan sen ulkopuolelta?
+-luokkien tehtävien jakaminen enemmän (yksikön tekemät graafiset muutokset yms.)??
+-tuhoaminen paremmin??
+-mahdollisten hyökkäyksen kohteiden hakeminen ruutujen kautta
+-kun palauttaa yksikön värin normaaliksi, tarkistaa, onko yksikkö "toimiva"
 
 Buttons:
 -ability buttton: call method in selected unit for target selection

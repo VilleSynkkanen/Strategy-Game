@@ -35,3 +35,8 @@ class Elamapalkki(QtWidgets.QGraphicsPolygonItem):
         self.setTransformOriginPoint(self.koko / 2, self.koko / 2)
         self.paivita_sijainti()
         self.kayttoliittyma.scene.addItem(self)
+
+    def poista(self):
+        elamapalkki = QtGui.QPolygonF()
+        self.setPolygon(elamapalkki)
+        self.setTransformOriginPoint(self.koko / 2, self.koko / 2)

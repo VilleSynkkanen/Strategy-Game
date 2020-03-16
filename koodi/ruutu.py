@@ -71,4 +71,7 @@ class Ruutu:
     def liiku_ruutuun(self, yksikko):
         self.yksikko = yksikko
 
+    def poista_yksikko(self):
+        self.yksikko = None
+
 

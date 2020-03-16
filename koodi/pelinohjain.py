@@ -61,9 +61,4 @@ class Pelinohjain:
         self.kayttoliittyma.tyhjenna_valinta()
         for yksikko in self.kartta.pelaajan_yksikot:
             yksikko.palauta_liikkumispisteet()
-
-
-
-
-
-
+        self.kartta.palauta_pelaajan_toimivat_yksikot()

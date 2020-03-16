@@ -9,6 +9,7 @@ class Kartta:
         self.ruudut = self.luo_ruudut(x, y, ruudut)
         self.pelaajan_yksikot = []
         self.tietokoneen_yksikot = []
+        self.pelaajan_toimivat_yksikot = []
 
     def luo_ruudut(self, x, y, ruudut):
         lista = []
@@ -24,7 +25,6 @@ class Kartta:
         # ominaisuudet = yksiköiden ominaisuudet (luettu tiedostoista)
 
         # lisää ominaisuudet yksiköihin
-
         for elementti in yksikot:
             # elementti = yksikön tyyppi
             for yksikko in yksikot[elementti]:
@@ -35,4 +35,29 @@ class Kartta:
                             self.pelaajan_yksikot.append(luotu_yksikko)
                         elif luotu_yksikko.omistaja == "COM":
                             self.tietokoneen_yksikot.append(luotu_yksikko)
+
+        self.palauta_pelaajan_toimivat_yksikot()
+
+    def poista_yksikko(self, yksikko):
+        if yksikko.omistaja == "COM":
+            for Yksikko in self.tietokoneen_yksikot:
+                if Yksikko == yksikko:
+                    self.tietokoneen_yksikot.remove(yksikko)
+        elif yksikko.omistaja == "PLR":
+            for Yksikko in self.pelaajan_yksikot_yksikot:
+                if Yksikko == yksikko:
+                    self.pelaajan_yksikot.remove(yksikko)
+                    if yksikko in self.pelaajan_toimivat_yksikot:
+                        self.pelaajan_toimivat_yksikot.remove(yksikko)
+
+    def poista_toimivista_yksikoista(self, yksikko):
+        self.kayttoliittyma.seuraava_yksikko()
+        self.pelaajan_toimivat_yksikot.remove(yksikko)
+
+    def palauta_pelaajan_toimivat_yksikot(self):
+        self.pelaajan_toimivat_yksikot = []
+        for yksikko in self.pelaajan_yksikot:
+            self.pelaajan_toimivat_yksikot.append(yksikko)
+
+
 

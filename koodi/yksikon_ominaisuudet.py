@@ -14,7 +14,7 @@ class Yksikon_ominaisuudet:
         self.tilavaikutukset = tilavaikutukset
 
     def __str__(self):
-        return "Tyyppi: {}\nLiikkuminen: {}\nElämä: {}/{}\nEnergia: {}/{}\nHyökkäys: {}\nPuolustus: {}\nKantama: {}"\
+        return "Tyyppi: {}\nLiikkuminen: {}\nElämä: {}/{}\nEnergia: {}/{}\nHyökkäys: {}\nPuolustus: {}\nKantama: {}\n"\
             .format(self.tyyppi, self.liikkuminen, self.nyk_elama, self.max_elama, self.nyk_energia, self.max_energia,
                     self.hyokkays, self.puolustus, self.kantama)
 

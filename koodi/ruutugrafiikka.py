@@ -1,4 +1,4 @@
-from PyQt5 import QtGui, QtWidgets, QtCore
+from PyQt5 import QtGui, QtWidgets, QtCore, Qt
 
 from kayttoliittyma import Kayttoliittyma
 
@@ -27,9 +27,11 @@ class Ruutugrafiikka(QtWidgets.QGraphicsRectItem):
         self.teksti.setFont(QtGui.QFont("Times", 12))
 
         self.piirra_ruutu()
+        self.paivita_tooltip()
 
         # värien määrittely
-        self.voi_liikkua_vari = QtGui.QColor(0.5 * self.vari[0], 0.5 * self.vari[1], 0.5 * self.vari[2])
+        self.voi_liikkua_vari = QtGui.QColor(0.3 * self.vari[0], 0.3 * self.vari[1], 0.3 * self.vari[2])
+        self.kantaman_sisalla_vari = QtGui.QColor(0.80 * self.vari[0], 0.80 * self.vari[1], 0.80 * self.vari[2])
 
     def piirra_ruutu(self):
         brush = QtGui.QBrush(QtGui.QColor(self.vari[0], self.vari[1], self.vari[2]))
@@ -52,12 +54,31 @@ class Ruutugrafiikka(QtWidgets.QGraphicsRectItem):
 
     # muuta siten, että parametrina annetaan QColor
     def muuta_vari(self, vari):
-        brush = QtGui.QBrush(QtGui.QColor(vari[0], vari[1], vari[2]))
+        if vari is QtGui.QColor:
+            brush = QtGui.QBrush(QtGui.QColor(vari[0], vari[1], vari[2]))   # korjaa myöhemmin
+        else:
+            brush = QtGui.QBrush(vari)
         self.setBrush(brush)
 
     def palauta_vari(self):
         brush = QtGui.QBrush(QtGui.QColor(self.vari[0], self.vari[1], self.vari[2]))
         self.setBrush(brush)
+
+    def aseta_tooltip(self, teksti):
+        QtWidgets.QToolTip.setFont(Qt.QFont('SansSerif', 10))
+        self.setToolTip(teksti)
+
+    def paivita_tooltip(self):
+        maasto = self.ruutu.maasto
+        # määrittelee läpinäkyvyyden ja liikkumisen
+        liikkuminen = "kyllä"
+        lapinakyvyys = "kyllä"
+        if maasto.liikkuminen == False:
+            liikkuminen = "ei"
+        if maasto.lapinakyvyys == False:
+            lapinakyvyys = "ei"
+
+        self.aseta_tooltip(self.ruutu.maasto.__str__())
 
     def voi_liikkua(self):
         brush = QtGui.QBrush(self.voi_liikkua_vari)
