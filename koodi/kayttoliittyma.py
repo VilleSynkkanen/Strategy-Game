@@ -2,7 +2,7 @@ from PyQt5 import QtWidgets, QtCore, QtGui, Qt
 
 class Kayttoliittyma(QtWidgets.QMainWindow):
     '''
-    The class GUI handles the drawing of the board and buttons
+    Käyttöliittymä piirtää pelilaudan, napit ja tekstielementit
     '''
     def __init__(self, pelinohjain):
         super().__init__()
@@ -27,10 +27,10 @@ class Kayttoliittyma(QtWidgets.QMainWindow):
         self.scene = QtWidgets.QGraphicsScene()
 
         # Add a view for showing the scene
-        self.view = QtWidgets.QGraphicsView(self.scene, self)
-        self.view.adjustSize()
-        self.view.show()
-        paa_layout.addWidget(self.view)
+        self.nakyma = QtWidgets.QGraphicsView(self.scene, self)
+        self.nakyma.adjustSize()
+        self.nakyma.show()
+        paa_layout.addWidget(self.nakyma)
         # main_layout.addStretch()
 
         nappi_layout = QtWidgets.QGridLayout()
@@ -68,6 +68,8 @@ class Kayttoliittyma(QtWidgets.QMainWindow):
 
         # nappien yhdistäminen
         hyokkaa_nappi.clicked.connect(self.hyokkaa)
+        kyky1_nappi.clicked.connect(self.kyky_1)
+        kyky2_nappi.clicked.connect(self.kyky_2)
         peru_valinta_nappi.clicked.connect(self.peru_valinta)
         paata_vuoro_nappi.clicked.connect(self.paata_vuoro)
         yksikon_tiedot_nappi.clicked.connect(self.yksikon_tiedot)
@@ -107,7 +109,7 @@ class Kayttoliittyma(QtWidgets.QMainWindow):
         nappi_layout.addWidget(ohjeteksti, 11, 0, 1, 0, alignment=QtCore.Qt.AlignTop)
         ohjeteksti.setStyleSheet("font: 9pt Arial")
 
-    def set_scene_rect(self, x, y):
+    def aseta_scene_rect(self, x, y):
         # rectin skaalauskertoimet
         if x > y:
             y /= x
@@ -146,8 +148,8 @@ class Kayttoliittyma(QtWidgets.QMainWindow):
         yksikko.grafiikka.muuta_varia(yksikko.grafiikka.pelaaja_valittu_vari)
         # vanhan valinnan värin muutos tehdään, kun valinta tyhjennetään (jos yksikkö ei voi tehdä mitään, väri on eri)
         for yks in self.pelinohjain.kartta.pelaajan_yksikot:
-            if yks != self.valittu_yksikko and yks in self.pelinohjain.kartta.pelaajan_toimivat_yksikot:
-                yks.grafiikka.muuta_varia(yks.grafiikka.pelaajan_vari)
+            if yks != self.valittu_yksikko:
+                yks.grafiikka.palauta_vari()
         for ruutu in self.pelinohjain.kartta.ruudut:
             ruutu.grafiikka.palauta_vari()
 
@@ -174,11 +176,7 @@ class Kayttoliittyma(QtWidgets.QMainWindow):
         if self.valittu_yksikko is not None:
             if self.valitsee_hyokkayksen_kohdetta == True:
                 self.valittu_yksikko.peru_hyokkayksen_kohteiden_nayttaminen()
-            if self.valittu_yksikko in self.pelinohjain.kartta.pelaajan_toimivat_yksikot:
                 self.valittu_yksikko.grafiikka.palauta_vari()
-            else:
-                self.valittu_yksikko.grafiikka.muuta_varia(self.valittu_yksikko.grafiikka.pelaaja_kaytetty_vari)
-                print("vari")
             self.valittu_yksikko = None
             self.perustiedot.setText("")
             for ruutu in self.pelinohjain.kartta.ruudut:
@@ -219,7 +217,6 @@ class Kayttoliittyma(QtWidgets.QMainWindow):
                         return
                     valittu_yksikko = self.pelinohjain.kartta.pelaajan_yksikot[indeksi + j]
                     while valittu_yksikko not in self.pelinohjain.kartta.pelaajan_toimivat_yksikot:
-                        print(j)
                         j -= 1
                         if indeksi + j == -1:
                             self.valitse_yksikko(self.pelinohjain.kartta.pelaajan_toimivat_yksikot
@@ -237,20 +234,6 @@ class Kayttoliittyma(QtWidgets.QMainWindow):
                         self.valitse_yksikko(self.pelinohjain.kartta.pelaajan_toimivat_yksikot[i - 1])
                 i += 1
 
-        '''
-        else:
-            if self.valitsee_hyokkayksen_kohdetta:
-                self.peru_valinta()
-            while i < len(self.pelinohjain.kartta.pelaajan_toimivat_yksikot):
-                if self.pelinohjain.kartta.pelaajan_toimivat_yksikot[i] == self.valittu_yksikko:
-                    if i == 0:
-                        self.valitse_yksikko(self.pelinohjain.kartta.pelaajan_toimivat_yksikot
-                                             [len(self.pelinohjain.kartta.pelaajan_toimivat_yksikot) - 1])
-                        break
-                    else:
-                        self.valitse_yksikko(self.pelinohjain.kartta.pelaajan_toimivat_yksikot[i - 1])
-                i += 1'''
-
     def seuraava_yksikko(self):
         if len(self.pelinohjain.kartta.pelaajan_toimivat_yksikot) == 0:
             return
@@ -262,7 +245,7 @@ class Kayttoliittyma(QtWidgets.QMainWindow):
                 self.peru_valinta()
             indeksi = self.pelinohjain.kartta.pelaajan_yksikot.index(self.valittu_yksikko)
             while i < len(self.pelinohjain.kartta.pelaajan_toimivat_yksikot):
-                # jos ei toimivissa yksiköissä, täytyy tehdä muutama temppu
+                # jos ei toimivissa yksiköissä, etsitään seuraava yksikkö, joka on
                 if self.valittu_yksikko not in self.pelinohjain.kartta.pelaajan_toimivat_yksikot:
                     j = 1
                     if indeksi + j == len(self.pelinohjain.kartta.pelaajan_yksikot):

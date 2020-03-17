@@ -140,10 +140,17 @@ class Yksikkografiikka(QtWidgets.QGraphicsPolygonItem):
         self.setBrush(brush)
 
     def palauta_vari(self):
-        if self.omistaja == "COM":
-            brush = QtGui.QBrush(self.tietokoneen_vari)
+        # väri riippuu siitä, onko yksikkö vielä käytettävissä tällä vuorolla
+        if self.yksikko not in self.kayttoliittyma.pelinohjain.kartta.pelaajan_toimivat_yksikot:
+            if self.omistaja == "COM":
+                brush = QtGui.QBrush(self.tietokoneen_vari)
+            else:
+                brush = QtGui.QBrush(self.pelaaja_kaytetty_vari)
         else:
-            brush = QtGui.QBrush(self.pelaajan_vari)
+            if self.omistaja == "COM":
+                brush = QtGui.QBrush(self.tietokoneen_vari)
+            else:
+                brush = QtGui.QBrush(self.pelaajan_vari)
         self.setBrush(brush)
 
     def paivita_sijainti(self, ruutu):
@@ -172,7 +179,6 @@ class Yksikkografiikka(QtWidgets.QGraphicsPolygonItem):
         self.elamapalkki = None
         polygoni = QtGui.QPolygonF()
         self.setPolygon(polygoni)
-
 
     def mousePressEvent(self, *args, **kwargs):
         if self.yksikko.omistaja == "PLR" and self.kayttoliittyma.valitsee_hyokkayksen_kohdetta is False:

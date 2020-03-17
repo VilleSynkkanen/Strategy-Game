@@ -19,7 +19,7 @@ class Pelinohjain:
         self.koko = (x, y)
         self.kartta = Kartta(self.koko[0], self.koko[1], ruudut, self.kayttoliittyma)
 
-        self.kayttoliittyma.set_scene_rect(self.koko[0], self.koko[1])
+        self.kayttoliittyma.aseta_scene_rect(self.koko[0], self.koko[1])
 
 
         # maastojen lukeminen
@@ -59,6 +59,9 @@ class Pelinohjain:
     def vuoron_alku(self):
         # lasketaan kaikkien yksiköiden mahdolliset polut
         self.kayttoliittyma.tyhjenna_valinta()
+        self.kayttoliittyma.valitsee_hyokkayksen_kohdetta = False
+        self.kartta.palauta_pelaajan_toimivat_yksikot()
         for yksikko in self.kartta.pelaajan_yksikot:
             yksikko.palauta_liikkumispisteet()
-        self.kartta.palauta_pelaajan_toimivat_yksikot()
+            yksikko.grafiikka.palauta_vari()
+

@@ -44,15 +44,15 @@ class Yksikko:
 
     def laske_hyokkayksen_kohteet(self, nayta):
         # implementoi line of sight sääntö
+        # laskee kantamalla olevat ruudut ja lisää kohteisiin niissä olevat viholliset
         self.hyokkayksen_kohteet = []
-        for vihollinen in self.kayttoliittyma.pelinohjain.kartta.tietokoneen_yksikot:
-            etaisyys = self.kayttoliittyma.pelinohjain.polunhaku.heuristiikka(self.ruutu, vihollinen.ruutu)
-            if etaisyys <= self.ominaisuudet.kantama:
-                self.hyokkayksen_kohteet.append(vihollinen)
+        self.laske_kantaman_sisalla_olevat_ruudut()
+        for ruutu in self.ruudut_kantamalla:
+            if ruutu.yksikko != None and ruutu.yksikko.omistaja != self.omistaja:
+                self.hyokkayksen_kohteet.append(ruutu.yksikko)
         if not nayta:
             return
         self.nayta_hyokkayksen_kohteet()
-        self.laske_kantaman_sisalla_olevat_ruudut()
         self.nayta_kantaman_sisalla_olevat_ruudut()
 
     def peru_hyokkayksen_kohteiden_nayttaminen(self):
@@ -65,7 +65,8 @@ class Yksikko:
     def laske_kantaman_sisalla_olevat_ruudut(self):
         self.ruudut_kantamalla = []
         for ruutu in self.kayttoliittyma.pelinohjain.kartta.ruudut:
-            if self.kayttoliittyma.pelinohjain.polunhaku.heuristiikka(self.ruutu, ruutu) <= self.ominaisuudet.kantama:
+            if self.kayttoliittyma.pelinohjain.polunhaku.heuristiikka(self.ruutu, ruutu) <= self.ominaisuudet.kantama and \
+                    self.kayttoliittyma.pelinohjain.kartta.nakyvyys(self.ruutu, ruutu):
                 self.ruudut_kantamalla.append(ruutu)
 
     def nayta_kantaman_sisalla_olevat_ruudut(self):
@@ -196,6 +197,7 @@ class Yksikko:
             self.tuhoudu()
 
     def tuhoudu(self):
+        # poistaa kaikki olemassa olevat viittaukset yksikköön ja piilottaa sen graafiset komponentit
         # jos valittu yksikkö, poista käyttöliittymästä
         if self.kayttoliittyma.valittu_yksikko == self:
             self.kayttoliittyma.tyhjenna_valinta()
@@ -209,11 +211,5 @@ class Yksikko:
         self.grafiikka.poista()
         # poista viittaus ominaisuuksiin
         self.ominaisuudet = None
-        # tuhoa yksikkö
-
-        print("tuhottu")
-
-
-
 
 
