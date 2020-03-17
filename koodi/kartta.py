@@ -51,7 +51,6 @@ class Kartta:
                         self.pelaajan_toimivat_yksikot.remove(yksikko)
 
     def poista_toimivista_yksikoista(self, yksikko):
-        self.kayttoliittyma.seuraava_yksikko()
         self.pelaajan_toimivat_yksikot.remove(yksikko)
 
     def palauta_pelaajan_toimivat_yksikot(self):

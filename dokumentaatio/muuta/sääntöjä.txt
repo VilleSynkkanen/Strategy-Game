@@ -11,3 +11,5 @@ perusvahinko = 10
 min_vahinko = 2
 max_vahinko = 40
 satunnaisuuskerroin = 0.15
+
+-jos hyökättävän vihollisen vieressä on toinen oma yksikkö, hyökkäykseen saa pienen bonuksen

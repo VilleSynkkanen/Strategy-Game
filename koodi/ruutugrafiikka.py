@@ -54,10 +54,7 @@ class Ruutugrafiikka(QtWidgets.QGraphicsRectItem):
 
     # muuta siten, että parametrina annetaan QColor
     def muuta_vari(self, vari):
-        if vari is QtGui.QColor:
-            brush = QtGui.QBrush(QtGui.QColor(vari[0], vari[1], vari[2]))   # korjaa myöhemmin
-        else:
-            brush = QtGui.QBrush(vari)
+        brush = QtGui.QBrush(vari)
         self.setBrush(brush)
 
     def palauta_vari(self):

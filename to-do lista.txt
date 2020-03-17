@@ -1,25 +1,16 @@
-Käyttöliittymä & polunhaku
--polunhaun testaus
--käyttöliittymän koodin siistiminen
-
-Yksiköt:
--perustoiminnot
-
 Seuraavaksi:
+-mahdollisten hyökkäyksen kohteiden hakeminen ruutujen kautta (sen sijaan että haettaisiin erikseen)
+-kun palauttaa yksikön värin normaaliksi, tarkistaa, onko yksikkö "toimiva"
+-käyttöliittymän koodin siistiminen
+-tallenna ruudut kaksiulotteiseen listaan (line of sightia varten)
+
 -hyökkääminen
 	-line of sight 
--kyvyt, energia
+	-flanking bonus
 
-Ideoita
--flanking bonus hyökkäyksessä
--muuta taisteluun liittyvää??
+-kyvyt, energiasysteemi
+-polunhaun testaus
 
 Muuta:
 -onko hyvä tapa muuttaa objektin arvoja suoraan sen ulkopuolelta?
--luokkien tehtävien jakaminen enemmän (yksikön tekemät graafiset muutokset yms.)??
--tuhoaminen paremmin??
--mahdollisten hyökkäyksen kohteiden hakeminen ruutujen kautta
--kun palauttaa yksikön värin normaaliksi, tarkistaa, onko yksikkö "toimiva"
-
-Buttons:
--ability buttton: call method in selected unit for target selection
+-luokkien tehtävien jakaminen enemmän?

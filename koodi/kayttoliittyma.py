@@ -199,20 +199,36 @@ class Kayttoliittyma(QtWidgets.QMainWindow):
             self.peliloki.setText("YKSIKON TIEDOT:\n")
             self.yksikon_tiedot_aktiivinen = True
 
-    # kutsu vain, jos yksiköitä on ainakin yksi
     def edellinen_yksikko(self):
         if len(self.pelinohjain.kartta.pelaajan_toimivat_yksikot) == 0:
             return
         i = 0
         if self.valittu_yksikko is None:
             self.valitse_yksikko(self.pelinohjain.kartta.pelaajan_toimivat_yksikot[len(self.pelinohjain.kartta.
-                                                                                       pelaajan_toimivat_yksikot) - 1])
+                                                                                    pelaajan_toimivat_yksikot) - 1])
         else:
             if self.valitsee_hyokkayksen_kohdetta:
                 self.peru_valinta()
+            indeksi = self.pelinohjain.kartta.pelaajan_yksikot.index(self.valittu_yksikko)
             while i < len(self.pelinohjain.kartta.pelaajan_toimivat_yksikot):
-                if self.pelinohjain.kartta.pelaajan_toimivat_yksikot[i] == self.valittu_yksikko:
-                    print(i)
+                if self.valittu_yksikko not in self.pelinohjain.kartta.pelaajan_toimivat_yksikot:
+                    j = -1
+                    if indeksi + j == -1:
+                        self.valitse_yksikko(self.pelinohjain.kartta.pelaajan_toimivat_yksikot
+                                             [len(self.pelinohjain.kartta.pelaajan_toimivat_yksikot) - 1])
+                        return
+                    valittu_yksikko = self.pelinohjain.kartta.pelaajan_yksikot[indeksi + j]
+                    while valittu_yksikko not in self.pelinohjain.kartta.pelaajan_toimivat_yksikot:
+                        print(j)
+                        j -= 1
+                        if indeksi + j == -1:
+                            self.valitse_yksikko(self.pelinohjain.kartta.pelaajan_toimivat_yksikot
+                                                 [len(self.pelinohjain.kartta.pelaajan_toimivat_yksikot) - 1])
+                            return
+                        valittu_yksikko = self.pelinohjain.kartta.pelaajan_yksikot[indeksi + j]
+                    self.valitse_yksikko(valittu_yksikko)
+                    return
+                elif self.pelinohjain.kartta.pelaajan_toimivat_yksikot[i] == self.valittu_yksikko:
                     if i == 0:
                         self.valitse_yksikko(self.pelinohjain.kartta.pelaajan_toimivat_yksikot
                                              [len(self.pelinohjain.kartta.pelaajan_toimivat_yksikot) - 1])
@@ -220,6 +236,20 @@ class Kayttoliittyma(QtWidgets.QMainWindow):
                     else:
                         self.valitse_yksikko(self.pelinohjain.kartta.pelaajan_toimivat_yksikot[i - 1])
                 i += 1
+
+        '''
+        else:
+            if self.valitsee_hyokkayksen_kohdetta:
+                self.peru_valinta()
+            while i < len(self.pelinohjain.kartta.pelaajan_toimivat_yksikot):
+                if self.pelinohjain.kartta.pelaajan_toimivat_yksikot[i] == self.valittu_yksikko:
+                    if i == 0:
+                        self.valitse_yksikko(self.pelinohjain.kartta.pelaajan_toimivat_yksikot
+                                             [len(self.pelinohjain.kartta.pelaajan_toimivat_yksikot) - 1])
+                        break
+                    else:
+                        self.valitse_yksikko(self.pelinohjain.kartta.pelaajan_toimivat_yksikot[i - 1])
+                i += 1'''
 
     def seuraava_yksikko(self):
         if len(self.pelinohjain.kartta.pelaajan_toimivat_yksikot) == 0:
@@ -230,13 +260,29 @@ class Kayttoliittyma(QtWidgets.QMainWindow):
         else:
             if self.valitsee_hyokkayksen_kohdetta:
                 self.peru_valinta()
+            indeksi = self.pelinohjain.kartta.pelaajan_yksikot.index(self.valittu_yksikko)
             while i < len(self.pelinohjain.kartta.pelaajan_toimivat_yksikot):
-                if self.pelinohjain.kartta.pelaajan_toimivat_yksikot[i] == self.valittu_yksikko:
+                # jos ei toimivissa yksiköissä, täytyy tehdä muutama temppu
+                if self.valittu_yksikko not in self.pelinohjain.kartta.pelaajan_toimivat_yksikot:
+                    j = 1
+                    if indeksi + j == len(self.pelinohjain.kartta.pelaajan_yksikot):
+                        self.valitse_yksikko(self.pelinohjain.kartta.pelaajan_toimivat_yksikot[0])
+                        return
+                    valittu_yksikko = self.pelinohjain.kartta.pelaajan_yksikot[indeksi + j]
+                    while valittu_yksikko not in self.pelinohjain.kartta.pelaajan_toimivat_yksikot:
+                        j += 1
+                        if indeksi + j == len(self.pelinohjain.kartta.pelaajan_yksikot):
+                            self.valitse_yksikko(self.pelinohjain.kartta.pelaajan_toimivat_yksikot[0])
+                            return
+                        valittu_yksikko = self.pelinohjain.kartta.pelaajan_yksikot[indeksi + j]
+                    self.valitse_yksikko(valittu_yksikko)
+                    return
+                elif self.pelinohjain.kartta.pelaajan_toimivat_yksikot[i] == self.valittu_yksikko:
                     if i + 1 == len(self.pelinohjain.kartta.pelaajan_toimivat_yksikot):
                         self.valitse_yksikko(self.pelinohjain.kartta.pelaajan_toimivat_yksikot[0])
                     else:
                         self.valitse_yksikko(self.pelinohjain.kartta.pelaajan_toimivat_yksikot[i + 1])
-                        break
+                        return
                 i += 1
 
     def tallenna_peli(self):
