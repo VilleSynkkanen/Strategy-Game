@@ -5,6 +5,11 @@ class Jalkavaki(Yksikko):
     def __init__(self, omistaja, ruutu, kayttoliittyma, ominaisuudet):
         super().__init__(omistaja, ruutu, kayttoliittyma, ominaisuudet)
         self.luo_grafiikka()
+        # pelkkä numero (ei prosentti/kerroin)
+        # ottaa ensin vahinkoa, sitten paranee
+        self.parannus_hyokkayksessa = 2
+
+    # passiivinen tehty
 
     def __str__(self):
         return "-Passiivinen kyky: vahingon aiheuttaminen\n " \

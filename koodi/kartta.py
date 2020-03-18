@@ -16,7 +16,6 @@ class Kartta:
     def luo_ruudut(self, x, y, ruudut):
         lista = []
         koord_lista = [[None for i in range(y)] for j in range(x)]
-        #print("li ", koord_lista)
         for i in range(0, x, 1):
             for j in range(0, y, 1):
                 koordinaatit = Koordinaatit(i, j)
@@ -99,7 +98,8 @@ class Kartta:
             elif ero_y < -0.5:
                 koord_y -= 1
             if self.ruudut_koordinaateilla[koord_x][koord_y].maasto.lapinakyvyys is False and \
-                    self.ruudut_koordinaateilla[koord_x][koord_y] != alku:
+                    self.ruudut_koordinaateilla[koord_x][koord_y] != alku and \
+                    self.ruudut_koordinaateilla[koord_x][koord_y] != loppu:
                 return False
         return True
 

@@ -58,7 +58,7 @@ class Polunhaku:
         for elementti in hinta_tahan_mennessa:
             if elementti == maali:
                 hinta = hinta_tahan_mennessa[elementti]
-        return hinta
+                return hinta
 
     # heuristiikan laskeminen, voi liikkua vain neljään suuntaan
     def heuristiikka(self, paikka, kohde):

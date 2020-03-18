@@ -68,9 +68,9 @@ class Yksikko:
     def laske_kantaman_sisalla_olevat_ruudut(self):
         self.ruudut_kantamalla = []
         for ruutu in self.kayttoliittyma.pelinohjain.kartta.ruudut:
-            if self.kayttoliittyma.pelinohjain.polunhaku.heuristiikka(self.ruutu, ruutu) <= self.ominaisuudet.kantama and \
-                    self.kayttoliittyma.pelinohjain.kartta.nakyvyys(self.ruutu, ruutu):
-                self.ruudut_kantamalla.append(ruutu)
+            if self.kayttoliittyma.pelinohjain.polunhaku.heuristiikka(self.ruutu, ruutu) <= self.ominaisuudet.kantama:
+                if self.kayttoliittyma.pelinohjain.kartta.nakyvyys(self.ruutu, ruutu) or self.__class__.__name__ == "Tykisto":
+                    self.ruudut_kantamalla.append(ruutu)
 
     def nayta_kantaman_sisalla_olevat_ruudut(self):
         for ruutu in self.ruudut_kantamalla:
@@ -105,7 +105,7 @@ class Yksikko:
         self.grafiikka.paivita_sijainti(self.ruutu)
         self.liikuttu()
         self.laske_hyokkayksen_kohteet(False)
-        if len(self.hyokkayksen_kohteet) == 0:
+        if len(self.hyokkayksen_kohteet) == 0 or self.hyokkays_kaytetty:
             # poista yksiköistä, jotka voivat vielä tehdä jotain
             self.kayttoliittyma.pelinohjain.kartta.poista_toimivista_yksikoista(self)
 
@@ -120,7 +120,7 @@ class Yksikko:
         self.hyokkays_kaytetty = False
         self.grafiikka.palauta_vari()
 
-    def vieressä_monta_vihollista(self):
+    def vieressa_monta_vihollista(self):
         viholliset = 0
         for ruutu in self.ruutu.naapurit:
             if ruutu.yksikko is not None and ruutu.yksikko.omistaja != self.omistaja:
@@ -134,10 +134,17 @@ class Yksikko:
         self.tyhjenna_hyokkayksen_kohteet()
         self.tyhjenna_ruudut_kantamalla()
         self.hyokkays_kaytetty = True
-        self.liikuttu()
+        # ratsuväen passiivinen kyky
+        if self.__class__.__name__ != "Ratsuvaki":
+            self.liikuttu()
+        else:
+            if not self.liikkuminen_kaytetty:
+                self.laske_mahdolliset_ruudut()
+                self.nayta_mahdolliset_ruudut()
         self.kayttoliittyma.paivita_valitun_yksikon_tiedot()
         # poista yksiköistä, jotka voivat vielä tehdä jotain
-        self.kayttoliittyma.pelinohjain.kartta.poista_toimivista_yksikoista(self)
+        if self.liikkuminen_kaytetty:
+            self.kayttoliittyma.pelinohjain.kartta.poista_toimivista_yksikoista(self)
 
     def hyokkayksen_kohde(self, hyokkaaja):
         self.hyokkays(hyokkaaja)
@@ -168,11 +175,22 @@ class Yksikko:
         satunnaisuuskerroin = 0.15
         flanking_kerroin = 1.15
 
+        # flanking
         flanking = False
         if etaisyys == 1:
-            flanking = puolustaja.vieressä_monta_vihollista()
+            flanking = puolustaja.vieressa_monta_vihollista()
         if flanking:
             hyokkays *= flanking_kerroin
+
+        # jousimiesten bonus
+        if hyokkaaja.__class__.__name__ == "Jousimiehet":
+            if puolustaja.__class__.__name__ == "Jalkavaki" or puolustaja.__class__.__name__ == "Ratsuvaki":
+                hyokkays *= hyokkaaja.jalka_ratsu_vahinko_hyokkays
+                #print("bonsuy")
+
+        # inspiraatio
+        hyokkays *= hyokkaaja.inspiraatio_bonus()
+        puolustus *= puolustaja.inspiraatio_bonus()
 
         if etaisyys == 1:
             hyokkaajan_vahinko = (puolustus / hyokkays) * perusvahinko
@@ -188,8 +206,6 @@ class Yksikko:
             puolustajan_vahinko = min_vahinko
         elif puolustajan_vahinko > max_vahinko:
             puolustajan_vahinko = max_vahinko
-
-        print(flanking)
 
         if odotettu:
             return int(hyokkaajan_vahinko), int(puolustajan_vahinko), flanking
@@ -210,12 +226,31 @@ class Yksikko:
         hyokkaajan_vahinko, puolustajan_vahinko = self.laske_vahinko(hyokkaaja, self, False)
         self.ota_vahinkoa(puolustajan_vahinko)
         hyokkaaja.ota_vahinkoa(hyokkaajan_vahinko)
+        # jalkaväen passiivinen kyky
+        if hyokkaaja.__class__.__name__ == "Jalkavaki":
+            hyokkaaja.parannu(hyokkaaja.parannus_hyokkayksessa)
 
     def ota_vahinkoa(self, vahinko):
         self.ominaisuudet.nyk_elama -= vahinko
         self.grafiikka.elamapalkki.paivita_koko()
         self.grafiikka.paivita_tooltip()
         self.tarkasta_tuhoutuminen()
+
+    def parannu(self, maara):
+        self.ominaisuudet.nyk_elama += maara
+        if self.ominaisuudet.nyk_elama > self.ominaisuudet.max_elama:
+            self.ominaisuudet.nyk_elama = self.ominaisuudet.max_elama
+        self.grafiikka.paivita_tooltip()
+
+    def inspiraatio_bonus(self):
+        # käy läpi kaikki yksiköt ja tarkistaa, onko parantaja inspiraation kantamalla, jos on, lisätään bonusta
+        bonus = 1
+        for yksikko in self.kayttoliittyma.pelinohjain.kartta.pelaajan_yksikot:
+            if yksikko.__class__.__name__ == "Parantaja" and yksikko != self and \
+                    self.kayttoliittyma.pelinohjain.polunhaku.heuristiikka(self.ruutu, yksikko.ruutu) <= \
+                    yksikko.inspiraatio_kantama:
+                bonus *= yksikko.inspiraatio_kerroin
+        return bonus
 
     def tarkasta_tuhoutuminen(self):
         if self.ominaisuudet.nyk_elama <= 0:

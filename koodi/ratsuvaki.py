@@ -6,6 +6,8 @@ class Ratsuvaki(Yksikko):
         super().__init__(omistaja, ruutu, kayttoliittyma, ominaisuudet)
         self.luo_grafiikka()
 
+    # passiivinen tehty
+
     def __str__(self):
         return "-Passiivinen kyky: voi liikkua myös\n" \
                " kyvyn käyttämisen/hyökkäyksen jälkeen\n" \

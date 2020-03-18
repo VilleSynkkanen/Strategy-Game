@@ -1,8 +1,13 @@
 Seuraavaksi:
--kyvyt, energiasysteemi
+-kyvyt
+	-kyvyt 1+2
+	-tilavaikutukset
+	-energiasysteemi
+-kykyjen numeroiden lukeminen tiedostosta
 -peliloki
 -polunhaun testaus + näkyvyyden testaus + laskennan testaus
 
 Muuta:
 -onko hyvä tapa muuttaa objektin arvoja suoraan sen ulkopuolelta?
 -luokkien tehtävien jakaminen enemmän?
+-parantaja: inspiraation visualisaatio
