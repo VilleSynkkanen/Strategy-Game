@@ -168,12 +168,12 @@ class Yksikkografiikka(QtWidgets.QGraphicsPolygonItem):
                                "/" + str(self.yksikko.ominaisuudet.max_elama) + "\nEnergia: " +
                                str(self.yksikko.ominaisuudet.nyk_energia) + "/" + str(self.yksikko.ominaisuudet.max_energia))
 
-    def hyokkays_tootip(self, hyokkaaja_vahinko, puolustaja_vahinko):
+    def hyokkays_tootip(self, hyokkaaja_vahinko, puolustaja_vahinko, tukibonus):
         self.aseta_tooltip(self.yksikko.__class__.__name__ + "\nElämä : " + str(self.yksikko.ominaisuudet.nyk_elama) +
                            "/" + str(self.yksikko.ominaisuudet.max_elama) + "\nEnergia: " +
                            str(self.yksikko.ominaisuudet.nyk_energia) + "/" + str(
             self.yksikko.ominaisuudet.max_energia) + "\nOdotettu vahinko:\nHyökkääjä: " + str(hyokkaaja_vahinko) +
-                           "\nPuolustaja: " + str(puolustaja_vahinko))
+                           "\nPuolustaja: " + str(puolustaja_vahinko) + "\nTukibonus: " + tukibonus)
 
     def poista(self):
         self.elamapalkki = None

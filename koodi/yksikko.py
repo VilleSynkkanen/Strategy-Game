@@ -21,6 +21,9 @@ class Yksikko:
         self.liikkuminen_kaytetty = False
         self.hyokkays_kaytetty = False
 
+    def __str__(self):
+        pass
+
     def luo_grafiikka(self):
         self.grafiikka = Yksikkografiikka(self, self.ruutu, self.kayttoliittyma, self.omistaja, self)
 
@@ -77,8 +80,11 @@ class Yksikko:
         for vihollinen in self.hyokkayksen_kohteet:
             vihollinen.grafiikka.muuta_varia(vihollinen.grafiikka.voi_hyokata_vari)
             # laskee odotetun vahingon ja näyttää sen tooltipissä
-            hyok_vahinko, puol_vahinko = self.laske_vahinko(self, vihollinen, True)
-            vihollinen.grafiikka.hyokkays_tootip(hyok_vahinko, puol_vahinko)
+            hyok_vahinko, puol_vahinko, flanking = self.laske_vahinko(self, vihollinen, True)
+            tukibonus = "ei"
+            if flanking == True:
+                tukibonus = "kyllä"
+            vihollinen.grafiikka.hyokkays_tootip(hyok_vahinko, puol_vahinko, tukibonus)
 
     def tyhjenna_hyokkayksen_kohteet(self):
         self.hyokkayksen_kohteet = []
@@ -114,6 +120,15 @@ class Yksikko:
         self.hyokkays_kaytetty = False
         self.grafiikka.palauta_vari()
 
+    def vieressä_monta_vihollista(self):
+        viholliset = 0
+        for ruutu in self.ruutu.naapurit:
+            if ruutu.yksikko is not None and ruutu.yksikko.omistaja != self.omistaja:
+                viholliset += 1
+        if viholliset > 1:
+            return True
+        return False
+
     def hyokatty(self):
         # poista listoista kantamalla olevat ruudut ja mahdolliset kohteet
         self.tyhjenna_hyokkayksen_kohteet()
@@ -145,11 +160,19 @@ class Yksikko:
         # puolustettaessa voima = puolustus, hyökättäessä voima = hyökkäys
         # vahinko voi vaihdella +-15%
         # elämän vaikutus voimaan: kerroin = 0.5 * elämä + 0.5 (= 1, kun täysi elämä, 0.5, kun elämä 0)
+        # flanking bonus: +15% hyökkäys
 
         perusvahinko = 10
         min_vahinko = 2
         max_vahinko = 40
         satunnaisuuskerroin = 0.15
+        flanking_kerroin = 1.15
+
+        flanking = False
+        if etaisyys == 1:
+            flanking = puolustaja.vieressä_monta_vihollista()
+        if flanking:
+            hyokkays *= flanking_kerroin
 
         if etaisyys == 1:
             hyokkaajan_vahinko = (puolustus / hyokkays) * perusvahinko
@@ -166,8 +189,10 @@ class Yksikko:
         elif puolustajan_vahinko > max_vahinko:
             puolustajan_vahinko = max_vahinko
 
+        print(flanking)
+
         if odotettu:
-            return int(hyokkaajan_vahinko), int(puolustajan_vahinko)
+            return int(hyokkaajan_vahinko), int(puolustajan_vahinko), flanking
 
         hyokkaajan_vahinko_min = int(hyokkaajan_vahinko * (1 - satunnaisuuskerroin))
         hyokkaajan_vahinko_max = int(hyokkaajan_vahinko * (1 + satunnaisuuskerroin))

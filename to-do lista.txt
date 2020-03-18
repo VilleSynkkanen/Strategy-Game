@@ -1,12 +1,7 @@
 Seuraavaksi:
--hyökkääminen
-	-line of sight: 
-		-parempi pyöristys -0.5->0 ok, 0.5->1 ei ok
-		-pyöristys niin, että ollaan oikean ruudun sisällä
-	-flanking bonus
 -kyvyt, energiasysteemi
--yksikön tiedot
--polunhaun testaus + näkyvyyden testaus
+-peliloki
+-polunhaun testaus + näkyvyyden testaus + laskennan testaus
 
 Muuta:
 -onko hyvä tapa muuttaa objektin arvoja suoraan sen ulkopuolelta?

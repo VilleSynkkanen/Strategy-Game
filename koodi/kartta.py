@@ -1,5 +1,6 @@
 from koordinaatit import Koordinaatit
 from ruutu import Ruutu
+from math import sqrt
 
 class Kartta:
 
@@ -65,8 +66,6 @@ class Kartta:
             self.pelaajan_toimivat_yksikot.append(yksikko)
 
     def nakyvyys(self, alku, loppu):
-        step = 0.01
-        toistot = 0
         # algoritmi: edetään step * pituus verran pisteiden välistä suoraa ja tarkistetaan, onko se ruudussa, joka ei
         # ole läpinäkyvä, aloitetaan/lopetetaan ruudun keskeltä/keskelle
         x_alku = alku.koordinaatit.x
@@ -75,14 +74,30 @@ class Kartta:
         y_loppu = loppu.koordinaatit.y
         x_muutos = x_loppu - x_alku
         y_muutos = y_loppu - y_alku
+        muutos = sqrt(x_muutos*x_muutos + y_muutos*y_muutos)
+        step = 0.1
+        # mitä pidempi etäisyys, sitä lyhyempi step
+        if muutos != 0:
+            step = 0.1 / sqrt(x_muutos*x_muutos + y_muutos*y_muutos)
+        toistot = 0
         nyk = [x_alku, y_alku]
+        koord_x = nyk[0]
+        koord_y = nyk[1]
         while toistot < 1 / step:
             toistot += 1
             nyk[0] += step * x_muutos
             nyk[1] += step * y_muutos
-            # pyöristys (tee paremmin):
-            koord_x = int(nyk[0])
-            koord_y = int(nyk[1])
+            # tarkistetaan, onko ruutu vaihtunut:
+            ero_x = nyk[0] - koord_x
+            ero_y = nyk[1] - koord_y
+            if ero_x > 0.5:
+                koord_x += 1
+            elif ero_x < -0.5:
+                koord_x -=1
+            if ero_y > 0.5:
+                koord_y += 1
+            elif ero_y < -0.5:
+                koord_y -= 1
             if self.ruudut_koordinaateilla[koord_x][koord_y].maasto.lapinakyvyys is False and \
                     self.ruudut_koordinaateilla[koord_x][koord_y] != alku:
                 return False

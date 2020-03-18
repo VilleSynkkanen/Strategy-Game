@@ -178,6 +178,7 @@ class Kayttoliittyma(QtWidgets.QMainWindow):
                 self.valittu_yksikko.peru_hyokkayksen_kohteiden_nayttaminen()
                 self.valittu_yksikko.grafiikka.palauta_vari()
             self.valittu_yksikko = None
+            self.yksikon_tiedot_aktiivinen = False
             self.perustiedot.setText("")
             for ruutu in self.pelinohjain.kartta.ruudut:
                 ruutu.grafiikka.palauta_vari()
@@ -194,7 +195,7 @@ class Kayttoliittyma(QtWidgets.QMainWindow):
             self.peliloki.setText("PELILOKI:\n")
             self.yksikon_tiedot_aktiivinen = False
         elif self.valittu_yksikko is not None:
-            self.peliloki.setText("YKSIKON TIEDOT:\n")
+            self.peliloki.setText("YKSIKON TIEDOT:\n" + self.valittu_yksikko.__str__())
             self.yksikon_tiedot_aktiivinen = True
 
     def edellinen_yksikko(self):
