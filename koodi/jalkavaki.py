@@ -8,8 +8,31 @@ class Jalkavaki(Yksikko):
         # pelkkä numero (ei prosentti/kerroin)
         # ottaa ensin vahinkoa, sitten paranee
         self.parannus_hyokkayksessa = 2
+        self.kyky1_kesto = 3
+        self.kyky1_puolustus = 3
+        self.kyky1_liikkuminen = -1
+        self.kyky2_kantama = 2
+        self.kyky2_bonushyokkays = 2
+        self.kyky2_taintuminen_kesto = 1
 
     # passiivinen tehty
+    # kyky 1 (osittain) tehty
+    # kyky 2 (osittain) tehty
+
+    def kyky1(self):
+        self.lisaa_tilavaikutus(self.kyky1_kesto, 0, self.kyky1_puolustus, self.kyky1_liikkuminen, 0, False)
+        self.hyokatty()
+
+    # voi käyttää myös pelkkään liikkumiseen
+    # ensin valitaan ruutu, siten hyökkäyksen kohde
+    # käytännössä antaa uuden vuoron, vähentää liikkumista ja nostaa hyökkäystä väliaikaisesti
+    # lisäämällä yhden vuoron tilavaikutuksen
+    def kyky2(self):
+        liikkuminen = self.kyky2_kantama - self.ominaisuudet.liikkuminen
+        self.lisaa_tilavaikutus(1, self.kyky2_bonushyokkays, 0, liikkuminen, 0, False)
+        self.palauta_liikkumispisteet()
+        self.kayttoliittyma.valitse_yksikko(self)   # helpoin tapa "resetoida" vuoro
+
 
     def __str__(self):
         return "-Passiivinen kyky: vahingon aiheuttaminen\n " \

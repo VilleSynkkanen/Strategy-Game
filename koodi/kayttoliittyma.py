@@ -300,7 +300,11 @@ class Kayttoliittyma(QtWidgets.QMainWindow):
 
 
     def kyky_1(self):
-        pass
+        # implementoi energiavaatimus
+        if self.valittu_yksikko is not None and not self.valittu_yksikko.hyokkays_kaytetty:
+            self.valittu_yksikko.kyky1()
 
     def kyky_2(self):
-        pass
+        # implementoi energiavaatimus
+        if self.valittu_yksikko is not None and not self.valittu_yksikko.hyokkays_kaytetty:
+            self.valittu_yksikko.kyky2()

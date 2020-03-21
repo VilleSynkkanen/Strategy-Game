@@ -1,5 +1,6 @@
 from yksikkografiikka import Yksikkografiikka
 from yksikon_ominaisuudet import Yksikon_ominaisuudet
+from tilavaikutus import Tilavaikutus
 from random import randrange
 
 class Yksikko:
@@ -10,6 +11,7 @@ class Yksikko:
         self.kayttoliittyma = kayttoliittyma
         self.grafiikka = None
         self.ominaisuudet = self.luo_ominaisuudet(ominaisuudet)
+        self.tilavaikutukset = []
 
         # ruudut, joihin liikkuminen on mahdollista tällä vuorolla
         self.mahdolliset_ruudut = []
@@ -242,6 +244,23 @@ class Yksikko:
             self.ominaisuudet.nyk_elama = self.ominaisuudet.max_elama
         self.grafiikka.paivita_tooltip()
 
+    def lisaa_tilavaikutus(self, kesto, hyokkays, puolustus, liikkuminen, verenvuoto, taintuminen):
+        vaikutus = Tilavaikutus(self, kesto, hyokkays, puolustus, liikkuminen, verenvuoto, taintuminen)
+        self.tilavaikutukset.append(vaikutus)
+
+    def muuta_hyokkaysta(self, maara):
+        self.ominaisuudet.hyokkays += maara
+
+    def muuta_puolustusta(self, maara):
+        self.ominaisuudet.puolustus += maara
+
+    def muuta_liikkumista(self, maara):
+        self.ominaisuudet.liikkuminen += maara
+
+    def kasittele_tilavaikutukset(self):
+        # käy läpi vaikutukset ja poistaa niitä tarvittaessa, tapahtuu kummankin pelaajan vuoron lopussa
+        pass
+
     def inspiraatio_bonus(self):
         # käy läpi kaikki yksiköt ja tarkistaa, onko parantaja inspiraation kantamalla, jos on, lisätään bonusta
         bonus = 1
@@ -271,5 +290,11 @@ class Yksikko:
         self.grafiikka.poista()
         # poista viittaus ominaisuuksiin
         self.ominaisuudet = None
+
+    def kyky1(self):
+        pass
+
+    def kyky2(self):
+        pass
 
 

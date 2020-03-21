@@ -3,11 +3,18 @@ Seuraavaksi:
 	-kyvyt 1+2
 	-tilavaikutukset
 	-energiasysteemi
+		-muuta yksikön poistamisen ehtoa toimivista yksiköistä, kun energiasysteemi on valmis
 -kykyjen numeroiden lukeminen tiedostosta
--peliloki
+-peliloki, ohjetekstit
 -polunhaun testaus + näkyvyyden testaus + laskennan testaus
+
+Käyttöliittymä:
+-parantaja: inspiraation visualisaatio
+-tilavaikutukset yksikön tietoihin
+-hyökkäys, puolustus, kantama tooltippeihin
+-kykyjen visualisointi
+-verenvuoto, taintuminen jotenkin näkyviin yksikössä
 
 Muuta:
 -onko hyvä tapa muuttaa objektin arvoja suoraan sen ulkopuolelta?
 -luokkien tehtävien jakaminen enemmän?
--parantaja: inspiraation visualisaatio
