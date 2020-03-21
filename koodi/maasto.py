@@ -23,6 +23,5 @@ class Maasto:
                                                                str(self.hyokkayskerroin), str(self.puolustuskerroin),
                                                                lapinakyvyys)
 
-
     def ota_vahinkoa(self, puolustus, liikkuminen):
         pass    #implement

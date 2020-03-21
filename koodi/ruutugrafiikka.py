@@ -31,23 +31,28 @@ class Ruutugrafiikka(QtWidgets.QGraphicsRectItem):
 
         # värien määrittely
         self.voi_liikkua_vari = QtGui.QColor(0.3 * self.vari[0], 0.3 * self.vari[1], 0.3 * self.vari[2])
-        self.kantaman_sisalla_vari = QtGui.QColor(0.80 * self.vari[0], 0.80 * self.vari[1], 0.80 * self.vari[2])
+        self.kantaman_sisalla_vari = QtGui.QColor(0.8 * self.vari[0], 0.8 * self.vari[1], 0.8 * self.vari[2])
+        self.valittu_kohteeksi_vari = QtGui.QColor(0.5 * self.vari[0], 0.5 * self.vari[1], 0.5 * self.vari[2])
 
     def piirra_ruutu(self):
         brush = QtGui.QBrush(QtGui.QColor(self.vari[0], self.vari[1], self.vari[2]))
         self.setRect(self.koordinaatit.x * self.koko, self.koordinaatit.y * self.koko,
                                             self.koko, self.koko)
         self.setBrush(brush)
+        self.setZValue(-2)
         self.kayttoliittyma.scene.addItem(self)
 
     def paivita_grafiikka(self):
         pass
 
     def mousePressEvent(self, *args, **kwargs):
-        if self.kayttoliittyma.valittu_yksikko is not None and self.ruutu in \
-                self.kayttoliittyma.valittu_yksikko.mahdolliset_ruudut and \
-                self.kayttoliittyma.valitsee_hyokkayksen_kohdetta is False:
-            self.kayttoliittyma.valittu_yksikko.liiku_ruutuun(self.ruutu)
+        if self.kayttoliittyma.valittu_yksikko is not None:
+            if self.kayttoliittyma.valittu_yksikko.kyky1_valitsee_kohteita:
+                self.kayttoliittyma.valittu_yksikko.kyky1_lisaa_kohde(self.ruutu)
+            elif self.ruutu in self.kayttoliittyma.valittu_yksikko.mahdolliset_ruudut and \
+                    self.kayttoliittyma.valitsee_hyokkayksen_kohdetta is False:
+                self.kayttoliittyma.valittu_yksikko.liiku_ruutuun(self.ruutu)
+
 
     def maarita_teksti(self, teksti):
         self.teksti.setPlainText(str(teksti))           # polunhaun testausta varten

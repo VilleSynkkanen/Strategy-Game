@@ -7,6 +7,7 @@ from ratsuvaki import  Ratsuvaki
 from jousimiehet import  Jousimiehet
 from tykisto import Tykisto
 from parantaja import Parantaja
+from kiilat import Kiilat
 
 class Ruutu:
 
@@ -19,6 +20,7 @@ class Ruutu:
         self.maasto = None  # luodaan myöhemmin
         self.naapurit = []  # etsitään myöhemmin
         self.yksikko = None
+        self.kiilat = None
 
     def lisaa_yksikko(self, tyyppi, omistaja, ominaisuudet):
         if tyyppi == "jalkavaki":
@@ -55,15 +57,18 @@ class Ruutu:
 
         self.naapurit = []
         for ruutu in self.kartta.ruudut:
-            if (ruutu.koordinaatit.x, ruutu.koordinaatit.y) in naapuri_koordinaatit and ruutu.maasto.liikkuminen == True:
+            if (ruutu.koordinaatit.x, ruutu.koordinaatit.y) in naapuri_koordinaatit:
                 self.naapurit.append(ruutu)
 
     def vapaat_naapurit(self):
         vapaat = []
         for naapuri in self.naapurit:
-            if naapuri.yksikko == None:
+            if naapuri.yksikko is None and naapuri.maasto.liikkuminen:
                 vapaat.append(naapuri)
         return vapaat
+
+    def luo_kiilat(self, bonus, bonus_ratsuvaki):
+        self.kiilat = Kiilat(bonus, bonus_ratsuvaki, self, self.kayttoliittyma)
 
     def liiku_pois(self):
         self.yksikko = None

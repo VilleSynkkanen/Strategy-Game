@@ -174,9 +174,11 @@ class Kayttoliittyma(QtWidgets.QMainWindow):
 
     def tyhjenna_valinta(self):
         if self.valittu_yksikko is not None:
-            if self.valitsee_hyokkayksen_kohdetta == True:
+            if self.valitsee_hyokkayksen_kohdetta is True:
                 self.valittu_yksikko.peru_hyokkayksen_kohteiden_nayttaminen()
                 self.valittu_yksikko.grafiikka.palauta_vari()
+            if self.valittu_yksikko.kyky1_valitsee_kohteita:
+                self.valittu_yksikko.peru_kyky1()
             self.valittu_yksikko = None
             self.yksikon_tiedot_aktiivinen = False
             self.perustiedot.setText("")
@@ -277,7 +279,10 @@ class Kayttoliittyma(QtWidgets.QMainWindow):
             self.peru_kohteen_valinta()
             self.valittu_yksikko.nayta_mahdolliset_ruudut()
         elif self.valittu_yksikko is not None:
-            self.tyhjenna_valinta()
+            if self.valittu_yksikko.kyky1_valitsee_kohteita:
+                self.valittu_yksikko.peru_kyky1()
+            else:
+                self.tyhjenna_valinta()
 
     def valitse_kohde(self):
         self.valitsee_hyokkayksen_kohdetta = True

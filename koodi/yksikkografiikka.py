@@ -181,10 +181,13 @@ class Yksikkografiikka(QtWidgets.QGraphicsPolygonItem):
         self.setPolygon(polygoni)
 
     def mousePressEvent(self, *args, **kwargs):
-        if self.yksikko.omistaja == "PLR" and self.kayttoliittyma.valitsee_hyokkayksen_kohdetta is False:
+        if self.kayttoliittyma.valittu_yksikko is not None and self.kayttoliittyma.valittu_yksikko.kyky1_valitsee_kohteita:
+            self.kayttoliittyma.valittu_yksikko.kyky1_lisaa_kohde(self.yksikko.ruutu)
+        elif self.yksikko.omistaja == "PLR" and self.kayttoliittyma.valitsee_hyokkayksen_kohdetta is False:
             self.kayttoliittyma.valitse_yksikko(self.yksikko)
         elif self.yksikko.omistaja == "COM" and self.yksikko.kayttoliittyma.valitsee_hyokkayksen_kohdetta and \
                 self.yksikko in self.kayttoliittyma.valittu_yksikko.hyokkayksen_kohteet:
             self.yksikko.hyokkayksen_kohde(self.kayttoliittyma.valittu_yksikko)
+
 
 

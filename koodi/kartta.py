@@ -57,7 +57,7 @@ class Kartta:
                         self.pelaajan_toimivat_yksikot.remove(yksikko)
 
     def poista_toimivista_yksikoista(self, yksikko):
-        if yksikko.ominaisuudet.nyk_energia == 0:   # muuta myöhemmin
+        if yksikko.ominaisuudet.nyk_energia == 0:   # muuta: tarkistaa onko toimintoja jäljellä (yksikön metodin avulla)
             self.pelaajan_toimivat_yksikot.remove(yksikko)
 
     def palauta_pelaajan_toimivat_yksikot(self):

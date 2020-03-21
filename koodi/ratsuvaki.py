@@ -8,6 +8,12 @@ class Ratsuvaki(Yksikko):
 
     # passiivinen tehty
 
+    def kyky1(self):
+        pass
+
+    def kyky2(self):
+        pass
+
     def __str__(self):
         return "-Passiivinen kyky: voi liikkua myös\n" \
                " kyvyn käyttämisen/hyökkäyksen jälkeen\n" \

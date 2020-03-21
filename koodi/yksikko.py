@@ -23,6 +23,10 @@ class Yksikko:
         self.liikkuminen_kaytetty = False
         self.hyokkays_kaytetty = False
 
+        # niille yksiköille, joiden kyky 1 valitsee kohteiksi ruutuja
+        self.kyky1_valitsee_kohteita = False
+        self.kyky1_kohteet = []
+
     def __str__(self):
         pass
 
@@ -145,8 +149,7 @@ class Yksikko:
                 self.nayta_mahdolliset_ruudut()
         self.kayttoliittyma.paivita_valitun_yksikon_tiedot()
         # poista yksiköistä, jotka voivat vielä tehdä jotain
-        if self.liikkuminen_kaytetty:
-            self.kayttoliittyma.pelinohjain.kartta.poista_toimivista_yksikoista(self)
+        self.kayttoliittyma.pelinohjain.kartta.poista_toimivista_yksikoista(self)
 
     def hyokkayksen_kohde(self, hyokkaaja):
         self.hyokkays(hyokkaaja)
@@ -188,11 +191,17 @@ class Yksikko:
         if hyokkaaja.__class__.__name__ == "Jousimiehet":
             if puolustaja.__class__.__name__ == "Jalkavaki" or puolustaja.__class__.__name__ == "Ratsuvaki":
                 hyokkays *= hyokkaaja.jalka_ratsu_vahinko_hyokkays
-                #print("bonsuy")
 
         # inspiraatio
         hyokkays *= hyokkaaja.inspiraatio_bonus()
         puolustus *= puolustaja.inspiraatio_bonus()
+
+        # kiilat
+        if puolustaja.ruutu.kiilat is not None:
+            if hyokkaaja.__class__.__name__ == "Ratsuvaki":
+                puolustus *= puolustaja.ruutu.kiilat.puolustusbonus_ratsuvaki
+            else:
+                puolustus *= puolustaja.ruutu.kiilat.puolustusbonus
 
         if etaisyys == 1:
             hyokkaajan_vahinko = (puolustus / hyokkays) * perusvahinko
@@ -243,6 +252,7 @@ class Yksikko:
         if self.ominaisuudet.nyk_elama > self.ominaisuudet.max_elama:
             self.ominaisuudet.nyk_elama = self.ominaisuudet.max_elama
         self.grafiikka.paivita_tooltip()
+        print("Parannus: ", maara)
 
     def lisaa_tilavaikutus(self, kesto, hyokkays, puolustus, liikkuminen, verenvuoto, taintuminen):
         vaikutus = Tilavaikutus(self, kesto, hyokkays, puolustus, liikkuminen, verenvuoto, taintuminen)
@@ -267,7 +277,7 @@ class Yksikko:
         for yksikko in self.kayttoliittyma.pelinohjain.kartta.pelaajan_yksikot:
             if yksikko.__class__.__name__ == "Parantaja" and yksikko != self and \
                     self.kayttoliittyma.pelinohjain.polunhaku.heuristiikka(self.ruutu, yksikko.ruutu) <= \
-                    yksikko.inspiraatio_kantama:
+                    yksikko.inspiraatio_kantama and yksikko.omistaja == self.omistaja:
                 bonus *= yksikko.inspiraatio_kerroin
         return bonus
 
@@ -292,9 +302,20 @@ class Yksikko:
         self.ominaisuudet = None
 
     def kyky1(self):
-        pass
+        luokat = ["Jousimiehet", "Parantaja", "Tykisto"]
+        if self.__class__.__name__ in luokat:
+            # aloittaa kohteiden valitsemisen
+            self.kyky1_kohteet = []
+            self.kyky1_valitsee_kohteita = True
+            self.peru_mahdollisten_ruutujen_nayttaminen()
+            self.laske_kantaman_sisalla_olevat_ruudut()
+            self.nayta_kantaman_sisalla_olevat_ruudut()
 
     def kyky2(self):
         pass
 
-
+    def peru_kyky1(self):
+        self.kyky1_kohteet = []
+        self.kyky1_valitsee_kohteita = False
+        self.tyhjenna_ruudut_kantamalla()
+        self.nayta_mahdolliset_ruudut()

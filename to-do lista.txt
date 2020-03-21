@@ -14,7 +14,19 @@ Käyttöliittymä:
 -hyökkäys, puolustus, kantama tooltippeihin
 -kykyjen visualisointi
 -verenvuoto, taintuminen jotenkin näkyviin yksikössä
+-pienet viiveet kykyjen visualisoinnissa
+
+Lisäyksiä kykyihin:
+-kykyjen käyttämisen peruminen (joidenkin kykyjen osalta)
+-jalkaväki: toimivat tilavaikutukset
+-jousimies: kiilojen testaus, nuolisade odotettu vahinko(/verenvuoto)
+-tykistö: pommitus odotettu vahinko, maaston vahingoittaminen, omat: eivät hyökkää takaisin
+
+Bugeja:
+-tykistö kyky1 visualisointi ei toimi kunnolla, tekee joskus liikaa vahinkoa (kun ei valitse suoraan yksikön ruutua)
 
 Muuta:
 -onko hyvä tapa muuttaa objektin arvoja suoraan sen ulkopuolelta?
 -luokkien tehtävien jakaminen enemmän?
+-tykistö: vähemmän vahinkoa tykistöä vastaan?
+-viiveet joissain käyttöliittymän osissa?
