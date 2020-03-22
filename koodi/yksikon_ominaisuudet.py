@@ -6,7 +6,7 @@ class Yksikon_ominaisuudet:
         self.max_elama = max_elama
         self.nyk_elama = nyk_elama
         self.max_energia = max_energia
-        self.nyk_energia = nyk_energia
+        self.nyk_energia = 0
         self.hyokkays = hyokkays
         self.puolustus = puolustus
         self.kantama = kantama

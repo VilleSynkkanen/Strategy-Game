@@ -13,3 +13,7 @@ max_vahinko = 40
 satunnaisuuskerroin = 0.15
 
 -jos hyökättävän vihollisen vieressä on toinen oma yksikkö, hyökkäykseen saa pienen bonuksen
+
+Energiasysteemi
+-joka yksikkö saa energiaa vuoron lopussa
+-jos yksikkö teki jotain, se saa toisen energian

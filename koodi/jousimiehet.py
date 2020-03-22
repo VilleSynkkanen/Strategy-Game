@@ -7,9 +7,12 @@ class Jousimiehet(Yksikko):
         self.luo_grafiikka()
         # kerroin jalka- ja ratsuväkeä vastaan hyökkäyksessä ja kiiloissa puolustaessa (myös muille yksiköille)
         self.jalka_ratsu_vahinko_hyokkays = 1.25
+
+        self.kyky2_hinta = 5
         self.kyky2_bonus = 1.1
         self.kyky2_bonus_ratsuvaki = 1.5
 
+        self.kyky1_hinta = 6
         self.kyky1_kohteiden_maara = 3
         self.kyky1_hyokkayskerroin = 0.9
         self.kyky1_verenvuoto = 3
@@ -46,11 +49,14 @@ class Jousimiehet(Yksikko):
                 ruutu.yksikko.lisaa_tilavaikutus(self.kyky1_verenvuoto_kesto, 0, 0, 0, self.kyky1_verenvuoto, False)
         self.ominaisuudet.hyokkays = alkuperainen
         self.peru_kyky1()
+        self.kayta_energiaa(self.kyky1_hinta)
         self.hyokatty()
 
     def kyky2(self):
-        self.ruutu.luo_kiilat(self.kyky2_bonus, self.kyky2_bonus_ratsuvaki)
-        self.hyokatty()
+        if self.ruutu.kiilat is None:
+            self.ruutu.luo_kiilat(self.kyky2_bonus, self.kyky2_bonus_ratsuvaki)
+            self.kayta_energiaa(self.kyky2_hinta)
+            self.hyokatty()
 
     def __str__(self):
         return "-Passiivinen kyky: Tekee bonusvahinkoa\n" \

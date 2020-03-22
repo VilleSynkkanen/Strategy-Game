@@ -179,6 +179,8 @@ class Kayttoliittyma(QtWidgets.QMainWindow):
                 self.valittu_yksikko.grafiikka.palauta_vari()
             if self.valittu_yksikko.kyky1_valitsee_kohteita:
                 self.valittu_yksikko.peru_kyky1()
+            if self.valittu_yksikko.kyky2_valitsee_kohteita:
+                self.valittu_yksikko.peru_kyky2()
             self.valittu_yksikko = None
             self.yksikon_tiedot_aktiivinen = False
             self.perustiedot.setText("")
@@ -281,6 +283,8 @@ class Kayttoliittyma(QtWidgets.QMainWindow):
         elif self.valittu_yksikko is not None:
             if self.valittu_yksikko.kyky1_valitsee_kohteita:
                 self.valittu_yksikko.peru_kyky1()
+            elif self.valittu_yksikko.kyky2_valitsee_kohteita:
+                self.valittu_yksikko.peru_kyky2()
             else:
                 self.tyhjenna_valinta()
 
@@ -303,13 +307,16 @@ class Kayttoliittyma(QtWidgets.QMainWindow):
             self.peru_kohteen_valinta()
             self.valittu_yksikko.nayta_mahdolliset_ruudut()
 
-
     def kyky_1(self):
-        # implementoi energiavaatimus
-        if self.valittu_yksikko is not None and not self.valittu_yksikko.hyokkays_kaytetty:
-            self.valittu_yksikko.kyky1()
+        if self.valittu_yksikko is not None and self.valittu_yksikko.ominaisuudet.nyk_energia >= self.valittu_yksikko.kyky1_hinta:
+            if not self.valittu_yksikko.hyokkays_kaytetty:
+                if self.valittu_yksikko.kyky2_valitsee_kohteita:
+                    self.valittu_yksikko.peru_kyky2()
+                self.valittu_yksikko.kyky1()
 
     def kyky_2(self):
-        # implementoi energiavaatimus
-        if self.valittu_yksikko is not None and not self.valittu_yksikko.hyokkays_kaytetty:
-            self.valittu_yksikko.kyky2()
+        if self.valittu_yksikko is not None and self.valittu_yksikko.ominaisuudet.nyk_energia >= self.valittu_yksikko.kyky2_hinta:
+            if not self.valittu_yksikko.hyokkays_kaytetty:
+                if self.valittu_yksikko.kyky1_valitsee_kohteita:
+                    self.valittu_yksikko.peru_kyky1()
+                self.valittu_yksikko.kyky2()

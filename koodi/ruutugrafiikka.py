@@ -49,6 +49,8 @@ class Ruutugrafiikka(QtWidgets.QGraphicsRectItem):
         if self.kayttoliittyma.valittu_yksikko is not None:
             if self.kayttoliittyma.valittu_yksikko.kyky1_valitsee_kohteita:
                 self.kayttoliittyma.valittu_yksikko.kyky1_lisaa_kohde(self.ruutu)
+            elif self.kayttoliittyma.valittu_yksikko.kyky2_valitsee_kohteita:
+                pass
             elif self.ruutu in self.kayttoliittyma.valittu_yksikko.mahdolliset_ruudut and \
                     self.kayttoliittyma.valitsee_hyokkayksen_kohdetta is False:
                 self.kayttoliittyma.valittu_yksikko.liiku_ruutuun(self.ruutu)

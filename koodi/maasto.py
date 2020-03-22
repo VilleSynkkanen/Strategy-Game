@@ -22,6 +22,3 @@ class Maasto:
                "Puolustuskerroin: {}\nLäpinäkyvyys: {}".format(self.tyyppi, liikkuminen, str(self.liikkumisen_hinta),
                                                                str(self.hyokkayskerroin), str(self.puolustuskerroin),
                                                                lapinakyvyys)
-
-    def ota_vahinkoa(self, puolustus, liikkuminen):
-        pass    #implement

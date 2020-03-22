@@ -1,32 +1,33 @@
 Seuraavaksi:
 -kyvyt
-	-kyvyt 1+2
-	-tilavaikutukset
-	-energiasysteemi
-		-muuta yksikön poistamisen ehtoa toimivista yksiköistä, kun energiasysteemi on valmis
 -kykyjen numeroiden lukeminen tiedostosta
+-alustava pelin ohjaus
 -peliloki, ohjetekstit
 -polunhaun testaus + näkyvyyden testaus + laskennan testaus
 
 Käyttöliittymä:
--parantaja: inspiraation visualisaatio
+-kykyjen nimet käyttöliittymän nappeihin (+ hinnat), napeissa tooltipit
+-peru kyvyt painamalla kyky-nappia
 -tilavaikutukset yksikön tietoihin
 -hyökkäys, puolustus, kantama tooltippeihin
--kykyjen visualisointi
--verenvuoto, taintuminen jotenkin näkyviin yksikössä
--pienet viiveet kykyjen visualisoinnissa
+-tilavaikutukset jotenkin näkyviin yksikössä
+-pienet viiveet kykyjen visualisoinnissa (parantaja, tykistö, jousimiehet kyky 1) jos saa toimimaan
+-parantaja: inspiraation visualisaatio(?)
 
 Lisäyksiä kykyihin:
--kykyjen käyttämisen peruminen (joidenkin kykyjen osalta)
--jalkaväki: toimivat tilavaikutukset
--jousimies: kiilojen testaus, nuolisade odotettu vahinko(/verenvuoto)
--tykistö: pommitus odotettu vahinko, maaston vahingoittaminen, omat: eivät hyökkää takaisin
+-energiasysteemi
+	-metodi, joka kertoo, voiko yksikkö tehdä mitään
+	-muuta yksikön poistamisen ehtoa toimivista yksiköistä, kun energiasysteemi on valmis
+-toimivat tilavaikutukset
+-jousimies: nuolisade odotettu vahinko
+-tykistö: pommitus odotettu vahinko, omat: eivät hyökkää takaisin
+-tykistö: vähemmän vahinkoa tykistöä vastaan, ei hyökkäystä liikkumisen jälkeen
+-parantaja: taintuminen, kun kirous loppuu
 
 Bugeja:
--tykistö kyky1 visualisointi ei toimi kunnolla, tekee joskus liikaa vahinkoa (kun ei valitse suoraan yksikön ruutua)
+-kyky1 visualisointi ei toimi kunnolla (viimeinen valinta ei näy)
 
 Muuta:
 -onko hyvä tapa muuttaa objektin arvoja suoraan sen ulkopuolelta?
 -luokkien tehtävien jakaminen enemmän?
--tykistö: vähemmän vahinkoa tykistöä vastaan?
--viiveet joissain käyttöliittymän osissa?
+

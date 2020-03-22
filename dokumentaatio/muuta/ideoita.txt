@@ -1,3 +1,0 @@
--kahdenlaisia karttoja:
-	-skenaariot (ennalta päätetyt yksiköt, sijoitukset jne.)
-	-tavalliset taistelut (saa päättää/sijoitella yksiköt, tekoäly sijoittelee oman algoritmin mukaan)

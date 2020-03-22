@@ -10,13 +10,21 @@ class Parantaja(Yksikko):
         self.inspiraatio_kantama = 3
         self.inspiraatio_kerroin = 1.15
 
+        # kyky 1 tiedot
+        self.kyky1_hinta = 6
         self.kyky1_kohteiden_maara = 1
         self.kyky1_kantama = 2
         self.kyky1_parannuskerroin = 3
-        self.kyky1_keskimmainen_ruutu = None
+
+        # kyky 2 tiedot
+        self.kyky2_hinta = 6
+        self.kyky2_kesto = 3
+        self.kyky2_hyokkaysvahennys = 3
+        self.kyky2_puolustusvahennys = 3
 
     # passiivinen tehty
     # kyky 1 tehty
+    # kyky 2 tehty
 
     # parannuksen määrä = hyökkäys * parannuskerroin / sqrt(etäisyys + 1) (+-15% satunnaisuus)
     # kykyihin pätee näkyvyyssäännöt
@@ -39,6 +47,7 @@ class Parantaja(Yksikko):
                 parannus = self.ominaisuudet.hyokkays * self.kyky1_parannuskerroin / sqrt(etaisyys + 1)
                 self.paranna_yksikko(ruutu.yksikko, parannus)
         self.peru_kyky1()
+        self.kayta_energiaa(self.kyky1_hinta)
         self.hyokatty()
 
     def paranna_yksikko(self, yksikko, maara):
@@ -47,6 +56,20 @@ class Parantaja(Yksikko):
         parannus_max = int(maara * (1 + satunnaisuuskerroin))
         parannus = randrange(parannus_min, parannus_max + 1, 1)
         yksikko.parannu(parannus)
+
+    def kyky2(self):
+        self.kyky2_valitsee_kohteita = True
+        self.laske_kantaman_sisalla_olevat_ruudut()
+        self.nayta_kantaman_sisalla_olevat_ruudut()
+        self.laske_hyokkayksen_kohteet(True)
+        self.nayta_hyokkayksen_kohteet()
+
+    def kayta_kyky2(self, kohde):
+        kohde.hyokkays(self)
+        kohde.lisaa_tilavaikutus(self.kyky2_kesto, -self.kyky2_hyokkaysvahennys, -self.kyky2_puolustusvahennys, 0, 0, False)
+        self.peru_kyky2()
+        self.kayta_energiaa(self.kyky2_hinta)
+        self.hyokatty()
 
     # inspiraatio: voi olla monta kerrallaan
     # ei voi inspiroida itseään

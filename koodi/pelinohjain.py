@@ -62,6 +62,10 @@ class Pelinohjain:
         self.kayttoliittyma.valitsee_hyokkayksen_kohdetta = False
         self.kartta.palauta_pelaajan_toimivat_yksikot()
         for yksikko in self.kartta.pelaajan_yksikot:
+            # jos on tehnyt jotain, 2 energiaa, muuten 1
+            yksikko.saa_energiaa()
+            if yksikko.liikkuminen_kaytetty or yksikko.hyokkays_kaytetty:
+                yksikko.saa_energiaa()
             yksikko.palauta_liikkumispisteet()
             yksikko.grafiikka.palauta_vari()
 

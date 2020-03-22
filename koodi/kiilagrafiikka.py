@@ -36,3 +36,15 @@ class Kiilagrafiikka(QtWidgets.QGraphicsPolygonItem):
         self.setZValue(-1)
         self.setPos(self.ruutu.koordinaatit.x * self.koko, self.ruutu.koordinaatit.y * self.koko)
         self.kayttoliittyma.scene.addItem(self)
+
+    def poista(self):
+        polygoni = QtGui.QPolygonF()
+
+        a = self.koko
+        r = self.koko / 8
+
+        polygoni.append(QtCore.QPointF(0, 0))
+        polygoni.append(QtCore.QPointF(0, 0))
+        polygoni.append(QtCore.QPointF(0, 0))
+
+        self.setPolygon(polygoni)

@@ -8,3 +8,10 @@ class Kiilat:
         self.ruutu = ruutu
         self.kayttoliittyma = kayttoliittyma
         self.kiilagrafiikka = Kiilagrafiikka(self.ruutu)
+
+    def tuhoa(self):
+        # poista grafiikka
+        self.kiilagrafiikka.poista()
+        self.kiilagrafiikka = None
+        # poista ruudusta
+        self.ruutu.kiilat = None

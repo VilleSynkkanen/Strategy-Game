@@ -27,6 +27,8 @@ class Yksikko:
         self.kyky1_valitsee_kohteita = False
         self.kyky1_kohteet = []
 
+        self.kyky2_valitsee_kohteita = False
+
     def __str__(self):
         pass
 
@@ -75,7 +77,9 @@ class Yksikko:
         self.ruudut_kantamalla = []
         for ruutu in self.kayttoliittyma.pelinohjain.kartta.ruudut:
             if self.kayttoliittyma.pelinohjain.polunhaku.heuristiikka(self.ruutu, ruutu) <= self.ominaisuudet.kantama:
-                if self.kayttoliittyma.pelinohjain.kartta.nakyvyys(self.ruutu, ruutu) or self.__class__.__name__ == "Tykisto":
+                if self.kayttoliittyma.pelinohjain.kartta.nakyvyys(self.ruutu, ruutu):
+                    self.ruudut_kantamalla.append(ruutu)
+                elif self.__class__.__name__ == "Tykisto" and self.kyky2_valitsee_kohteita == False:
                     self.ruudut_kantamalla.append(ruutu)
 
     def nayta_kantaman_sisalla_olevat_ruudut(self):
@@ -254,6 +258,14 @@ class Yksikko:
         self.grafiikka.paivita_tooltip()
         print("Parannus: ", maara)
 
+    # saa yhden energian
+    def saa_energiaa(self):
+        if self.ominaisuudet.nyk_energia < self.ominaisuudet.max_energia:
+            self.ominaisuudet.nyk_energia += 1
+
+    def kayta_energiaa(self, maara):
+        self.ominaisuudet.nyk_energia -= maara
+
     def lisaa_tilavaikutus(self, kesto, hyokkays, puolustus, liikkuminen, verenvuoto, taintuminen):
         vaikutus = Tilavaikutus(self, kesto, hyokkays, puolustus, liikkuminen, verenvuoto, taintuminen)
         self.tilavaikutukset.append(vaikutus)
@@ -318,4 +330,10 @@ class Yksikko:
         self.kyky1_kohteet = []
         self.kyky1_valitsee_kohteita = False
         self.tyhjenna_ruudut_kantamalla()
+        self.nayta_mahdolliset_ruudut()
+
+    def peru_kyky2(self):
+        self.kyky2_valitsee_kohteita = False
+        self.tyhjenna_ruudut_kantamalla()
+        self.peru_hyokkayksen_kohteiden_nayttaminen()
         self.nayta_mahdolliset_ruudut()
