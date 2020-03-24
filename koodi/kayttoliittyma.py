@@ -15,8 +15,8 @@ class Kayttoliittyma(QtWidgets.QMainWindow):
         self.valitsee_hyokkayksen_kohdetta = False
 
         self.setCentralWidget(QtWidgets.QWidget()) # QMainWindown must have a centralWidget to be able to add layouts
-        paa_layout = QtWidgets.QHBoxLayout()  # Horizontal main layout
-        self.centralWidget().setLayout(paa_layout)
+        self.paa_layout = QtWidgets.QHBoxLayout()  # Horizontal main layout
+        self.centralWidget().setLayout(self.paa_layout)
 
         # set window
         self.setGeometry(0, 0, self.scene_size + 420, self.scene_size)
@@ -30,84 +30,84 @@ class Kayttoliittyma(QtWidgets.QMainWindow):
         self.nakyma = QtWidgets.QGraphicsView(self.scene, self)
         self.nakyma.adjustSize()
         self.nakyma.show()
-        paa_layout.addWidget(self.nakyma)
+        self.paa_layout.addWidget(self.nakyma)
         # main_layout.addStretch()
 
-        nappi_layout = QtWidgets.QGridLayout()
-        paa_layout.addLayout(nappi_layout)
+        self.nappi_layout = QtWidgets.QGridLayout()
+        self.paa_layout.addLayout(self.nappi_layout)
 
         # buttons
-        hyokkaa_nappi = QtWidgets.QPushButton("HYÖKKÄÄ")
-        hyokkaa_nappi.setSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Preferred)
-        kyky1_nappi = QtWidgets.QPushButton("KYKY 1")
-        kyky1_nappi.setSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Preferred)
-        kyky2_nappi = QtWidgets.QPushButton("KYKY 2")
-        kyky2_nappi.setSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Preferred)
-        peru_valinta_nappi = QtWidgets.QPushButton("PERU VALINTA")
-        peru_valinta_nappi.setSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Preferred)
-        yksikon_tiedot_nappi = QtWidgets.QPushButton("YKSIKÖN TIEDOT")
-        yksikon_tiedot_nappi.setSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Preferred)
-        edellinen_yksikko_nappi = QtWidgets.QPushButton("EDELLINEN YKSIKKÖ")
-        edellinen_yksikko_nappi.setSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Preferred)
-        seuraava_yksikko_nappi = QtWidgets.QPushButton("SEURAAVA YKSIKKÖ")
-        seuraava_yksikko_nappi.setSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Preferred)
-        paata_vuoro_nappi = QtWidgets.QPushButton("PÄÄTÄ VUORO")
-        paata_vuoro_nappi.setSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Preferred)
-        tallenna_peli_napi = QtWidgets.QPushButton("TALLENNA PELI")
-        tallenna_peli_napi.setSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Preferred)
+        self.hyokkaa_nappi = QtWidgets.QPushButton("HYÖKKÄÄ")
+        self.hyokkaa_nappi.setSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Preferred)
+        self.kyky1_nappi = QtWidgets.QPushButton("KYKY 1")
+        self.kyky1_nappi.setSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Preferred)
+        self.kyky2_nappi = QtWidgets.QPushButton("KYKY 2")
+        self.kyky2_nappi.setSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Preferred)
+        self.peru_valinta_nappi = QtWidgets.QPushButton("PERU VALINTA")
+        self.peru_valinta_nappi.setSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Preferred)
+        self.yksikon_tiedot_nappi = QtWidgets.QPushButton("YKSIKÖN TIEDOT")
+        self.yksikon_tiedot_nappi.setSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Preferred)
+        self.edellinen_yksikko_nappi = QtWidgets.QPushButton("EDELLINEN YKSIKKÖ")
+        self.edellinen_yksikko_nappi.setSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Preferred)
+        self.seuraava_yksikko_nappi = QtWidgets.QPushButton("SEURAAVA YKSIKKÖ")
+        self.seuraava_yksikko_nappi.setSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Preferred)
+        self.paata_vuoro_nappi = QtWidgets.QPushButton("PÄÄTÄ VUORO")
+        self.paata_vuoro_nappi.setSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Preferred)
+        self.tallenna_peli_napi = QtWidgets.QPushButton("TALLENNA PELI")
+        self.tallenna_peli_napi.setSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Preferred)
 
-        hyokkaa_nappi.setStyleSheet("font: 10pt Arial")
-        kyky1_nappi.setStyleSheet("font: 10pt Arial")
-        kyky2_nappi.setStyleSheet("font: 10pt Arial")
-        peru_valinta_nappi.setStyleSheet("font: 10pt Arial")
-        yksikon_tiedot_nappi.setStyleSheet("font: 10pt Arial")
-        edellinen_yksikko_nappi.setStyleSheet("font: 10pt Arial")
-        seuraava_yksikko_nappi.setStyleSheet("font: 10pt Arial")
-        paata_vuoro_nappi.setStyleSheet("font: 10pt Arial")
-        tallenna_peli_napi.setStyleSheet("font: 10pt Arial")
+        self.hyokkaa_nappi.setStyleSheet("font: 10pt Arial")
+        self.kyky1_nappi.setStyleSheet("font: 10pt Arial")
+        self.kyky2_nappi.setStyleSheet("font: 10pt Arial")
+        self.peru_valinta_nappi.setStyleSheet("font: 10pt Arial")
+        self.yksikon_tiedot_nappi.setStyleSheet("font: 10pt Arial")
+        self.edellinen_yksikko_nappi.setStyleSheet("font: 10pt Arial")
+        self.seuraava_yksikko_nappi.setStyleSheet("font: 10pt Arial")
+        self.paata_vuoro_nappi.setStyleSheet("font: 10pt Arial")
+        self.tallenna_peli_napi.setStyleSheet("font: 10pt Arial")
 
         # nappien yhdistäminen
-        hyokkaa_nappi.clicked.connect(self.hyokkaa)
-        kyky1_nappi.clicked.connect(self.kyky_1)
-        kyky2_nappi.clicked.connect(self.kyky_2)
-        peru_valinta_nappi.clicked.connect(self.peru_valinta)
-        paata_vuoro_nappi.clicked.connect(self.paata_vuoro)
-        yksikon_tiedot_nappi.clicked.connect(self.yksikon_tiedot)
-        edellinen_yksikko_nappi.clicked.connect(self.edellinen_yksikko)
-        seuraava_yksikko_nappi.clicked.connect(self.seuraava_yksikko)
-        tallenna_peli_napi.clicked.connect(self.tallenna_peli)
+        self.hyokkaa_nappi.clicked.connect(self.hyokkaa)
+        self.kyky1_nappi.clicked.connect(self.kyky_1)
+        self.kyky2_nappi.clicked.connect(self.kyky_2)
+        self.peru_valinta_nappi.clicked.connect(self.peru_valinta)
+        self.paata_vuoro_nappi.clicked.connect(self.paata_vuoro)
+        self.yksikon_tiedot_nappi.clicked.connect(self.yksikon_tiedot)
+        self.edellinen_yksikko_nappi.clicked.connect(self.edellinen_yksikko)
+        self.seuraava_yksikko_nappi.clicked.connect(self.seuraava_yksikko)
+        self.tallenna_peli_napi.clicked.connect(self.tallenna_peli)
 
         # add button widgets
-        nappi_layout.addWidget(hyokkaa_nappi, 0, 0, 1, 2)
-        nappi_layout.addWidget(kyky1_nappi, 1, 0)
-        nappi_layout.addWidget(kyky2_nappi, 1, 1)
-        nappi_layout.addWidget(peru_valinta_nappi, 2, 0)
-        nappi_layout.addWidget(yksikon_tiedot_nappi, 2, 1)
-        nappi_layout.addWidget(edellinen_yksikko_nappi, 3, 0)
-        nappi_layout.addWidget(seuraava_yksikko_nappi, 3, 1)
-        nappi_layout.addWidget(paata_vuoro_nappi, 4, 0)
-        nappi_layout.addWidget(tallenna_peli_napi, 4, 1)
+        self.nappi_layout.addWidget(self.hyokkaa_nappi, 0, 0, 1, 2)
+        self.nappi_layout.addWidget(self.kyky1_nappi, 1, 0)
+        self.nappi_layout.addWidget(self.kyky2_nappi, 1, 1)
+        self.nappi_layout.addWidget(self.peru_valinta_nappi, 2, 0)
+        self.nappi_layout.addWidget(self.yksikon_tiedot_nappi, 2, 1)
+        self.nappi_layout.addWidget(self.edellinen_yksikko_nappi, 3, 0)
+        self.nappi_layout.addWidget(self.seuraava_yksikko_nappi, 3, 1)
+        self.nappi_layout.addWidget(self.paata_vuoro_nappi, 4, 0)
+        self.nappi_layout.addWidget(self.tallenna_peli_napi, 4, 1)
 
         # unit info
         self.perustiedot = QtWidgets.QLabel("")
-        nappi_layout.addWidget(self.perustiedot, 5, 0, 1, 1, alignment=QtCore.Qt.AlignTop)
+        self.nappi_layout.addWidget(self.perustiedot, 5, 0, 1, 1, alignment=QtCore.Qt.AlignTop)
         self.perustiedot.setStyleSheet("font: 9pt Arial")
         self.perustiedot.setSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Preferred)
 
         # maaston info
         self.maaston_tiedot = QtWidgets.QLabel("")
-        nappi_layout.addWidget(self.maaston_tiedot, 5, 1, 1, 1, alignment=QtCore.Qt.AlignTop)
+        self.nappi_layout.addWidget(self.maaston_tiedot, 5, 1, 1, 1, alignment=QtCore.Qt.AlignTop)
         self.maaston_tiedot.setStyleSheet("font: 9pt Arial")
         self.maaston_tiedot.setSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Preferred)
 
         # game log test
         self.peliloki = QtWidgets.QLabel("PELILOKI:\n", self)
-        nappi_layout.addWidget(self.peliloki,6, 0, 6, 2, alignment=QtCore.Qt.AlignTop)
+        self.nappi_layout.addWidget(self.peliloki,6, 0, 6, 2, alignment=QtCore.Qt.AlignTop)
         self.peliloki.setStyleSheet("font: 9pt Arial")
 
-        ohjeteksti = QtWidgets.QLabel("OHJETEKSTI\n", self)
-        nappi_layout.addWidget(ohjeteksti, 11, 0, 1, 0, alignment=QtCore.Qt.AlignTop)
-        ohjeteksti.setStyleSheet("font: 9pt Arial")
+        self.ohjeteksti = QtWidgets.QLabel("OHJETEKSTI\n", self)
+        self.nappi_layout.addWidget(self.ohjeteksti, 11, 0, 1, 0, alignment=QtCore.Qt.AlignTop)
+        self.ohjeteksti.setStyleSheet("font: 9pt Arial")
 
     def aseta_scene_rect(self, x, y):
         # rectin skaalauskertoimet
@@ -141,6 +141,7 @@ class Kayttoliittyma(QtWidgets.QMainWindow):
 
         # näytä tiedot
         self.paivita_valitun_yksikon_tiedot()
+        self.paivita_kykynapit()
 
         # näytä peliloki
         self.peliloki.setText("PELILOKI:\n")
@@ -158,6 +159,14 @@ class Kayttoliittyma(QtWidgets.QMainWindow):
             self.valittu_yksikko.laske_mahdolliset_ruudut()
         self.valittu_yksikko.nayta_mahdolliset_ruudut()
 
+    def paivita_kykynapit(self):
+        if self.valittu_yksikko is not None:
+            self.kyky1_nappi.setText(self.valittu_yksikko.kyky1_nappi_tiedot())
+            self.kyky2_nappi.setText(self.valittu_yksikko.kyky2_nappi_tiedot())
+        else:
+            self.kyky1_nappi.setText("KYKY 1")
+            self.kyky2_nappi.setText("KYKY 2")
+
     def paivita_valitun_yksikon_tiedot(self):
         liikuttu = "ei"
         hyokatty = "ei"
@@ -167,7 +176,7 @@ class Kayttoliittyma(QtWidgets.QMainWindow):
             hyokatty = "kyllä"
 
         self.perustiedot.setText("Perustiedot:\n" + self.valittu_yksikko.ominaisuudet.__str__() +
-                                 "Liikkuminen käytetty: " + liikuttu + "\n"
+                                 "\nLiikkuminen käytetty: " + liikuttu + "\n"
                                                                        "Hyökkäys käytetty: " + hyokatty)
 
         self.maaston_tiedot.setText("Maaston tiedot:\n" + self.valittu_yksikko.ruutu.maasto.__str__())
@@ -189,6 +198,9 @@ class Kayttoliittyma(QtWidgets.QMainWindow):
 
             # näytä peliloki
             self.peliloki.setText("PELILOKI:\n")
+
+            # päivitä napit
+            self.paivita_kykynapit()
 
     def paata_vuoro(self):
         self.pelinohjain.vuoron_alku()
@@ -308,15 +320,25 @@ class Kayttoliittyma(QtWidgets.QMainWindow):
             self.valittu_yksikko.nayta_mahdolliset_ruudut()
 
     def kyky_1(self):
+        valitse = True
         if self.valittu_yksikko is not None and self.valittu_yksikko.ominaisuudet.nyk_energia >= self.valittu_yksikko.kyky1_hinta:
             if not self.valittu_yksikko.hyokkays_kaytetty:
                 if self.valittu_yksikko.kyky2_valitsee_kohteita:
                     self.valittu_yksikko.peru_kyky2()
-                self.valittu_yksikko.kyky1()
+                elif self.valittu_yksikko.kyky1_valitsee_kohteita:
+                    self.valittu_yksikko.peru_kyky1()
+                    valitse = False
+                if valitse:
+                    self.valittu_yksikko.kyky1()
 
     def kyky_2(self):
+        valitse = True
         if self.valittu_yksikko is not None and self.valittu_yksikko.ominaisuudet.nyk_energia >= self.valittu_yksikko.kyky2_hinta:
             if not self.valittu_yksikko.hyokkays_kaytetty:
                 if self.valittu_yksikko.kyky1_valitsee_kohteita:
                     self.valittu_yksikko.peru_kyky1()
-                self.valittu_yksikko.kyky2()
+                elif self.valittu_yksikko.kyky2_valitsee_kohteita:
+                    self.valittu_yksikko.peru_kyky2()
+                    valitse = False
+                if valitse:
+                    self.valittu_yksikko.kyky2()

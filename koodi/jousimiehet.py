@@ -58,6 +58,12 @@ class Jousimiehet(Yksikko):
             self.kayta_energiaa(self.kyky2_hinta)
             self.hyokatty()
 
+    def kyky1_nappi_tiedot(self):
+        return "Nuolisade\n" + "Hinta: " + str(self.kyky1_hinta)
+
+    def kyky2_nappi_tiedot(self):
+        return "Kiilat\n" + "Hinta: " + str(self.kyky2_hinta)
+
     def __str__(self):
         return "-Passiivinen kyky: Tekee bonusvahinkoa\n" \
                " jalka- ja ratsuväkeen hyökkäyksessä\n" \

@@ -55,5 +55,3 @@ class Maaston_lukija:
             maasto = Maasto(tyyppi, liikkuminen, liikkumisen_hinta, hyokkayskerroin, puolustuskerroin, vari, lapinakyvyys)
             self.maastot[tyyppi] = maasto
             lue.close() # muista sulkea aina
-
-

@@ -71,6 +71,12 @@ class Parantaja(Yksikko):
         self.kayta_energiaa(self.kyky2_hinta)
         self.hyokatty()
 
+    def kyky1_nappi_tiedot(self):
+        return "Alueparannus\n" + "Hinta: " + str(self.kyky1_hinta)
+
+    def kyky2_nappi_tiedot(self):
+        return "Kirous\n" + "Hinta: " + str(self.kyky2_hinta)
+
     # inspiraatio: voi olla monta kerrallaan
     # ei voi inspiroida itseään
     # pystyy hyökkäämään, mutta on hyvin heikko

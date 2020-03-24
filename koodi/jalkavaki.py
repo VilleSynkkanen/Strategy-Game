@@ -24,6 +24,7 @@ class Jalkavaki(Yksikko):
     # kyky 2 tehty
 
     def kyky1(self):
+        print("kyky1")
         self.lisaa_tilavaikutus(self.kyky1_kesto, 0, self.kyky1_puolustus, self.kyky1_liikkuminen, 0, False)
         self.kayta_energiaa(self.kyky1_hinta)
         self.hyokatty()
@@ -38,6 +39,12 @@ class Jalkavaki(Yksikko):
         self.kayta_energiaa(self.kyky2_hinta)
         self.palauta_liikkumispisteet()
         self.kayttoliittyma.valitse_yksikko(self)   # helpoin tapa "resetoida" vuoro
+
+    def kyky1_nappi_tiedot(self):
+        return "Kilpiseinä\n" + "Hinta: " + str(self.kyky1_hinta)
+
+    def kyky2_nappi_tiedot(self):
+        return "Rynnäkkö\n" + "Hinta: " + str(self.kyky2_hinta)
 
     def __str__(self):
         return "-Passiivinen kyky: vahingon aiheuttaminen\n " \

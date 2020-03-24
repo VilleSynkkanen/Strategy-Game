@@ -11,7 +11,6 @@ class Yksikko:
         self.kayttoliittyma = kayttoliittyma
         self.grafiikka = None
         self.ominaisuudet = self.luo_ominaisuudet(ominaisuudet)
-        self.tilavaikutukset = []
 
         # ruudut, joihin liikkuminen on mahdollista tällä vuorolla
         self.mahdolliset_ruudut = []
@@ -28,6 +27,10 @@ class Yksikko:
         self.kyky1_kohteet = []
 
         self.kyky2_valitsee_kohteita = False
+
+        # hinnat (ei käytetä)
+        self.kyky1_hinta = 100
+        self.kyky2_hinta = 100
 
     def __str__(self):
         pass
@@ -207,6 +210,10 @@ class Yksikko:
             else:
                 puolustus *= puolustaja.ruutu.kiilat.puolustusbonus
 
+        # tykistö vs tykistö 33 % vahingosta:
+        if puolustaja.__class__.__name__ == "Tykisto" and hyokkaaja.__class__.__name__ == "Tykisto":
+            perusvahinko /= 3
+
         if etaisyys == 1:
             hyokkaajan_vahinko = (puolustus / hyokkays) * perusvahinko
             if hyokkaajan_vahinko < min_vahinko:
@@ -268,7 +275,7 @@ class Yksikko:
 
     def lisaa_tilavaikutus(self, kesto, hyokkays, puolustus, liikkuminen, verenvuoto, taintuminen):
         vaikutus = Tilavaikutus(self, kesto, hyokkays, puolustus, liikkuminen, verenvuoto, taintuminen)
-        self.tilavaikutukset.append(vaikutus)
+        self.ominaisuudet.tilavaikutukset.append(vaikutus)
 
     def muuta_hyokkaysta(self, maara):
         self.ominaisuudet.hyokkays += maara
@@ -279,9 +286,24 @@ class Yksikko:
     def muuta_liikkumista(self, maara):
         self.ominaisuudet.liikkuminen += maara
 
+    def onko_taintunut(self):
+        for vaikutus in self.ominaisuudet.tilavaikutukset:
+            if vaikutus.taintuminen:
+                return True
+        return False
+
     def kasittele_tilavaikutukset(self):
-        # käy läpi vaikutukset ja poistaa niitä tarvittaessa, tapahtuu kummankin pelaajan vuoron lopussa
-        pass
+        for vaikutus in self.ominaisuudet.tilavaikutukset:
+            # ota vahinkoa verenvuodosta
+            if vaikutus.verenvuoto > 0:
+                self.ota_vahinkoa(vaikutus.verenvuoto)
+            vaikutus.vahenna_kestoa()
+            # jos vaikutus loppu, poista vaikutukset
+            if vaikutus.kesto <= 0:
+                self.muuta_hyokkaysta(-vaikutus.hyokkaysbonus)
+                self.muuta_puolustusta(-vaikutus.puolustusbonus)
+                self.muuta_liikkumista(-vaikutus.liikkumisbonus)
+                self.ominaisuudet.tilavaikutukset.remove(vaikutus)
 
     def inspiraatio_bonus(self):
         # käy läpi kaikki yksiköt ja tarkistaa, onko parantaja inspiraation kantamalla, jos on, lisätään bonusta
@@ -326,6 +348,12 @@ class Yksikko:
     def kyky2(self):
         pass
 
+    def kyky1_nappi_tiedot(self):
+        pass
+
+    def kyky2_nappi_tiedot(self):
+        pass
+
     def peru_kyky1(self):
         self.kyky1_kohteet = []
         self.kyky1_valitsee_kohteita = False
@@ -337,3 +365,13 @@ class Yksikko:
         self.tyhjenna_ruudut_kantamalla()
         self.peru_hyokkayksen_kohteiden_nayttaminen()
         self.nayta_mahdolliset_ruudut()
+
+    def pystyy_toimimaan(self):
+        if self.ominaisuudet.nyk_energia < self.kyky1_hinta and self.ominaisuudet.nyk_energia < self.kyky2_hinta and \
+                self.liikkuminen_kaytetty:
+            return False
+        elif self.liikkuminen_kaytetty and self.hyokkays_kaytetty:
+            return False
+        else:
+            return True
+

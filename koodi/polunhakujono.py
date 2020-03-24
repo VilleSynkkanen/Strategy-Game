@@ -23,4 +23,3 @@ class Polunhakujono:
         elementti = self.jono[min].elementti
         del self.jono[min]
         return elementti
-

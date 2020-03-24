@@ -78,5 +78,3 @@ class Ruutu:
 
     def poista_yksikko(self):
         self.yksikko = None
-
-

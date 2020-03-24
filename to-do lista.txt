@@ -1,28 +1,27 @@
 Seuraavaksi:
--kyvyt
 -kykyjen numeroiden lukeminen tiedostosta
 -alustava pelin ohjaus
 -peliloki, ohjetekstit
+-lisäyksiä kykyihin
+-käyttöliittymän hionta
 -polunhaun testaus + näkyvyyden testaus + laskennan testaus
 
 Käyttöliittymä:
--kykyjen nimet käyttöliittymän nappeihin (+ hinnat), napeissa tooltipit
--peru kyvyt painamalla kyky-nappia
+-kykyjen napeissa tooltipit
 -tilavaikutukset yksikön tietoihin
--hyökkäys, puolustus, kantama tooltippeihin
 -tilavaikutukset jotenkin näkyviin yksikössä
 -pienet viiveet kykyjen visualisoinnissa (parantaja, tykistö, jousimiehet kyky 1) jos saa toimimaan
--parantaja: inspiraation visualisaatio(?)
+-parantaja: inspiraation visualisaatio jos keksii hyvän tavan
+-kykyjen numerot kuvauksiin yksiköltä
+-peru valinta: tekstin muutokset
+-tietokoneen yksiköiden tietojen päivitys vuoron alussa
 
 Lisäyksiä kykyihin:
--energiasysteemi
-	-metodi, joka kertoo, voiko yksikkö tehdä mitään
-	-muuta yksikön poistamisen ehtoa toimivista yksiköistä, kun energiasysteemi on valmis
--toimivat tilavaikutukset
+-jos on taintunut, ei pysty tekemään mitään
 -jousimies: nuolisade odotettu vahinko
--tykistö: pommitus odotettu vahinko, omat: eivät hyökkää takaisin
--tykistö: vähemmän vahinkoa tykistöä vastaan, ei hyökkäystä liikkumisen jälkeen
--parantaja: taintuminen, kun kirous loppuu
+-tykistö: pommitus odotettu vahinko, hidastaa liikkumista, omat: eivät hyökkää takaisin
+-tykistö: ei hyökkäystä liikkumisen jälkeen
+-parantaja: taintuminen, kun kirous loppuu, kirous odotettu vahinko
 
 Bugeja:
 -kyky1 visualisointi ei toimi kunnolla (viimeinen valinta ei näy)

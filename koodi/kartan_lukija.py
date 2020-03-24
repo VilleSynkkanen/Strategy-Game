@@ -77,12 +77,8 @@ class Kartan_lukija:
                 tiedosto.close()
                 return kartan_nimi, x, y, ruudut, yksikot_sanakirja
 
-
-
-
     def koko_x(self):
         return self.kartta_x
 
     def koko_y(self):
         return self.kartta_y
-

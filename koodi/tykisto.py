@@ -91,9 +91,16 @@ class Tykisto(Yksikko):
         self.ominaisuudet.hyokkays = self.alkuperainen_hyok
         self.ominaisuudet.kantama = self.alkuperainen_kant
         
+    def kyky1_nappi_tiedot(self):
+        return "Pommitus\n" + "Hinta: " + str(self.kyky1_hinta)
+
+    def kyky2_nappi_tiedot(self):
+        return "Kanisterilaukaus\n" + "Hinta: " + str(self.kyky2_hinta)
+
     def __str__(self):
         return "-Passiivinen kyky: pystyy ampumaan \n" \
-               " kaikkien maastojen yli\n" \
+               " kaikkien maastojen yli. Ottaa paljon vähemmän\n" \
+               " vahinkoa tykistöltä\n" \
                "-Kyky 1 (pommitus): ampuu kohdealuetta \n" \
                " (monta ruutua). Alueella olevat\n" \
                " yksiköt ottavat vahinkoa (myös omat yksiköt).\n" \

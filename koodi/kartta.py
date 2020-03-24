@@ -57,7 +57,8 @@ class Kartta:
                         self.pelaajan_toimivat_yksikot.remove(yksikko)
 
     def poista_toimivista_yksikoista(self, yksikko):
-        if yksikko.ominaisuudet.nyk_energia == 0:   # muuta: tarkistaa onko toimintoja jäljellä (yksikön metodin avulla)
+        # hyökkäyksen kohteiden määrän tarkistus tehdään ennen, kuin kutsutaan tätä metodia
+        if not yksikko.pystyy_toimimaan():
             self.pelaajan_toimivat_yksikot.remove(yksikko)
 
     def palauta_pelaajan_toimivat_yksikot(self):
@@ -103,8 +104,3 @@ class Kartta:
                     self.ruudut_koordinaateilla[koord_x][koord_y] != loppu:
                 return False
         return True
-
-
-
-
-

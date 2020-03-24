@@ -50,6 +50,12 @@ class Ratsuvaki(Yksikko):
         super(Ratsuvaki, self).peru_kyky2()
         self.ominaisuudet.kantama = self.alkuperainen_kant
 
+    def kyky1_nappi_tiedot(self):
+        return "Kolmiokiila\n" + "Hinta: " + str(self.kyky1_hinta)
+
+    def kyky2_nappi_tiedot(self):
+        return "Tiedustelu\n" + "Hinta: " + str(self.kyky2_hinta)
+
     def __str__(self):
         return "-Passiivinen kyky: voi liikkua myös\n" \
                " kyvyn käyttämisen/hyökkäyksen jälkeen\n" \

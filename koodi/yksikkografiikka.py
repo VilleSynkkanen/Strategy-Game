@@ -164,15 +164,13 @@ class Yksikkografiikka(QtWidgets.QGraphicsPolygonItem):
 
     def paivita_tooltip(self):
         if self.yksikko.ominaisuudet is not None:
-            self.aseta_tooltip(self.yksikko.__class__.__name__ + "\nElämä : " + str(self.yksikko.ominaisuudet.nyk_elama) +
-                               "/" + str(self.yksikko.ominaisuudet.max_elama) + "\nEnergia: " +
-                               str(self.yksikko.ominaisuudet.nyk_energia) + "/" + str(self.yksikko.ominaisuudet.max_energia))
+            self.aseta_tooltip(self.yksikko.ominaisuudet.__str__())
 
     def hyokkays_tootip(self, hyokkaaja_vahinko, puolustaja_vahinko, tukibonus):
-        self.aseta_tooltip(self.yksikko.__class__.__name__ + "\nElämä : " + str(self.yksikko.ominaisuudet.nyk_elama) +
-                           "/" + str(self.yksikko.ominaisuudet.max_elama) + "\nEnergia: " +
-                           str(self.yksikko.ominaisuudet.nyk_energia) + "/" + str(
-            self.yksikko.ominaisuudet.max_energia) + "\nOdotettu vahinko:\nHyökkääjä: " + str(hyokkaaja_vahinko) +
+        self.aseta_tooltip(self.yksikko.__class__.__name__ + "\nElämä: " + str(self.yksikko.ominaisuudet.nyk_elama) +
+                           "/" + str(self.yksikko.ominaisuudet.max_elama) +  "\nPuolustus: "
+                           + str(self.yksikko.ominaisuudet.puolustus) +
+                           "\nOdotettu vahinko:\nHyökkääjä: " + str(hyokkaaja_vahinko) +
                            "\nPuolustaja: " + str(puolustaja_vahinko) + "\nTukibonus: " + tukibonus)
 
     def poista(self):
@@ -191,6 +189,3 @@ class Yksikkografiikka(QtWidgets.QGraphicsPolygonItem):
         elif self.yksikko.omistaja == "COM" and self.yksikko.kayttoliittyma.valitsee_hyokkayksen_kohdetta and \
                 self.yksikko in self.kayttoliittyma.valittu_yksikko.hyokkayksen_kohteet:
             self.yksikko.hyokkayksen_kohde(self.kayttoliittyma.valittu_yksikko)
-
-
-

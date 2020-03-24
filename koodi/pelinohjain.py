@@ -21,7 +21,6 @@ class Pelinohjain:
 
         self.kayttoliittyma.aseta_scene_rect(self.koko[0], self.koko[1])
 
-
         # maastojen lukeminen
         self.maaston_lukija = Maaston_lukija()
 
@@ -60,12 +59,15 @@ class Pelinohjain:
         # lasketaan kaikkien yksiköiden mahdolliset polut
         self.kayttoliittyma.tyhjenna_valinta()
         self.kayttoliittyma.valitsee_hyokkayksen_kohdetta = False
-        self.kartta.palauta_pelaajan_toimivat_yksikot()
+        self.kartta.palauta_pelaajan_toimivat_yksikot()            # myöh: palauta vain ne, jotka eivät ole taintuneita
         for yksikko in self.kartta.pelaajan_yksikot:
             # jos on tehnyt jotain, 2 energiaa, muuten 1
             yksikko.saa_energiaa()
             if yksikko.liikkuminen_kaytetty or yksikko.hyokkays_kaytetty:
                 yksikko.saa_energiaa()
-            yksikko.palauta_liikkumispisteet()
+            yksikko.kasittele_tilavaikutukset()     # siirrä vuoron loppuun jossain vaiheessa
+            if not yksikko.onko_taintunut():
+                yksikko.palauta_liikkumispisteet()
             yksikko.grafiikka.palauta_vari()
-
+        for yksikko in self.kartta.tietokoneen_yksikot:
+            yksikko.kasittele_tilavaikutukset()  # siirrä vuoron loppuun jossain vaiheessa
