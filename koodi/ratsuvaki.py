@@ -61,7 +61,8 @@ class Ratsuvaki(Yksikko):
 
     def kyky1(self):
         super(Ratsuvaki, self).kyky1()
-        self.lisaa_tilavaikutus(self._kyky1_kesto, self._kyky1_hyokkaysbonus, -self._kyky1_puolustusvahennys, 0, 0, False)
+        self.lisaa_tilavaikutus(self._kyky1_kesto, self._kyky1_hyokkaysbonus, -self._kyky1_puolustusvahennys,
+                                0, 0, False)
         self.kayta_energiaa(self.kyky1_hinta)
         self.hyokatty()
 

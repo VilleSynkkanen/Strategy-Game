@@ -5,7 +5,7 @@ from yksikon_ominaisuudet import Yksikon_ominaisuudet
 class Yksikoiden_lukija:
 
     def __init__(self):
-        self.yksikot = {}  # sanakirja, johon lisätään yksiköt (avain = yksikön nimi)
+        self._yksikot = {}  # sanakirja, johon lisätään yksiköt (avain = yksikön nimi)
         tiedostot = os.scandir('yksikot/')
 
         # lukee jokaisesta tiedostosta yksikön tiedot
@@ -51,5 +51,9 @@ class Yksikoiden_lukija:
             # luotu maasto lisätään sanakirjaan, josta se voiddan myöhemmin lukea
             yksikko = Yksikon_ominaisuudet(tyyppi, liikkumispisteet, max_elama, max_elama, max_energia, max_energia,
                                            hyokkays, puolustus, kantama, hinta, [])
-            self.yksikot[tyyppi.lower()] = yksikko
-            lue.close() # muista sulkea aina
+            self._yksikot[tyyppi.lower()] = yksikko
+            lue.close()  # muista sulkea aina
+
+    @property
+    def yksikot(self):
+        return self._yksikot

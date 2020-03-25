@@ -5,13 +5,41 @@ from math import sqrt
 class Kartta:
 
     def __init__(self, x, y, ruudut, kayttoliittyma):
-        self.kayttoliittyma = kayttoliittyma
-        self.ruudun_koko = 44
-        # ruudut = tavallinen lista, ruudut_koordinaateilla = 2d-lista (näkemisen laskemiseen tms.)
-        self.ruudut, self.ruudut_koordinaateilla = self.luo_ruudut(x, y, ruudut)
-        self.pelaajan_yksikot = []
-        self.tietokoneen_yksikot = []
-        self.pelaajan_toimivat_yksikot = []
+        self._kayttoliittyma = kayttoliittyma
+        self._ruudun_koko = 44
+        # ruudut = tavallinen lista, ruudut_koordinaateilla = 2d-lista (näkemisen laskemiseen)
+        self._ruudut, self._ruudut_koordinaateilla = self.luo_ruudut(x, y, ruudut)
+        self._pelaajan_yksikot = []
+        self._tietokoneen_yksikot = []
+        self._pelaajan_toimivat_yksikot = []
+
+    @property
+    def kayttoliittyma(self):
+        return self._kayttoliittyma
+
+    @property
+    def ruudun_koko(self):
+        return self._ruudun_koko
+
+    @property
+    def ruudut(self):
+        return self._ruudut
+
+    @property
+    def ruudut_koordinaateilla(self):
+        return self._ruudut_koordinaateilla
+
+    @property
+    def pelaajan_yksikot(self):
+        return self._pelaajan_yksikot
+
+    @property
+    def tietokoneen_yksikot(self):
+        return self._tietokoneen_yksikot
+
+    @property
+    def pelaajan_toimivat_yksikot(self):
+        return self._pelaajan_toimivat_yksikot
 
     def luo_ruudut(self, x, y, ruudut):
         lista = []
@@ -19,7 +47,7 @@ class Kartta:
         for i in range(0, x, 1):
             for j in range(0, y, 1):
                 koordinaatit = Koordinaatit(i, j)
-                ruutu = Ruutu(koordinaatit, self.ruudun_koko, ruudut[i][j], self.kayttoliittyma)   # placeholder tyyppi
+                ruutu = Ruutu(koordinaatit, self._ruudun_koko, ruudut[i][j], self._kayttoliittyma)
                 lista.append(ruutu)
         for ruutu in lista:
             x_koord = ruutu.koordinaatit.x
@@ -35,36 +63,36 @@ class Kartta:
         for elementti in yksikot:
             # elementti = yksikön tyyppi
             for yksikko in yksikot[elementti]:
-                for ruutu in self.ruudut:
+                for ruutu in self._ruudut:
                     if yksikko[0].x == ruutu.koordinaatit.x and yksikko[0].y == ruutu.koordinaatit.y:
                         luotu_yksikko = ruutu.lisaa_yksikko(elementti, yksikko[1], ominaisuudet[elementti])
                         if luotu_yksikko.omistaja == "PLR":
-                            self.pelaajan_yksikot.append(luotu_yksikko)
+                            self._pelaajan_yksikot.append(luotu_yksikko)
                         elif luotu_yksikko.omistaja == "COM":
-                            self.tietokoneen_yksikot.append(luotu_yksikko)
+                            self._tietokoneen_yksikot.append(luotu_yksikko)
         self.palauta_pelaajan_toimivat_yksikot()
 
     def poista_yksikko(self, yksikko):
         if yksikko.omistaja == "COM":
-            for Yksikko in self.tietokoneen_yksikot:
+            for Yksikko in self._tietokoneen_yksikot:
                 if Yksikko == yksikko:
-                    self.tietokoneen_yksikot.remove(yksikko)
+                    self._tietokoneen_yksikot.remove(yksikko)
         elif yksikko.omistaja == "PLR":
-            for Yksikko in self.pelaajan_yksikot_yksikot:
+            for Yksikko in self.pelaajan_yksikot:
                 if Yksikko == yksikko:
-                    self.pelaajan_yksikot.remove(yksikko)
-                    if yksikko in self.pelaajan_toimivat_yksikot:
-                        self.pelaajan_toimivat_yksikot.remove(yksikko)
+                    self._pelaajan_yksikot.remove(yksikko)
+                    if yksikko in self._pelaajan_toimivat_yksikot:
+                        self._pelaajan_toimivat_yksikot.remove(yksikko)
 
     def poista_toimivista_yksikoista(self, yksikko):
         # hyökkäyksen kohteiden määrän tarkistus tehdään ennen, kuin kutsutaan tätä metodia
         if not yksikko.pystyy_toimimaan():
-            self.pelaajan_toimivat_yksikot.remove(yksikko)
+            self._pelaajan_toimivat_yksikot.remove(yksikko)
 
     def palauta_pelaajan_toimivat_yksikot(self):
-        self.pelaajan_toimivat_yksikot = []
-        for yksikko in self.pelaajan_yksikot:
-            self.pelaajan_toimivat_yksikot.append(yksikko)
+        self._pelaajan_toimivat_yksikot = []
+        for yksikko in self._pelaajan_yksikot:
+            self._pelaajan_toimivat_yksikot.append(yksikko)
 
     def nakyvyys(self, alku, loppu):
         # algoritmi: edetään step * pituus verran pisteiden välistä suoraa ja tarkistetaan, onko se ruudussa, joka ei
@@ -99,8 +127,8 @@ class Kartta:
                 koord_y += 1
             elif ero_y < -0.5:
                 koord_y -= 1
-            if self.ruudut_koordinaateilla[koord_x][koord_y].maasto.lapinakyvyys is False and \
-                    self.ruudut_koordinaateilla[koord_x][koord_y] != alku and \
-                    self.ruudut_koordinaateilla[koord_x][koord_y] != loppu:
+            if self._ruudut_koordinaateilla[koord_x][koord_y].maasto.lapinakyvyys is False and \
+                    self._ruudut_koordinaateilla[koord_x][koord_y] != alku and \
+                    self._ruudut_koordinaateilla[koord_x][koord_y] != loppu:
                 return False
         return True

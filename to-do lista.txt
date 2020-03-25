@@ -4,8 +4,13 @@ Seuraavaksi:
 -lisäyksiä kykyihin
 -käyttöliittymän hionta
 -peliloki, ohjetekstit
--koodin siistiminen
 -polunhaun testaus + näkyvyyden testaus + laskennan testaus
+
+Kykyjen lukeminen:
+-jokaista luokkaa varten oma osio (metodi?)
+
+Pelin ohjaus:
+-ohjaus pois pelaajalta tietokoneen vuoron ajaksi
 
 Käyttöliittymän hionta:
 -kykyjen napeissa tooltipit
@@ -26,7 +31,13 @@ Lisäyksiä kykyihin:
 Bugeja:
 -kyky1 visualisointi ei toimi kunnolla (viimeinen valinta ei näy)
 
-Koodin siistiminen
--private muuttujat, propertyt
--luokkien tehtävien jakaminen enemmän?
+Ideoita:
+-käyttöliittymän kokoasetukset tiedostossa
+-tekoälyn parametrit, vahingon laskemiseen yms liittyvät tiedot tiedostossa
+-pelinohjaukseen liittyvät lukuarvot (viiveet tms. tiedostossa)
+-tiedostojen resetointi
+
+Teköäly
+-tietty liikkumisjärjestys ja kykyjen käyttöjärjestys?
+-ensin kaikki liikkuvat, sitten kykyjen käyttö/hyökkäykset
 

@@ -4,13 +4,17 @@ from koordinaatit import Koordinaatit
 class Kartan_lukija:
 
     def __init__(self):
-        self.kartat = {}  # sanakirja, johon lisätään validit kartat (avain = kartan nimi)
+        self._kartat = {}  # sanakirja, johon lisätään validit kartat (avain = kartan nimi)
         '''
         tallentaa lukemansa tiedot kaksiulotteiseen listaan (ruuduista), jossa
         jokainen jäsen on maaston tyyppi
         
         toinen lista yksiköistä 
         '''
+
+    @property
+    def kartat(self):
+        return self._kartat
 
     def lue_kartta(self, nimi):
         kartan_nimi = ""
@@ -76,9 +80,3 @@ class Kartan_lukija:
             elif rivi[0] == "LOPPU":
                 tiedosto.close()
                 return kartan_nimi, x, y, ruudut, yksikot_sanakirja
-
-    def koko_x(self):
-        return self.kartta_x
-
-    def koko_y(self):
-        return self.kartta_y

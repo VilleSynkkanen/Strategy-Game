@@ -91,12 +91,13 @@ class Yksikko:
         # luo ominaisuudet annetun ominaisuus-instanssin perusteella
         om = Yksikon_ominaisuudet(ominaisuudet.tyyppi, ominaisuudet.liikkuminen, ominaisuudet.max_elama,
                                   ominaisuudet.nyk_elama, ominaisuudet.max_energia, ominaisuudet.nyk_energia,
-                                  ominaisuudet.hyokkays, ominaisuudet.puolustus, ominaisuudet.kantama, ominaisuudet.hinta,
-                                  ominaisuudet.tilavaikutukset)
+                                  ominaisuudet.hyokkays, ominaisuudet.puolustus, ominaisuudet.kantama,
+                                  ominaisuudet.hinta, ominaisuudet.tilavaikutukset)
         return om
 
     def laske_mahdolliset_ruudut(self):
-        self._mahdolliset_ruudut = self._kayttoliittyma.pelinohjain.laske_polut(self._ruutu, self._ominaisuudet.liikkuminen)
+        self._mahdolliset_ruudut = self._kayttoliittyma.pelinohjain.laske_polut(self._ruutu,
+                                                                                self._ominaisuudet._liikkuminen)
 
     def nayta_mahdolliset_ruudut(self):
         for ruutu in self._mahdolliset_ruudut:
@@ -111,7 +112,7 @@ class Yksikko:
         self._hyokkayksen_kohteet = []
         self.laske_kantaman_sisalla_olevat_ruudut()
         for ruutu in self._ruudut_kantamalla:
-            if ruutu.yksikko != None and ruutu.yksikko.omistaja != self._omistaja:
+            if ruutu.yksikko is not None and ruutu.yksikko.omistaja != self._omistaja:
                 self._hyokkayksen_kohteet.append(ruutu.yksikko)
         if not nayta:
             return
@@ -128,10 +129,10 @@ class Yksikko:
     def laske_kantaman_sisalla_olevat_ruudut(self):
         self._ruudut_kantamalla = []
         for ruutu in self._kayttoliittyma.pelinohjain.kartta.ruudut:
-            if self._kayttoliittyma.pelinohjain.polunhaku.heuristiikka(self._ruutu, ruutu) <= self._ominaisuudet.kantama:
+            if self._kayttoliittyma.pelinohjain.polunhaku.heuristiikka(self._ruutu, ruutu) <= self._ominaisuudet._kantama:
                 if self._kayttoliittyma.pelinohjain.kartta.nakyvyys(self._ruutu, ruutu):
                     self._ruudut_kantamalla.append(ruutu)
-                elif self.__class__.__name__ == "Tykisto" and self._kyky2_valitsee_kohteita == False:
+                elif self.__class__.__name__ == "Tykisto" and self._kyky2_valitsee_kohteita is False:
                     self._ruudut_kantamalla.append(ruutu)
 
     def nayta_kantaman_sisalla_olevat_ruudut(self):
@@ -144,7 +145,7 @@ class Yksikko:
             # laskee odotetun vahingon ja näyttää sen tooltipissä
             hyok_vahinko, puol_vahinko, flanking = self.laske_vahinko(self, vihollinen, True)
             tukibonus = "ei"
-            if flanking == True:
+            if flanking is True:
                 tukibonus = "kyllä"
             vihollinen.grafiikka.hyokkays_tootip(hyok_vahinko, puol_vahinko, tukibonus)
 
@@ -302,47 +303,47 @@ class Yksikko:
             hyokkaaja.parannu(hyokkaaja.parannus_hyokkayksessa)
 
     def ota_vahinkoa(self, vahinko):
-        self._ominaisuudet.nyk_elama -= vahinko
+        self._ominaisuudet._nyk_elama -= vahinko
         self._grafiikka.elamapalkki.paivita_koko()
         self._grafiikka.paivita_tooltip()
         self.tarkasta_tuhoutuminen()
 
     def parannu(self, maara):
-        self._ominaisuudet.nyk_elama += maara
-        if self._ominaisuudet.nyk_elama > self._ominaisuudet.max_elama:
-            self._ominaisuudet.nyk_elama = self._ominaisuudet.max_elama
+        self._ominaisuudet._nyk_elama += maara
+        if self._ominaisuudet._nyk_elama > self._ominaisuudet._max_elama:
+            self._ominaisuudet._nyk_elama = self._ominaisuudet._max_elama
         self._grafiikka.paivita_tooltip()
         print("Parannus: ", maara)
 
     # saa yhden energian
     def saa_energiaa(self):
-        if self._ominaisuudet.nyk_energia < self._ominaisuudet.max_energia:
-            self._ominaisuudet.nyk_energia += 1
+        if self._ominaisuudet._nyk_energia < self._ominaisuudet._max_energia:
+            self._ominaisuudet._nyk_energia += 1
 
     def kayta_energiaa(self, maara):
-        self._ominaisuudet.nyk_energia -= maara
+        self._ominaisuudet._nyk_energia -= maara
 
     def lisaa_tilavaikutus(self, kesto, hyokkays, puolustus, liikkuminen, verenvuoto, taintuminen):
         vaikutus = Tilavaikutus(self, kesto, hyokkays, puolustus, liikkuminen, verenvuoto, taintuminen)
-        self._ominaisuudet.tilavaikutukset.append(vaikutus)
+        self._ominaisuudet._tilavaikutukset.append(vaikutus)
 
     def muuta_hyokkaysta(self, maara):
-        self._ominaisuudet.hyokkays += maara
+        self._ominaisuudet._hyokkays += maara
 
     def muuta_puolustusta(self, maara):
-        self._ominaisuudet.puolustus += maara
+        self._ominaisuudet._puolustus += maara
 
     def muuta_liikkumista(self, maara):
-        self._ominaisuudet.liikkuminen += maara
+        self._ominaisuudet._liikkuminen += maara
 
     def onko_taintunut(self):
-        for vaikutus in self._ominaisuudet.tilavaikutukset:
+        for vaikutus in self._ominaisuudet._tilavaikutukset:
             if vaikutus.taintuminen:
                 return True
         return False
 
     def kasittele_tilavaikutukset(self):
-        for vaikutus in self._ominaisuudet.tilavaikutukset:
+        for vaikutus in self._ominaisuudet._tilavaikutukset:
             # ota vahinkoa verenvuodosta
             if vaikutus.verenvuoto > 0:
                 self.ota_vahinkoa(vaikutus.verenvuoto)
@@ -352,7 +353,7 @@ class Yksikko:
                 self.muuta_hyokkaysta(-vaikutus.hyokkaysbonus)
                 self.muuta_puolustusta(-vaikutus.puolustusbonus)
                 self.muuta_liikkumista(-vaikutus.liikkumisbonus)
-                self._ominaisuudet.tilavaikutukset.remove(vaikutus)
+                self._ominaisuudet._tilavaikutukset.remove(vaikutus)
 
     def inspiraatio_bonus(self):
         # käy läpi kaikki yksiköt ja tarkistaa, onko parantaja inspiraation kantamalla, jos on, lisätään bonusta
@@ -365,7 +366,7 @@ class Yksikko:
         return bonus
 
     def tarkasta_tuhoutuminen(self):
-        if self._ominaisuudet.nyk_elama <= 0:
+        if self._ominaisuudet._nyk_elama <= 0:
             self.tuhoudu()
 
     def tuhoudu(self):
@@ -416,7 +417,7 @@ class Yksikko:
         self.nayta_mahdolliset_ruudut()
 
     def pystyy_toimimaan(self):
-        if self._ominaisuudet.nyk_energia < self.kyky1_hinta and self._ominaisuudet.nyk_energia < self.kyky2_hinta and \
+        if self._ominaisuudet._nyk_energia < self.kyky1_hinta and self._ominaisuudet._nyk_energia < self.kyky2_hinta and \
                 self._liikkuminen_kaytetty:
             return False
         elif self._liikkuminen_kaytetty and self._hyokkays_kaytetty:

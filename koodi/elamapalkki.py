@@ -4,39 +4,39 @@ class Elamapalkki(QtWidgets.QGraphicsPolygonItem):
 
     def __init__(self, koko, ylaosan_koko, kayttoliittyma, yksikko):
         super(Elamapalkki, self).__init__()
-        self.koko = koko
-        self.ylaosan_koko = ylaosan_koko
-        self.kayttoliittyma = kayttoliittyma
-        self.vari = QtGui.QBrush(QtGui.QColor(230, 0, 0))
-        self.yksikko = yksikko
+        self._koko = koko
+        self._ylaosan_koko = ylaosan_koko
+        self._kayttoliittyma = kayttoliittyma
+        self._vari = QtGui.QBrush(QtGui.QColor(230, 0, 0))
+        self._yksikko = yksikko
 
         # piirrä palkki
         self.paivita_koko()
 
-        brush = QtGui.QBrush(self.vari)
+        brush = QtGui.QBrush(self._vari)
         self.setBrush(brush)
 
     def paivita_sijainti(self):
-        self.setPos(self.yksikko.ruutu.koordinaatit.x * self.koko, self.yksikko.ruutu.koordinaatit.y * self.koko)
+        self.setPos(self._yksikko.ruutu.koordinaatit.x * self._koko, self._yksikko.ruutu.koordinaatit.y * self._koko)
 
     def paivita_koko(self):
-        a = self.koko
-        r = self.koko / 4
+        a = self._koko
+        r = self._koko / 4
 
-        elama = self.yksikko.ominaisuudet.nyk_elama / self.yksikko.ominaisuudet.max_elama
+        elama = self._yksikko.ominaisuudet.nyk_elama / self._yksikko.ominaisuudet.max_elama
 
         elamapalkki = QtGui.QPolygonF()
-        elamapalkki.append(QtCore.QPointF(0, self.ylaosan_koko * a))
-        elamapalkki.append(QtCore.QPointF(a * elama, self.ylaosan_koko * a))
+        elamapalkki.append(QtCore.QPointF(0, self._ylaosan_koko * a))
+        elamapalkki.append(QtCore.QPointF(a * elama, self._ylaosan_koko * a))
         elamapalkki.append(QtCore.QPointF(a * elama, a))
         elamapalkki.append(QtCore.QPointF(0, a))
 
         self.setPolygon(elamapalkki)
-        self.setTransformOriginPoint(self.koko / 2, self.koko / 2)
+        self.setTransformOriginPoint(self._koko / 2, self._koko / 2)
         self.paivita_sijainti()
-        self.kayttoliittyma.scene.addItem(self)
+        self._kayttoliittyma.scene.addItem(self)
 
     def poista(self):
         elamapalkki = QtGui.QPolygonF()
         self.setPolygon(elamapalkki)
-        self.setTransformOriginPoint(self.koko / 2, self.koko / 2)
+        self.setTransformOriginPoint(self._koko / 2, self._koko / 2)

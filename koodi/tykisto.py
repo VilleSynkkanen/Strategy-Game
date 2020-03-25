@@ -82,7 +82,7 @@ class Tykisto(Yksikko):
                         ruutu.grafiikka.muuta_vari(ruutu.grafiikka.valittu_kohteeksi_vari)
             else:
                 for Ruutu in self._kayttoliittyma.pelinohjain.kartta.ruudut:
-                    if self._kayttoliittyma.pelinohjain.polunhaku.heuristiikka(ruutu, Ruutu) <= self._kyky1_kantama and \
+                    if self._kayttoliittyma.pelinohjain.polunhaku.heuristiikka(ruutu, Ruutu) <= self._kyky1_kantama and\
                             Ruutu not in self._kyky1_kohteet:
                         self._kyky1_kohteet.append(Ruutu)
                         Ruutu.grafiikka.muuta_vari(Ruutu.grafiikka.valittu_kohteeksi_vari)
