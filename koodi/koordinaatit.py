@@ -4,13 +4,13 @@ class Koordinaatit:
     '''
 
     def __init__(self, x, y):
-        self._x = x
-        self._y = y
+        self.__x = x
+        self.__y = y
 
     @property
     def x(self):
-        return self._x
+        return self.__x
 
     @property
     def y(self):
-        return self._y
+        return self.__y

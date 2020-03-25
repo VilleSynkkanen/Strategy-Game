@@ -3,13 +3,13 @@ class Jonon_elementti:
     # prioriteettijonon elementti
 
     def __init__(self, elementti, prioriteetti):
-        self._elementti = elementti
-        self._prioriteetti = prioriteetti
+        self.__elementti = elementti
+        self.__prioriteetti = prioriteetti
 
     @property
     def elementti(self):
-        return self._elementti
+        return self.__elementti
 
     @property
     def prioriteetti(self):
-        return self._prioriteetti
+        return self.__prioriteetti

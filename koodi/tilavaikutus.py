@@ -1,48 +1,48 @@
 class Tilavaikutus:
 
     def __init__(self, yksikko, kesto, hyokkays, puolustus, liikkuminen, verenvuoto, taintuminen):
-        self._yksikko = yksikko
-        self._kesto = kesto
-        self._hyokkaysbonus = hyokkays
-        self._puolustusbonus = puolustus
-        self._liikkumisbonus = liikkuminen
-        self._verenvuoto = verenvuoto
-        self._taintuminen = taintuminen
+        self.__yksikko = yksikko
+        self.__kesto = kesto
+        self.__hyokkaysbonus = hyokkays
+        self.__puolustusbonus = puolustus
+        self.__liikkumisbonus = liikkuminen
+        self.__verenvuoto = verenvuoto
+        self.__taintuminen = taintuminen
 
-        self._yksikko.muuta_hyokkaysta(self._hyokkaysbonus)
-        self._yksikko.muuta_puolustusta(self._puolustusbonus)
-        self._yksikko.muuta_liikkumista(self._liikkumisbonus)
+        self.__yksikko.muuta_hyokkaysta(self.__hyokkaysbonus)
+        self.__yksikko.muuta_puolustusta(self.__puolustusbonus)
+        self.__yksikko.muuta_liikkumista(self.__liikkumisbonus)
 
-        if self._taintuminen:
+        if self.__taintuminen:
             # jos taintui, poista kyky liikkua ja hyökätä
             # palautetaan vuoron alussa, jos taintuminen ei enää voimassa
-            self._yksikko.liikuttu()
-            self._yksikko.hyokatty()
+            self.__yksikko.liikuttu()
+            self.__yksikko.hyokatty()
 
     @property
     def kesto(self):
-        return self._kesto
+        return self.__kesto
 
     @property
     def hyokkaysbonus(self):
-        return self._hyokkaysbonus
+        return self.__hyokkaysbonus
 
     @property
     def puolustusbonus(self):
-        return self._puolustusbonus
+        return self.__puolustusbonus
 
     @property
     def liikkumisbonus(self):
-        return self._liikkumisbonus
+        return self.__liikkumisbonus
 
     @property
     def verenvuoto(self):
-        return self._verenvuoto
+        return self.__verenvuoto
 
     @property
     def taintuminen(self):
-        return self._taintuminen
+        return self.__taintuminen
 
     def vahenna_kestoa(self):
-        self._kesto -= 1
+        self.__kesto -= 1
         print("vah")

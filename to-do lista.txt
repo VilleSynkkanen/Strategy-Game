@@ -27,6 +27,7 @@ Lisäyksiä kykyihin:
 -tykistö: ei hyökkäystä liikkumisen jälkeen
 -parantaja: taintuminen, kun kirous loppuu, kirous odotettu vahinko
 -ratsuväki tiedustelu: odotettu vahinko 0
+-jalkaväki rynnäkkö: tainnutus
 
 Bugeja:
 -kyky1 visualisointi ei toimi kunnolla (viimeinen valinta ei näy)

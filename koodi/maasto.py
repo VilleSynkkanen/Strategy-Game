@@ -1,52 +1,52 @@
 class Maasto:
 
     def __init__(self, tyyppi, liikkuminen, hinta, hyokkays, puolustus, vari, lapinakyvyys):
-        self._tyyppi = tyyppi
-        self._liikkuminen = liikkuminen
-        self._liikkumisen_hinta = hinta
-        self._hyokkayskerroin = hyokkays
-        self._puolustuskerroin = puolustus
-        self._vari = vari
-        self._lapinakyvyys = lapinakyvyys
+        self.__tyyppi = tyyppi
+        self.__liikkuminen = liikkuminen
+        self.__liikkumisen_hinta = hinta
+        self.__hyokkayskerroin = hyokkays
+        self.__puolustuskerroin = puolustus
+        self.__vari = vari
+        self.__lapinakyvyys = lapinakyvyys
 
     @property
     def tyyppi(self):
-        return self._tyyppi
+        return self.__tyyppi
 
     @property
     def liikkuminen(self):
-        return self._liikkuminen
+        return self.__liikkuminen
 
     @property
     def liikkumisen_hinta(self):
-        return self._liikkumisen_hinta
+        return self.__liikkumisen_hinta
 
     @property
     def hyokkayskerroin(self):
-        return self._hyokkayskerroin
+        return self.__hyokkayskerroin
 
     @property
     def puolustuskerroin(self):
-        return self._puolustuskerroin
+        return self.__puolustuskerroin
 
     @property
     def vari(self):
-        return self._vari
+        return self.__vari
 
     @property
     def lapinakyvyys(self):
-        return self._lapinakyvyys
+        return self.__lapinakyvyys
 
     def __str__(self):
         # määrittelee läpinäkyvyyden ja liikkumisen
         liikkuminen = "kyllä"
         lapinakyvyys = "kyllä"
-        if self._liikkuminen == False:
+        if self.__liikkuminen is False:
             liikkuminen = "ei"
-        if self._lapinakyvyys == False:
+        if self.__lapinakyvyys is False:
             lapinakyvyys = "ei"
 
         return "Tyyppi: {}\nLiikkuminen: {} \nLiikkumisen hinta: {}\nHyökkäyskerroin: {}\n" \
-               "Puolustuskerroin: {}\nLäpinäkyvyys: {}".format(self._tyyppi, liikkuminen, str(self._liikkumisen_hinta),
-                                                               str(self._hyokkayskerroin), str(self._puolustuskerroin),
+               "Puolustuskerroin: {}\nLäpinäkyvyys: {}".format(self.__tyyppi, liikkuminen, str(self.__liikkumisen_hinta),
+                                                               str(self.__hyokkayskerroin), str(self.__puolustuskerroin),
                                                                lapinakyvyys)

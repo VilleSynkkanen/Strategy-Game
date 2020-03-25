@@ -6,78 +6,71 @@ class Ruutugrafiikka(QtWidgets.QGraphicsRectItem):
 
     def __init__(self, koordinaatit, koko, kayttoliittyma, vari, ruutu):
         super(Ruutugrafiikka, self).__init__()
-        self._kayttoliittyma = kayttoliittyma
-        self._ruutu = ruutu
+        self.__kayttoliittyma = kayttoliittyma
+        self.__ruutu = ruutu
 
         # määritellään, onko kartan x- vai y-koko suurempi ja tallennetaan suurempi pituus
 
         pidempi_sivu = 0
-        if self._kayttoliittyma.pelinohjain.koko[0] > self._kayttoliittyma.pelinohjain.koko[1]:
-            pidempi_sivu = self._kayttoliittyma.pelinohjain.koko[0]
+        if self.__kayttoliittyma.pelinohjain.koko[0] > self.__kayttoliittyma.pelinohjain.koko[1]:
+            pidempi_sivu = self.__kayttoliittyma.pelinohjain.koko[0]
         else:
-            pidempi_sivu = self._kayttoliittyma.pelinohjain.koko[1]
+            pidempi_sivu = self.__kayttoliittyma.pelinohjain.koko[1]
 
-        self._koko = self._kayttoliittyma.scene_size / pidempi_sivu
-        self._koordinaatit = koordinaatit
-        self._vari = vari    # self.vari = alkuperäinen väri
+        self.__koko = self.__kayttoliittyma.scene_size / pidempi_sivu
+        self.__koordinaatit = koordinaatit
+        self.__vari = vari    # self.vari = alkuperäinen väri
 
         # teksti
-        self._teksti = QtWidgets.QGraphicsTextItem("", self)
-        self._teksti.setPos(self._koordinaatit.x * self._koko, self._koordinaatit.y * self._koko)
-        self._teksti.setFont(QtGui.QFont("Times", 12))
+        self.__teksti = QtWidgets.QGraphicsTextItem("", self)
+        self.__teksti.setPos(self.__koordinaatit.x * self.__koko, self.__koordinaatit.y * self.__koko)
+        self.__teksti.setFont(QtGui.QFont("Times", 12))
 
-        self.piirra_ruutu()
+        self.__piirra_ruutu()
         self.paivita_tooltip()
 
         # värien määrittely
-        self._voi_liikkua_vari = QtGui.QColor(0.3 * self._vari[0], 0.3 * self._vari[1], 0.3 * self._vari[2])
-        self._kantaman_sisalla_vari = QtGui.QColor(0.8 * self._vari[0], 0.8 * self._vari[1], 0.8 * self._vari[2])
-        self._valittu_kohteeksi_vari = QtGui.QColor(0.5 * self._vari[0], 0.5 * self._vari[1], 0.5 * self._vari[2])
+        self.__voi_liikkua_vari = QtGui.QColor(0.3 * self.__vari[0], 0.3 * self.__vari[1], 0.3 * self.__vari[2])
+        self.__kantaman_sisalla_vari = QtGui.QColor(0.8 * self.__vari[0], 0.8 * self.__vari[1], 0.8 * self.__vari[2])
+        self.__valittu_kohteeksi_vari = QtGui.QColor(0.5 * self.__vari[0], 0.5 * self.__vari[1], 0.5 * self.__vari[2])
 
     @property
     def teksti(self):
-        return self._teksti
+        return self.__teksti
 
     @property
     def vari(self):
-        return self._vari
+        return self.__vari
 
     @property
     def voi_liikkua_vari(self):
-        return self._voi_liikkua_vari
+        return self.__voi_liikkua_vari
 
     @property
     def kantaman_sisalla_vari(self):
-        return self._kantaman_sisalla_vari
+        return self.__kantaman_sisalla_vari
 
     @property
     def valittu_kohteeksi_vari(self):
-        return self._valittu_kohteeksi_vari
+        return self.__valittu_kohteeksi_vari
 
-    def piirra_ruutu(self):
-        brush = QtGui.QBrush(QtGui.QColor(self._vari[0], self._vari[1], self._vari[2]))
-        self.setRect(self._koordinaatit.x * self._koko, self._koordinaatit.y * self._koko,
-                     self._koko, self._koko)
+    def __piirra_ruutu(self):
+        brush = QtGui.QBrush(QtGui.QColor(self.__vari[0], self.__vari[1], self.__vari[2]))
+        self.setRect(self.__koordinaatit.x * self.__koko, self.__koordinaatit.y * self.__koko,
+                     self.__koko, self.__koko)
         self.setBrush(brush)
         self.setZValue(-2)
-        self._kayttoliittyma.scene.addItem(self)
-
-    def paivita_grafiikka(self):
-        pass
+        self.__kayttoliittyma.scene.addItem(self)
 
     def mousePressEvent(self, *args, **kwargs):
-        if self._kayttoliittyma.valittu_yksikko is not None:
-            if self._kayttoliittyma.valittu_yksikko.kyky1_valitsee_kohteita:
-                self._kayttoliittyma.valittu_yksikko.kyky1_lisaa_kohde(self._ruutu)
-            elif self._kayttoliittyma.valittu_yksikko.kyky2_valitsee_kohteita:
+        if self.__kayttoliittyma.valittu_yksikko is not None:
+            if self.__kayttoliittyma.valittu_yksikko.kyky1_valitsee_kohteita:
+                self.__kayttoliittyma.valittu_yksikko.kyky1_lisaa_kohde(self.__ruutu)
+            elif self.__kayttoliittyma.valittu_yksikko.kyky2_valitsee_kohteita:
                 pass
-            elif self._ruutu in self._kayttoliittyma.valittu_yksikko.mahdolliset_ruudut and \
-                    self._kayttoliittyma.valitsee_hyokkayksen_kohdetta is False:
-                self._kayttoliittyma.valittu_yksikko.liiku_ruutuun(self._ruutu)
-
-
-    def maarita_teksti(self, teksti):
-        self._teksti.setPlainText(str(teksti))           # polunhaun testausta varten
+            elif self.__ruutu in self.__kayttoliittyma.valittu_yksikko.mahdolliset_ruudut and \
+                    self.__kayttoliittyma.valitsee_hyokkayksen_kohdetta is False:
+                self.__kayttoliittyma.valittu_yksikko.liiku_ruutuun(self.__ruutu)
 
     # muuta siten, että parametrina annetaan QColor
     def muuta_vari(self, vari):
@@ -85,15 +78,15 @@ class Ruutugrafiikka(QtWidgets.QGraphicsRectItem):
         self.setBrush(brush)
 
     def palauta_vari(self):
-        brush = QtGui.QBrush(QtGui.QColor(self._vari[0], self._vari[1], self._vari[2]))
+        brush = QtGui.QBrush(QtGui.QColor(self.__vari[0], self.__vari[1], self.__vari[2]))
         self.setBrush(brush)
 
-    def aseta_tooltip(self, teksti):
+    def __aseta_tooltip(self, teksti):
         QtWidgets.QToolTip.setFont(Qt.QFont('SansSerif', 10))
         self.setToolTip(teksti)
 
     def paivita_tooltip(self):
-        maasto = self._ruutu.maasto
+        maasto = self.__ruutu.maasto
         # määrittelee läpinäkyvyyden ja liikkumisen
         liikkuminen = "kyllä"
         lapinakyvyys = "kyllä"
@@ -102,8 +95,8 @@ class Ruutugrafiikka(QtWidgets.QGraphicsRectItem):
         if maasto.lapinakyvyys is False:
             lapinakyvyys = "ei"
 
-        self.aseta_tooltip(self._ruutu.maasto.__str__())
+        self.__aseta_tooltip(self.__ruutu.maasto.__str__())
 
     def voi_liikkua(self):
-        brush = QtGui.QBrush(self._voi_liikkua_vari)
+        brush = QtGui.QBrush(self.__voi_liikkua_vari)
         self.setBrush(brush)

@@ -4,7 +4,7 @@ from maasto import Maasto
 class Maaston_lukija:
 
     def __init__(self):
-        self._maastot = {}                   #sanakirja, johon lisätään maastot (avain = maaston nimi)
+        self.__maastot = {}                   #sanakirja, johon lisätään maastot (avain = maaston nimi)
         tiedostot = os.scandir('maastot/')
 
         # lukee jokaisesta tiedostosta maaston tiedot
@@ -54,9 +54,9 @@ class Maaston_lukija:
             # luotu maasto lisätään sanakirjaan, josta se voiddan myöhemmin lukea
             maasto = Maasto(tyyppi, liikkuminen, liikkumisen_hinta, hyokkayskerroin, puolustuskerroin,
                             vari, lapinakyvyys)
-            self._maastot[tyyppi] = maasto
+            self.__maastot[tyyppi] = maasto
             lue.close() # muista sulkea aina
 
     @property
     def maastot(self):
-        return self._maastot
+        return self.__maastot

@@ -13,105 +13,108 @@ from kiilat import Kiilat
 class Ruutu:
 
     def __init__(self, koordinaatit, koko, tyyppi, kayttoliittyma):
-        self._tyyppi = tyyppi
-        self._kayttoliittyma = kayttoliittyma
-        self._koordinaatit = koordinaatit
-        self._grafiikka = None
-        self._kartta = None  # etsitään myöhemmin
-        self._maasto = None  # luodaan myöhemmin
-        self._naapurit = []  # etsitään myöhemmin
-        self._yksikko = None
-        self._kiilat = None
+        self.__tyyppi = tyyppi
+        self.__kayttoliittyma = kayttoliittyma
+        self.__koordinaatit = koordinaatit
+        self.__grafiikka = None
+        self.__kartta = None  # etsitään myöhemmin
+        self.__maasto = None  # luodaan myöhemmin
+        self.__naapurit = []  # etsitään myöhemmin
+        self.__yksikko = None
+        self.__kiilat = None
 
     @property
     def tyyppi(self):
-        return self._tyyppi
+        return self.__tyyppi
 
     @property
     def kayttoliittyma(self):
-        return self._kayttoliittyma
+        return self.__kayttoliittyma
 
     @property
     def koordinaatit(self):
-        return self._koordinaatit
+        return self.__koordinaatit
 
     @property
     def grafiikka(self):
-        return self._grafiikka
+        return self.__grafiikka
 
     @property
     def kartta(self):
-        return self._kartta
+        return self.__kartta
 
     @property
     def maasto(self):
-        return self._maasto
+        return self.__maasto
 
     @property
     def naapurit(self):
-        return self._naapurit
+        return self.__naapurit
 
     @property
     def yksikko(self):
-        return self._yksikko
+        return self.__yksikko
 
     @property
     def kiilat(self):
-        return self._kiilat
+        return self.__kiilat
 
     def lisaa_yksikko(self, tyyppi, omistaja, ominaisuudet):
         if tyyppi == "jalkavaki":
-            self._yksikko = Jalkavaki(omistaja, self, self._kayttoliittyma, ominaisuudet)
+            self.__yksikko = Jalkavaki(omistaja, self, self.__kayttoliittyma, ominaisuudet)
         elif tyyppi == "ratsuvaki":
-            self._yksikko = Ratsuvaki(omistaja, self, self._kayttoliittyma, ominaisuudet)
+            self.__yksikko = Ratsuvaki(omistaja, self, self.__kayttoliittyma, ominaisuudet)
         elif tyyppi == "jousimiehet":
-            self._yksikko = Jousimiehet(omistaja, self, self._kayttoliittyma, ominaisuudet)
+            self.__yksikko = Jousimiehet(omistaja, self, self.__kayttoliittyma, ominaisuudet)
         elif tyyppi == "tykisto":
-            self._yksikko = Tykisto(omistaja, self, self._kayttoliittyma, ominaisuudet)
+            self.__yksikko = Tykisto(omistaja, self, self.__kayttoliittyma, ominaisuudet)
         elif tyyppi == "parantaja":
-            self._yksikko = Parantaja(omistaja, self, self._kayttoliittyma, ominaisuudet)
-        return self._yksikko
+            self.__yksikko = Parantaja(omistaja, self, self.__kayttoliittyma, ominaisuudet)
+        return self.__yksikko
 
     def luo_grafiikka(self, koko):
-        self._grafiikka = Ruutugrafiikka(self._koordinaatit, koko, self._kayttoliittyma, self._maasto.vari, self)
+        self.__grafiikka = Ruutugrafiikka(self.__koordinaatit, koko, self.__kayttoliittyma, self.__maasto.vari, self)
 
     def luo_maasto(self):
-        maastot = self._kayttoliittyma.pelinohjain.maaston_lukija.maastot
-        ominaisuudet = maastot[self._tyyppi]
-        self._maasto = Maasto(ominaisuudet.tyyppi, ominaisuudet.liikkuminen, ominaisuudet.liikkumisen_hinta,
-                              ominaisuudet.hyokkayskerroin, ominaisuudet.puolustuskerroin, ominaisuudet.vari,
-                              ominaisuudet.lapinakyvyys)
+        maastot = self.__kayttoliittyma.pelinohjain.maaston_lukija.maastot
+        ominaisuudet = maastot[self.__tyyppi]
+        self.__maasto = Maasto(ominaisuudet.tyyppi, ominaisuudet.liikkuminen, ominaisuudet.liikkumisen_hinta,
+                               ominaisuudet.hyokkayskerroin, ominaisuudet.puolustuskerroin, ominaisuudet.vari,
+                               ominaisuudet.lapinakyvyys)
 
     def etsi_naapurit(self):
-        self._kartta = self._kayttoliittyma.pelinohjain.kartta
+        self.__kartta = self.__kayttoliittyma.pelinohjain.kartta
 
         # suunnat naapureiden löytämistä varten
-        pohjoinen = (self._koordinaatit.x, self._koordinaatit.y + 1)
-        ita = (self._koordinaatit.x + 1, self._koordinaatit.y)
-        etela = (self._koordinaatit.x, self._koordinaatit.y - 1)
-        lansi = (self._koordinaatit.x - 1, self._koordinaatit.y)
+        pohjoinen = (self.__koordinaatit.x, self.__koordinaatit.y + 1)
+        ita = (self.__koordinaatit.x + 1, self.__koordinaatit.y)
+        etela = (self.__koordinaatit.x, self.__koordinaatit.y - 1)
+        lansi = (self.__koordinaatit.x - 1, self.__koordinaatit.y)
         naapuri_koordinaatit = (pohjoinen, ita, etela, lansi)
 
-        self._naapurit = []
-        for ruutu in self._kartta.ruudut:
+        self.__naapurit = []
+        for ruutu in self.__kartta.ruudut:
             if (ruutu.koordinaatit.x, ruutu.koordinaatit.y) in naapuri_koordinaatit:
-                self._naapurit.append(ruutu)
+                self.__naapurit.append(ruutu)
 
     def vapaat_naapurit(self):
         vapaat = []
-        for naapuri in self._naapurit:
+        for naapuri in self.__naapurit:
             if naapuri.yksikko is None and naapuri.maasto.liikkuminen:
                 vapaat.append(naapuri)
         return vapaat
 
     def luo_kiilat(self, bonus, bonus_ratsuvaki):
-        self._kiilat = Kiilat(bonus, bonus_ratsuvaki, self, self._kayttoliittyma)
+        self.__kiilat = Kiilat(bonus, bonus_ratsuvaki, self, self.__kayttoliittyma)
 
     def liiku_pois(self):
-        self._yksikko = None
+        self.__yksikko = None
 
     def liiku_ruutuun(self, yksikko):
-        self._yksikko = yksikko
+        self.__yksikko = yksikko
 
     def poista_yksikko(self):
-        self._yksikko = None
+        self.__yksikko = None
+
+    def poista_kiilat(self):
+        self.__kiilat = None

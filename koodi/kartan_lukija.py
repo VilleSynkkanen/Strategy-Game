@@ -4,7 +4,7 @@ from koordinaatit import Koordinaatit
 class Kartan_lukija:
 
     def __init__(self):
-        self._kartat = {}  # sanakirja, johon lisätään validit kartat (avain = kartan nimi)
+        self.__kartat = {}  # sanakirja, johon lisätään validit kartat (avain = kartan nimi)
         '''
         tallentaa lukemansa tiedot kaksiulotteiseen listaan (ruuduista), jossa
         jokainen jäsen on maaston tyyppi
@@ -14,7 +14,7 @@ class Kartan_lukija:
 
     @property
     def kartat(self):
-        return self._kartat
+        return self.__kartat
 
     def lue_kartta(self, nimi):
         kartan_nimi = ""
