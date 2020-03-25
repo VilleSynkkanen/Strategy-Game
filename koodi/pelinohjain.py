@@ -71,3 +71,4 @@ class Pelinohjain:
             yksikko.grafiikka.palauta_vari()
         for yksikko in self.kartta.tietokoneen_yksikot:
             yksikko.kasittele_tilavaikutukset()  # siirrä vuoron loppuun jossain vaiheessa
+            yksikko.grafiikka.paivita_tooltip()

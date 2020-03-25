@@ -6,37 +6,86 @@ from random import randrange
 class Yksikko:
 
     def __init__(self, omistaja, ruutu, kayttoliittyma, ominaisuudet):
-        self.omistaja = omistaja
-        self.ruutu = ruutu
-        self.kayttoliittyma = kayttoliittyma
-        self.grafiikka = None
-        self.ominaisuudet = self.luo_ominaisuudet(ominaisuudet)
+        self._omistaja = omistaja
+        self._ruutu = ruutu
+        self._kayttoliittyma = kayttoliittyma
+        self._grafiikka = None
+        self._ominaisuudet = self.luo_ominaisuudet(ominaisuudet)
 
         # ruudut, joihin liikkuminen on mahdollista tällä vuorolla
-        self.mahdolliset_ruudut = []
+        self._mahdolliset_ruudut = []
 
         # mahdolliset hyökkäyskohteet
-        self.hyokkayksen_kohteet = []
-        self.ruudut_kantamalla = []
+        self._hyokkayksen_kohteet = []
+        self._ruudut_kantamalla = []
 
-        self.liikkuminen_kaytetty = False
-        self.hyokkays_kaytetty = False
+        self._liikkuminen_kaytetty = False
+        self._hyokkays_kaytetty = False
 
         # niille yksiköille, joiden kyky 1 valitsee kohteiksi ruutuja
-        self.kyky1_valitsee_kohteita = False
-        self.kyky1_kohteet = []
+        self._kyky1_valitsee_kohteita = False
+        self._kyky1_kohteet = []
 
-        self.kyky2_valitsee_kohteita = False
+        self._kyky2_valitsee_kohteita = False
 
-        # hinnat (ei käytetä)
-        self.kyky1_hinta = 100
-        self.kyky2_hinta = 100
+    # propertyt vain luku-muuttujia varten
+    @property
+    def liikkuminen_kaytetty(self):
+        return self._liikkuminen_kaytetty
+
+    @property
+    def hyokkays_kaytetty(self):
+        return self._hyokkays_kaytetty
+
+    @property
+    def omistaja(self):
+        return self._omistaja
+
+    @property
+    def ruutu(self):
+        return self._ruutu
+
+    @property
+    def kayttoliittyma(self):
+        return self._kayttoliittyma
+
+    @property
+    def grafiikka(self):
+        return self._grafiikka
+
+    @property
+    def ominaisuudet(self):
+        return self._ominaisuudet
+
+    @property
+    def kyky1_valitsee_kohteita(self):
+        return self._kyky1_valitsee_kohteita
+
+    @property
+    def kyky1_kohteet(self):
+        return self.kyky1_kohteet
+
+    @property
+    def mahdolliset_ruudut(self):
+        return self._mahdolliset_ruudut
+
+    @property
+    def hyokkayksen_kohteet(self):
+        return self._hyokkayksen_kohteet
+
+    @property
+    def ruudut_kantamalla(self):
+        return self._ruudut_kantamalla
+
+    @property
+    def kyky2_valitsee_kohteita(self):
+        return self._kyky2_valitsee_kohteita
 
     def __str__(self):
         pass
 
     def luo_grafiikka(self):
-        self.grafiikka = Yksikkografiikka(self, self.ruutu, self.kayttoliittyma, self.omistaja, self)
+        self._grafiikka = Yksikkografiikka(self, self._ruutu, self._kayttoliittyma, self._omistaja, self)
 
     def luo_ominaisuudet(self, ominaisuudet):
         # luo ominaisuudet annetun ominaisuus-instanssin perusteella
@@ -47,50 +96,50 @@ class Yksikko:
         return om
 
     def laske_mahdolliset_ruudut(self):
-        self.mahdolliset_ruudut = self.kayttoliittyma.pelinohjain.laske_polut(self.ruutu, self.ominaisuudet.liikkuminen)
+        self._mahdolliset_ruudut = self._kayttoliittyma.pelinohjain.laske_polut(self._ruutu, self._ominaisuudet.liikkuminen)
 
     def nayta_mahdolliset_ruudut(self):
-        for ruutu in self.mahdolliset_ruudut:
+        for ruutu in self._mahdolliset_ruudut:
             ruutu.grafiikka.voi_liikkua()
 
     def tyhjenna_mahdolliset_ruudut(self):
-        self.mahdolliset_ruudut = []
+        self._mahdolliset_ruudut = []
 
     def laske_hyokkayksen_kohteet(self, nayta):
         # implementoi line of sight sääntö
         # laskee kantamalla olevat ruudut ja lisää kohteisiin niissä olevat viholliset
-        self.hyokkayksen_kohteet = []
+        self._hyokkayksen_kohteet = []
         self.laske_kantaman_sisalla_olevat_ruudut()
-        for ruutu in self.ruudut_kantamalla:
-            if ruutu.yksikko != None and ruutu.yksikko.omistaja != self.omistaja:
-                self.hyokkayksen_kohteet.append(ruutu.yksikko)
+        for ruutu in self._ruudut_kantamalla:
+            if ruutu.yksikko != None and ruutu.yksikko.omistaja != self._omistaja:
+                self._hyokkayksen_kohteet.append(ruutu.yksikko)
         if not nayta:
             return
         self.nayta_hyokkayksen_kohteet()
         self.nayta_kantaman_sisalla_olevat_ruudut()
 
     def peru_hyokkayksen_kohteiden_nayttaminen(self):
-        for vihollinen in self.hyokkayksen_kohteet:
+        for vihollinen in self._hyokkayksen_kohteet:
             vihollinen.grafiikka.palauta_vari()
             vihollinen.grafiikka.paivita_tooltip()
-        self.hyokkayksen_kohteet = []
+        self._hyokkayksen_kohteet = []
         self.tyhjenna_ruudut_kantamalla()
 
     def laske_kantaman_sisalla_olevat_ruudut(self):
-        self.ruudut_kantamalla = []
-        for ruutu in self.kayttoliittyma.pelinohjain.kartta.ruudut:
-            if self.kayttoliittyma.pelinohjain.polunhaku.heuristiikka(self.ruutu, ruutu) <= self.ominaisuudet.kantama:
-                if self.kayttoliittyma.pelinohjain.kartta.nakyvyys(self.ruutu, ruutu):
-                    self.ruudut_kantamalla.append(ruutu)
-                elif self.__class__.__name__ == "Tykisto" and self.kyky2_valitsee_kohteita == False:
-                    self.ruudut_kantamalla.append(ruutu)
+        self._ruudut_kantamalla = []
+        for ruutu in self._kayttoliittyma.pelinohjain.kartta.ruudut:
+            if self._kayttoliittyma.pelinohjain.polunhaku.heuristiikka(self._ruutu, ruutu) <= self._ominaisuudet.kantama:
+                if self._kayttoliittyma.pelinohjain.kartta.nakyvyys(self._ruutu, ruutu):
+                    self._ruudut_kantamalla.append(ruutu)
+                elif self.__class__.__name__ == "Tykisto" and self._kyky2_valitsee_kohteita == False:
+                    self._ruudut_kantamalla.append(ruutu)
 
     def nayta_kantaman_sisalla_olevat_ruudut(self):
-        for ruutu in self.ruudut_kantamalla:
+        for ruutu in self._ruudut_kantamalla:
             ruutu.grafiikka.muuta_vari(ruutu.grafiikka.kantaman_sisalla_vari)
 
     def nayta_hyokkayksen_kohteet(self):
-        for vihollinen in self.hyokkayksen_kohteet:
+        for vihollinen in self._hyokkayksen_kohteet:
             vihollinen.grafiikka.muuta_varia(vihollinen.grafiikka.voi_hyokata_vari)
             # laskee odotetun vahingon ja näyttää sen tooltipissä
             hyok_vahinko, puol_vahinko, flanking = self.laske_vahinko(self, vihollinen, True)
@@ -100,43 +149,43 @@ class Yksikko:
             vihollinen.grafiikka.hyokkays_tootip(hyok_vahinko, puol_vahinko, tukibonus)
 
     def tyhjenna_hyokkayksen_kohteet(self):
-        self.hyokkayksen_kohteet = []
+        self._hyokkayksen_kohteet = []
 
     def peru_mahdollisten_ruutujen_nayttaminen(self):
-        for ruutu in self.mahdolliset_ruudut:
+        for ruutu in self._mahdolliset_ruudut:
             ruutu.grafiikka.palauta_vari()
 
     def tyhjenna_ruudut_kantamalla(self):
-        for ruutu in self.ruudut_kantamalla:
+        for ruutu in self._ruudut_kantamalla:
             ruutu.grafiikka.palauta_vari()
-        self.ruudut_kantamalla = []
+        self._ruudut_kantamalla = []
 
     def liiku_ruutuun(self, ruutu):
-        self.ruutu.liiku_pois()
-        self.ruutu = ruutu
+        self._ruutu.liiku_pois()
+        self._ruutu = ruutu
         ruutu.liiku_ruutuun(self)
-        self.grafiikka.paivita_sijainti(self.ruutu)
+        self._grafiikka.paivita_sijainti(self._ruutu)
         self.liikuttu()
         self.laske_hyokkayksen_kohteet(False)
-        if len(self.hyokkayksen_kohteet) == 0 or self.hyokkays_kaytetty:
+        if len(self._hyokkayksen_kohteet) == 0 or self._hyokkays_kaytetty:
             # poista yksiköistä, jotka voivat vielä tehdä jotain
-            self.kayttoliittyma.pelinohjain.kartta.poista_toimivista_yksikoista(self)
+            self._kayttoliittyma.pelinohjain.kartta.poista_toimivista_yksikoista(self)
 
     def liikuttu(self):
         self.peru_mahdollisten_ruutujen_nayttaminen()
-        self.liikkuminen_kaytetty = True
-        self.mahdolliset_ruudut = []
-        self.kayttoliittyma.paivita_valitun_yksikon_tiedot()
+        self._liikkuminen_kaytetty = True
+        self._mahdolliset_ruudut = []
+        self._kayttoliittyma.paivita_valitun_yksikon_tiedot()
 
     def palauta_liikkumispisteet(self):
-        self.liikkuminen_kaytetty = False
-        self.hyokkays_kaytetty = False
-        self.grafiikka.palauta_vari()
+        self._liikkuminen_kaytetty = False
+        self._hyokkays_kaytetty = False
+        self._grafiikka.palauta_vari()
 
     def vieressa_monta_vihollista(self):
         viholliset = 0
-        for ruutu in self.ruutu.naapurit:
-            if ruutu.yksikko is not None and ruutu.yksikko.omistaja != self.omistaja:
+        for ruutu in self._ruutu.naapurit:
+            if ruutu.yksikko is not None and ruutu.yksikko.omistaja != self._omistaja:
                 viholliset += 1
         if viholliset > 1:
             return True
@@ -146,24 +195,24 @@ class Yksikko:
         # poista listoista kantamalla olevat ruudut ja mahdolliset kohteet
         self.tyhjenna_hyokkayksen_kohteet()
         self.tyhjenna_ruudut_kantamalla()
-        self.hyokkays_kaytetty = True
+        self._hyokkays_kaytetty = True
         # ratsuväen passiivinen kyky
         if self.__class__.__name__ != "Ratsuvaki":
             self.liikuttu()
         else:
-            if not self.liikkuminen_kaytetty:
+            if not self._liikkuminen_kaytetty:
                 self.laske_mahdolliset_ruudut()
                 self.nayta_mahdolliset_ruudut()
-        self.kayttoliittyma.paivita_valitun_yksikon_tiedot()
+        self._kayttoliittyma.paivita_valitun_yksikon_tiedot()
         # poista yksiköistä, jotka voivat vielä tehdä jotain
-        self.kayttoliittyma.pelinohjain.kartta.poista_toimivista_yksikoista(self)
+        self._kayttoliittyma.pelinohjain.kartta.poista_toimivista_yksikoista(self)
 
     def hyokkayksen_kohde(self, hyokkaaja):
         self.hyokkays(hyokkaaja)
-        if hyokkaaja == self.kayttoliittyma.valittu_yksikko:
+        if hyokkaaja == self._kayttoliittyma.valittu_yksikko:
             for vihollinen in hyokkaaja.hyokkayksen_kohteet:
                 vihollinen.grafiikka.palauta_vari()
-            self.kayttoliittyma.peru_kohteen_valinta()
+            self._kayttoliittyma.peru_kohteen_valinta()
         hyokkaaja.hyokatty()
 
     def laske_vahinko(self, hyokkaaja, puolustaja, odotettu):
@@ -253,47 +302,47 @@ class Yksikko:
             hyokkaaja.parannu(hyokkaaja.parannus_hyokkayksessa)
 
     def ota_vahinkoa(self, vahinko):
-        self.ominaisuudet.nyk_elama -= vahinko
-        self.grafiikka.elamapalkki.paivita_koko()
-        self.grafiikka.paivita_tooltip()
+        self._ominaisuudet.nyk_elama -= vahinko
+        self._grafiikka.elamapalkki.paivita_koko()
+        self._grafiikka.paivita_tooltip()
         self.tarkasta_tuhoutuminen()
 
     def parannu(self, maara):
-        self.ominaisuudet.nyk_elama += maara
-        if self.ominaisuudet.nyk_elama > self.ominaisuudet.max_elama:
-            self.ominaisuudet.nyk_elama = self.ominaisuudet.max_elama
-        self.grafiikka.paivita_tooltip()
+        self._ominaisuudet.nyk_elama += maara
+        if self._ominaisuudet.nyk_elama > self._ominaisuudet.max_elama:
+            self._ominaisuudet.nyk_elama = self._ominaisuudet.max_elama
+        self._grafiikka.paivita_tooltip()
         print("Parannus: ", maara)
 
     # saa yhden energian
     def saa_energiaa(self):
-        if self.ominaisuudet.nyk_energia < self.ominaisuudet.max_energia:
-            self.ominaisuudet.nyk_energia += 1
+        if self._ominaisuudet.nyk_energia < self._ominaisuudet.max_energia:
+            self._ominaisuudet.nyk_energia += 1
 
     def kayta_energiaa(self, maara):
-        self.ominaisuudet.nyk_energia -= maara
+        self._ominaisuudet.nyk_energia -= maara
 
     def lisaa_tilavaikutus(self, kesto, hyokkays, puolustus, liikkuminen, verenvuoto, taintuminen):
         vaikutus = Tilavaikutus(self, kesto, hyokkays, puolustus, liikkuminen, verenvuoto, taintuminen)
-        self.ominaisuudet.tilavaikutukset.append(vaikutus)
+        self._ominaisuudet.tilavaikutukset.append(vaikutus)
 
     def muuta_hyokkaysta(self, maara):
-        self.ominaisuudet.hyokkays += maara
+        self._ominaisuudet.hyokkays += maara
 
     def muuta_puolustusta(self, maara):
-        self.ominaisuudet.puolustus += maara
+        self._ominaisuudet.puolustus += maara
 
     def muuta_liikkumista(self, maara):
-        self.ominaisuudet.liikkuminen += maara
+        self._ominaisuudet.liikkuminen += maara
 
     def onko_taintunut(self):
-        for vaikutus in self.ominaisuudet.tilavaikutukset:
+        for vaikutus in self._ominaisuudet.tilavaikutukset:
             if vaikutus.taintuminen:
                 return True
         return False
 
     def kasittele_tilavaikutukset(self):
-        for vaikutus in self.ominaisuudet.tilavaikutukset:
+        for vaikutus in self._ominaisuudet.tilavaikutukset:
             # ota vahinkoa verenvuodosta
             if vaikutus.verenvuoto > 0:
                 self.ota_vahinkoa(vaikutus.verenvuoto)
@@ -303,44 +352,44 @@ class Yksikko:
                 self.muuta_hyokkaysta(-vaikutus.hyokkaysbonus)
                 self.muuta_puolustusta(-vaikutus.puolustusbonus)
                 self.muuta_liikkumista(-vaikutus.liikkumisbonus)
-                self.ominaisuudet.tilavaikutukset.remove(vaikutus)
+                self._ominaisuudet.tilavaikutukset.remove(vaikutus)
 
     def inspiraatio_bonus(self):
         # käy läpi kaikki yksiköt ja tarkistaa, onko parantaja inspiraation kantamalla, jos on, lisätään bonusta
         bonus = 1
-        for yksikko in self.kayttoliittyma.pelinohjain.kartta.pelaajan_yksikot:
+        for yksikko in self._kayttoliittyma.pelinohjain.kartta.pelaajan_yksikot:
             if yksikko.__class__.__name__ == "Parantaja" and yksikko != self and \
-                    self.kayttoliittyma.pelinohjain.polunhaku.heuristiikka(self.ruutu, yksikko.ruutu) <= \
-                    yksikko.inspiraatio_kantama and yksikko.omistaja == self.omistaja:
+                    self._kayttoliittyma.pelinohjain.polunhaku.heuristiikka(self._ruutu, yksikko.ruutu) <= \
+                    yksikko.inspiraatio_kantama and yksikko.omistaja == self._omistaja:
                 bonus *= yksikko.inspiraatio_kerroin
         return bonus
 
     def tarkasta_tuhoutuminen(self):
-        if self.ominaisuudet.nyk_elama <= 0:
+        if self._ominaisuudet.nyk_elama <= 0:
             self.tuhoudu()
 
     def tuhoudu(self):
         # poistaa kaikki olemassa olevat viittaukset yksikköön ja piilottaa sen graafiset komponentit
         # jos valittu yksikkö, poista käyttöliittymästä
-        if self.kayttoliittyma.valittu_yksikko == self:
-            self.kayttoliittyma.tyhjenna_valinta()
+        if self._kayttoliittyma.valittu_yksikko == self:
+            self._kayttoliittyma.tyhjenna_valinta()
         # poista kartan listasta
-        self.kayttoliittyma.pelinohjain.kartta.poista_yksikko(self)
+        self._kayttoliittyma.pelinohjain.kartta.poista_yksikko(self)
         # poista ruudusta
-        self.ruutu.poista_yksikko()
+        self._ruutu.poista_yksikko()
         # tuhoa elämäpalkki
-        self.grafiikka.elamapalkki.poista()
+        self._grafiikka.elamapalkki.poista()
         # tuhoa grafiikka
-        self.grafiikka.poista()
+        self._grafiikka.poista()
         # poista viittaus ominaisuuksiin
-        self.ominaisuudet = None
+        self._ominaisuudet = None
 
     def kyky1(self):
         luokat = ["Jousimiehet", "Parantaja", "Tykisto"]
         if self.__class__.__name__ in luokat:
             # aloittaa kohteiden valitsemisen
-            self.kyky1_kohteet = []
-            self.kyky1_valitsee_kohteita = True
+            self._kyky1_kohteet = []
+            self._kyky1_valitsee_kohteita = True
             self.peru_mahdollisten_ruutujen_nayttaminen()
             self.laske_kantaman_sisalla_olevat_ruudut()
             self.nayta_kantaman_sisalla_olevat_ruudut()
@@ -355,22 +404,22 @@ class Yksikko:
         pass
 
     def peru_kyky1(self):
-        self.kyky1_kohteet = []
-        self.kyky1_valitsee_kohteita = False
+        self._kyky1_kohteet = []
+        self._kyky1_valitsee_kohteita = False
         self.tyhjenna_ruudut_kantamalla()
         self.nayta_mahdolliset_ruudut()
 
     def peru_kyky2(self):
-        self.kyky2_valitsee_kohteita = False
+        self._kyky2_valitsee_kohteita = False
         self.tyhjenna_ruudut_kantamalla()
         self.peru_hyokkayksen_kohteiden_nayttaminen()
         self.nayta_mahdolliset_ruudut()
 
     def pystyy_toimimaan(self):
-        if self.ominaisuudet.nyk_energia < self.kyky1_hinta and self.ominaisuudet.nyk_energia < self.kyky2_hinta and \
-                self.liikkuminen_kaytetty:
+        if self._ominaisuudet.nyk_energia < self.kyky1_hinta and self._ominaisuudet.nyk_energia < self.kyky2_hinta and \
+                self._liikkuminen_kaytetty:
             return False
-        elif self.liikkuminen_kaytetty and self.hyokkays_kaytetty:
+        elif self._liikkuminen_kaytetty and self._hyokkays_kaytetty:
             return False
         else:
             return True

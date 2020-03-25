@@ -1,12 +1,13 @@
 Seuraavaksi:
 -kykyjen numeroiden lukeminen tiedostosta
 -alustava pelin ohjaus
--peliloki, ohjetekstit
 -lisäyksiä kykyihin
 -käyttöliittymän hionta
+-peliloki, ohjetekstit
+-koodin siistiminen
 -polunhaun testaus + näkyvyyden testaus + laskennan testaus
 
-Käyttöliittymä:
+Käyttöliittymän hionta:
 -kykyjen napeissa tooltipit
 -tilavaikutukset yksikön tietoihin
 -tilavaikutukset jotenkin näkyviin yksikössä
@@ -14,19 +15,18 @@ Käyttöliittymä:
 -parantaja: inspiraation visualisaatio jos keksii hyvän tavan
 -kykyjen numerot kuvauksiin yksiköltä
 -peru valinta: tekstin muutokset
--tietokoneen yksiköiden tietojen päivitys vuoron alussa
 
 Lisäyksiä kykyihin:
--jos on taintunut, ei pysty tekemään mitään
 -jousimies: nuolisade odotettu vahinko
 -tykistö: pommitus odotettu vahinko, hidastaa liikkumista, omat: eivät hyökkää takaisin
 -tykistö: ei hyökkäystä liikkumisen jälkeen
 -parantaja: taintuminen, kun kirous loppuu, kirous odotettu vahinko
+-ratsuväki tiedustelu: odotettu vahinko 0
 
 Bugeja:
 -kyky1 visualisointi ei toimi kunnolla (viimeinen valinta ei näy)
 
-Muuta:
--onko hyvä tapa muuttaa objektin arvoja suoraan sen ulkopuolelta?
+Koodin siistiminen
+-private muuttujat, propertyt
 -luokkien tehtävien jakaminen enemmän?
 

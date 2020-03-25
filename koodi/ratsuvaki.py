@@ -7,33 +7,68 @@ class Ratsuvaki(Yksikko):
         self.luo_grafiikka()
 
         # kyky 1 tiedot
-        self.kyky1_hinta = 6
-        self.kyky1_kesto = 3
-        self.kyky1_puolustusvahennys = 2
-        self.kyky1_hyokkaysbonus = 4
+        self._kyky1_hinta = 6
+        self._kyky1_kesto = 3
+        self._kyky1_puolustusvahennys = 2
+        self._kyky1_hyokkaysbonus = 4
 
         # kyky 2 tiedot
-        self.kyky2_hinta = 5
-        self.kyky2_kantama = 3
-        self.kyky2_puolustusvahennys = 2
-        self.kyky2_kesto = 2
+        self._kyky2_hinta = 5
+        self._kyky2_kantama = 3
+        self._kyky2_puolustusvahennys = 2
+        self._kyky2_kesto = 2
 
         # kykyä 2 varten
-        self.alkuperainen_kant = self.ominaisuudet.kantama
+        self._alkuperainen_kant = self._ominaisuudet.kantama
+
+    # propertyt
+
+    @property
+    def kyky1_hinta(self):
+        return self._kyky1_hinta
+
+    @property
+    def kyky1_kesto(self):
+        return self._kyky1_kesto
+
+    @property
+    def kyky1_puolustusvahennys(self):
+        return self._kyky1_puolustusvahennys
+
+    @property
+    def kyky1_hyokkaysbonus(self):
+        return self._kyky1_hyokkaysbonus
+
+    @property
+    def kyky2_hinta(self):
+        return self._kyky2_hinta
+
+    @property
+    def kyky2_kantama(self):
+        return self._kyky2_kantama
+
+    @property
+    def kyky2_puolustusvahennys(self):
+        return self._kyky2_puolustusvahennys
+
+    @property
+    def kyky2_kesto(self):
+        return self._kyky2_kesto
 
     # passiivinen tehty
     # kyky 1 tehty
     # kyky 2 tehty
 
     def kyky1(self):
-        self.lisaa_tilavaikutus(self.kyky1_kesto, self.kyky1_hyokkaysbonus, -self.kyky1_puolustusvahennys, 0, 0, False)
+        super(Ratsuvaki, self).kyky1()
+        self.lisaa_tilavaikutus(self._kyky1_kesto, self._kyky1_hyokkaysbonus, -self._kyky1_puolustusvahennys, 0, 0, False)
         self.kayta_energiaa(self.kyky1_hinta)
         self.hyokatty()
 
     def kyky2(self):
-        self.alkuperainen_kant = self.ominaisuudet.kantama
-        self.ominaisuudet.kantama = self.kyky2_kantama
-        self.kyky2_valitsee_kohteita = True
+        self._alkuperainen_kant = self._ominaisuudet.kantama
+        self._ominaisuudet.kantama = self._kyky2_kantama
+        self._kyky2_valitsee_kohteita = True
         self.peru_mahdollisten_ruutujen_nayttaminen()
         self.laske_kantaman_sisalla_olevat_ruudut()
         self.nayta_kantaman_sisalla_olevat_ruudut()
@@ -48,7 +83,7 @@ class Ratsuvaki(Yksikko):
 
     def peru_kyky2(self):
         super(Ratsuvaki, self).peru_kyky2()
-        self.ominaisuudet.kantama = self.alkuperainen_kant
+        self._ominaisuudet.kantama = self._alkuperainen_kant
 
     def kyky1_nappi_tiedot(self):
         return "Kolmiokiila\n" + "Hinta: " + str(self.kyky1_hinta)

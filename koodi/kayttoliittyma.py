@@ -314,6 +314,10 @@ class Kayttoliittyma(QtWidgets.QMainWindow):
         # määrittelee valitaanko kohdetta vai perutaanko valinta
         if self.valittu_yksikko is not None and self.valitsee_hyokkayksen_kohdetta is False and \
                 self.valittu_yksikko.hyokkays_kaytetty is False:
+            if self.valittu_yksikko.kyky1_valitsee_kohteita:
+                self.valittu_yksikko.peru_kyky1()
+            if self.valittu_yksikko.kyky2_valitsee_kohteita:
+                self.valittu_yksikko.peru_kyky2()
             self.valitse_kohde()
         elif self.valitsee_hyokkayksen_kohdetta:
             self.peru_kohteen_valinta()
@@ -323,6 +327,9 @@ class Kayttoliittyma(QtWidgets.QMainWindow):
         valitse = True
         if self.valittu_yksikko is not None and self.valittu_yksikko.ominaisuudet.nyk_energia >= self.valittu_yksikko.kyky1_hinta:
             if not self.valittu_yksikko.hyokkays_kaytetty:
+                if self.valitsee_hyokkayksen_kohdetta:
+                    self.valittu_yksikko.peru_hyokkayksen_kohteiden_nayttaminen()
+                    self.valitsee_hyokkayksen_kohdetta = False
                 if self.valittu_yksikko.kyky2_valitsee_kohteita:
                     self.valittu_yksikko.peru_kyky2()
                 elif self.valittu_yksikko.kyky1_valitsee_kohteita:
@@ -335,6 +342,9 @@ class Kayttoliittyma(QtWidgets.QMainWindow):
         valitse = True
         if self.valittu_yksikko is not None and self.valittu_yksikko.ominaisuudet.nyk_energia >= self.valittu_yksikko.kyky2_hinta:
             if not self.valittu_yksikko.hyokkays_kaytetty:
+                if self.valitsee_hyokkayksen_kohdetta:
+                    self.valittu_yksikko.peru_hyokkayksen_kohteiden_nayttaminen()
+                    self.valitsee_hyokkayksen_kohdetta = False
                 if self.valittu_yksikko.kyky1_valitsee_kohteita:
                     self.valittu_yksikko.peru_kyky1()
                 elif self.valittu_yksikko.kyky2_valitsee_kohteita:
