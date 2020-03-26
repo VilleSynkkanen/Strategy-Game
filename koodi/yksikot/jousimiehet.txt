@@ -6,4 +6,14 @@ HYOKKAYS: 11
 PUOLUSTUS: 8
 KANTAMA: 4
 PISTEHINTA: 60
+KYVYT:
+jalka_ratsu_vahinko_hyokkays: 1.25
+kyky2_hinta: 5
+kyky2_bonus: 1.1
+kyky2_bonus_ratsuvaki: 1.5
+kyky1_hinta: 6
+kyky1_kohteiden_maara: 3
+kyky1_hyokkayskerroin: 0.9
+kyky1_verenvuoto: 3
+kyky1_verenvuoto_kesto: 3
 LOPPU

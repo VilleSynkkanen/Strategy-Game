@@ -6,4 +6,13 @@ HYOKKAYS: 12
 PUOLUSTUS: 14
 KANTAMA: 1
 PISTEHINTA: 60
+KYVYT:
+kyky1_hinta: 6
+kyky1_kesto: 3
+kyky1_puolustus: 3
+kyky1_liikkuminen: -1
+kyky2_hinta: 7
+kyky2_kantama: 2
+kyky2_bonushyokkays: 2
+kyky2_taintuminen_kesto: 1
 LOPPU

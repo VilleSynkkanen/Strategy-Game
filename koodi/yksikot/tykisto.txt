@@ -6,4 +6,15 @@ HYOKKAYS: 10
 PUOLUSTUS: 5
 KANTAMA: 10
 PISTEHINTA: 60
+KYVYT:
+kyky1_hinta: 8
+kyky1_kohteiden_maara: 7
+kyky1_kantama: 1
+kyky1_hyokkayskerroin: 0.6
+kyky2_hinta: 6
+kyky2_kantama: 3
+kyky2_hyokkayskerroin: 2
+kyky2_verenvuoto: 3
+kyky2_hyokkaysvahennys: 2
+kyky2_kesto: 2
 LOPPU

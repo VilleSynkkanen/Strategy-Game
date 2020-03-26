@@ -4,7 +4,8 @@ from kayttoliittyma import Kayttoliittyma
 from maaston_lukija import Maaston_lukija
 from yksikoiden_lukija import Yksikoiden_lukija
 from polunhaku import Polunhaku
-from time import sleep
+from ajastin import Ajastin
+from PyQt5 import QtCore
 
 
 class Pelinohjain:
@@ -12,9 +13,10 @@ class Pelinohjain:
     def __init__(self):
         # käyttöliittymä
         self.__kayttoliittyma = Kayttoliittyma(self)
+        self.__ajastin = Ajastin()
 
         self.__vuoro = "PLR"      # PLR = pelaaja, COM = tietokone
-        self.__viive = 0.1
+        self.__viive = 10     # ms
 
         # kartan lukeminen
         self.__kartan_lukija = Kartan_lukija()
@@ -47,6 +49,10 @@ class Pelinohjain:
     @property
     def kayttoliittyma(self):
         return self.__kayttoliittyma
+
+    @property
+    def ajastin(self):
+        return self.__ajastin
 
     @property
     def vuoro(self):
@@ -105,6 +111,7 @@ class Pelinohjain:
         # pelaajan vuoron alku
         print("PLR")
         self.__vuoro = "PLR"
+        self.__kayttoliittyma.laita_napit_kayttoon()
         self.__kayttoliittyma.tyhjenna_valinta()
         self.__kayttoliittyma.__valitsee_hyokkayksen_kohdetta = False
         self.__kartta.palauta_pelaajan_toimivat_yksikot()          # myöh: palauta vain ne, jotka eivät ole taintuneita
@@ -131,7 +138,10 @@ class Pelinohjain:
     def __tietokoneen_vuoro(self):
         print("COM")
         self.__vuoro = "COM"
-        sleep(self.__viive)
-        self.vaihda_vuoroa()
+        self.__kayttoliittyma.poista_napit_kaytosta()
+
+        # 1. arg = viive, 2. arg = viiveen jälkeen kutsuttava metodi
+        self.__ajastin.aloita_ajastin(self.__viive, self.vaihda_vuoroa)
+
 
 

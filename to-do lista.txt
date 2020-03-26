@@ -1,16 +1,8 @@
 Seuraavaksi:
--kykyjen numeroiden lukeminen tiedostosta
--alustava pelin ohjaus
--lisäyksiä kykyihin
--käyttöliittymän hionta
--peliloki, ohjetekstit
--polunhaun testaus + näkyvyyden testaus + laskennan testaus
-
-Kykyjen lukeminen:
--jokaista luokkaa varten oma osio (metodi?)
-
-Pelin ohjaus:
--ohjaus pois pelaajalta tietokoneen vuoron ajaksi
+-lisäyksiä kykyihin (pe)
+-käyttöliittymän hionta (pe)
+-peliloki, ohjetekstit (la)
+-polunhaun testaus + näkyvyyden testaus + laskennan testaus (su)
 
 Käyttöliittymän hionta:
 -kykyjen napeissa tooltipit
@@ -20,6 +12,8 @@ Käyttöliittymän hionta:
 -parantaja: inspiraation visualisaatio jos keksii hyvän tavan
 -kykyjen numerot kuvauksiin yksiköltä
 -peru valinta: tekstin muutokset
+-nappien poistaminen käytöstä, kun ne eivät tee mitään
+-desimaaliluvut kokonaisuvuiksi kykyjen numeroissa
 
 Lisäyksiä kykyihin:
 -jousimies: nuolisade odotettu vahinko
@@ -31,6 +25,7 @@ Lisäyksiä kykyihin:
 
 Bugeja:
 -kyky1 visualisointi ei toimi kunnolla (viimeinen valinta ei näy)
+	-ratkaisu(?): timer eikä sleep
 
 Ideoita:
 -käyttöliittymän kokoasetukset tiedostossa
@@ -41,4 +36,7 @@ Ideoita:
 Teköäly
 -tietty liikkumisjärjestys ja kykyjen käyttöjärjestys?
 -ensin kaikki liikkuvat, sitten kykyjen käyttö/hyökkäykset
+
+Tiedostojen lukeminen:
+-virheiden sieto
 

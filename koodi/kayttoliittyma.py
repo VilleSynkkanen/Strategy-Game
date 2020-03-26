@@ -36,7 +36,7 @@ class Kayttoliittyma(QtWidgets.QMainWindow):
         self.__nappi_layout = QtWidgets.QGridLayout()
         self.__paa_layout.addLayout(self.__nappi_layout)
 
-        # buttons
+        # napit
         self.__hyokkaa_nappi = QtWidgets.QPushButton("HYÖKKÄÄ")
         self.__hyokkaa_nappi.setSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Preferred)
         self.__kyky1_nappi = QtWidgets.QPushButton("KYKY 1")
@@ -55,6 +55,17 @@ class Kayttoliittyma(QtWidgets.QMainWindow):
         self.__paata_vuoro_nappi.setSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Preferred)
         self.__tallenna_peli_napi = QtWidgets.QPushButton("TALLENNA PELI")
         self.__tallenna_peli_napi.setSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Preferred)
+
+        self.__napit = []
+        self.__napit.append(self.__hyokkaa_nappi)
+        self.__napit.append(self.__kyky1_nappi)
+        self.__napit.append(self.__kyky2_nappi)
+        self.__napit.append(self.__peru_valinta_nappi)
+        self.__napit.append(self.__yksikon_tiedot_nappi)
+        self.__napit.append(self.__edellinen_yksikko_nappi)
+        self.__napit.append(self.__seuraava_yksikko_nappi)
+        self.__napit.append(self.__paata_vuoro_nappi)
+        self.__napit.append(self.__tallenna_peli_napi)
 
         self.__hyokkaa_nappi.setStyleSheet("font: 10pt Arial")
         self.__kyky1_nappi.setStyleSheet("font: 10pt Arial")
@@ -379,3 +390,11 @@ class Kayttoliittyma(QtWidgets.QMainWindow):
                     valitse = False
                 if valitse:
                     self.__valittu_yksikko.kyky2()
+
+    def poista_napit_kaytosta(self):
+        for nappi in self.__napit:
+            nappi.setEnabled(False)
+
+    def laita_napit_kayttoon(self):
+        for nappi in self.__napit:
+            nappi.setEnabled(True)

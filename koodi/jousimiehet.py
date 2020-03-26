@@ -2,21 +2,21 @@ from yksikko import  Yksikko
 
 class Jousimiehet(Yksikko):
 
-    def __init__(self, omistaja, ruutu, kayttoliittyma, ominaisuudet):
+    def __init__(self, omistaja, ruutu, kayttoliittyma, ominaisuudet, kyvyt):
         super().__init__(omistaja, ruutu, kayttoliittyma, ominaisuudet)
         self.luo_grafiikka()
         # kerroin jalka- ja ratsuväkeä vastaan hyökkäyksessä ja kiiloissa puolustaessa (myös muille yksiköille)
-        self.__jalka_ratsu_vahinko_hyokkays = 1.25
+        self.__jalka_ratsu_vahinko_hyokkays = kyvyt["jalka_ratsu_vahinko_hyokkays"]
 
-        self.__kyky2_hinta = 5
-        self.__kyky2_bonus = 1.1
-        self.__kyky2_bonus_ratsuvaki = 1.5
+        self.__kyky2_hinta = kyvyt["kyky2_hinta"]
+        self.__kyky2_bonus = kyvyt["kyky2_bonus"]
+        self.__kyky2_bonus_ratsuvaki = kyvyt["kyky2_bonus_ratsuvaki"]
 
-        self.__kyky1_hinta = 6
-        self.__kyky1_kohteiden_maara = 3
-        self.__kyky1_hyokkayskerroin = 0.9
-        self.__kyky1_verenvuoto = 3
-        self.__kyky1_verenvuoto_kesto = 3
+        self.__kyky1_hinta = kyvyt["kyky1_hinta"]
+        self.__kyky1_kohteiden_maara = kyvyt["kyky1_kohteiden_maara"]
+        self.__kyky1_hyokkayskerroin = kyvyt["kyky1_hyokkayskerroin"]
+        self.__kyky1_verenvuoto = kyvyt["kyky1_verenvuoto"]
+        self.__kyky1_verenvuoto_kesto = kyvyt["kyky1_verenvuoto_kesto"]
 
     # propertyt
 

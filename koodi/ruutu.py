@@ -61,15 +61,15 @@ class Ruutu:
 
     def lisaa_yksikko(self, tyyppi, omistaja, ominaisuudet):
         if tyyppi == "jalkavaki":
-            self.__yksikko = Jalkavaki(omistaja, self, self.__kayttoliittyma, ominaisuudet)
+            self.__yksikko = Jalkavaki(omistaja, self, self.__kayttoliittyma, ominaisuudet[0], ominaisuudet[1])
         elif tyyppi == "ratsuvaki":
-            self.__yksikko = Ratsuvaki(omistaja, self, self.__kayttoliittyma, ominaisuudet)
+            self.__yksikko = Ratsuvaki(omistaja, self, self.__kayttoliittyma, ominaisuudet[0], ominaisuudet[1])
         elif tyyppi == "jousimiehet":
-            self.__yksikko = Jousimiehet(omistaja, self, self.__kayttoliittyma, ominaisuudet)
+            self.__yksikko = Jousimiehet(omistaja, self, self.__kayttoliittyma, ominaisuudet[0], ominaisuudet[1])
         elif tyyppi == "tykisto":
-            self.__yksikko = Tykisto(omistaja, self, self.__kayttoliittyma, ominaisuudet)
+            self.__yksikko = Tykisto(omistaja, self, self.__kayttoliittyma, ominaisuudet[0], ominaisuudet[1])
         elif tyyppi == "parantaja":
-            self.__yksikko = Parantaja(omistaja, self, self.__kayttoliittyma, ominaisuudet)
+            self.__yksikko = Parantaja(omistaja, self, self.__kayttoliittyma, ominaisuudet[0], ominaisuudet[1])
         return self.__yksikko
 
     def luo_grafiikka(self, koko):

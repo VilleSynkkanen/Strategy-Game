@@ -3,23 +3,23 @@ from time import sleep
 
 class Tykisto(Yksikko):
 
-    def __init__(self, omistaja, ruutu, kayttoliittyma, ominaisuudet):
+    def __init__(self, omistaja, ruutu, kayttoliittyma, ominaisuudet, kyvyt):
         super().__init__(omistaja, ruutu, kayttoliittyma, ominaisuudet)
         self.luo_grafiikka()
 
         # kyky 1 tiedot
-        self.__kyky1_hinta = 8
-        self.__kyky1_kohteiden_maara = 7
-        self.__kyky1_kantama = 1
-        self.__kyky1_hyokkayskerroin = 0.6
+        self.__kyky1_hinta = kyvyt["kyky1_hinta"]
+        self.__kyky1_kohteiden_maara = kyvyt["kyky1_kohteiden_maara"]
+        self.__kyky1_kantama = kyvyt["kyky1_kantama"]
+        self.__kyky1_hyokkayskerroin = kyvyt["kyky1_hyokkayskerroin"]
 
         # kyky 2 tiedot
-        self.__kyky2_hinta = 6
-        self.__kyky2_kantama = 3
-        self.__kyky2_hyokkayskerroin = 2
-        self.__kyky2_verenvuoto = 3
-        self.__kyky2_hyokkaysvahennys = 2
-        self.__kyky2_kesto = 2
+        self.__kyky2_hinta = kyvyt["kyky2_hinta"]
+        self.__kyky2_kantama = kyvyt["kyky2_kantama"]
+        self.__kyky2_hyokkayskerroin = kyvyt["kyky2_hyokkayskerroin"]
+        self.__kyky2_verenvuoto = kyvyt["kyky2_verenvuoto"]
+        self.__kyky2_hyokkaysvahennys = kyvyt["kyky2_hyokkaysvahennys"]
+        self.__kyky2_kesto = kyvyt["kyky2_kesto"]
 
         # kykyä 2 varten (muuttaa hyökkäystä ja kantamaa)
         self.__alkuperainen_hyok = self.ominaisuudet.hyokkays

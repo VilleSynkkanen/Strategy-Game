@@ -6,4 +6,15 @@ HYOKKAYS: 5
 PUOLUSTUS: 8
 KANTAMA: 3
 PISTEHINTA: 60
+KYVYT:
+inspiraatio_kantama: 3
+inspiraatio_kerroin: 1.15
+kyky1_hinta: 6
+kyky1_kohteiden_maara: 1
+kyky1_kantama: 2
+kyky1_parannuskerroin: 3
+kyky2_hinta: 6
+kyky2_kesto: 3
+kyky2_hyokkaysvahennys: 3
+kyky2_puolustusvahennys: 3
 LOPPU

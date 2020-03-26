@@ -2,21 +2,21 @@ from yksikko import  Yksikko
 
 class Ratsuvaki(Yksikko):
 
-    def __init__(self, omistaja, ruutu, kayttoliittyma, ominaisuudet):
+    def __init__(self, omistaja, ruutu, kayttoliittyma, ominaisuudet, kyvyt):
         super().__init__(omistaja, ruutu, kayttoliittyma, ominaisuudet)
         self.luo_grafiikka()
 
         # kyky 1 tiedot
-        self.__kyky1_hinta = 6
-        self.__kyky1_kesto = 3
-        self.__kyky1_puolustusvahennys = 2
-        self.__kyky1_hyokkaysbonus = 4
+        self.__kyky1_hinta = kyvyt["kyky1_hinta"]
+        self.__kyky1_kesto = kyvyt["kyky1_kesto"]
+        self.__kyky1_puolustusvahennys = kyvyt["kyky1_puolustusvahennys"]
+        self.__kyky1_hyokkaysbonus = kyvyt["kyky1_hyokkaysbonus"]
 
         # kyky 2 tiedot
-        self.__kyky2_hinta = 5
-        self.__kyky2_kantama = 3
-        self.__kyky2_puolustusvahennys = 2
-        self.__kyky2_kesto = 2
+        self.__kyky2_hinta = kyvyt["kyky2_hinta"]
+        self.__kyky2_kantama = kyvyt["kyky2_kantama"]
+        self.__kyky2_puolustusvahennys = kyvyt["kyky2_puolustusvahennys"]
+        self.__kyky2_kesto = kyvyt["kyky2_kesto"]
 
         # kykyä 2 varten
         self.__alkuperainen_kant = self.ominaisuudet.kantama

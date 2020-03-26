@@ -2,22 +2,23 @@ from yksikko import  Yksikko
 
 class Jalkavaki(Yksikko):
 
-    def __init__(self, omistaja, ruutu, kayttoliittyma, ominaisuudet):
+    def __init__(self, omistaja, ruutu, kayttoliittyma, ominaisuudet, kyvyt):
         super().__init__(omistaja, ruutu, kayttoliittyma, ominaisuudet)
         self.luo_grafiikka()
         # pelkkä numero (ei prosentti/kerroin)
         # ottaa ensin vahinkoa, sitten paranee
         self.__parannus_hyokkayksessa = 2
 
-        self.__kyky1_hinta = 6
-        self.__kyky1_kesto = 3
-        self.__kyky1_puolustus = 3
-        self.__kyky1_liikkuminen = -1
+        self.__kyky1_hinta = kyvyt["kyky1_hinta"]
+        self.__kyky1_kesto = kyvyt["kyky1_kesto"]
+        self.__kyky1_puolustus = kyvyt["kyky1_puolustus"]
+        self.__kyky1_liikkuminen = kyvyt["kyky1_liikkuminen"]
 
-        self.__kyky2_hinta = 7
-        self.__kyky2_kantama = 2
-        self.__kyky2_bonushyokkays = 2
-        self.__kyky2_taintuminen_kesto = 1
+        self.__kyky2_hinta = kyvyt["kyky2_hinta"]
+        self.__kyky2_kantama = kyvyt["kyky2_kantama"]
+        self.__kyky2_bonushyokkays = kyvyt["kyky2_bonushyokkays"]
+        self.__kyky2_taintuminen_kesto = kyvyt["kyky2_taintuminen_kesto"]
+
 
     # propertyt
 

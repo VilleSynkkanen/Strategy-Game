@@ -6,4 +6,13 @@ HYOKKAYS: 14
 PUOLUSTUS: 10
 KANTAMA: 1
 PISTEHINTA: 60
+KYVYT:
+kyky1_hinta: 6
+kyky1_kesto: 3
+kyky1_puolustusvahennys: 2
+kyky1_hyokkaysbonus: 4
+kyky2_hinta: 5
+kyky2_kantama: 3
+kyky2_puolustusvahennys: 2
+kyky2_kesto: 2
 LOPPU

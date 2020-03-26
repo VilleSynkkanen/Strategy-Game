@@ -4,23 +4,23 @@ from random import randrange
 
 class Parantaja(Yksikko):
 
-    def __init__(self, omistaja, ruutu, kayttoliittyma, ominaisuudet):
+    def __init__(self, omistaja, ruutu, kayttoliittyma, ominaisuudet, kyvyt):
         super().__init__(omistaja, ruutu, kayttoliittyma, ominaisuudet)
         self.luo_grafiikka()
-        self.__inspiraatio_kantama = 3
-        self.__inspiraatio_kerroin = 1.15
+        self.__inspiraatio_kantama = kyvyt["inspiraatio_kantama"]
+        self.__inspiraatio_kerroin = kyvyt["inspiraatio_kerroin"]
 
         # kyky 1 tiedot
-        self.__kyky1_hinta = 6
-        self.__kyky1_kohteiden_maara = 1
-        self.__kyky1_kantama = 2
-        self.__kyky1_parannuskerroin = 3
+        self.__kyky1_hinta = kyvyt["kyky1_hinta"]
+        self.__kyky1_kohteiden_maara = kyvyt["kyky1_kohteiden_maara"]
+        self.__kyky1_kantama = kyvyt["kyky1_kantama"]
+        self.__kyky1_parannuskerroin = kyvyt["kyky1_parannuskerroin"]
 
         # kyky 2 tiedot
-        self.__kyky2_hinta = 6
-        self.__kyky2_kesto = 3
-        self.__kyky2_hyokkaysvahennys = 3
-        self.__kyky2_puolustusvahennys = 3
+        self.__kyky2_hinta = kyvyt["kyky2_hinta"]
+        self.__kyky2_kesto = kyvyt["kyky2_kesto"]
+        self.__kyky2_hyokkaysvahennys = kyvyt["kyky2_hyokkaysvahennys"]
+        self.__kyky2_puolustusvahennys = kyvyt["kyky2_puolustusvahennys"]
 
     # propertyt
 
@@ -108,7 +108,8 @@ class Parantaja(Yksikko):
 
     def kayta_kyky2(self, kohde):
         kohde.hyokkays(self)
-        kohde.lisaa_tilavaikutus(self.kyky2_kesto, -self.kyky2_hyokkaysvahennys, -self.kyky2_puolustusvahennys, 0, 0, False)
+        if kohde is not None:
+            kohde.lisaa_tilavaikutus(self.kyky2_kesto, -self.kyky2_hyokkaysvahennys, -self.kyky2_puolustusvahennys, 0, 0, False)
         self.peru_kyky2()
         self.kayta_energiaa(self.kyky2_hinta)
         self.hyokatty()
