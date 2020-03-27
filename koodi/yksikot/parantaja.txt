@@ -17,4 +17,5 @@ kyky2_hinta: 6
 kyky2_kesto: 3
 kyky2_hyokkaysvahennys: 3
 kyky2_puolustusvahennys: 3
+kyky2_taintumisaika: 1
 LOPPU

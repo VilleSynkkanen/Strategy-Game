@@ -7,16 +7,16 @@ class Ratsuvaki(Yksikko):
         self.luo_grafiikka()
 
         # kyky 1 tiedot
-        self.__kyky1_hinta = kyvyt["kyky1_hinta"]
-        self.__kyky1_kesto = kyvyt["kyky1_kesto"]
-        self.__kyky1_puolustusvahennys = kyvyt["kyky1_puolustusvahennys"]
-        self.__kyky1_hyokkaysbonus = kyvyt["kyky1_hyokkaysbonus"]
+        self.__kyky1_hinta = int(kyvyt["kyky1_hinta"])
+        self.__kyky1_kesto = int(kyvyt["kyky1_kesto"])
+        self.__kyky1_puolustusvahennys = int(kyvyt["kyky1_puolustusvahennys"])
+        self.__kyky1_hyokkaysbonus = int(kyvyt["kyky1_hyokkaysbonus"])
 
         # kyky 2 tiedot
-        self.__kyky2_hinta = kyvyt["kyky2_hinta"]
-        self.__kyky2_kantama = kyvyt["kyky2_kantama"]
-        self.__kyky2_puolustusvahennys = kyvyt["kyky2_puolustusvahennys"]
-        self.__kyky2_kesto = kyvyt["kyky2_kesto"]
+        self.__kyky2_hinta = int(kyvyt["kyky2_hinta"])
+        self.__kyky2_kantama = int(kyvyt["kyky2_kantama"])
+        self.__kyky2_puolustusvahennys = int(kyvyt["kyky2_puolustusvahennys"])
+        self.__kyky2_kesto = int(kyvyt["kyky2_kesto"])
 
         # kykyä 2 varten
         self.__alkuperainen_kant = self.ominaisuudet.kantama
@@ -100,3 +100,16 @@ class Ratsuvaki(Yksikko):
                " hiukan, mutta vahinko kasvaa merkittävästi\n"\
                "-Kyky 2(tiedustelu): Merkitsee kohteen.\n" \
                " Kohteen puolustus kärsii 2 vuoron ajan."
+
+    def __str__(self):
+        return "PASSIIVINEN KYKY:\n{}\nKYKY 1 (KOLMIOKIILA):\n{}\nKYKY 2 (TIEDUSTELU):\n{}"\
+            .format(self.passiivinen_kyky(), self.kyky1_tooltip_teksti(), self.kyky2_tooltip_teksti())
+
+    def passiivinen_kyky(self):
+        return "Voi liikkua myös kyvyn käyttämisen/hyökkäyksen jälkeen\n"
+
+    def kyky1_tooltip_teksti(self):
+        return ""
+
+    def kyky2_tooltip_teksti(self):
+        return ""

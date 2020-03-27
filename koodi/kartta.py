@@ -86,7 +86,7 @@ class Kartta:
 
     def poista_toimivista_yksikoista(self, yksikko):
         # hyökkäyksen kohteiden määrän tarkistus tehdään ennen, kuin kutsutaan tätä metodia
-        if not yksikko.pystyy_toimimaan():
+        if not yksikko.pystyy_toimimaan() and yksikko in self.pelaajan_toimivat_yksikot:
             self.pelaajan_toimivat_yksikot.remove(yksikko)
 
     def palauta_pelaajan_toimivat_yksikot(self):

@@ -1,31 +1,28 @@
 Seuraavaksi:
--lisäyksiä kykyihin (pe)
--käyttöliittymän hionta (pe)
--peliloki, ohjetekstit (la)
+-lisäyksiä kykyihin (la)
+-käyttöliittymän hionta (la)
 -polunhaun testaus + näkyvyyden testaus + laskennan testaus (su)
+-tekoäly (vko)
 
 Käyttöliittymän hionta:
--kykyjen napeissa tooltipit
+-kykyjen napeissa tooltipit, kykyjen numerot kuvauksiin yksiköltä: ratsuväki
 -tilavaikutukset yksikön tietoihin
 -tilavaikutukset jotenkin näkyviin yksikössä
 -pienet viiveet kykyjen visualisoinnissa (parantaja, tykistö, jousimiehet kyky 1) jos saa toimimaan
 -parantaja: inspiraation visualisaatio jos keksii hyvän tavan
--kykyjen numerot kuvauksiin yksiköltä
 -peru valinta: tekstin muutokset
 -nappien poistaminen käytöstä, kun ne eivät tee mitään
--desimaaliluvut kokonaisuvuiksi kykyjen numeroissa
 
 Lisäyksiä kykyihin:
 -jousimies: nuolisade odotettu vahinko
--tykistö: pommitus odotettu vahinko, hidastaa liikkumista, omat: eivät hyökkää takaisin
--tykistö: ei hyökkäystä liikkumisen jälkeen
+-tykistö: pommitus odotettu vahinko
 -parantaja: taintuminen, kun kirous loppuu, kirous odotettu vahinko
 -ratsuväki tiedustelu: odotettu vahinko 0
 -jalkaväki rynnäkkö: tainnutus
 
 Bugeja:
 -kyky1 visualisointi ei toimi kunnolla (viimeinen valinta ei näy)
-	-ratkaisu(?): timer eikä sleep
+	-ratkaisu: timer eikä sleep
 
 Ideoita:
 -käyttöliittymän kokoasetukset tiedostossa
@@ -39,4 +36,13 @@ Teköäly
 
 Tiedostojen lukeminen:
 -virheiden sieto
+
+Ohjetekstit, peliloki
+
+Testaus
+-polunhaku
+-näkyvyys
+-laskenta: vahinko tms.
+-tekoäly
+-tiedostojen luku
 

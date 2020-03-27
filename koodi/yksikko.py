@@ -272,7 +272,9 @@ class Yksikko:
         if puolustaja.__class__.__name__ == "Tykisto" and hyokkaaja.__class__.__name__ == "Tykisto":
             perusvahinko /= 3
 
-        if etaisyys == 1:
+        # jos puolustaja ja hyökkääjä samalla puolella, hyökkääjä ei ota vahinkoa
+        # mahdollista tykistö kyky 1 kohdalla
+        if etaisyys == 1 and puolustaja.omistaja != hyokkaaja.omistaja:
             hyokkaajan_vahinko = (puolustus / hyokkays) * perusvahinko
             if hyokkaajan_vahinko < min_vahinko:
                 hyokkaajan_vahinko = min_vahinko

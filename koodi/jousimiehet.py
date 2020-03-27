@@ -8,15 +8,15 @@ class Jousimiehet(Yksikko):
         # kerroin jalka- ja ratsuväkeä vastaan hyökkäyksessä ja kiiloissa puolustaessa (myös muille yksiköille)
         self.__jalka_ratsu_vahinko_hyokkays = kyvyt["jalka_ratsu_vahinko_hyokkays"]
 
-        self.__kyky2_hinta = kyvyt["kyky2_hinta"]
+        self.__kyky2_hinta = int(kyvyt["kyky2_hinta"])
         self.__kyky2_bonus = kyvyt["kyky2_bonus"]
         self.__kyky2_bonus_ratsuvaki = kyvyt["kyky2_bonus_ratsuvaki"]
 
-        self.__kyky1_hinta = kyvyt["kyky1_hinta"]
-        self.__kyky1_kohteiden_maara = kyvyt["kyky1_kohteiden_maara"]
+        self.__kyky1_hinta = int(kyvyt["kyky1_hinta"])
+        self.__kyky1_kohteiden_maara = int(kyvyt["kyky1_kohteiden_maara"])
         self.__kyky1_hyokkayskerroin = kyvyt["kyky1_hyokkayskerroin"]
-        self.__kyky1_verenvuoto = kyvyt["kyky1_verenvuoto"]
-        self.__kyky1_verenvuoto_kesto = kyvyt["kyky1_verenvuoto_kesto"]
+        self.__kyky1_verenvuoto = int(kyvyt["kyky1_verenvuoto"])
+        self.__kyky1_verenvuoto_kesto = int(kyvyt["kyky1_verenvuoto_kesto"])
 
     # propertyt
 
@@ -104,13 +104,21 @@ class Jousimiehet(Yksikko):
         return "Kiilat\n" + "Hinta: " + str(self.kyky2_hinta)
 
     def __str__(self):
-        return "-Passiivinen kyky: Tekee bonusvahinkoa\n" \
-               " jalka- ja ratsuväkeen hyökkäyksessä\n" \
-               "-Kyky 1 (nuolisade): Ampuu kohdealuetta\n" \
-               " (3 itse valittua vierekkäistä ruutua).\n" \
-               " Tekee vahinkoa alueella oleviin vihollisen\n" \
-               " yksiköihin. Aiheuttaa verenvuotoa X vuoron ajan\n" \
-               "-Kyky 2 (kiilat): Pystyttää kiilat ruutuun,\n" \
-               " jossa on. Kiilat antavat pienen\n" \
-               " puolustusbonuksen kaikkia yksiköitä vastaan\n" \
-               " ja suuren bonuksen ratsuväkeä vastaan"
+        return "PASSIIVINEN KYKY:\n{}\nKYKY 1 (NUOLISADE):\n{}\nKYKY 2 (KIILAT):\n{}"\
+            .format(self.passiivinen_kyky(), self.kyky1_tooltip_teksti(), self.kyky2_tooltip_teksti())
+
+    def passiivinen_kyky(self):
+        return "Tekee " + str(int(100*(self.__jalka_ratsu_vahinko_hyokkays - 1))) + "% bonusvahinkoa jalka- " \
+                                                                             "ja ratsuväkeen \nhyökkäyksessä"
+    def kyky1_tooltip_teksti(self):
+        return "Ampuu kohdealuetta (" + str(self.__kyky1_kohteiden_maara) + " itse valittua vierekkäistä\nruutua)." \
+               "Hyökkää alueella olevien vihollisten kimppuun\n(" \
+               + str(100*self.__kyky1_hyokkayskerroin) +"% normaalista hyökkäyksestä)\n" \
+               "Aiheuttaa " + str(self.__kyky1_verenvuoto) + " verenvuotoa " + str(self.__kyky1_verenvuoto_kesto) \
+               + " vuoron ajan"
+
+    def kyky2_tooltip_teksti(self):
+        return "Pystyttää kiilat ruutuun, " \
+               "jossa on. Kiilat antavat " + str(int(100*(self.__kyky2_bonus - 1))) + "%\n" \
+               "puolustusbonuksen kaikkia yksiköitä vastaan\n" \
+               "ja " + str(int(100*(self.__kyky2_bonus_ratsuvaki - 1))) + "% bonuksen ratsuväkeä vastaan"

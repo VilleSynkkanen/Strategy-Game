@@ -13,7 +13,6 @@ class Pelinohjain:
     def __init__(self):
         # käyttöliittymä
         self.__kayttoliittyma = Kayttoliittyma(self)
-        self.__ajastin = Ajastin()
 
         self.__vuoro = "PLR"      # PLR = pelaaja, COM = tietokone
         self.__viive = 10     # ms
@@ -141,7 +140,4 @@ class Pelinohjain:
         self.__kayttoliittyma.poista_napit_kaytosta()
 
         # 1. arg = viive, 2. arg = viiveen jälkeen kutsuttava metodi
-        self.__ajastin.aloita_ajastin(self.__viive, self.vaihda_vuoroa)
-
-
-
+        Ajastin.aloita_ajastin(self.__viive, self.vaihda_vuoroa)

@@ -1,19 +1,17 @@
 from PyQt5 import QtCore
+from functools import partial
 
 
 class Ajastin:
 
-    def __init__(self):
-        self.metodi = None
-        self.timer = None
+    @staticmethod
+    def aloita_ajastin(aika, metodi):
+        ajastin = QtCore.QTimer()
+        ajastin.timeout.connect(partial(Ajastin.__ajastin_pysaytys, ajastin, metodi))
+        ajastin.start(aika)
 
-    def aloita_ajastin(self, aika, metodi):
-        self.metodi = metodi
-        self.timer = QtCore.QTimer()
-        self.timer.timeout.connect(self.ajastin_pysaytys)
-        self.timer.start(aika)
-
-    def ajastin_pysaytys(self):
-        self.timer.stop()
-        self.timer.deleteLater()
-        self.metodi()
+    @staticmethod
+    def __ajastin_pysaytys(ajastin, metodi):
+        ajastin.stop()
+        ajastin.deleteLater()
+        metodi()

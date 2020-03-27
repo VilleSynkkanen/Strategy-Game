@@ -8,18 +8,20 @@ class Tykisto(Yksikko):
         self.luo_grafiikka()
 
         # kyky 1 tiedot
-        self.__kyky1_hinta = kyvyt["kyky1_hinta"]
-        self.__kyky1_kohteiden_maara = kyvyt["kyky1_kohteiden_maara"]
-        self.__kyky1_kantama = kyvyt["kyky1_kantama"]
+        self.__kyky1_hinta = int(kyvyt["kyky1_hinta"])
+        self.__kyky1_kohteiden_maara = int(kyvyt["kyky1_kohteiden_maara"])
+        self.__kyky1_kantama = int(kyvyt["kyky1_kantama"])
         self.__kyky1_hyokkayskerroin = kyvyt["kyky1_hyokkayskerroin"]
+        self.__kyky1_liikkuminen = int(kyvyt["kyky1_liikkuminen"])
+        self.__kyky1_kesto = int(kyvyt["kyky1_kesto"])
 
         # kyky 2 tiedot
-        self.__kyky2_hinta = kyvyt["kyky2_hinta"]
-        self.__kyky2_kantama = kyvyt["kyky2_kantama"]
+        self.__kyky2_hinta = int(kyvyt["kyky2_hinta"])
+        self.__kyky2_kantama = int(kyvyt["kyky2_kantama"])
         self.__kyky2_hyokkayskerroin = kyvyt["kyky2_hyokkayskerroin"]
-        self.__kyky2_verenvuoto = kyvyt["kyky2_verenvuoto"]
-        self.__kyky2_hyokkaysvahennys = kyvyt["kyky2_hyokkaysvahennys"]
-        self.__kyky2_kesto = kyvyt["kyky2_kesto"]
+        self.__kyky2_verenvuoto = int(kyvyt["kyky2_verenvuoto"])
+        self.__kyky2_hyokkaysvahennys = int(kyvyt["kyky2_hyokkaysvahennys"])
+        self.__kyky2_kesto = int(kyvyt["kyky2_kesto"])
 
         # kykyä 2 varten (muuttaa hyökkäystä ja kantamaa)
         self.__alkuperainen_hyok = self.ominaisuudet.hyokkays
@@ -102,6 +104,7 @@ class Tykisto(Yksikko):
             ruutu.grafiikka.palauta_vari()
             # lisää maaston vahingoittaminen
             if ruutu.yksikko is not None:
+                ruutu.yksikko.lisaa_tilavaikutus(self.__kyky1_kesto, 0, 0, self.__kyky1_liikkuminen, 0, False)
                 ruutu.yksikko.hyokkays(self)
         self.ominaisuudet.hyokkays = alkuperainen
         self.peru_kyky1()
@@ -141,14 +144,25 @@ class Tykisto(Yksikko):
         return "Kanisterilaukaus\n" + "Hinta: " + str(self.kyky2_hinta)
 
     def __str__(self):
-        return "-Passiivinen kyky: pystyy ampumaan \n" \
-               " kaikkien maastojen yli. Ottaa paljon vähemmän\n" \
-               " vahinkoa tykistöltä\n" \
-               "-Kyky 1 (pommitus): ampuu kohdealuetta \n" \
-               " (monta ruutua). Alueella olevat\n" \
-               " yksiköt ottavat vahinkoa (myös omat yksiköt).\n" \
-               " Jos alueella on kiiloja, ne tuhoutuvat\n" \
-               "-Kyky 2 (kanisterilaukaus): lyhyempi kantama.\n" \
-               " Ampuu lähellä olevaa vihollista. Kohde ottaa\n" \
-               " ylimääräistä vahinkoa. Aiheuttaa verenvuotoa\n" \
-               " ja vähentää hyökkäystä X vuoron ajaksi."
+        return "PASSIIVINEN KYKY:\n{}\nKYKY 1 (POMMITUS):\n{}\nKYKY 2 (KANISTERILAUKAUS):\n{}"\
+            .format(self.passiivinen_kyky(), self.kyky1_tooltip_teksti(), self.kyky2_tooltip_teksti())
+
+    def passiivinen_kyky(self):
+        return "Pystyy ampumaan kaikkien maastojen yli.\nOttaa paljon vähemmän" \
+               " vahinkoa tykistöltä"
+
+    def kyky1_tooltip_teksti(self):
+        return "Ampuu kohdealuetta \n" \
+               "(valittu ruutu, sen naapurit ja " + str(self.__kyky1_kohteiden_maara - 5) + \
+                " niiden viereistä ruutua).\nHyökkää kaikkien alueella olevien yksiköiden kimppuun\n(" \
+               + str(100*self.__kyky1_hyokkayskerroin) +"% normaalista hyökkäyksestä).\n" + \
+               "Vähentää kohteiden liikkumista " + str(-self.__kyky1_liikkuminen) + " verran " + \
+               str(self.__kyky1_kesto) + " vuoron\najaksi. "\
+               + "Jos alueella on kiiloja, ne tuhoutuvat\n(ennen hyökkäystä)"
+
+    def kyky2_tooltip_teksti(self):
+        return "Hyökkäys, jonka kantama on " + str(self.__kyky2_kantama) + ".\n" \
+               + str(int(100*(self.__kyky2_hyokkayskerroin - 1))) \
+               + "% lisää hyökkäystä.\nAiheuttaa " + str(self.__kyky2_verenvuoto) + " verenvuotoa" \
+               " ja vähentää hyökkäystä\n" + str(self.__kyky2_hyokkaysvahennys) + " verran " + str(self.__kyky2_kesto) \
+               + " vuoron ajaksi."

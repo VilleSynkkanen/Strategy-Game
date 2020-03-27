@@ -88,7 +88,7 @@ class Kayttoliittyma(QtWidgets.QMainWindow):
         self.__seuraava_yksikko_nappi.clicked.connect(self.__seuraava_yksikko)
         self.__tallenna_peli_napi.clicked.connect(self.__tallenna_peli)
 
-        # add button widgets
+        # nappi widgetit
         self.__nappi_layout.addWidget(self.__hyokkaa_nappi, 0, 0, 1, 2)
         self.__nappi_layout.addWidget(self.__kyky1_nappi, 1, 0)
         self.__nappi_layout.addWidget(self.__kyky2_nappi, 1, 1)
@@ -201,6 +201,16 @@ class Kayttoliittyma(QtWidgets.QMainWindow):
         else:
             self.__kyky1_nappi.setText("KYKY 1")
             self.__kyky2_nappi.setText("KYKY 2")
+        self.__paivita_nappien_tooltipit()
+
+    def __paivita_nappien_tooltipit(self):
+        # nappien tooltipit
+        QtWidgets.QToolTip.setFont(Qt.QFont('SansSerif', 10))
+        if self.__valittu_yksikko is not None:
+            self.__kyky1_nappi.setToolTip(self.__valittu_yksikko.kyky1_tooltip_teksti())
+            self.__kyky2_nappi.setToolTip(self.__valittu_yksikko.kyky2_tooltip_teksti())
+        else:
+            self.__kyky1_nappi.setToolTip("")
 
     def paivita_valitun_yksikon_tiedot(self):
         liikuttu = "ei"
@@ -241,13 +251,13 @@ class Kayttoliittyma(QtWidgets.QMainWindow):
         if self.__pelinohjain.vuoro == "PLR":
             self.__pelinohjain.vaihda_vuoroa()
 
-    # nayttaa tarkemmat tiedot yksiköstä
+    # näyttää tarkemmat tiedot yksiköstä
     def __yksikon_tiedot(self):
         if self.__yksikon_tiedot_aktiivinen:
             self.__peliloki.setText("PELILOKI:\n")
             self.__yksikon_tiedot_aktiivinen = False
         elif self.__valittu_yksikko is not None:
-            self.__peliloki.setText("YKSIKON TIEDOT:\n" + self.__valittu_yksikko.__str__())
+            self.__peliloki.setText(self.__valittu_yksikko.__str__())
             self.__yksikon_tiedot_aktiivinen = True
 
     def __edellinen_yksikko(self):

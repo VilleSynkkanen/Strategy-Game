@@ -7,20 +7,21 @@ class Parantaja(Yksikko):
     def __init__(self, omistaja, ruutu, kayttoliittyma, ominaisuudet, kyvyt):
         super().__init__(omistaja, ruutu, kayttoliittyma, ominaisuudet)
         self.luo_grafiikka()
-        self.__inspiraatio_kantama = kyvyt["inspiraatio_kantama"]
+        self.__inspiraatio_kantama = int(kyvyt["inspiraatio_kantama"])
         self.__inspiraatio_kerroin = kyvyt["inspiraatio_kerroin"]
 
         # kyky 1 tiedot
-        self.__kyky1_hinta = kyvyt["kyky1_hinta"]
-        self.__kyky1_kohteiden_maara = kyvyt["kyky1_kohteiden_maara"]
-        self.__kyky1_kantama = kyvyt["kyky1_kantama"]
-        self.__kyky1_parannuskerroin = kyvyt["kyky1_parannuskerroin"]
+        self.__kyky1_hinta = int(kyvyt["kyky1_hinta"])
+        self.__kyky1_kohteiden_maara = int(kyvyt["kyky1_kohteiden_maara"])
+        self.__kyky1_kantama = int(kyvyt["kyky1_kantama"])
+        self.__kyky1_parannuskerroin = int(kyvyt["kyky1_parannuskerroin"])
 
         # kyky 2 tiedot
-        self.__kyky2_hinta = kyvyt["kyky2_hinta"]
-        self.__kyky2_kesto = kyvyt["kyky2_kesto"]
-        self.__kyky2_hyokkaysvahennys = kyvyt["kyky2_hyokkaysvahennys"]
-        self.__kyky2_puolustusvahennys = kyvyt["kyky2_puolustusvahennys"]
+        self.__kyky2_hinta = int(kyvyt["kyky2_hinta"])
+        self.__kyky2_kesto = int(kyvyt["kyky2_kesto"])
+        self.__kyky2_hyokkaysvahennys = int(kyvyt["kyky2_hyokkaysvahennys"])
+        self.__kyky2_puolustusvahennys = int(kyvyt["kyky2_puolustusvahennys"])
+        self.__kyky2_taintumisaika = int(kyvyt["kyky2_taintumisaika"])
 
     # propertyt
 
@@ -122,13 +123,26 @@ class Parantaja(Yksikko):
 
     # inspiraatio: voi olla monta kerrallaan
     # ei voi inspiroida itseään
-    # pystyy hyökkäämään, mutta on hyvin heikko
+    # pystyy hyökkäämään, mutta on melko heikko
+
     def __str__(self):
-        return "-Passiivinen kyky: inspiroi läheisiä\n" \
-               " yksiköitä (parantaa hyökkäystä ja puolustusta)\n" \
-               "-Kyky 1(alueparannus): parantaa alueella olevia\n" \
-               " yksiköitä tietyn määrän X (alue = 2 ruudun etäisyys)\n" \
-               "-Kyky 2(kirous): kiroaa yhden vihollisyksikön.\n" \
-               " Vihollisen puolustus ja hyökkäys ovat\n" \
-               " heikompia X vuoron ajan. Vihollinen taintuu\n" \
-               " yhden vuoron ajaksi, kun kirous loppuu."
+        return "PASSIIVINEN KYKY:\n{}\nKYKY 1 (ALUEPARANNUS):\n{}\nKYKY 2 (KIROUS):\n{}"\
+            .format(self.passiivinen_kyky(), self.kyky1_tooltip_teksti(), self.kyky2_tooltip_teksti())
+
+    def passiivinen_kyky(self):
+        return "Inspiroi " + str(self.__inspiraatio_kantama) + " ruudun kantamalla olevia omia yksiköitä\n" \
+                                                               "(parantaa hyökkäystä ja puolustusta " + \
+               str(int(100*(self.__inspiraatio_kerroin - 1))) + "%)"
+
+
+    def kyky1_tooltip_teksti(self):
+        return "Parantaa alueella olevia " \
+               "yksiköitä. Alueen keskellä\nolevat yksiköt paranevat enemmän. Alueeseen\nkuuluvat " + str(self.__kyky1_kantama) + \
+               " ruudun säteellä olevat ruudut\nvalitusta ruudusta"
+
+    def kyky2_tooltip_teksti(self):
+        return "Hyökkää vihollisen kimppuun ja kiroaa sen.\n" \
+               "Kohteen hyökkäys vähenee " + str(self.__kyky2_hyokkaysvahennys) + " ja puolustus\nvähenee " \
+               + str(self.__kyky2_puolustusvahennys) + " verran " + str(self.__kyky2_kesto) + \
+               " vuoron ajaksi. Vihollinen taintuu\n" \
+               + str(self.__kyky2_taintumisaika) + " vuoron ajaksi, kun kirous loppuu."

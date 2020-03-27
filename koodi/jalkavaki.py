@@ -9,15 +9,15 @@ class Jalkavaki(Yksikko):
         # ottaa ensin vahinkoa, sitten paranee
         self.__parannus_hyokkayksessa = 2
 
-        self.__kyky1_hinta = kyvyt["kyky1_hinta"]
-        self.__kyky1_kesto = kyvyt["kyky1_kesto"]
-        self.__kyky1_puolustus = kyvyt["kyky1_puolustus"]
-        self.__kyky1_liikkuminen = kyvyt["kyky1_liikkuminen"]
+        self.__kyky1_hinta = int(kyvyt["kyky1_hinta"])
+        self.__kyky1_kesto = int(kyvyt["kyky1_kesto"])
+        self.__kyky1_puolustus = int(kyvyt["kyky1_puolustus"])
+        self.__kyky1_liikkuminen = int(kyvyt["kyky1_liikkuminen"])
 
-        self.__kyky2_hinta = kyvyt["kyky2_hinta"]
-        self.__kyky2_kantama = kyvyt["kyky2_kantama"]
-        self.__kyky2_bonushyokkays = kyvyt["kyky2_bonushyokkays"]
-        self.__kyky2_taintuminen_kesto = kyvyt["kyky2_taintuminen_kesto"]
+        self.__kyky2_hinta = int(kyvyt["kyky2_hinta"])
+        self.__kyky2_kantama = int(kyvyt["kyky2_kantama"])
+        self.__kyky2_bonushyokkays = int(kyvyt["kyky2_bonushyokkays"])
+        self.__kyky2_taintuminen_kesto = int(kyvyt["kyky2_taintuminen_kesto"])
 
 
     # propertyt
@@ -86,11 +86,20 @@ class Jalkavaki(Yksikko):
         return "Rynnäkkö\n" + "Hinta: " + str(self.kyky2_hinta)
 
     def __str__(self):
-        return "-Passiivinen kyky: vahingon aiheuttaminen\n " \
-               " hyökkäyksessä parantaa hieman\n" \
-               "-Kyky 1 (kilpiseinä): Parantaa puolustusta\n" \
-               " X vuoron ajaksi, vähentää liikkumispisteitä\n" \
-               "-Kyky 2 (rynnäkkö): Valitsee kohteen enintään\n" \
-               " Y ruudun päässä. Liikkuu kohteen viereen\n" \
-               " ja hyökkää sen kimppuun. Tekee bonusvahinkoa\n" \
-               " ja tainnuttaa yksikön 1 vuoron ajaksi"
+        return "PASSIIVINEN KYKY:\n{}\nKYKY 1 (KILPISEINÄ):\n{}\nKYKY 2 (RYNNÄKKÖ):\n{}"\
+            .format(self.passiivinen_kyky(), self.kyky1_tooltip_teksti(), self.kyky2_tooltip_teksti())
+
+    def passiivinen_kyky(self):
+        return "Vahingon aiheuttaminen hyökkäyksessä parantaa " + str(self.__parannus_hyokkayksessa)
+
+    def kyky1_tooltip_teksti(self):
+        return "Lisää puolustusta " + str(self.__kyky1_puolustus)  \
+               + " ja vähentää liikumista " + str(-self.__kyky1_liikkuminen) + "\n" + str(self.__kyky1_kesto) \
+               + " vuoron ajaksi"
+
+    def kyky2_tooltip_teksti(self):
+        return "Saa tällä vuorolla käyttämänsä liikkumisen takaisin.\n" \
+               "Voi liikkua " + str(self.__kyky2_kantama) + " ruutua" \
+               " ja hyökätä.\nSaa " + str(self.__kyky2_bonushyokkays) + \
+               " hyökkäystä tämän vuoron ajaksi.\nHyökkäys tainnuttaa vihollisen " + str(self.__kyky2_taintuminen_kesto)\
+                + " vuoron ajaksi."
