@@ -85,3 +85,19 @@ class Yksikon_ominaisuudet:
         return "Tyyppi: {}\nLiikkuminen: {}\nElämä: {}/{}\nEnergia: {}/{}\nHyökkäys: {}\nPuolustus: {}\nKantama: {}"\
             .format(self.__tyyppi, self.__liikkuminen, self.__nyk_elama, self.__max_elama, self.__nyk_energia, self.__max_energia,
                     self.__hyokkays, self.__puolustus, self.__kantama)
+
+    def tilavaikutukset_yhteensa(self):
+        hyokkays = 0
+        puolustus = 0
+        liikkuminen = 0
+        verenvuoto = 0
+        taintuminen = False
+        for vaikutus in self.__tilavaikutukset:
+            hyokkays += vaikutus.hyokkaysbonus
+            puolustus += vaikutus.puolustusbonus
+            liikkuminen += vaikutus.liikkumisbonus
+            verenvuoto += vaikutus.verenvuoto
+            if vaikutus.taintuminen:
+                taintuminen = True
+        return hyokkays, puolustus, liikkuminen, verenvuoto, taintuminen
+

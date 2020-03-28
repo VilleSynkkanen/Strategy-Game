@@ -45,6 +45,9 @@ class Pelinohjain:
         # polunhaku
         self._polunhaku = Polunhaku()
 
+        # nappien alkutila
+        self.kayttoliittyma.paivita_nappien_aktiivisuus()
+
     @property
     def kayttoliittyma(self):
         return self.__kayttoliittyma
@@ -108,12 +111,13 @@ class Pelinohjain:
             yksikko.grafiikka.paivita_tooltip()
 
         # pelaajan vuoron alku
-        print("PLR")
+        #print("PLR")
         self.__vuoro = "PLR"
         self.__kayttoliittyma.laita_napit_kayttoon()
+        self.kayttoliittyma.paivita_nappien_aktiivisuus()
         self.__kayttoliittyma.tyhjenna_valinta()
         self.__kayttoliittyma.__valitsee_hyokkayksen_kohdetta = False
-        self.__kartta.palauta_pelaajan_toimivat_yksikot()          # myöh: palauta vain ne, jotka eivät ole taintuneita
+        self.__kartta.palauta_pelaajan_toimivat_yksikot()
         for yksikko in self.__kartta.pelaajan_yksikot:
             if not yksikko.onko_taintunut():
                 yksikko.palauta_liikkumispisteet()
@@ -135,7 +139,7 @@ class Pelinohjain:
         self.__tietokoneen_vuoro()
 
     def __tietokoneen_vuoro(self):
-        print("COM")
+        #print("COM")
         self.__vuoro = "COM"
         self.__kayttoliittyma.poista_napit_kaytosta()
 

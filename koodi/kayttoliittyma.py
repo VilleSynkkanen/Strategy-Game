@@ -161,7 +161,6 @@ class Kayttoliittyma(QtWidgets.QMainWindow):
         self.move((res_x / 2) - (self.frameSize().width() / 2),
                   (res_y / 2) - (self.frameSize().height() / 2))
 
-
     def valitse_yksikko(self, yksikko):
         self.tyhjenna_valinta()
         # valinnan muuttaminen
@@ -174,10 +173,6 @@ class Kayttoliittyma(QtWidgets.QMainWindow):
         if self.__valittu_yksikko.hyokkays_kaytetty:
             hyokatty = "kyllä"
 
-        # näytä tiedot
-        self.paivita_valitun_yksikon_tiedot()
-        self.__paivita_kykynapit()
-
         # näytä peliloki
         self.__peliloki.setText("PELILOKI:\n")
 
@@ -189,10 +184,16 @@ class Kayttoliittyma(QtWidgets.QMainWindow):
         for ruutu in self.__pelinohjain.kartta.ruudut:
             ruutu.grafiikka.palauta_vari()
 
-        # polkujen näyttäminen
+        # polkujen näyttäminen ja mahdollisten hyökkäysten laskenta (nappia varten)
         if not self.__valittu_yksikko.liikkuminen_kaytetty:
             self.__valittu_yksikko.laske_mahdolliset_ruudut()
         self.__valittu_yksikko.nayta_mahdolliset_ruudut()
+        self.__valittu_yksikko.laske_hyokkayksen_kohteet(False)
+
+        # näytä tiedot
+        self.paivita_valitun_yksikon_tiedot()
+        self.__paivita_kykynapit()
+        self.paivita_peru_nappi()
 
     def __paivita_kykynapit(self):
         if self.__valittu_yksikko is not None:
@@ -203,6 +204,16 @@ class Kayttoliittyma(QtWidgets.QMainWindow):
             self.__kyky2_nappi.setText("KYKY 2")
         self.__paivita_nappien_tooltipit()
 
+    def paivita_peru_nappi(self):
+        if self.__valittu_yksikko is not None:
+            if self.__valitsee_hyokkayksen_kohdetta or self.__valittu_yksikko.kyky1_valitsee_kohteita or \
+                    self.__valittu_yksikko.kyky2_valitsee_kohteita:
+                self.__peru_valinta_nappi.setText("PERU KOHTEEN\nVALINTA")
+            else:
+                self.__peru_valinta_nappi.setText("POISTA YKSIKÖN\nVALINTA")
+        else:
+            self.__peru_valinta_nappi.setText("PERU\nVALINTA")
+
     def __paivita_nappien_tooltipit(self):
         # nappien tooltipit
         QtWidgets.QToolTip.setFont(Qt.QFont('SansSerif', 10))
@@ -212,6 +223,44 @@ class Kayttoliittyma(QtWidgets.QMainWindow):
         else:
             self.__kyky1_nappi.setToolTip("")
 
+    def paivita_nappien_aktiivisuus(self):
+        # määrittelee, tekevätkö napit tässä tilanteessa mitään ja aktivoi ne tilanteen mukaan
+        # mahdolliset kohteet kantamalla tulisi olla laskettu tässä vaiheessa
+        self.__tallenna_peli_napi.setEnabled(False)
+        if self.__valittu_yksikko is None:
+            self.__hyokkaa_nappi.setEnabled(False)
+            self.__kyky1_nappi.setEnabled(False)
+            self.__kyky2_nappi.setEnabled(False)
+            self.__peru_valinta_nappi.setEnabled(False)
+            self.__yksikon_tiedot_nappi.setEnabled(False)
+        else:
+            self.__peru_valinta_nappi.setEnabled(True)
+            self.__yksikon_tiedot_nappi.setEnabled(True)
+            if not self.__valittu_yksikko.hyokkays_kaytetty:
+                if len(self.__valittu_yksikko.hyokkayksen_kohteet) > 0:
+                    self.__hyokkaa_nappi.setEnabled(True)
+                else:
+                    self.__hyokkaa_nappi.setEnabled(False)
+                if self.valittu_yksikko.kyky1_voi_kayttaa():
+                    self.__kyky1_nappi.setEnabled(True)
+                else:
+                    self.__kyky1_nappi.setEnabled(False)
+                if self.valittu_yksikko.kyky2_voi_kayttaa():
+                    self.__kyky2_nappi.setEnabled(True)
+                else:
+                    self.__kyky2_nappi.setEnabled(False)
+            else:
+                self.__hyokkaa_nappi.setEnabled(False)
+                self.__kyky1_nappi.setEnabled(False)
+                self.__kyky2_nappi.setEnabled(False)
+            # täytyy laskea uudestaan, jotta ei tyhjenisi kykyjen tarkastuksen kohdalla
+            # voi tapahtua ainakin tykistöllä
+            self.__valittu_yksikko.laske_hyokkayksen_kohteet(False)
+        if len(self.pelinohjain.kartta.pelaajan_toimivat_yksikot) == 0 or \
+                len(self.pelinohjain.kartta.pelaajan_toimivat_yksikot) == 1 and self.valittu_yksikko is not None:
+            self.__seuraava_yksikko_nappi.setEnabled(False)
+            self.__edellinen_yksikko_nappi.setEnabled(False)
+
     def paivita_valitun_yksikon_tiedot(self):
         liikuttu = "ei"
         hyokatty = "ei"
@@ -219,6 +268,10 @@ class Kayttoliittyma(QtWidgets.QMainWindow):
             liikuttu = "kyllä"
         if self.__valittu_yksikko.hyokkays_kaytetty:
             hyokatty = "kyllä"
+
+        # nappien päivitys
+        self.paivita_peru_nappi()
+        self.paivita_nappien_aktiivisuus()
 
         self.__perustiedot.setText("Perustiedot:\n" + self.__valittu_yksikko.ominaisuudet.__str__() +
                                  "\nLiikkuminen käytetty: " + liikuttu + "\n"
@@ -246,6 +299,8 @@ class Kayttoliittyma(QtWidgets.QMainWindow):
 
             # päivitä napit
             self.__paivita_kykynapit()
+            self.paivita_peru_nappi()
+            self.paivita_nappien_aktiivisuus()
 
     def __paata_vuoro(self):
         if self.__pelinohjain.vuoro == "PLR":
@@ -351,10 +406,16 @@ class Kayttoliittyma(QtWidgets.QMainWindow):
         # värjää mahdolliset kohteet, poistaa ruutujen värjäyksen
         self.__valittu_yksikko.peru_mahdollisten_ruutujen_nayttaminen()
         self.__valittu_yksikko.laske_hyokkayksen_kohteet(True)
+        self.paivita_peru_nappi()
+        self.paivita_nappien_aktiivisuus()
 
     def peru_kohteen_valinta(self):
         self.__valittu_yksikko.peru_hyokkayksen_kohteiden_nayttaminen()
         self.__valitsee_hyokkayksen_kohdetta = False
+        # lasketaan uudestaan nappejen aktiivisuuden määrittelyä varten
+        self.__valittu_yksikko.laske_hyokkayksen_kohteet(False)
+        self.paivita_peru_nappi()
+        self.paivita_nappien_aktiivisuus()
 
     def __hyokkaa(self):
         # määrittelee valitaanko kohdetta vai perutaanko valinta

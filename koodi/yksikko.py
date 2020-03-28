@@ -27,8 +27,24 @@ class Yksikko:
         self.__kyky1_kohteet = []
 
         self.__kyky2_valitsee_kohteita = False
+        self.__visualisointi_viive = 200
+
+        # hyökkäyksessä aiheutettava tilavaikutus
+        self.__hyokkays_vaikutus = None
 
     # propertyt vain luku-muuttujia varten
+    @property
+    def hyokkays_vaikutus(self):
+        return self.__hyokkays_vaikutus
+
+    @hyokkays_vaikutus.setter
+    def hyokkays_vaikutus(self, arvo):
+        self.__hyokkays_vaikutus = arvo
+
+    @property
+    def visualisointi_viive(self):
+        return self.__visualisointi_viive
+
     @property
     def liikkuminen_kaytetty(self):
         return self.__liikkuminen_kaytetty
@@ -115,7 +131,6 @@ class Yksikko:
         self.__mahdolliset_ruudut = []
 
     def laske_hyokkayksen_kohteet(self, nayta):
-        # implementoi line of sight sääntö
         # laskee kantamalla olevat ruudut ja lisää kohteisiin niissä olevat viholliset
         self.__hyokkayksen_kohteet = []
         self.laske_kantaman_sisalla_olevat_ruudut()
@@ -155,7 +170,8 @@ class Yksikko:
             tukibonus = "ei"
             if flanking is True:
                 tukibonus = "kyllä"
-            vihollinen.grafiikka.hyokkays_tootip(hyok_vahinko, puol_vahinko, tukibonus)
+            if self.__class__.__name__ != "Ratsuvaki" or not self.kyky2_valitsee_kohteita:
+                vihollinen.grafiikka.hyokkays_tootip(hyok_vahinko, puol_vahinko, tukibonus)
 
     def __tyhjenna_hyokkayksen_kohteet(self):
         self.__hyokkayksen_kohteet = []
@@ -176,6 +192,7 @@ class Yksikko:
         self.__grafiikka.paivita_sijainti(self.__ruutu)
         self.liikuttu()
         self.laske_hyokkayksen_kohteet(False)
+        self.kayttoliittyma.paivita_nappien_aktiivisuus()
         if len(self.__hyokkayksen_kohteet) == 0 or self.__hyokkays_kaytetty:
             # poista yksiköistä, jotka voivat vielä tehdä jotain
             self.__kayttoliittyma.pelinohjain.kartta.poista_toimivista_yksikoista(self)
@@ -184,7 +201,8 @@ class Yksikko:
         self.peru_mahdollisten_ruutujen_nayttaminen()
         self.__liikkuminen_kaytetty = True
         self.__mahdolliset_ruudut = []
-        self.__kayttoliittyma.paivita_valitun_yksikon_tiedot()
+        if self == self.__kayttoliittyma.valittu_yksikko:
+            self.__kayttoliittyma.paivita_valitun_yksikon_tiedot()
 
     def palauta_liikkumispisteet(self):
         self.__liikkuminen_kaytetty = False
@@ -212,7 +230,8 @@ class Yksikko:
             if not self.__liikkuminen_kaytetty:
                 self.laske_mahdolliset_ruudut()
                 self.nayta_mahdolliset_ruudut()
-        self.__kayttoliittyma.paivita_valitun_yksikon_tiedot()
+        if self == self.__kayttoliittyma.valittu_yksikko:
+            self.__kayttoliittyma.paivita_valitun_yksikon_tiedot()
         # poista yksiköistä, jotka voivat vielä tehdä jotain
         self.__kayttoliittyma.pelinohjain.kartta.poista_toimivista_yksikoista(self)
 
@@ -222,6 +241,11 @@ class Yksikko:
             for vihollinen in hyokkaaja.hyokkayksen_kohteet:
                 vihollinen.grafiikka.palauta_vari()
             self.__kayttoliittyma.peru_kohteen_valinta()
+        # jos hyökkäykseen liittyy tilavaikutus, se lisätään hyökkäyksen jälkeen
+        if hyokkaaja.hyokkays_vaikutus is not None:
+            v = hyokkaaja.hyokkays_vaikutus
+            self.lisaa_tilavaikutus(v.kesto, v.hyokkaysbonus, v.puolustusbonus, v.liikkumisbonus,
+                                    v.verenvuoto, v.taintuminen)
         hyokkaaja.hyokatty()
 
     def __laske_vahinko(self, hyokkaaja, puolustaja, odotettu):
@@ -323,7 +347,7 @@ class Yksikko:
         if self.__ominaisuudet.nyk_elama > self.__ominaisuudet.max_elama:
             self.__ominaisuudet.__nyk_elama = self.__ominaisuudet.max_elama
         self.__grafiikka.paivita_tooltip()
-        print("Parannus: ", maara)
+        #print("Parannus: ", maara)
 
     # saa yhden energian
     def saa_energiaa(self):
@@ -333,9 +357,10 @@ class Yksikko:
     def kayta_energiaa(self, maara):
         self.__ominaisuudet.nyk_energia -= maara
 
-    def lisaa_tilavaikutus(self, kesto, hyokkays, puolustus, liikkuminen, verenvuoto, taintuminen):
-        vaikutus = Tilavaikutus(self, kesto, hyokkays, puolustus, liikkuminen, verenvuoto, taintuminen)
+    def lisaa_tilavaikutus(self, kesto, hyokkays, puolustus, liikkuminen, verenvuoto, taintuminen, loppuvaikutus=None):
+        vaikutus = Tilavaikutus(self, kesto, hyokkays, puolustus, liikkuminen, verenvuoto, taintuminen, loppuvaikutus)
         self.__ominaisuudet.tilavaikutukset.append(vaikutus)
+        self.grafiikka.elamapalkki.paivita_tilavaikutukset()
 
     def muuta_hyokkaysta(self, maara):
         self.__ominaisuudet.hyokkays += maara
@@ -364,6 +389,12 @@ class Yksikko:
                 self.muuta_puolustusta(-vaikutus.puolustusbonus)
                 self.muuta_liikkumista(-vaikutus.liikkumisbonus)
                 self.__ominaisuudet.tilavaikutukset.remove(vaikutus)
+                if vaikutus.loppuvaikutus is not None:
+                    v = vaikutus.loppuvaikutus
+                    self.lisaa_tilavaikutus(v.kesto, v.hyokkaysbonus, v.puolustusbonus, v.liikkumisbonus,
+                                            v.verenvuoto, v.taintuminen)
+                    #print("loppuvaikutus")
+        self.grafiikka.elamapalkki.paivita_tilavaikutukset()
 
     def __inspiraatio_bonus(self):
         # käy läpi kaikki yksiköt ja tarkistaa, onko parantaja inspiraation kantamalla, jos on, lisätään bonusta
@@ -404,6 +435,7 @@ class Yksikko:
             self.peru_mahdollisten_ruutujen_nayttaminen()
             self.laske_kantaman_sisalla_olevat_ruudut()
             self.nayta_kantaman_sisalla_olevat_ruudut()
+            self.kayttoliittyma.paivita_peru_nappi()
 
     def kyky2(self):
         pass
@@ -419,12 +451,14 @@ class Yksikko:
         self.__kyky1_valitsee_kohteita = False
         self.tyhjenna_ruudut_kantamalla()
         self.nayta_mahdolliset_ruudut()
+        self.kayttoliittyma.paivita_peru_nappi()
 
     def peru_kyky2(self):
         self.__kyky2_valitsee_kohteita = False
         self.tyhjenna_ruudut_kantamalla()
         self.peru_hyokkayksen_kohteiden_nayttaminen()
         self.nayta_mahdolliset_ruudut()
+        self.kayttoliittyma.paivita_peru_nappi()
 
     def pystyy_toimimaan(self):
         if self.__ominaisuudet.nyk_energia < self.kyky1_hinta and \

@@ -1,4 +1,5 @@
-from yksikko import  Yksikko
+from yksikko import Yksikko
+from ajastin import Ajastin
 
 class Jousimiehet(Yksikko):
 
@@ -74,7 +75,7 @@ class Jousimiehet(Yksikko):
                 ruutu.grafiikka.muuta_vari(ruutu.grafiikka.valittu_kohteeksi_vari)
             if len(self.kyky1_kohteet) == self.kyky1_kohteiden_maara:
                 # hyökkää, kun tarpeeksi kohteita on valittu
-                self.__kyky1_hyokkays()
+                Ajastin.aloita_ajastin(self.visualisointi_viive, self.__kyky1_hyokkays)
 
     # jousimiesten hyökkäystä muutetaan hyökkäysten ajaksi
     # normaalit hyökkäyssäännöt pätevät
@@ -97,6 +98,16 @@ class Jousimiehet(Yksikko):
             self.kayta_energiaa(self.kyky2_hinta)
             self.hyokatty()
 
+    def kyky1_voi_kayttaa(self):
+        if self.ominaisuudet.nyk_energia >= self.__kyky1_hinta:
+            return True
+        return False
+
+    def kyky2_voi_kayttaa(self):
+        if self.ominaisuudet.nyk_energia >= self.__kyky2_hinta and self.ruutu.kiilat is None:
+            return True
+        return False
+
     def kyky1_nappi_tiedot(self):
         return "Nuolisade\n" + "Hinta: " + str(self.kyky1_hinta)
 
@@ -104,7 +115,7 @@ class Jousimiehet(Yksikko):
         return "Kiilat\n" + "Hinta: " + str(self.kyky2_hinta)
 
     def __str__(self):
-        return "PASSIIVINEN KYKY:\n{}\nKYKY 1 (NUOLISADE):\n{}\nKYKY 2 (KIILAT):\n{}"\
+        return "PASSIIVINEN KYKY:\n{}\n\nKYKY 1 (NUOLISADE):\n{}\n\nKYKY 2 (KIILAT):\n{}"\
             .format(self.passiivinen_kyky(), self.kyky1_tooltip_teksti(), self.kyky2_tooltip_teksti())
 
     def passiivinen_kyky(self):

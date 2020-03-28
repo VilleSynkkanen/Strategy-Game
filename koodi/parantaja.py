@@ -1,6 +1,9 @@
 from yksikko import Yksikko
+from tilavaikutus import Tilavaikutus
 from math import sqrt
 from random import randrange
+from ajastin import Ajastin
+
 
 class Parantaja(Yksikko):
 
@@ -76,14 +79,17 @@ class Parantaja(Yksikko):
         # lisätään kantaman päässä olevat ruudut, sitten käytetään kyky
         if ruutu in self.ruudut_kantamalla:
             self.kyky1_kohteet.append(ruutu)
+            ruutu.grafiikka.muuta_vari(ruutu.grafiikka.valittu_kohteeksi_vari)
             for Ruutu in self.kayttoliittyma.pelinohjain.kartta.ruudut:
                 if self.kayttoliittyma.pelinohjain.polunhaku.heuristiikka(ruutu, Ruutu) <= self.kyky1_kantama and \
                         Ruutu not in self.kyky1_kohteet:
                     self.kyky1_kohteet.append(Ruutu)
-            self.__kayta_kyky1()
+                    Ruutu.grafiikka.muuta_vari(Ruutu.grafiikka.valittu_kohteeksi_vari)
+            Ajastin.aloita_ajastin(self.visualisointi_viive, self.__kayta_kyky1)
 
     def __kayta_kyky1(self):
         for ruutu in self.kyky1_kohteet:
+            ruutu.grafiikka.palauta_vari()
             if ruutu.yksikko is not None and ruutu.yksikko.omistaja == self.omistaja:
                 # etäisyys keskimmäisestä ruudusta
                 etaisyys = self.kayttoliittyma.pelinohjain.polunhaku.heuristiikka(self.kyky1_kohteet[0], ruutu)
@@ -110,10 +116,24 @@ class Parantaja(Yksikko):
     def kayta_kyky2(self, kohde):
         kohde.hyokkays(self)
         if kohde is not None:
-            kohde.lisaa_tilavaikutus(self.kyky2_kesto, -self.kyky2_hyokkaysvahennys, -self.kyky2_puolustusvahennys, 0, 0, False)
+            # jos luo tilavaikutuksen, jolla ei ole "omistajaa", omistaja on None
+            loppuvaikutus = Tilavaikutus(None , self.__kyky2_taintumisaika, 0, 0, 0, 0, True)
+            kohde.lisaa_tilavaikutus(self.kyky2_kesto, -self.kyky2_hyokkaysvahennys, -self.kyky2_puolustusvahennys,
+                                     0, 0, False, loppuvaikutus)
         self.peru_kyky2()
         self.kayta_energiaa(self.kyky2_hinta)
         self.hyokatty()
+
+    def kyky1_voi_kayttaa(self):
+        if self.ominaisuudet.nyk_energia >= self.__kyky1_hinta:
+            return True
+        return False
+
+    def kyky2_voi_kayttaa(self):
+        if self.ominaisuudet.nyk_energia >= self.__kyky2_hinta:
+            if len(self.hyokkayksen_kohteet) > 0:
+                return True
+        return False
 
     def kyky1_nappi_tiedot(self):
         return "Alueparannus\n" + "Hinta: " + str(self.kyky1_hinta)
@@ -126,7 +146,7 @@ class Parantaja(Yksikko):
     # pystyy hyökkäämään, mutta on melko heikko
 
     def __str__(self):
-        return "PASSIIVINEN KYKY:\n{}\nKYKY 1 (ALUEPARANNUS):\n{}\nKYKY 2 (KIROUS):\n{}"\
+        return "PASSIIVINEN KYKY:\n{}\n\nKYKY 1 (ALUEPARANNUS):\n{}\n\nKYKY 2 (KIROUS):\n{}"\
             .format(self.passiivinen_kyky(), self.kyky1_tooltip_teksti(), self.kyky2_tooltip_teksti())
 
     def passiivinen_kyky(self):

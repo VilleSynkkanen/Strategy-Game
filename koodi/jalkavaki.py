@@ -1,4 +1,5 @@
 from yksikko import  Yksikko
+from tilavaikutus import Tilavaikutus
 
 class Jalkavaki(Yksikko):
 
@@ -78,6 +79,23 @@ class Jalkavaki(Yksikko):
         self.kayta_energiaa(self.kyky2_hinta)
         self.palauta_liikkumispisteet()
         self.kayttoliittyma.valitse_yksikko(self)   # helpoin tapa "resetoida" vuoro
+        self.hyokkays_vaikutus = Tilavaikutus(None, self.__kyky2_taintuminen_kesto, 0, 0, 0, 0, True)
+
+    def kasittele_tilavaikutukset(self):
+        super(Jalkavaki, self).kasittele_tilavaikutukset()
+        # jos kyky 2 on antanut hyökkäykseen vaikutuksen, se poistetaan vuoron lopussa
+        if self.hyokkays_vaikutus is not None:
+            self.hyokkays_vaikutus = None
+
+    def kyky1_voi_kayttaa(self):
+        if self.ominaisuudet.nyk_energia >= self.__kyky1_hinta:
+            return True
+        return False
+
+    def kyky2_voi_kayttaa(self):
+        if self.ominaisuudet.nyk_energia >= self.__kyky2_hinta:
+            return True
+        return False
 
     def kyky1_nappi_tiedot(self):
         return "Kilpiseinä\n" + "Hinta: " + str(self.kyky1_hinta)
@@ -86,7 +104,7 @@ class Jalkavaki(Yksikko):
         return "Rynnäkkö\n" + "Hinta: " + str(self.kyky2_hinta)
 
     def __str__(self):
-        return "PASSIIVINEN KYKY:\n{}\nKYKY 1 (KILPISEINÄ):\n{}\nKYKY 2 (RYNNÄKKÖ):\n{}"\
+        return "PASSIIVINEN KYKY:\n{}\n\nKYKY 1 (KILPISEINÄ):\n{}\n\nKYKY 2 (RYNNÄKKÖ):\n{}"\
             .format(self.passiivinen_kyky(), self.kyky1_tooltip_teksti(), self.kyky2_tooltip_teksti())
 
     def passiivinen_kyky(self):

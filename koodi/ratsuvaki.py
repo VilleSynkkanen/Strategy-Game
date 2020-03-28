@@ -1,5 +1,6 @@
 from yksikko import  Yksikko
 
+
 class Ratsuvaki(Yksikko):
 
     def __init__(self, omistaja, ruutu, kayttoliittyma, ominaisuudet, kyvyt):
@@ -74,7 +75,8 @@ class Ratsuvaki(Yksikko):
         self.laske_kantaman_sisalla_olevat_ruudut()
         self.nayta_kantaman_sisalla_olevat_ruudut()
         self.laske_hyokkayksen_kohteet(True)
-        self.nayta_hyokkayksen_kohteet()
+        #self.nayta_hyokkayksen_kohteet()
+        self.kayttoliittyma.paivita_peru_nappi()
 
     def kayta_kyky2(self, kohde):
         kohde.lisaa_tilavaikutus(self.kyky2_kesto, 0, -self.kyky2_puolustusvahennys, 0, 0, False)
@@ -86,6 +88,21 @@ class Ratsuvaki(Yksikko):
         super(Ratsuvaki, self).peru_kyky2()
         self.ominaisuudet.kantama = self.__alkuperainen_kant
 
+    def kyky1_voi_kayttaa(self):
+        if self.ominaisuudet.nyk_energia >= self.__kyky1_hinta:
+            return True
+        return False
+
+    def kyky2_voi_kayttaa(self):
+        if self.ominaisuudet.nyk_energia >= self.__kyky2_hinta:
+            self.__alkuperainen_kant = self.ominaisuudet.kantama
+            self.ominaisuudet.kantama = self.kyky2_kantama
+            self.laske_hyokkayksen_kohteet(False)
+            self.ominaisuudet.kantama = self.__alkuperainen_kant
+            if len(self.hyokkayksen_kohteet) > 0:
+                return True
+        return False
+
     def kyky1_nappi_tiedot(self):
         return "Kolmiokiila\n" + "Hinta: " + str(self.kyky1_hinta)
 
@@ -93,23 +110,19 @@ class Ratsuvaki(Yksikko):
         return "Tiedustelu\n" + "Hinta: " + str(self.kyky2_hinta)
 
     def __str__(self):
-        return "-Passiivinen kyky: voi liikkua myös\n" \
-               " kyvyn käyttämisen/hyökkäyksen jälkeen\n" \
-               "-Kyky 1(kolmiokiila): Menee kiilaan 3 vuoron\n" \
-               " ajaksi. Kiilassa ollessaan puolustus vähenee\n" \
-               " hiukan, mutta vahinko kasvaa merkittävästi\n"\
-               "-Kyky 2(tiedustelu): Merkitsee kohteen.\n" \
-               " Kohteen puolustus kärsii 2 vuoron ajan."
-
-    def __str__(self):
-        return "PASSIIVINEN KYKY:\n{}\nKYKY 1 (KOLMIOKIILA):\n{}\nKYKY 2 (TIEDUSTELU):\n{}"\
+        return "PASSIIVINEN KYKY:\n{}\n\nKYKY 1 (KOLMIOKIILA):\n{}\n\nKYKY 2 (TIEDUSTELU):\n{}"\
             .format(self.passiivinen_kyky(), self.kyky1_tooltip_teksti(), self.kyky2_tooltip_teksti())
 
     def passiivinen_kyky(self):
-        return "Voi liikkua myös kyvyn käyttämisen/hyökkäyksen jälkeen\n"
+        return "Voi liikkua myös kyvyn käyttämisen tai hyökkäyksen\njälkeen"
 
     def kyky1_tooltip_teksti(self):
-        return ""
+        return "Lisää hyökkäystä " + str(self.__kyky1_hyokkaysbonus)  \
+               + " ja vähentää puolustusta " + str(-self.__kyky1_puolustusvahennys) + "\n" + str(self.__kyky1_kesto) \
+               + " vuoron ajaksi"
 
     def kyky2_tooltip_teksti(self):
-        return ""
+        return "Tiedustelee enintään " + str(self.__kyky2_kantama) + " ruudun päässä olevan kohteen\n" \
+                                                                   "(täytyy olla näkyvissä)." \
+               " Kohteen puolustus vähenee\n" + str(self.__kyky2_puolustusvahennys) + " verran " \
+               + str(self.__kyky2_kesto) + " vuoron ajaksi."

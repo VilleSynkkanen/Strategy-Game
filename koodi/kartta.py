@@ -92,7 +92,8 @@ class Kartta:
     def palauta_pelaajan_toimivat_yksikot(self):
         self.__pelaajan_toimivat_yksikot = []
         for yksikko in self.__pelaajan_yksikot:
-            self.pelaajan_toimivat_yksikot.append(yksikko)
+            if not yksikko.onko_taintunut():
+                self.pelaajan_toimivat_yksikot.append(yksikko)
 
     def nakyvyys(self, alku, loppu):
         # algoritmi: edetään step * pituus verran pisteiden välistä suoraa ja tarkistetaan, onko se ruudussa, joka ei

@@ -1,5 +1,6 @@
 from yksikko import Yksikko
 from time import sleep
+from ajastin import Ajastin
 
 class Tykisto(Yksikko):
 
@@ -90,7 +91,7 @@ class Tykisto(Yksikko):
                         Ruutu.grafiikka.muuta_vari(Ruutu.grafiikka.valittu_kohteeksi_vari)
         if len(self.kyky1_kohteet) >= self.kyky1_kohteiden_maara:
             # hyökkää, kun tarpeeksi kohteita on valittu
-            self.__kyky1_hyokkays()
+            Ajastin.aloita_ajastin(self.visualisointi_viive, self.__kyky1_hyokkays)
 
     # normaalit hyökkäyssäännöt pätevät
     # hyökkäyksen muuttaminen väliaikaisesti
@@ -136,6 +137,21 @@ class Tykisto(Yksikko):
         super(Tykisto, self).peru_kyky2()
         self.ominaisuudet.hyokkays = self.__alkuperainen_hyok
         self.ominaisuudet.kantama = self.__alkuperainen_kant
+
+    def kyky1_voi_kayttaa(self):
+        if self.ominaisuudet.nyk_energia >= self.__kyky1_hinta:
+            return True
+        return False
+
+    def kyky2_voi_kayttaa(self):
+        if self.ominaisuudet.nyk_energia >= self.__kyky2_hinta:
+            self.__alkuperainen_kant = self.ominaisuudet.kantama
+            self.ominaisuudet.kantama = self.kyky2_kantama
+            self.laske_hyokkayksen_kohteet(False)
+            self.ominaisuudet.kantama = self.__alkuperainen_kant
+            if len(self.hyokkayksen_kohteet) > 0:
+                return True
+        return False
         
     def kyky1_nappi_tiedot(self):
         return "Pommitus\n" + "Hinta: " + str(self.kyky1_hinta)
@@ -144,7 +160,7 @@ class Tykisto(Yksikko):
         return "Kanisterilaukaus\n" + "Hinta: " + str(self.kyky2_hinta)
 
     def __str__(self):
-        return "PASSIIVINEN KYKY:\n{}\nKYKY 1 (POMMITUS):\n{}\nKYKY 2 (KANISTERILAUKAUS):\n{}"\
+        return "PASSIIVINEN KYKY:\n{}\n\nKYKY 1 (POMMITUS):\n{}\n\nKYKY 2 (KANISTERILAUKAUS):\n{}"\
             .format(self.passiivinen_kyky(), self.kyky1_tooltip_teksti(), self.kyky2_tooltip_teksti())
 
     def passiivinen_kyky(self):
