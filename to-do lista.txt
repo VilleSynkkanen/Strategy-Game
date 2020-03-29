@@ -1,12 +1,6 @@
 Seuraavaksi:
--lisäyksiä
 -polunhaun testaus + näkyvyyden testaus + laskennan testaus
 -tekoäly
-
-Lisäyksiä
--yksikön tiedot -> peliloki (tekstin muutos)
--jousimies: nuolisade odotettu vahinko
--tykistö: pommitus odotettu vahinko
 
 Ideoita:
 -käyttöliittymän kokoasetukset tiedostossa

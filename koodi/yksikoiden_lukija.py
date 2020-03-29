@@ -31,7 +31,6 @@ class Yksikoiden_lukija:
                     i += 1
                 if rivi[0] == "TYYPPI":
                     tyyppi = rivi[1]
-                    print(tyyppi)
                 elif rivi[0] == "LIIKKUMISPISTEET":
                     liikkumispisteet = int(rivi[1])
                 elif rivi[0] == "MAKSIMIELAMA":

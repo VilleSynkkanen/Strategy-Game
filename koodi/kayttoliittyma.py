@@ -175,6 +175,7 @@ class Kayttoliittyma(QtWidgets.QMainWindow):
 
         # näytä peliloki
         self.__peliloki.setText("PELILOKI:\n")
+        self.__yksikon_tiedot_nappi.setText("YKSIKÖN TIEDOT")
 
         yksikko.grafiikka.muuta_varia(yksikko.grafiikka.pelaaja_valittu_vari)
         # vanhan valinnan värin muutos tehdään, kun valinta tyhjennetään (jos yksikkö ei voi tehdä mitään, väri on eri)
@@ -296,6 +297,7 @@ class Kayttoliittyma(QtWidgets.QMainWindow):
 
             # näytä peliloki
             self.__peliloki.setText("PELILOKI:\n")
+            self.__yksikon_tiedot_nappi.setText("YKSIKÖN TIEDOT")
 
             # päivitä napit
             self.__paivita_kykynapit()
@@ -310,10 +312,12 @@ class Kayttoliittyma(QtWidgets.QMainWindow):
     def __yksikon_tiedot(self):
         if self.__yksikon_tiedot_aktiivinen:
             self.__peliloki.setText("PELILOKI:\n")
+            self.__yksikon_tiedot_nappi.setText("YKSIKÖN TIEDOT")
             self.__yksikon_tiedot_aktiivinen = False
         elif self.__valittu_yksikko is not None:
             self.__peliloki.setText(self.__valittu_yksikko.__str__())
             self.__yksikon_tiedot_aktiivinen = True
+            self.__yksikon_tiedot_nappi.setText("PELILOKI")
 
     def __edellinen_yksikko(self):
         if len(self.__pelinohjain.kartta.pelaajan_toimivat_yksikot) == 0:

@@ -114,7 +114,6 @@ class Pelinohjain:
         #print("PLR")
         self.__vuoro = "PLR"
         self.__kayttoliittyma.laita_napit_kayttoon()
-        self.kayttoliittyma.paivita_nappien_aktiivisuus()
         self.__kayttoliittyma.tyhjenna_valinta()
         self.__kayttoliittyma.__valitsee_hyokkayksen_kohdetta = False
         self.__kartta.palauta_pelaajan_toimivat_yksikot()
@@ -122,6 +121,7 @@ class Pelinohjain:
             if not yksikko.onko_taintunut():
                 yksikko.palauta_liikkumispisteet()
             yksikko.grafiikka.palauta_vari()
+        self.kayttoliittyma.paivita_nappien_aktiivisuus()
 
     def __tietokoneen_vuoron_alku(self):
         # pelaajan vuoron loppu

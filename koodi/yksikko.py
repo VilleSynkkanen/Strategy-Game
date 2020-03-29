@@ -162,9 +162,10 @@ class Yksikko:
         for ruutu in self.__ruudut_kantamalla:
             ruutu.grafiikka.muuta_vari(ruutu.grafiikka.kantaman_sisalla_vari)
 
-    def nayta_hyokkayksen_kohteet(self):
+    def nayta_hyokkayksen_kohteet(self, vari=True):
         for vihollinen in self.__hyokkayksen_kohteet:
-            vihollinen.grafiikka.muuta_varia(vihollinen.grafiikka.voi_hyokata_vari)
+            if vari:
+                vihollinen.grafiikka.muuta_varia(vihollinen.grafiikka.voi_hyokata_vari)
             # laskee odotetun vahingon ja näyttää sen tooltipissä
             hyok_vahinko, puol_vahinko, flanking = self.__laske_vahinko(self, vihollinen, True)
             tukibonus = "ei"
@@ -433,9 +434,17 @@ class Yksikko:
             self.__kyky1_kohteet = []
             self.__kyky1_valitsee_kohteita = True
             self.peru_mahdollisten_ruutujen_nayttaminen()
-            self.laske_kantaman_sisalla_olevat_ruudut()
+            self.laske_hyokkayksen_kohteet(False)
             self.nayta_kantaman_sisalla_olevat_ruudut()
             self.kayttoliittyma.paivita_peru_nappi()
+            if self.__class__.__name__ != "Parantaja":
+                # jos jousimies tai tykistö, lasketaan odotettu vahinko kantamalla oleville yksiköille
+                alkuperainen_hyok = self.ominaisuudet.hyokkays
+                self.ominaisuudet.hyokkays *= self.kyky1_hyokkayskerroin
+                # näytä kohteet, jotta tooltip tulee näkyviin, ei värjäämistä
+                self.nayta_hyokkayksen_kohteet(False)
+                self.ominaisuudet.hyokkays = alkuperainen_hyok
+
 
     def kyky2(self):
         pass
