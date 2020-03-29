@@ -72,6 +72,10 @@ class Kartta:
                             self.tietokoneen_yksikot.append(luotu_yksikko)
         self.palauta_pelaajan_toimivat_yksikot()
 
+    # yksikkötestausta varten, helpompi lisätä yksikkö
+    def lisaa_yksikko(self, ruutu, ominaisuudet):
+        ruutu.lisaa_yksikko("jalkavaki", "COM", ominaisuudet)
+
     def poista_yksikko(self, yksikko):
         if yksikko.omistaja == "COM":
             for Yksikko in self.tietokoneen_yksikot:

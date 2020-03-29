@@ -43,7 +43,7 @@ class Pelinohjain:
         self.__kartta.lisaa_yksikot(yksikot, self.__yksikoiden_lukija.yksikot)
 
         # polunhaku
-        self._polunhaku = Polunhaku()
+        self.__polunhaku = Polunhaku()
 
         # nappien alkutila
         self.kayttoliittyma.paivita_nappien_aktiivisuus()
@@ -78,7 +78,7 @@ class Pelinohjain:
 
     @property
     def polunhaku(self):
-        return self._polunhaku
+        return self.__polunhaku
 
     # laskee mahdolliset kohteet aloituksen ja liikkumispisteiden perusteella
     def laske_polut(self, aloitus, liikkuminen):
@@ -86,10 +86,10 @@ class Pelinohjain:
         for ruutu in self.__kartta.ruudut:
             # rajoitetaan haku vain alueelle, jolle liikkumispisteet riittävät
             if ruutu.maasto.liikkuminen and ruutu.yksikko is None \
-                    and self._polunhaku.heuristiikka(aloitus, ruutu) <= liikkuminen:
-                ruudut, hinnat = self._polunhaku.hae_polkua(aloitus, ruutu)
+                    and self.__polunhaku.heuristiikka(aloitus, ruutu) <= liikkuminen:
+                ruudut, hinnat = self.__polunhaku.hae_polkua(aloitus, ruutu)
                 if ruudut is not False:
-                    hinta = self._polunhaku.laske_hinta(hinnat, ruutu)
+                    hinta = self.__polunhaku.laske_hinta(hinnat, ruutu)
                     if hinta <= liikkuminen:
                         mahdolliset_ruudut.append(ruutu)
         return mahdolliset_ruudut

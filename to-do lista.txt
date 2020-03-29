@@ -1,5 +1,5 @@
 Seuraavaksi:
--polunhaun testaus + näkyvyyden testaus + laskennan testaus
+-laskennan testaus
 -tekoäly
 
 Ideoita:

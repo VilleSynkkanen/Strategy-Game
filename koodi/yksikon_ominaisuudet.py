@@ -100,4 +100,3 @@ class Yksikon_ominaisuudet:
             if vaikutus.taintuminen:
                 taintuminen = True
         return hyokkays, puolustus, liikkuminen, verenvuoto, taintuminen
-

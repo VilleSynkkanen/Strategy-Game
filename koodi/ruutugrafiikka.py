@@ -30,9 +30,12 @@ class Ruutugrafiikka(QtWidgets.QGraphicsRectItem):
         self.paivita_tooltip()
 
         # värien määrittely
-        self.__voi_liikkua_vari = QtGui.QColor(0.3 * self.__vari[0], 0.3 * self.__vari[1], 0.3 * self.__vari[2])
-        self.__kantaman_sisalla_vari = QtGui.QColor(0.8 * self.__vari[0], 0.8 * self.__vari[1], 0.8 * self.__vari[2])
-        self.__valittu_kohteeksi_vari = QtGui.QColor(0.5 * self.__vari[0], 0.5 * self.__vari[1], 0.5 * self.__vari[2])
+        self.__voi_liikkua_vari = QtGui.QColor(int(0.3 * self.__vari[0]),
+                                               int(0.3 * self.__vari[1]), int(0.3 * self.__vari[2]))
+        self.__kantaman_sisalla_vari = QtGui.QColor(int(0.8 * self.__vari[0]),
+                                                    int(0.8 * self.__vari[1]), int(0.8 * self.__vari[2]))
+        self.__valittu_kohteeksi_vari = QtGui.QColor(int(0.5 * self.__vari[0]),
+                                                     int(0.5 * self.__vari[1]), int(0.5 * self.__vari[2]))
 
     @property
     def teksti(self):
@@ -63,6 +66,7 @@ class Ruutugrafiikka(QtWidgets.QGraphicsRectItem):
         self.__kayttoliittyma.scene.addItem(self)
 
     def mousePressEvent(self, *args, **kwargs):
+        # print(self.__ruutu.koordinaatit.x, " ", self.__ruutu.koordinaatit.y)
         if self.__kayttoliittyma.valittu_yksikko is not None:
             if self.__kayttoliittyma.valittu_yksikko.kyky1_valitsee_kohteita:
                 self.__kayttoliittyma.valittu_yksikko.kyky1_lisaa_kohde(self.__ruutu)

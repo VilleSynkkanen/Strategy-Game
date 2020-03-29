@@ -158,8 +158,8 @@ class Kayttoliittyma(QtWidgets.QMainWindow):
         # keskelle liikuttaminen
         res_x = 1920
         res_y = 1080
-        self.move((res_x / 2) - (self.frameSize().width() / 2),
-                  (res_y / 2) - (self.frameSize().height() / 2))
+        self.move(int(res_x / 2) - int(self.frameSize().width() / 2),
+                  int(res_y / 2) - int(self.frameSize().height() / 2))
 
     def valitse_yksikko(self, yksikko):
         self.tyhjenna_valinta()

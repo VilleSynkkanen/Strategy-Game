@@ -75,4 +75,3 @@ class Yksikoiden_lukija:
             rivi = rivi.rstrip()
             rivi = rivi.split(':')
         return kyvyt
-
