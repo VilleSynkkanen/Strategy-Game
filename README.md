@@ -22,14 +22,13 @@
 
 3. Aikataulu
 
-  - En ole laskenut käyttämääni aikaa, mutta arvioisin käyttäneeni siihen ainakin 50 tuntia
+  - En ole laskenut käyttämääni aikaa, mutta arvioisin käyttäneeni aikaa ainakin 50 tuntia
   - Olen tehnyt asioita hieman eri järjestyksessä kuin alun perin suunnittelin, mutta aikataulu on muuten pitänyt melko hyvin
   - Ominaisuuksien toteuttamiseen on mennyt hieman enemmän aikaa kuin olin arvioinut (arvio noin 40 tuntia)
 
 4. Muuta
 
   - Ei ole ilmennyt mitään erityisiä ongelmia
-  - Oletko joutunut tekemään muutoksia suunnitelmaasi?
   - Olen poistanut muutaman turhan luokan ja lisännyt muutaman uuden luokan
   - Olen päättänyt jättää pois yksiköiden valitsemisen ja asettelun, koska aikaa on mennyt odotettua enemmän
   - Muuten suunnitelmasta ei ole tarvinnut juurikaan poiketa
