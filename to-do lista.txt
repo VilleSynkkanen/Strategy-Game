@@ -1,5 +1,4 @@
 Seuraavaksi:
--laskennan testaus
 -tekoäly
 
 Ideoita:
@@ -20,9 +19,6 @@ Ohjetekstit, peliloki
 -???
 
 Testaus
--polunhaku
--näkyvyys
--laskenta: vahinko tms.
 -tekoäly
 -tiedostojen luku
 

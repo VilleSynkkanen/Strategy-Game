@@ -73,8 +73,8 @@ class Kartta:
         self.palauta_pelaajan_toimivat_yksikot()
 
     # yksikkötestausta varten, helpompi lisätä yksikkö
-    def lisaa_yksikko(self, ruutu, ominaisuudet):
-        ruutu.lisaa_yksikko("jalkavaki", "COM", ominaisuudet)
+    def lisaa_yksikko(self, ruutu, ominaisuudet, omistaja="COM"):
+        ruutu.lisaa_yksikko("jalkavaki", omistaja, ominaisuudet)
 
     def poista_yksikko(self, yksikko):
         if yksikko.omistaja == "COM":

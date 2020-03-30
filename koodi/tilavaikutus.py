@@ -53,4 +53,4 @@ class Tilavaikutus:
 
     def vahenna_kestoa(self):
         self.__kesto -= 1
-        print("vah")
+        # print("vah")

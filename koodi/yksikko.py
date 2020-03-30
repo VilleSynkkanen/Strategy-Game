@@ -167,7 +167,7 @@ class Yksikko:
             if vari:
                 vihollinen.grafiikka.muuta_varia(vihollinen.grafiikka.voi_hyokata_vari)
             # laskee odotetun vahingon ja näyttää sen tooltipissä
-            hyok_vahinko, puol_vahinko, flanking = self.__laske_vahinko(self, vihollinen, True)
+            hyok_vahinko, puol_vahinko, flanking = self.laske_vahinko(self, vihollinen, True)
             tukibonus = "ei"
             if flanking is True:
                 tukibonus = "kyllä"
@@ -210,7 +210,7 @@ class Yksikko:
         self.__hyokkays_kaytetty = False
         self.__grafiikka.palauta_vari()
 
-    def __vieressa_monta_vihollista(self):
+    def vieressa_monta_vihollista(self):
         viholliset = 0
         for ruutu in self.__ruutu.naapurit:
             if ruutu.yksikko is not None and ruutu.yksikko.omistaja != self.__omistaja:
@@ -249,7 +249,8 @@ class Yksikko:
                                     v.verenvuoto, v.taintuminen)
         hyokkaaja.hyokatty()
 
-    def __laske_vahinko(self, hyokkaaja, puolustaja, odotettu):
+    @staticmethod
+    def laske_vahinko(hyokkaaja, puolustaja, odotettu):
         # odotettu: bool, joka kertoo, palautetaanko odotettu vai todellinen vahinko
         # hyökkääjä = hyökkääjä
         hyokkays = hyokkaaja.ominaisuudet.hyokkays * hyokkaaja.ruutu.maasto.hyokkayskerroin * \
@@ -273,7 +274,7 @@ class Yksikko:
         # flanking
         flanking = False
         if etaisyys == 1:
-            flanking = puolustaja.__vieressa_monta_vihollista()
+            flanking = puolustaja.vieressa_monta_vihollista()
         if flanking:
             hyokkays *= flanking_kerroin
 
@@ -330,7 +331,7 @@ class Yksikko:
 
     # puolustautuminen
     def hyokkays(self, hyokkaaja):
-        hyokkaajan_vahinko, puolustajan_vahinko = self.__laske_vahinko(hyokkaaja, self, False)
+        hyokkaajan_vahinko, puolustajan_vahinko = self.laske_vahinko(hyokkaaja, self, False)
         self.ota_vahinkoa(puolustajan_vahinko)
         hyokkaaja.ota_vahinkoa(hyokkaajan_vahinko)
         # jalkaväen passiivinen kyky
@@ -346,7 +347,7 @@ class Yksikko:
     def parannu(self, maara):
         self.__ominaisuudet.nyk_elama += maara
         if self.__ominaisuudet.nyk_elama > self.__ominaisuudet.max_elama:
-            self.__ominaisuudet.__nyk_elama = self.__ominaisuudet.max_elama
+            self.__ominaisuudet.nyk_elama = self.__ominaisuudet.max_elama
         self.__grafiikka.paivita_tooltip()
         #print("Parannus: ", maara)
 
