@@ -64,7 +64,7 @@ class Yksikkografiikka(QtWidgets.QGraphicsPolygonItem):
 
     @property
     def tietokoneen_vari(self):
-        return self._tietokoneen_varis
+        return self.__tietokoneen_vari
 
     @property
     def pelaajan_vari(self):

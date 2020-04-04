@@ -20,6 +20,7 @@ class Polunhakujono:
         for i in range(len(self.__jono)):
             if self.__jono[i].prioriteetti < self.__jono[min].prioriteetti:
                 min = i
-        elementti = self.__jono[min].elementti
-        del self.__jono[min]
-        return elementti
+        if min < len(self.__jono):
+            elementti = self.__jono[min].elementti
+            del self.__jono[min]
+            return elementti

@@ -32,13 +32,14 @@ class Polunhaku:
                 return False, False
 
             # nykyinen = ruutu
-            for seuraava in nykyinen.vapaat_naapurit():
-                uusi_hinta = hinta_tahan_mennessa[nykyinen] + seuraava.maasto.liikkumisen_hinta
-                if seuraava not in hinta_tahan_mennessa or uusi_hinta < hinta_tahan_mennessa[seuraava]:
-                    hinta_tahan_mennessa[seuraava] = uusi_hinta
-                    prioriteetti = uusi_hinta + self.heuristiikka(loppu, seuraava)
-                    jono.lisaa(seuraava, prioriteetti)
-                    tulopaikat[seuraava] = nykyinen
+            if nykyinen is not None:
+                for seuraava in nykyinen.vapaat_naapurit():
+                    uusi_hinta = hinta_tahan_mennessa[nykyinen] + seuraava.maasto.liikkumisen_hinta
+                    if seuraava not in hinta_tahan_mennessa or uusi_hinta < hinta_tahan_mennessa[seuraava]:
+                        hinta_tahan_mennessa[seuraava] = uusi_hinta
+                        prioriteetti = uusi_hinta + self.heuristiikka(loppu, seuraava)
+                        jono.lisaa(seuraava, prioriteetti)
+                        tulopaikat[seuraava] = nykyinen
 
         return tulopaikat, hinta_tahan_mennessa
 

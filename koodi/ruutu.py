@@ -8,6 +8,7 @@ from jousimiehet import  Jousimiehet
 from tykisto import Tykisto
 from parantaja import Parantaja
 from kiilat import Kiilat
+from jalkavaki_tekoaly import Jalkavaki_tekoaly
 
 
 class Ruutu:
@@ -60,16 +61,28 @@ class Ruutu:
         return self.__kiilat
 
     def lisaa_yksikko(self, tyyppi, omistaja, ominaisuudet):
-        if tyyppi == "jalkavaki":
-            self.__yksikko = Jalkavaki(omistaja, self, self.__kayttoliittyma, ominaisuudet[0], ominaisuudet[1])
-        elif tyyppi == "ratsuvaki":
-            self.__yksikko = Ratsuvaki(omistaja, self, self.__kayttoliittyma, ominaisuudet[0], ominaisuudet[1])
-        elif tyyppi == "jousimiehet":
-            self.__yksikko = Jousimiehet(omistaja, self, self.__kayttoliittyma, ominaisuudet[0], ominaisuudet[1])
-        elif tyyppi == "tykisto":
-            self.__yksikko = Tykisto(omistaja, self, self.__kayttoliittyma, ominaisuudet[0], ominaisuudet[1])
-        elif tyyppi == "parantaja":
-            self.__yksikko = Parantaja(omistaja, self, self.__kayttoliittyma, ominaisuudet[0], ominaisuudet[1])
+        if omistaja == "PLR":
+            if tyyppi == "jalkavaki":
+                self.__yksikko = Jalkavaki(omistaja, self, self.__kayttoliittyma, ominaisuudet[0], ominaisuudet[1])
+            elif tyyppi == "ratsuvaki":
+                self.__yksikko = Ratsuvaki(omistaja, self, self.__kayttoliittyma, ominaisuudet[0], ominaisuudet[1])
+            elif tyyppi == "jousimiehet":
+                self.__yksikko = Jousimiehet(omistaja, self, self.__kayttoliittyma, ominaisuudet[0], ominaisuudet[1])
+            elif tyyppi == "tykisto":
+                self.__yksikko = Tykisto(omistaja, self, self.__kayttoliittyma, ominaisuudet[0], ominaisuudet[1])
+            elif tyyppi == "parantaja":
+                self.__yksikko = Parantaja(omistaja, self, self.__kayttoliittyma, ominaisuudet[0], ominaisuudet[1])
+        elif omistaja == "COM":
+            if tyyppi == "jalkavaki":
+                self.__yksikko = Jalkavaki_tekoaly(omistaja, self, self.__kayttoliittyma, ominaisuudet[0], ominaisuudet[1])
+            elif tyyppi == "ratsuvaki":
+                self.__yksikko = Ratsuvaki(omistaja, self, self.__kayttoliittyma, ominaisuudet[0], ominaisuudet[1])
+            elif tyyppi == "jousimiehet":
+                self.__yksikko = Jousimiehet(omistaja, self, self.__kayttoliittyma, ominaisuudet[0], ominaisuudet[1])
+            elif tyyppi == "tykisto":
+                self.__yksikko = Tykisto(omistaja, self, self.__kayttoliittyma, ominaisuudet[0], ominaisuudet[1])
+            elif tyyppi == "parantaja":
+                self.__yksikko = Parantaja(omistaja, self, self.__kayttoliittyma, ominaisuudet[0], ominaisuudet[1])
         return self.__yksikko
 
     def luo_grafiikka(self, koko):

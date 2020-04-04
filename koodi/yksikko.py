@@ -193,10 +193,11 @@ class Yksikko:
         self.__grafiikka.paivita_sijainti(self.__ruutu)
         self.liikuttu()
         self.laske_hyokkayksen_kohteet(False)
-        self.kayttoliittyma.paivita_nappien_aktiivisuus()
-        if len(self.__hyokkayksen_kohteet) == 0 or self.__hyokkays_kaytetty:
-            # poista yksiköistä, jotka voivat vielä tehdä jotain
-            self.__kayttoliittyma.pelinohjain.kartta.poista_toimivista_yksikoista(self)
+        if self.omistaja == "PLR":
+            self.kayttoliittyma.paivita_nappien_aktiivisuus()
+            if len(self.__hyokkayksen_kohteet) == 0 or self.__hyokkays_kaytetty:
+                # poista yksiköistä, jotka voivat vielä tehdä jotain
+                self.__kayttoliittyma.pelinohjain.kartta.poista_toimivista_yksikoista(self)
 
     def liikuttu(self):
         self.peru_mahdollisten_ruutujen_nayttaminen()

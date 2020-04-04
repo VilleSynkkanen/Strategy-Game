@@ -1,5 +1,9 @@
 Seuraavaksi:
 -tekoäly
+	-jalkaväki
+		-loput liikkumiseen vaikuttavat parametrit
+		-hyökkäys
+	-muut yksikkötyypit
 
 Ideoita:
 -käyttöliittymän kokoasetukset tiedostossa

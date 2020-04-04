@@ -4,6 +4,7 @@ from kayttoliittyma import Kayttoliittyma
 from maaston_lukija import Maaston_lukija
 from yksikoiden_lukija import Yksikoiden_lukija
 from polunhaku import Polunhaku
+from tekoalyn_ohjain import Tekoalyn_ohjain
 from ajastin import Ajastin
 from PyQt5 import QtCore
 
@@ -45,16 +46,15 @@ class Pelinohjain:
         # polunhaku
         self.__polunhaku = Polunhaku()
 
+        # tekoälyn ohjain
+        self.__tekoalyn_ohjain = Tekoalyn_ohjain(self)
+
         # nappien alkutila
         self.kayttoliittyma.paivita_nappien_aktiivisuus()
 
     @property
     def kayttoliittyma(self):
         return self.__kayttoliittyma
-
-    @property
-    def ajastin(self):
-        return self.__ajastin
 
     @property
     def vuoro(self):
@@ -142,6 +142,8 @@ class Pelinohjain:
         #print("COM")
         self.__vuoro = "COM"
         self.__kayttoliittyma.poista_napit_kaytosta()
+
+        self.__tekoalyn_ohjain.ohjaa_yksikoita()
 
         # 1. arg = viive, 2. arg = viiveen jälkeen kutsuttava metodi
         Ajastin.aloita_ajastin(self.__viive, self.vaihda_vuoroa)
