@@ -25,9 +25,14 @@ class Jalkavaki_tekoaly(Jalkavaki):
         -päättää, ollanko aggressiivisia vai passiivisia, mahdollinen säätö tiedostojen kautta
         -alue, jota kohti liikutaan
         -yksiköiden päätöksenteko hoitaa yksityiskohdat
+        
+    ensin katsotaan, halutaanko liikkua johonkin
+    mahdollisen liikkumisen jälkeen katsotaan, halutaanko käyttää kykyjä tai hyökätä
+    
+    
     '''
 
-    def toiminta(self, kohderuutu):
+    def liike(self, kohderuutu):
         '''# etsi lähin vihollinen
         kantama = 1000
         lahin = None
@@ -50,10 +55,23 @@ class Jalkavaki_tekoaly(Jalkavaki):
             if vaihtoehdot[ruutu] > vaihtoehdot[paras]:
                 paras = ruutu
 
-        print(vaihtoehdot)
+        #print(vaihtoehdot)
         # liiku ruutuun
         if paras != self.ruutu:
             self.liiku_ruutuun(paras)
+
+    def hyokkays_toiminto(self):
+        self.laske_hyokkayksen_kohteet(False)
+        paras_suhde = 1
+        paras_kohde = None
+        for vihollinen in self.hyokkayksen_kohteet:
+            hyok_vahinko, puol_vahinko, flanking = self.laske_vahinko(self, vihollinen, True)
+            suhde = hyok_vahinko / puol_vahinko
+            if suhde < 1:
+                paras_suhde = suhde
+                paras_kohde = vihollinen
+        if paras_suhde < 1:
+            paras_kohde.hyokkayksen_kohde(self)
 
     def pisteyta_ruutu(self, ruutu, kohderuutu):
         # alustava pisteytys testausta varten
@@ -68,7 +86,7 @@ class Jalkavaki_tekoaly(Jalkavaki):
                 elamakerroin = 1 / (naapuri.yksikko.ominaisuudet.nyk_elama / naapuri.yksikko.ominaisuudet.max_elama)
                 puolustuskerroin = 1 * (self.ominaisuudet.hyokkays / naapuri.yksikko.ominaisuudet.puolustus)
                 kerroin *= elamakerroin * puolustuskerroin
-                if naapuri.yksikko.vieressa_monta_vihollista():
+                if naapuri.yksikko.vieressa_monta_vihollista(): # muuta: viereesä yksi vihollinen
                     kerroin *= 1.25
                 pisteet *= kerroin
         # maaston puolustus ja hyökkäys

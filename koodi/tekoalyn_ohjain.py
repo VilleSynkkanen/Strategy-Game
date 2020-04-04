@@ -22,19 +22,25 @@ class Tekoalyn_ohjain:
             x += kerroin * yksikko.ruutu.koordinaatit.x
             y += kerroin * yksikko.ruutu.koordinaatit.y
             maara += kerroin
-        x /= maara
-        y /= maara
-        x = int(x)
-        y = int(y)
+        if maara > 0:
+            x /= maara
+            y /= maara
+            x = int(x)
+            y = int(y)
 
-        print(x)
-        print(y)
+            #print(x)
+            #print(y)
 
-        return self.__pelinohjain.kartta.ruudut_koordinaateilla[x][y]
+            return self.__pelinohjain.kartta.ruudut_koordinaateilla[x][y]
+        # muuta myöhemmin
+        return self.__pelinohjain.kartta.pelaajan_yksikot[0].ruutu
 
     def ohjaa_yksikoita(self):
         kohderuutu = self.paata_kohdealue()
         print(kohderuutu)
         for yksikko in self.__pelinohjain.kartta.tietokoneen_yksikot:
             if yksikko.__class__.__name__ == "Jalkavaki":   # aluksi vain jalkaväki toteutettu
-                yksikko.toiminta(kohderuutu)
+                yksikko.liike(kohderuutu)                   # lisää vaatimukset myöhemmin
+        for yksikko in self.__pelinohjain.kartta.tietokoneen_yksikot:
+            if yksikko.__class__.__name__ == "Jalkavaki":   # aluksi vain jalkaväki toteutettu
+                yksikko.hyokkays_toiminto()

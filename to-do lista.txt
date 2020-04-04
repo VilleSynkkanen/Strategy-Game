@@ -1,9 +1,10 @@
 Seuraavaksi:
 -tekoäly
 	-jalkaväki
-		-loput liikkumiseen vaikuttavat parametrit
-		-hyökkäys
+		-loput liikkumiseen vaikuttavat parametrit, hiominen
+		-kykyjen käyttäminen
 	-muut yksikkötyypit
+	-kohdealueen valitsemisen hionta
 
 Ideoita:
 -käyttöliittymän kokoasetukset tiedostossa
