@@ -37,7 +37,7 @@ class Tekoalyn_ohjain:
 
     def ohjaa_yksikoita(self):
         kohderuutu = self.paata_kohdealue()
-        print(kohderuutu)
+        #print(kohderuutu)
         for yksikko in self.__pelinohjain.kartta.tietokoneen_yksikot:
             if yksikko.__class__.__name__ == "Jalkavaki":   # aluksi vain jalkaväki toteutettu
                 yksikko.liike(kohderuutu)                   # lisää vaatimukset myöhemmin

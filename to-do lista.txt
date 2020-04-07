@@ -1,10 +1,13 @@
 Seuraavaksi:
 -tekoäly
 	-jalkaväki
-		-loput liikkumiseen vaikuttavat parametrit, hiominen
+		-viiveet
+		-hyökkäyksen hiominen
 		-kykyjen käyttäminen
-	-muut yksikkötyypit
 	-kohdealueen valitsemisen hionta
+		-valitse ruutu, jossa on yksikkö
+	-muut yksikkötyypit
+	
 
 Ideoita:
 -käyttöliittymän kokoasetukset tiedostossa

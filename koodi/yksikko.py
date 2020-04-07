@@ -142,6 +142,17 @@ class Yksikko:
         self.nayta_hyokkayksen_kohteet()
         self.nayta_kantaman_sisalla_olevat_ruudut()
 
+    # eroaa laske_kantaman_sisalla_olevat_ruudut siten, että ruutu voi olla mikä tahansa ja tyhjiä ruutuja ei lasketa
+    def kantamalla_olevat_viholliset(self, ruutu):
+        viholliset_kantamalla = []
+        for kohde in self.__kayttoliittyma.pelinohjain.kartta.ruudut:
+            if kohde.yksikko is not None and kohde.yksikko.omistaja != self.__omistaja and \
+                    self.__kayttoliittyma.pelinohjain.polunhaku.heuristiikka(ruutu, kohde) \
+                    <= self.__ominaisuudet.kantama:
+                if self.__kayttoliittyma.pelinohjain.kartta.nakyvyys(ruutu, kohde):
+                    viholliset_kantamalla.append(kohde.yksikko)
+        return viholliset_kantamalla
+
     def peru_hyokkayksen_kohteiden_nayttaminen(self):
         for vihollinen in self.__hyokkayksen_kohteet:
             vihollinen.grafiikka.palauta_vari()
@@ -211,12 +222,12 @@ class Yksikko:
         self.__hyokkays_kaytetty = False
         self.__grafiikka.palauta_vari()
 
-    def vieressa_monta_vihollista(self):
+    def vieressa_monta_vihollista(self, yksi=False):
         viholliset = 0
         for ruutu in self.__ruutu.naapurit:
             if ruutu.yksikko is not None and ruutu.yksikko.omistaja != self.__omistaja:
                 viholliset += 1
-        if viholliset > 1:
+        if viholliset > 1 or viholliset == 1 and yksi == True:
             return True
         return False
 
