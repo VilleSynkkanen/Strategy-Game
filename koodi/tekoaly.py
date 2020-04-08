@@ -30,7 +30,19 @@ class Tekoaly:
         for vihollinen in yksikko.hyokkayksen_kohteet:
             hyok_vahinko, puol_vahinko, flanking = yksikko.laske_vahinko(yksikko, vihollinen, True)
             suhde = (puol_vahinko + 0.001) / (hyok_vahinko + 0.001)
+            # priorisoitavat tyypit
+            if vihollinen.__class__.__name__ == "Tykisto":
+                suhde *= yksikko.tykisto_prio
+            elif vihollinen.__class__.__name__ == "Parantaja":
+                suhde *= yksikko.parantaja_prio
+            elif vihollinen.__class__.__name__ == "Jousimiehet":
+                suhde *= yksikko.jousimies_prio
+            elif vihollinen.__class__.__name__ == "Ratsuvaki":
+                suhde *= yksikko.ratsuvaki_prio
+            elif vihollinen.__class__.__name__ == "Jalkavaki":
+                suhde *= yksikko.jalkavaki_prio
             vaihtoehdot[vihollinen] = suhde
+
 
         kyky1_pisteet = 0
         kyky2_pisteet = 0
@@ -129,8 +141,11 @@ class Tekoaly:
     @staticmethod
     def pisteyta_oman_yksikon_laheisyys(yksikko, ruutu):
         etaisyyskerroin = 1
+        yksikot = 0
         for oma in yksikko.kayttoliittyma.pelinohjain.kartta.tietokoneen_yksikot:
             etaisyys = yksikko.kayttoliittyma.pelinohjain.polunhaku.heuristiikka(ruutu, oma.ruutu)
             if 0 < etaisyys < yksikko.oma_max_kantama:
-                etaisyyskerroin = yksikko.oma_lahestymisbonus
+                yksikot += 1
+        if yksikot >= yksikko.laheisyys_bonus_yksikot:
+            etaisyyskerroin = yksikko.oma_lahestymisbonus
         return etaisyyskerroin

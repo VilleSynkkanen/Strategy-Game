@@ -24,17 +24,18 @@ class Jalkavaki_tekoaly(Jalkavaki):
         self.__flanking_kerroin = 1.25
 
         # maaston pisteytys
-        self.__oma_maastokerroin_hyokkays = 1.2
-        self.__oma_maastokerroin_puolustus = 1.2
+        self.__oma_maastokerroin_hyokkays = 0.4
+        self.__oma_maastokerroin_puolustus = 0.4
 
         # etäisyys kohteesta pisteytys
-        self.__kulmakerroin = -0.02
-        self.__max_etaisyys_kohteesta = 25
-        self.__max_lahestymisbonus = 1.5
+        self.__kulmakerroin = -0.04
+        self.__max_lahestymisbonus = 2
+        self.__max_etaisyys_kohteesta = (self.__max_lahestymisbonus - 1) / (-self.__kulmakerroin)
 
         # etäisyys omasta pisteytys
         self.__oma_lahestymisbonus = 1.01
-        self.__oma_max_kantama = 3
+        self.__oma_max_kantama = 4
+        self.__laheisyys_bonus_yksikot = 2
 
         # kykyjen pisteytys
         self.__kyky1_etaisyys_raja = 4
@@ -111,6 +112,10 @@ class Jalkavaki_tekoaly(Jalkavaki):
     @property
     def oma_max_kantama(self):
         return self.__oma_max_kantama
+
+    @property
+    def laheisyys_bonus_yksikot(self):
+        return self.__laheisyys_bonus_yksikot
 
     '''
     -jos on kohteita kantamalla, valitsee niistä yhden, jonka viereen liikkuu pisteytyksen perusteella

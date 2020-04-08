@@ -10,18 +10,17 @@ Seuraavaksi:
 		-liike
 		-kyvyt
 	tykistö
-		-liike
-		-hyökkäys
-		-kyvyt
+		-kyky1
+		-kyky2
+		-liikkuminen: liikkuu kohti kohdetta vain, jos kantama ei riitä
+			-liikkumisen laskeminen vain, jos ei kohteita
 	parantaja
 		-liike
 		-kyvyt
 		-hyökkäys
-	-yläluokka: tekoäly (staattinen?)
-		-metodit yhteistä laskentaa varten
-		-ruudun pisteytys osittain yhteinen, eri muuttujia
 	-tekoälyn ohjaus
-		-määrittele järjestykset (tee siten, että mahdollista lukea tiedostosta)
+		-määrittele järjestykset (tee siten, että helposti mahdollista lukea tiedostosta)
+		-lisäys hyökkäykseen: yksikön elämä vaikuttaa enemmän
 	
 Ideoita:
 -käyttöliittymän kokoasetukset tiedostossa

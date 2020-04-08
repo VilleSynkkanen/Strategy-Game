@@ -14,7 +14,7 @@ class Jousimiehet_tekoaly(Jousimiehet):
         self.__jousimies_prio = 1.1
         self.__ratsuvaki_prio = 1
         self.__jalkavaki_prio = 1
-        self.__max_elamakerroin = 1.2
+        self.__max_elamakerroin = 1.25
         self.__min_puolustuskerroin = 0.8
         self.__max_puolustuskerroin = 1.2
         self.__min_maastokerroin = 0.8
@@ -22,17 +22,18 @@ class Jousimiehet_tekoaly(Jousimiehet):
         self.__flanking_kerroin = 1
 
         # maaston pisteytys
-        self.__oma_maastokerroin_hyokkays = 1.1
-        self.__oma_maastokerroin_puolustus = 1.15
+        self.__oma_maastokerroin_hyokkays = 0.2
+        self.__oma_maastokerroin_puolustus = 0.2
 
         # etäisyys kohteesta pisteytys
-        self.__kulmakerroin = -0.02
-        self.__max_etaisyys_kohteesta = 25
-        self.__max_lahestymisbonus = 1.5
+        self.__kulmakerroin = -0.04
+        self.__max_lahestymisbonus = 2
+        self.__max_etaisyys_kohteesta = (self.__max_lahestymisbonus - 1) / (-self.__kulmakerroin)
 
         # etäisyys omasta pisteytys
-        self.__oma_lahestymisbonus = 1.02
+        self.__oma_lahestymisbonus = 1.025
         self.__oma_max_kantama = 4
+        self.__laheisyys_bonus_yksikot = 2
 
     @property
     def tykisto_prio(self):
@@ -106,6 +107,10 @@ class Jousimiehet_tekoaly(Jousimiehet):
     def oma_max_kantama(self):
         return self.__oma_max_kantama
 
+    @property
+    def laheisyys_bonus_yksikot(self):
+        return self.__laheisyys_bonus_yksikot
+
     def liike(self, kohderuutu):
         Tekoaly.liike(self, kohderuutu)
 
@@ -147,11 +152,10 @@ class Jousimiehet_tekoaly(Jousimiehet):
         # lisäys jousimiehille: pysy niin kaukana vihollisista kuin kantama sallii
         kerroin = 1
         for vihollinen in self.kayttoliittyma.pelinohjain.kartta.pelaajan_yksikot:
-            #print(vihollinen)
             polku, hinnat = self.kayttoliittyma.pelinohjain.polunhaku.hae_polkua(ruutu, vihollinen.ruutu, False)
             if hinnat is not False:
                 etaisyys = self.kayttoliittyma.pelinohjain.polunhaku.laske_hinta(hinnat, vihollinen.ruutu)
                 if etaisyys < self.ominaisuudet.kantama:
-                    kerroin = etaisyys / self.ominaisuudet.kantama
+                    kerroin = (etaisyys / self.ominaisuudet.kantama)**2
         pisteet *= kerroin
         return pisteet
