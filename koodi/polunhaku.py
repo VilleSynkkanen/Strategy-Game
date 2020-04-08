@@ -9,7 +9,7 @@ class Polunhaku:
     https://www.redblobgames.com/pathfinding/a-star/implementation.html
     '''
 
-    def hae_polkua(self, alku, loppu):
+    def hae_polkua(self, alku, loppu, blokkaus=True):
         jono = Polunhakujono()
         jono.lisaa(alku, 0)
         tulopaikat = {}
@@ -33,13 +33,24 @@ class Polunhaku:
 
             # nykyinen = ruutu
             if nykyinen is not None:
-                for seuraava in nykyinen.vapaat_naapurit():
-                    uusi_hinta = hinta_tahan_mennessa[nykyinen] + seuraava.maasto.liikkumisen_hinta
-                    if seuraava not in hinta_tahan_mennessa or uusi_hinta < hinta_tahan_mennessa[seuraava]:
-                        hinta_tahan_mennessa[seuraava] = uusi_hinta
-                        prioriteetti = uusi_hinta + self.heuristiikka(loppu, seuraava)
-                        jono.lisaa(seuraava, prioriteetti)
-                        tulopaikat[seuraava] = nykyinen
+                if blokkaus:
+                    for seuraava in nykyinen.vapaat_naapurit():
+                        uusi_hinta = hinta_tahan_mennessa[nykyinen] + seuraava.maasto.liikkumisen_hinta
+                        if seuraava not in hinta_tahan_mennessa or uusi_hinta < hinta_tahan_mennessa[seuraava]:
+                            hinta_tahan_mennessa[seuraava] = uusi_hinta
+                            prioriteetti = uusi_hinta + self.heuristiikka(loppu, seuraava)
+                            jono.lisaa(seuraava, prioriteetti)
+                            tulopaikat[seuraava] = nykyinen
+                else:
+                    # laskenta huomioimatta blokkausta
+                    for seuraava in nykyinen.naapurit:
+                        if seuraava.maasto.liikkuminen:
+                            uusi_hinta = hinta_tahan_mennessa[nykyinen] + seuraava.maasto.liikkumisen_hinta
+                            if seuraava not in hinta_tahan_mennessa or uusi_hinta < hinta_tahan_mennessa[seuraava]:
+                                hinta_tahan_mennessa[seuraava] = uusi_hinta
+                                prioriteetti = uusi_hinta + self.heuristiikka(loppu, seuraava)
+                                jono.lisaa(seuraava, prioriteetti)
+                                tulopaikat[seuraava] = nykyinen
 
         return tulopaikat, hinta_tahan_mennessa
 

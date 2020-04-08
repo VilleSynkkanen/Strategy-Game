@@ -16,7 +16,7 @@ class Pelinohjain:
         self.__kayttoliittyma = Kayttoliittyma(self)
 
         self.__vuoro = "PLR"      # PLR = pelaaja, COM = tietokone
-        self.__viive = 10     # ms
+        self.__viive = 100     # ms
 
         # kartan lukeminen
         self.__kartan_lukija = Kartan_lukija()
@@ -55,6 +55,10 @@ class Pelinohjain:
     @property
     def kayttoliittyma(self):
         return self.__kayttoliittyma
+
+    @property
+    def viive(self):
+        return self.__viive
 
     @property
     def vuoro(self):

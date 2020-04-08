@@ -1,23 +1,39 @@
 Seuraavaksi:
 -tekoäly
 	-jalkaväki
-		-viiveet
-		-hyökkäyksen hiominen
-		-kykyjen käyttäminen
-	-kohdealueen valitsemisen hionta
-		-valitse ruutu, jossa on yksikkö
-	-muut yksikkötyypit
+		-kyky2 pisteytys ja käyttö
+	-jousimiehet
+		-liike
+		-hyökkäys
+		-kyvyt
+	ratsuväki
+		-hyökkäys
+		-liike
+		-kyvyt
+	tykistö
+		-liike
+		-hyökkäys
+		-kyvyt
+	parantaja
+		-liike
+		-kyvyt
+		-hyökkäys
+	-yläluokka: tekoäly (staattinen?)
+		-metodit yhteistä laskentaa varten
+	-tekoälyn ohjaus
+		-määrittele järjestykset (tee siten, että mahdollista lukea tiedostosta)
 	
-
 Ideoita:
 -käyttöliittymän kokoasetukset tiedostossa
 -tekoälyn parametrit, vahingon laskemiseen yms liittyvät tiedot tiedostossa
 -pelinohjaukseen liittyvät lukuarvot (viiveet tms. tiedostossa)
 -tiedostojen resetointi
 -parantaja: inspiraation visualisaatio jos keksii hyvän tavan
+-ajastin implementaatio (qwait vs oma)?
 
 Teköäly
--tietty liikkumisjärjestys ja kykyjen käyttöjärjestys?
+-tietty liikkumisjärjestys ja kykyjen käyttöjärjestys
+	-määritelty tekoälyn ohjauksessa
 -ensin kaikki liikkuvat, sitten kykyjen käyttö/hyökkäykset
 
 Tiedostojen lukeminen:
@@ -27,9 +43,19 @@ Ohjetekstit, peliloki
 -???
 
 Testaus
--tekoäly
+-tekoäly(?)
 -tiedostojen luku
 
 Bugeja
 -joskus ei voi valita yksiköitä (vuoron vaihdon jälkeen(?), napit toimivat)
+
+Aikataulu
+-tekoäly 17.4 mennessä
+-tapahtumaloki, ohjetekstit, pelin ohjauksen viimeistely 19.4
+-tiedostojen lukemisen viimeistely 22.4
+-päävalikko, kenttäeditori 26.4
+-tallennus 28.4
+-lisää testausta + testausmuutokset 30.4
+-viimeistely 3.5
+-dokumentaatio 8.5
 
