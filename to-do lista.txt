@@ -1,11 +1,10 @@
 Seuraavaksi:
 -tekoäly
 	-jalkaväki
-		-kyky2 pisteytys ja käyttö
+		-kyky2
 	-jousimiehet
-		-liike
-		-hyökkäys
-		-kyvyt
+		-kyky1
+		-kyky2
 	ratsuväki
 		-hyökkäys
 		-liike
@@ -20,16 +19,16 @@ Seuraavaksi:
 		-hyökkäys
 	-yläluokka: tekoäly (staattinen?)
 		-metodit yhteistä laskentaa varten
+		-ruudun pisteytys osittain yhteinen, eri muuttujia
 	-tekoälyn ohjaus
 		-määrittele järjestykset (tee siten, että mahdollista lukea tiedostosta)
 	
 Ideoita:
 -käyttöliittymän kokoasetukset tiedostossa
--tekoälyn parametrit, vahingon laskemiseen yms liittyvät tiedot tiedostossa
--pelinohjaukseen liittyvät lukuarvot (viiveet tms. tiedostossa)
 -tiedostojen resetointi
--parantaja: inspiraation visualisaatio jos keksii hyvän tavan
--ajastin implementaatio (qwait vs oma)?
+(-ajastin implementaatio (qwait vs oma)?)
+(-tekoälyn parametrit, vahingon laskemiseen yms liittyvät tiedot tiedostossa)
+(-pelinohjaukseen liittyvät lukuarvot (viiveet tms. tiedostossa))
 
 Teköäly
 -tietty liikkumisjärjestys ja kykyjen käyttöjärjestys

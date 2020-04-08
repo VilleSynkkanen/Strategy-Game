@@ -1,4 +1,5 @@
 from jalkavaki import Jalkavaki
+from tekoaly import  Tekoaly
 from ajastin import Ajastin
 from math import sqrt
 
@@ -15,10 +16,101 @@ class Jalkavaki_tekoaly(Jalkavaki):
         self.__jousimies_prio = 1.2
         self.__ratsuvaki_prio = 1.1
         self.__jalkavaki_prio = 1
+        self.__max_elamakerroin = 2
+        self.__min_puolustuskerroin = 0.5
+        self.__max_puolustuskerroin = 2.5
+        self.__min_maastokerroin = 0.75
+        self.__max_maastokerroin = 1.5
+        self.__flanking_kerroin = 1.25
+
+        # maaston pisteytys
+        self.__oma_maastokerroin_hyokkays = 1.2
+        self.__oma_maastokerroin_puolustus = 1.2
+
+        # etäisyys kohteesta pisteytys
+        self.__kulmakerroin = -0.02
+        self.__max_etaisyys_kohteesta = 25
+        self.__max_lahestymisbonus = 1.5
+
+        # etäisyys omasta pisteytys
+        self.__oma_lahestymisbonus = 1.01
+        self.__oma_max_kantama = 3
 
         # kykyjen pisteytys
         self.__kyky1_etaisyys_raja = 4
         self.__kyky1_viholliset_min = 2
+
+    @property
+    def tykisto_prio(self):
+        return self.__tykisto_prio
+
+    @property
+    def parantaja_prio(self):
+        return self.__parantaja_prio
+
+    @property
+    def jousimies_prio(self):
+        return self.__jousimies_prio
+
+    @property
+    def ratsuvaki_prio(self):
+        return self.__ratsuvaki_prio
+
+    @property
+    def jalkavaki_prio(self):
+        return self.__jalkavaki_prio
+
+    @property
+    def max_elamakerroin(self):
+        return self.__max_elamakerroin
+
+    @property
+    def min_puolustuskerroin(self):
+        return self.__min_puolustuskerroin
+
+    @property
+    def max_puolustuskerroin(self):
+        return self.__max_puolustuskerroin
+
+    @property
+    def min_maastokerroin(self):
+        return self.__min_maastokerroin
+
+    @property
+    def max_maastokerroin(self):
+        return self.__max_maastokerroin
+
+    @property
+    def flanking_kerroin(self):
+        return self.__flanking_kerroin
+
+    @property
+    def oma_maastokerroin_hyokkays(self):
+        return self.__oma_maastokerroin_hyokkays
+
+    @property
+    def oma_maastokerroin_puolustus(self):
+        return self.__oma_maastokerroin_puolustus
+
+    @property
+    def kulmakerroin(self):
+        return self.__kulmakerroin
+
+    @property
+    def max_etaisyys_kohteesta(self):
+        return self.__max_etaisyys_kohteesta
+
+    @property
+    def max_lahestymisbonus(self):
+        return self.__max_lahestymisbonus
+
+    @property
+    def oma_lahestymisbonus(self):
+        return self.__oma_lahestymisbonus
+
+    @property
+    def oma_max_kantama(self):
+        return self.__oma_max_kantama
 
     '''
     -jos on kohteita kantamalla, valitsee niistä yhden, jonka viereen liikkuu pisteytyksen perusteella
@@ -40,61 +132,19 @@ class Jalkavaki_tekoaly(Jalkavaki):
         
     ensin katsotaan, halutaanko liikkua johonkin
     mahdollisen liikkumisen jälkeen katsotaan, halutaanko käyttää kykyjä tai hyökätä
-    '''
-
-    def liike(self, kohderuutu):
-        # sanakirja, johon lisätään ruudut, avaimena pisteytys
-        # jokaiselle ruudulle kutsutaan pistytysmetodi
-        vaihtoehdot = {}
-        self.laske_mahdolliset_ruudut()
-        self.mahdolliset_ruudut.append(self.ruutu)  # lisätään, koska muuten ei tule lisättyä
-        for ruutu in self.mahdolliset_ruudut:
-            vaihtoehdot[ruutu] = self.__pisteyta_ruutu(ruutu, kohderuutu)
-        #print(vaihtoehdot)
-
-        # etsi korkein pistemäärä
-        paras = self.ruutu
-        for ruutu in vaihtoehdot:
-            if vaihtoehdot[ruutu] > vaihtoehdot[paras]:
-                paras = ruutu
-
-        # liiku ruutuun
-        if paras != self.ruutu:
-            self.liiku_ruutuun(paras)
-
-    '''
+    
     Kohteen/kyvyn valintaan vaikuttaa:
     -kohteiden tyyppi (priorisaatiokertoimet)
     -odotettujen vahinkojen suhde (suurempi parempi)
     -onko mahdollista käyttää kyky: jokaisella kyvyllä oma pisteytys
     '''
 
+    def liike(self, kohderuutu):
+        Tekoaly.liike(self, kohderuutu)
+
     def hyokkays_toiminto(self):
         # katsotaan ensin, mahdolliset hyökkäyksen kohteet ja tallennetaan ne sanakirjaan
-        vaihtoehdot = {}
-        self.laske_hyokkayksen_kohteet(False)
-        for vihollinen in self.hyokkayksen_kohteet:
-            hyok_vahinko, puol_vahinko, flanking = self.laske_vahinko(self, vihollinen, True)
-            suhde = puol_vahinko / hyok_vahinko
-            vaihtoehdot[vihollinen] = suhde
-
-        kyky1_pisteet = 0
-        kyky2_pisteet = 0
-        # katsotaan voidaanko kykyjä käyttää, jos voidaan, pisteytetään ne
-        if self.ominaisuudet.nyk_energia >= self.kyky1_hinta:
-            kyky1_pisteet = self.__pisteyta_kyky1()
-            vaihtoehdot["KYKY1"] = kyky1_pisteet
-        if self.ominaisuudet.nyk_energia >= self.kyky2_hinta:
-            kyky2_pisteet = self.__pisteyta_kyky2()
-            vaihtoehdot["KYKY2"] = kyky2_pisteet
-
-        korkeimmat_pisteet = 0
-        paras_kohde = None
-        for vaihtoehto in vaihtoehdot:
-            # puolustajan vahingon täytyy olla suurempi tai yhtä suuri kuin hyökkääjän, jotta hyökkäys tapahtuisi
-            if vaihtoehdot[vaihtoehto] > korkeimmat_pisteet and vaihtoehdot[vaihtoehto] >= 1:
-                korkeimmat_pisteet = vaihtoehdot[vaihtoehto]
-                paras_kohde = vaihtoehto    # voi olla yksikkö tai merkkijono
+        paras_kohde = Tekoaly.hyokkays_toiminto(self)
 
         if paras_kohde is None:
             pass
@@ -107,7 +157,7 @@ class Jalkavaki_tekoaly(Jalkavaki):
 
     # pisteytetään sen perusteella, kuinka paljon vihollisia on lähellä yksikköä
     # täytyy olla vähintään self.__kyky1_viholliset_min vihollista
-    def __pisteyta_kyky1(self):
+    def pisteyta_kyky1(self):
         etaisyydella = 0
         for vihollinen in self.kayttoliittyma.pelinohjain.kartta.pelaajan_yksikot:
             etaisyys = self.kayttoliittyma.pelinohjain.polunhaku.heuristiikka(self.ruutu, vihollinen.ruutu)
@@ -118,87 +168,24 @@ class Jalkavaki_tekoaly(Jalkavaki):
         return etaisyydella
 
     # pisteytys: jos kyky2 kantama sisällä on parempi kohde kuin vieressö oleva, enemmän pisteitä
-    def __pisteyta_kyky2(self):
+    def pisteyta_kyky2(self):
         # implementoi pisteytys
         return 0
 
-
-    def __pisteyta_ruutu(self, ruutu, kohderuutu):
-        # aluksi 10 pistettä, muokataan kertoimien avulla
-        pisteet = 10
-        # lasketaan mahdolliset kohteet ja käydään ne läpi for-loopilla
-        viholliset = self.kantamalla_olevat_viholliset(ruutu)
-        suurin_kerroin = 1
-        for yksikko in viholliset:
-            kerroin = 1
-            # priorisoitavat tyypit
-            if yksikko.__class__.__name__ == "Tykisto":
-                kerroin *= self.__tykisto_prio
-            elif yksikko.__class__.__name__ == "Parantaja":
-                kerroin *= self.__parantaja_prio
-            elif yksikko.__class__.__name__ == "Jousimiehet":
-                kerroin *= self.__jousimies_prio
-            elif yksikko.__class__.__name__ == "Ratsuvaki":
-                kerroin *= self.__ratsuvaki_prio
-            elif yksikko.__class__.__name__ == "Jalkavaki":
-                kerroin *= self.__jalkavaki_prio
-
-            # elämän vaikutus
-            elamakerroin = 1 / sqrt(yksikko.ominaisuudet.nyk_elama / yksikko.ominaisuudet.max_elama)
-            if elamakerroin > 2:
-                elamakerroin = 2
-            kerroin *= elamakerroin
-
-            # puolustuksen vaikutus
-            puolustuskerroin = 1 * (self.ominaisuudet.hyokkays / yksikko.ominaisuudet.puolustus)
-            if puolustuskerroin > 2.5:
-                puolustuskerroin = 2
-            elif puolustuskerroin < 0.5:
-                puolustuskerroin = 0.5
-            kerroin *= puolustuskerroin
-
-            # ruudun maasto
-            maastokerroin = 1
-            maastokerroin *= 1 / sqrt(yksikko.ruutu.maasto.hyokkayskerroin)
-            maastokerroin *= 1 / sqrt(yksikko.ruutu.maasto.puolustuskerroin)
-            if maastokerroin > 1.5:
-                maastokerroin = 1.5
-            elif maastokerroin < 0.7:
-                maastokerroin = 0.7
-            kerroin *= maastokerroin
-
-            # flankkays
-            if yksikko.vieressa_monta_vihollista(True):
-                kerroin *= 1.25
-
-            # suurimman kertoimen määrittely
-            if kerroin > suurin_kerroin:
-                suurin_kerroin = kerroin
-        pisteet *= suurin_kerroin
+    def pisteyta_ruutu(self, ruutu, kohderuutu):
+        # pisteytys vihollisten perusteella
+        pisteet = Tekoaly.pisteyta_kantamalla_olevat_viholliset(ruutu, self)
 
         # maaston puolustus ja hyökkäys
-        maastokerroin_oma = 1
-        # jos kerroin huonompi kuin 1, vähennetään, jos parempi, niin lisätään
-        maastokerroin_oma += 1.2 * (ruutu.maasto.hyokkayskerroin - 1)
-        maastokerroin_oma += 1.2 * (ruutu.maasto.puolustuskerroin - 1)
+        maastokerroin_oma = Tekoaly.pisteyta_liikuttava_maasto(self, ruutu)
         pisteet *= maastokerroin_oma
 
-        # lasketaan, lähestytäänkö kohderuutua liikuttaessa ruutuun
-        # lasketaan hinta ilman blokkausta (oletetaan, että tilanne muuttuu)
-        polku, hinnat = self.kayttoliittyma.pelinohjain.polunhaku.hae_polkua(ruutu, kohderuutu, False)
-        if hinnat is not False:
-            etaisyys = self.kayttoliittyma.pelinohjain.polunhaku.laske_hinta(hinnat, kohderuutu)
-            if etaisyys <= 25:
-                kerroin = -0.02 * etaisyys + 1.5
-            else:
-                kerroin = 1
-            pisteet *= kerroin
-        # läheinen oma yksikkö (hyvin pieni prioriteettilisäys)
-        etaisyyskerroin = 1
-        for yksikko in self.kayttoliittyma.pelinohjain.kartta.tietokoneen_yksikot:
-            etaisyys = self.kayttoliittyma.pelinohjain.polunhaku.heuristiikka(ruutu, yksikko.ruutu)
-            if 0 < etaisyys < 3:
-                etaisyyskerroin = 1.01
+        # kohteen lähestyminen
+        kerroin = Tekoaly.pisteyta_kohteen_lahestyminen(self, ruutu, kohderuutu)
+        pisteet *= kerroin
+
+        # läheinen oma yksikkö
+        etaisyyskerroin = Tekoaly.pisteyta_oman_yksikon_laheisyys(self, ruutu)
         pisteet *= etaisyyskerroin
         #print(pisteet)
         return pisteet

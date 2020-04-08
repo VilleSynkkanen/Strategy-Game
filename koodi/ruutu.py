@@ -9,6 +9,7 @@ from tykisto import Tykisto
 from parantaja import Parantaja
 from kiilat import Kiilat
 from jalkavaki_tekoaly import Jalkavaki_tekoaly
+from jousimiehet_tekoaly import Jousimiehet_tekoaly
 
 
 class Ruutu:
@@ -78,7 +79,7 @@ class Ruutu:
             elif tyyppi == "ratsuvaki":
                 self.__yksikko = Ratsuvaki(omistaja, self, self.__kayttoliittyma, ominaisuudet[0], ominaisuudet[1])
             elif tyyppi == "jousimiehet":
-                self.__yksikko = Jousimiehet(omistaja, self, self.__kayttoliittyma, ominaisuudet[0], ominaisuudet[1])
+                self.__yksikko = Jousimiehet_tekoaly(omistaja, self, self.__kayttoliittyma, ominaisuudet[0], ominaisuudet[1])
             elif tyyppi == "tykisto":
                 self.__yksikko = Tykisto(omistaja, self, self.__kayttoliittyma, ominaisuudet[0], ominaisuudet[1])
             elif tyyppi == "parantaja":
