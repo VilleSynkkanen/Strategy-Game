@@ -41,6 +41,10 @@ class Tekoaly:
                 suhde *= yksikko.ratsuvaki_prio
             elif vihollinen.__class__.__name__ == "Jalkavaki":
                 suhde *= yksikko.jalkavaki_prio
+            elamakerroin = 1 / sqrt(vihollinen.ominaisuudet.nyk_elama / vihollinen.ominaisuudet.max_elama)
+            if elamakerroin > yksikko.max_elamakerroin:
+                elamakerroin = yksikko.max_elamakerroin
+            suhde *= elamakerroin
             vaihtoehdot[vihollinen] = suhde
 
 

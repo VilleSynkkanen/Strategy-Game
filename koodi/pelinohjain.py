@@ -140,6 +140,9 @@ class Pelinohjain:
             yksikko.grafiikka.paivita_tooltip()
 
         # tietokoneen vuoron alku
+        for yksikko in self.__kartta.tietokoneen_yksikot:
+            if not yksikko.onko_taintunut():
+                yksikko.palauta_liikkumispisteet()
         self.__tietokoneen_vuoro()
 
     def __tietokoneen_vuoro(self):

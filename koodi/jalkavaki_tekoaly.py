@@ -16,7 +16,7 @@ class Jalkavaki_tekoaly(Jalkavaki):
         self.__jousimies_prio = 1.2
         self.__ratsuvaki_prio = 1.1
         self.__jalkavaki_prio = 1
-        self.__max_elamakerroin = 2
+        self.__max_elamakerroin = 1.5
         self.__min_puolustuskerroin = 0.5
         self.__max_puolustuskerroin = 2.5
         self.__min_maastokerroin = 0.75

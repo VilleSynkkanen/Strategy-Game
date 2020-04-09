@@ -8,31 +8,35 @@ class Tykisto_tekoaly(Tykisto):
         super(Tykisto_tekoaly, self).__init__(omistaja, ruutu, kayttoliittyma, ominaisuudet, kyvyt)
 
         # priorisaatio ruudun/hyökkäyksen kohteen päättämisessä
-        self.__tykisto_prio = 1.5
-        self.__parantaja_prio = 1.25
+        self.__tykisto_prio = 1.2
+        self.__parantaja_prio = 1.3
         self.__jousimies_prio = 1.2
         self.__ratsuvaki_prio = 1.1
         self.__jalkavaki_prio = 1
-        self.__max_elamakerroin = 2
-        self.__min_puolustuskerroin = 0.8
-        self.__max_puolustuskerroin = 1.2
-        self.__min_maastokerroin = 0.8
-        self.__max_maastokerroin = 1.2
+        self.__max_elamakerroin = 2.5
+        self.__min_puolustuskerroin = 1
+        self.__max_puolustuskerroin = 1
+        self.__min_maastokerroin = 1
+        self.__max_maastokerroin = 1
         self.__flanking_kerroin = 1
 
         # maaston pisteytys
-        self.__oma_maastokerroin_hyokkays = 0.8
-        self.__oma_maastokerroin_puolustus = 0.4
+        self.__oma_maastokerroin_hyokkays = 0.75
+        self.__oma_maastokerroin_puolustus = 0.25
 
         # etäisyys kohteesta pisteytys
-        self.__kulmakerroin = -0.04
-        self.__max_lahestymisbonus = 2
+        self.__kulmakerroin = -0.016
+        self.__max_lahestymisbonus = 5
         self.__max_etaisyys_kohteesta = (self.__max_lahestymisbonus - 1) / (-self.__kulmakerroin)
 
         # etäisyys omasta pisteytys
         self.__oma_lahestymisbonus = 1.01
-        self.__oma_max_kantama = 6
-        self.__laheisyys_bonus_yksikot = 1
+        self.__oma_max_kantama = 7
+        self.__laheisyys_bonus_yksikot = 2
+
+        # ei kohteita nykyisessä ruudussa
+        self.__kohteita_kerroin = 0.1
+        self.__ei_kohteita_bonus = 10
 
     @property
     def tykisto_prio(self):
@@ -133,6 +137,12 @@ class Tykisto_tekoaly(Tykisto):
         return 0
 
     def pisteyta_ruutu(self, ruutu, kohderuutu):
+        # jos tykistöllä on hyökkäyksen kohteita, vähennetään pisteitä, muussa tapauksessa lisätään
+        self.laske_hyokkayksen_kohteet(False)
+        ei_kohteita = False
+        if len(self.hyokkayksen_kohteet) == 0 and ruutu != self.ruutu:
+            ei_kohteita = True
+
         # pisteytys vihollisten perusteella
         pisteet = Tekoaly.pisteyta_kantamalla_olevat_viholliset(ruutu, self)
 
@@ -157,4 +167,10 @@ class Tykisto_tekoaly(Tykisto):
                 if etaisyys < self.ominaisuudet.kantama:
                     kerroin = (etaisyys / self.ominaisuudet.kantama)**2
         pisteet *= kerroin
+
+        # ei kohteita nykyisessä ruudussa
+        if ei_kohteita:
+            pisteet *= self.__ei_kohteita_bonus
+        else:
+            pisteet *= self.__kohteita_kerroin
         return pisteet

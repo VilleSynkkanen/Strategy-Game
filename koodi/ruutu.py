@@ -2,15 +2,18 @@ from koordinaatit import Koordinaatit
 from maasto import Maasto
 from ruutugrafiikka import Ruutugrafiikka
 from yksikko import Yksikko
-from jalkavaki import  Jalkavaki
-from ratsuvaki import  Ratsuvaki
-from jousimiehet import  Jousimiehet
+from jalkavaki import Jalkavaki
+from ratsuvaki import Ratsuvaki
+from jousimiehet import Jousimiehet
 from tykisto import Tykisto
 from parantaja import Parantaja
 from kiilat import Kiilat
 from jalkavaki_tekoaly import Jalkavaki_tekoaly
 from jousimiehet_tekoaly import Jousimiehet_tekoaly
 from tykisto_tekoaly import Tykisto_tekoaly
+from ratsuvaki_tekoaly import Ratsuvaki_tekoaly
+from parantaja_tekoaly import Parantaja_tekoaly
+
 
 class Ruutu:
 
@@ -77,13 +80,13 @@ class Ruutu:
             if tyyppi == "jalkavaki":
                 self.__yksikko = Jalkavaki_tekoaly(omistaja, self, self.__kayttoliittyma, ominaisuudet[0], ominaisuudet[1])
             elif tyyppi == "ratsuvaki":
-                self.__yksikko = Ratsuvaki(omistaja, self, self.__kayttoliittyma, ominaisuudet[0], ominaisuudet[1])
+                self.__yksikko = Ratsuvaki_tekoaly(omistaja, self, self.__kayttoliittyma, ominaisuudet[0], ominaisuudet[1])
             elif tyyppi == "jousimiehet":
                 self.__yksikko = Jousimiehet_tekoaly(omistaja, self, self.__kayttoliittyma, ominaisuudet[0], ominaisuudet[1])
             elif tyyppi == "tykisto":
                 self.__yksikko = Tykisto_tekoaly(omistaja, self, self.__kayttoliittyma, ominaisuudet[0], ominaisuudet[1])
             elif tyyppi == "parantaja":
-                self.__yksikko = Parantaja(omistaja, self, self.__kayttoliittyma, ominaisuudet[0], ominaisuudet[1])
+                self.__yksikko = Parantaja_tekoaly(omistaja, self, self.__kayttoliittyma, ominaisuudet[0], ominaisuudet[1])
         return self.__yksikko
 
     def luo_grafiikka(self, koko):

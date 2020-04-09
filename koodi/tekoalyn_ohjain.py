@@ -65,10 +65,17 @@ class Tekoalyn_ohjain:
     def ohjaa_yksikoita(self):
         kohderuutu = self.paata_kohdealue()
         for yksikko in self.__pelinohjain.kartta.tietokoneen_yksikot:
-            if yksikko.__class__.__name__ != "Ratsuvaki" and yksikko.__class__.__name__ != "Parantaja":
+            yksikko.liike(kohderuutu)
+            QtTest.QTest.qWait(self.__pelinohjain.viive)
+        for yksikko in self.__pelinohjain.kartta.tietokoneen_yksikot:
+            yksikko.hyokkays_toiminto()
+            QtTest.QTest.qWait(self.__pelinohjain.viive)
+        for yksikko in self.__pelinohjain.kartta.tietokoneen_yksikot:
+            # ratsuväki voi liikkua hyökkäyksen jälkeen
+            if yksikko.__class__.__name__ == "Ratsuvaki" and not yksikko.liikkuminen_kaytetty:
                 yksikko.liike(kohderuutu)
                 QtTest.QTest.qWait(self.__pelinohjain.viive)
-        for yksikko in self.__pelinohjain.kartta.tietokoneen_yksikot:
-            if yksikko.__class__.__name__ != "Ratsuvaki" and yksikko.__class__.__name__ != "Parantaja":
-                yksikko.hyokkays_toiminto()
-                QtTest.QTest.qWait(self.__pelinohjain.viive)
+                # joissain tapauksissa hyökkäys voi jäädä käyttämättä
+                if not yksikko.hyokkays_kaytetty:
+                    yksikko.hyokkays_toiminto()
+                    QtTest.QTest.qWait(self.__pelinohjain.viive)

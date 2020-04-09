@@ -15,6 +15,8 @@ class Jousimiehet_tekoaly(Jousimiehet):
         self.__ratsuvaki_prio = 1
         self.__jalkavaki_prio = 1
         self.__max_elamakerroin = 1.25
+
+        # seuraavat vaikuttavat pelkästään liikkumiseen
         self.__min_puolustuskerroin = 0.8
         self.__max_puolustuskerroin = 1.2
         self.__min_maastokerroin = 0.8

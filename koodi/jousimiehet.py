@@ -19,8 +19,6 @@ class Jousimiehet(Yksikko):
         self.__kyky1_verenvuoto = int(kyvyt["kyky1_verenvuoto"])
         self.__kyky1_verenvuoto_kesto = int(kyvyt["kyky1_verenvuoto_kesto"])
 
-    # propertyt
-
     @property
     def jalka_ratsu_vahinko_hyokkays(self):
         return self.__jalka_ratsu_vahinko_hyokkays
