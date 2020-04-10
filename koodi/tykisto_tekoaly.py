@@ -38,6 +38,9 @@ class Tykisto_tekoaly(Tykisto):
         self.__kohteita_kerroin = 0.1
         self.__ei_kohteita_bonus = 10
 
+        # etäisyys vihollisista
+        self.__etaisyys_vihollisista_eksp = 2
+
         # kyvyt
         self.__kyky2_kohde = None
         self.__kyky2_prio = 2.5
@@ -118,6 +121,10 @@ class Tykisto_tekoaly(Tykisto):
     def laheisyys_bonus_yksikot(self):
         return self.__laheisyys_bonus_yksikot
 
+    @property
+    def etaisyys_vihollisista_eksp(self):
+        return self.__etaisyys_vihollisista_eksp
+
     def liike(self, kohderuutu):
         Tekoaly.liike(self, kohderuutu)
 
@@ -150,7 +157,6 @@ class Tykisto_tekoaly(Tykisto):
         self.ominaisuudet.hyokkays = self.alkuperainen_hyok
         self.ominaisuudet.kantama = self.alkuperainen_kant
         if self.__kyky2_kohde is not None:
-            print("aaaa")
             return self.__kyky2_prio * Tekoaly.pisteyta_pelkka_kohde(self, self.__kyky2_kohde)
         else:
             return 0
@@ -177,14 +183,8 @@ class Tykisto_tekoaly(Tykisto):
         etaisyyskerroin = Tekoaly.pisteyta_oman_yksikon_laheisyys(self, ruutu)
         pisteet *= etaisyyskerroin
 
-        # lisäys jousimiehille ja tykistölle: pysy niin kaukana vihollisista kuin kantama sallii
-        kerroin = 1
-        for vihollinen in self.kayttoliittyma.pelinohjain.kartta.pelaajan_yksikot:
-            polku, hinnat = self.kayttoliittyma.pelinohjain.polunhaku.hae_polkua(ruutu, vihollinen.ruutu, False)
-            if hinnat is not False:
-                etaisyys = self.kayttoliittyma.pelinohjain.polunhaku.laske_hinta(hinnat, vihollinen.ruutu)
-                if etaisyys < self.ominaisuudet.kantama:
-                    kerroin = (etaisyys / self.ominaisuudet.kantama)**2
+        # etäisyys vihollisista
+        kerroin = Tekoaly.pisteyta_vihollisten_valttely(self, ruutu)
         pisteet *= kerroin
 
         # ei kohteita nykyisessä ruudussa
@@ -192,4 +192,5 @@ class Tykisto_tekoaly(Tykisto):
             pisteet *= self.__ei_kohteita_bonus
         else:
             pisteet *= self.__kohteita_kerroin
+
         return pisteet

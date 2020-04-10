@@ -37,6 +37,9 @@ class Jousimiehet_tekoaly(Jousimiehet):
         self.__oma_max_kantama = 4
         self.__laheisyys_bonus_yksikot = 2
 
+        # etäisyys vihollisista
+        self.__etaisyys_vihollisista_eksp = 2
+
     @property
     def tykisto_prio(self):
         return self.__tykisto_prio
@@ -113,6 +116,10 @@ class Jousimiehet_tekoaly(Jousimiehet):
     def laheisyys_bonus_yksikot(self):
         return self.__laheisyys_bonus_yksikot
 
+    @property
+    def etaisyys_vihollisista_eksp(self):
+        return self.__etaisyys_vihollisista_eksp
+
     def liike(self, kohderuutu):
         Tekoaly.liike(self, kohderuutu)
 
@@ -151,13 +158,7 @@ class Jousimiehet_tekoaly(Jousimiehet):
         etaisyyskerroin = Tekoaly.pisteyta_oman_yksikon_laheisyys(self, ruutu)
         pisteet *= etaisyyskerroin
 
-        # lisäys jousimiehille: pysy niin kaukana vihollisista kuin kantama sallii
-        kerroin = 1
-        for vihollinen in self.kayttoliittyma.pelinohjain.kartta.pelaajan_yksikot:
-            polku, hinnat = self.kayttoliittyma.pelinohjain.polunhaku.hae_polkua(ruutu, vihollinen.ruutu, False)
-            if hinnat is not False:
-                etaisyys = self.kayttoliittyma.pelinohjain.polunhaku.laske_hinta(hinnat, vihollinen.ruutu)
-                if etaisyys < self.ominaisuudet.kantama:
-                    kerroin = (etaisyys / self.ominaisuudet.kantama)**2
+        # etäisyys vihollisista
+        kerroin = Tekoaly.pisteyta_vihollisten_valttely(self, ruutu)
         pisteet *= kerroin
         return pisteet

@@ -56,6 +56,10 @@ class Ratsuvaki(Yksikko):
     def kyky2_kesto(self):
         return self.__kyky2_kesto
 
+    @property
+    def alkuperainen_kant(self):
+        return self.__alkuperainen_kant
+
     # passiivinen tehty
     # kyky 1 tehty
     # kyky 2 tehty
@@ -69,16 +73,17 @@ class Ratsuvaki(Yksikko):
         teksti = self.__class__.__name__ + " käytti kolmiokiilan"
         self.kayttoliittyma.lisaa_pelilokiin(teksti)
 
-    def kyky2(self):
+    def kyky2(self, tekoaly=False):
         self.__alkuperainen_kant = self.ominaisuudet.kantama
         self.ominaisuudet.kantama = self.kyky2_kantama
-        self.kyky2_valitsee_kohteita = True
-        self.peru_mahdollisten_ruutujen_nayttaminen()
-        self.laske_kantaman_sisalla_olevat_ruudut()
-        self.nayta_kantaman_sisalla_olevat_ruudut()
-        self.laske_hyokkayksen_kohteet(True)
-        #self.nayta_hyokkayksen_kohteet()
-        self.kayttoliittyma.paivita_peru_nappi()
+        if not tekoaly:
+            self.kyky2_valitsee_kohteita = True
+            self.peru_mahdollisten_ruutujen_nayttaminen()
+            self.laske_kantaman_sisalla_olevat_ruudut()
+            self.nayta_kantaman_sisalla_olevat_ruudut()
+            self.laske_hyokkayksen_kohteet(True)
+            #self.nayta_hyokkayksen_kohteet()
+            self.kayttoliittyma.paivita_peru_nappi()
 
     def kayta_kyky2(self, kohde):
         kohde.lisaa_tilavaikutus(self.kyky2_kesto, 0, -self.kyky2_puolustusvahennys, 0, 0, False)

@@ -12,6 +12,10 @@ class Tekoalyn_ohjain:
         self.ratsuvaki_prio = 1.1
         self.jalkavaki_prio = 1
 
+        # liikkumisjärjestys
+        self.__liikkumisjarjestys = ["Ratsuvaki", "Jalkavaki", "Jousimiehet", "Parantaja", "Tykisto"]
+        self.__hyokkaysjarjestys = ["Tykisto", "Jousimiehet", "Ratsuvaki", "Parantaja", "Jalkavaki"]
+
     # säätö: aggressiivinen, lähestyy kohdealuetta
     # yksikön oma tekoäly hoitaa tarkemmat päätökset
     # pieni pistebonus kohdealuetta kohdi liikkumisessa
@@ -62,31 +66,42 @@ class Tekoalyn_ohjain:
                 lahin_ruutu = vihollinen.ruutu
         return lahin_ruutu
 
+    def __lajittele_listat(self, toiminto):
+        # lajittelu liikkumista varten
+        if toiminto == "liikkuminen":
+            pass
+        # lajittelu hyökkäystä varten
+        else:
+            pass
+
+
     def ohjaa_yksikoita(self):
         kohderuutu = self.paata_kohdealue()
         # käydään liikkumis loop kahdesti blokkauksen välttämiseksi
+        self.__lajittele_listat("liikkuminen")
         for yksikko in self.__pelinohjain.kartta.tietokoneen_yksikot:
-            if yksikko.__class__.__name__ == "Tykisto":
-                if not yksikko.liikkuminen_kaytetty:
-                    yksikko.liike(kohderuutu)
-                    QtTest.QTest.qWait(self.__pelinohjain.viive)
+            #if yksikko.__class__.__name__ == "Parantaja":
+            if not yksikko.liikkuminen_kaytetty:
+                yksikko.liike(kohderuutu)
+                QtTest.QTest.qWait(self.__pelinohjain.viive)
         for yksikko in self.__pelinohjain.kartta.tietokoneen_yksikot:
-            if yksikko.__class__.__name__ == "Tykisto":
-                if not yksikko.liikkuminen_kaytetty:
-                    yksikko.liike(kohderuutu)
-                    QtTest.QTest.qWait(self.__pelinohjain.viive)
+            #if yksikko.__class__.__name__ == "Parantaja":
+            if not yksikko.liikkuminen_kaytetty:
+                yksikko.liike(kohderuutu)
+                QtTest.QTest.qWait(self.__pelinohjain.viive)
+        self.__lajittele_listat("hyokkays")
         for yksikko in self.__pelinohjain.kartta.tietokoneen_yksikot:
-            if yksikko.__class__.__name__ == "Tykisto":
+            #if yksikko.__class__.__name__ == "Parantaja":
+            if not yksikko.hyokkays_kaytetty:
+                yksikko.hyokkays_toiminto()
+                QtTest.QTest.qWait(self.__pelinohjain.viive)
+        for yksikko in self.__pelinohjain.kartta.tietokoneen_yksikot:
+            #if yksikko.__class__.__name__ == "Parantaja":
+            # ratsuväki voi liikkua hyökkäyksen jälkeen
+            if yksikko.__class__.__name__ == "Ratsuvaki" and not yksikko.liikkuminen_kaytetty:
+                yksikko.liike(kohderuutu)
+                QtTest.QTest.qWait(self.__pelinohjain.viive)
+                # joissain tapauksissa hyökkäys voi jäädä käyttämättä
                 if not yksikko.hyokkays_kaytetty:
                     yksikko.hyokkays_toiminto()
                     QtTest.QTest.qWait(self.__pelinohjain.viive)
-        for yksikko in self.__pelinohjain.kartta.tietokoneen_yksikot:
-            if yksikko.__class__.__name__ == "Tykisto":
-                # ratsuväki voi liikkua hyökkäyksen jälkeen
-                if yksikko.__class__.__name__ == "Ratsuvaki" and not yksikko.liikkuminen_kaytetty:
-                    yksikko.liike(kohderuutu)
-                    QtTest.QTest.qWait(self.__pelinohjain.viive)
-                    # joissain tapauksissa hyökkäys voi jäädä käyttämättä
-                    if not yksikko.hyokkays_kaytetty:
-                        yksikko.hyokkays_toiminto()
-                        QtTest.QTest.qWait(self.__pelinohjain.viive)

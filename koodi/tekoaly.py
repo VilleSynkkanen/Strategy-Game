@@ -175,3 +175,14 @@ class Tekoaly:
         if yksikot >= yksikko.laheisyys_bonus_yksikot:
             etaisyyskerroin = yksikko.oma_lahestymisbonus
         return etaisyyskerroin
+
+    @staticmethod
+    def pisteyta_vihollisten_valttely(yksikko, ruutu):
+        kerroin = 1
+        for vihollinen in yksikko.kayttoliittyma.pelinohjain.kartta.pelaajan_yksikot:
+            polku, hinnat = yksikko.kayttoliittyma.pelinohjain.polunhaku.hae_polkua(ruutu, vihollinen.ruutu, False)
+            if hinnat is not False:
+                etaisyys = yksikko.kayttoliittyma.pelinohjain.polunhaku.laske_hinta(hinnat, vihollinen.ruutu)
+                if etaisyys < yksikko.ominaisuudet.kantama:
+                    kerroin = (etaisyys / yksikko.ominaisuudet.kantama)**yksikko.etaisyys_vihollisista_eksp
+        return kerroin

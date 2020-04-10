@@ -6,17 +6,20 @@ Seuraavaksi:
 		-kyky1
 		-kyky2
 			-kiilojen vaikuts pisteytykseen
-	ratsuväki
-		-kyky1
-		-kyky2
 	tykistö
 		-kyky1
 	parantaja
 		-kyky1
-		-kyky2
 	-tekoälyn ohjaus
 		-määrittele järjestykset (tee siten, että helposti mahdollista lukea tiedostosta)
-		-vihollisten välttely yhteiseksi osaksi tekoälyä: jokaiselle oma muuttuja
+-kaatumiset, bugit
+-ohjeteksti
+-pelin ohjaus loppuun: voitto, häviö, korjauksia
+-päävalikko
+-kenttäeditori
+-tiedostojen lukeminen: virheidensieto
+-tallennus
+-viimeistelyä
 	
 Ideoita:
 -käyttöliittymän kokoasetukset tiedostossa
@@ -26,10 +29,11 @@ Ideoita:
 (-pelinohjaukseen liittyvät lukuarvot (viiveet tms. tiedostossa))
 
 Teköäly
--tietty liikkumisjärjestys ja kykyjen käyttöjärjestys
-	-määritelty tekoälyn ohjauksessa
--ensin kaikki liikkuvat, sitten kykyjen käyttö/hyökkäykset
--liikuminen omien läpi???
+-kyvyt loppuun
+-hiominen
+-pelitestaus
+-yksikkötestaus
+-algoritmien optimisaatio
 
 Tiedostojen lukeminen:
 -virheiden sieto: tarkistus ja virheilmoitus päävalikossa
@@ -39,16 +43,26 @@ Ohjetekstit, peliloki
 	-tekstien kieliasu
 	-mitä kerrotaan, mitä ei
 	-enemmän rivejä???
+-ohjeet pelaajalle
 
 Testaus
 -tekoäly: vain yleiset metodit
--tiedostojen luku
+-tiedostojen luku(?)
+
+Pelin ohjaus
+-loppuun
+
+Käyttöliittymä
+-viimeistely
+-skaalaus eri kokoisille ruuduille
 
 Bugeja
 -joskus ei voi valita yksiköitä (vuoron vaihdon jälkeen(?), napit toimivat)
 -ratsuväki tekoäly värjää joskus ruutuja
+-kaatuminen, jos pelaajalla ei ole yksiköitä ja vuoro vaihtuu
 -kaatuminen vuoron vaihtuessa pelaajalle: ominaisuudet on none(?)
 -kaatuminen: pelaajan yksikkö kuolee verenvuotoon
+-tekoäly ratsuväki saattaa yrittää liikkua kuoleman jälkeen: kaatuminen
 
 Aikataulu
 -tekoäly 17.4 mennessä

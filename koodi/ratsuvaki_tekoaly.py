@@ -37,6 +37,16 @@ class Ratsuvaki_tekoaly(Ratsuvaki):
         self.__oma_max_kantama = 3
         self.__laheisyys_bonus_yksikot = 1
 
+        # kyvyt
+        self.__kyky1_vihollinen_etaisyys = self.ominaisuudet.liikkuminen
+        self.__kyky1_viholliset_min = 1
+        self.__kyky1_prio_kerroin = 5
+        self.__kyky1_prio_potenssi = 2
+
+        self.__kyky2_kohde = None
+        self.__kyky2_elama_potenssi = 2
+        self.__kyky2_voima_kerroin = 0.012
+
     @property
     def tykisto_prio(self):
         return self.__tykisto_prio
@@ -125,15 +135,71 @@ class Ratsuvaki_tekoaly(Ratsuvaki):
         elif paras_kohde == "KYKY1":
             self.kyky1()
         elif paras_kohde == "KYKY2":
-            self.kyky2()
+            self.kyky2(True)
+            self.kayta_kyky2(self.__kyky2_kohde)
         else:
             paras_kohde.hyokkayksen_kohde(self)
 
     def pisteyta_kyky1(self):
-        return 0
+        # mitä enemmän elämää, sitä suuremmat pisteet
+        # täytyy olla vihollinen tarpeeksi lähellä
+        viholliset = 0
+        for vihollinen in self.kayttoliittyma.pelinohjain.kartta.pelaajan_yksikot:
+            if self.__kyky1_vihollinen_etaisyys <= \
+                    self.kayttoliittyma.pelinohjain.polunhaku.heuristiikka(self.ruutu, vihollinen.ruutu):
+                viholliset += 1
+        if viholliset < self.__kyky1_viholliset_min:
+            return 0
+        else:
+            return self.__kyky1_prio_kerroin * \
+                   ((self.ominaisuudet.nyk_elama / self.ominaisuudet.max_elama)**self.__kyky1_prio_potenssi)
 
     def pisteyta_kyky2(self):
-        return 0
+        # muutetaan hyökkäys ja kantama väliaikaisesti
+        self.__kyky2_kohde = None
+        # tekoäly = True
+        self.kyky2(True)
+        # etsitään paras kohde
+        pisteet, self.__kyky2_kohde = self.__kyky2_pisteytys()
+        self.ominaisuudet.kantama = self.alkuperainen_kant
+        return pisteet
+
+    # mitä voimakkaampi yksikkö, sitä enemmän pisteitä
+    def __kyky2_pisteytys(self):
+        vaihtoehdot = {}
+        self.laske_hyokkayksen_kohteet(False)
+        for vihollinen in self.hyokkayksen_kohteet:
+            kerroin = 10
+            # priorisoitavat tyypit
+            if vihollinen.__class__.__name__ == "Tykisto":
+                kerroin *= self.tykisto_prio
+            elif vihollinen.__class__.__name__ == "Parantaja":
+                kerroin *= self.parantaja_prio
+            elif vihollinen.__class__.__name__ == "Jousimiehet":
+                kerroin *= self.jousimies_prio
+            elif vihollinen.__class__.__name__ == "Ratsuvaki":
+                kerroin *= self.ratsuvaki_prio
+            elif vihollinen.__class__.__name__ == "Jalkavaki":
+                kerroin *= self.jalkavaki_prio
+
+            # elämän vaikutus
+            elamakerroin = (vihollinen.ominaisuudet.nyk_elama / vihollinen.ominaisuudet.max_elama)**self.__kyky2_elama_potenssi
+            kerroin *= elamakerroin
+
+            # hyökkäyksen ja puolustuksen vaikutus
+            voimakerroin = (vihollinen.ominaisuudet.hyokkays + vihollinen.ominaisuudet.puolustus) * self.__kyky2_voima_kerroin
+            kerroin *= voimakerroin
+            vaihtoehdot[vihollinen] = kerroin
+
+        # määritellään korkeimmat pisteet ja paras kohde
+        korkeimmat_pisteet = 0
+        paras_kohde = None
+        for vaihtoehto in vaihtoehdot:
+            # puolustajan vahingon täytyy olla suurempi tai yhtä suuri kuin hyökkääjän, jotta hyökkäys tapahtuisi
+            if vaihtoehdot[vaihtoehto] > korkeimmat_pisteet:
+                korkeimmat_pisteet = vaihtoehdot[vaihtoehto]
+                paras_kohde = vaihtoehto
+        return korkeimmat_pisteet, paras_kohde
 
     def pisteyta_ruutu(self, ruutu, kohderuutu):
         # pisteytys vihollisten perusteella
