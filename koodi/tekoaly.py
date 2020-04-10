@@ -24,7 +24,7 @@ class Tekoaly:
             yksikko.liiku_ruutuun(paras)
 
     @staticmethod
-    def hyokkays_toiminto(yksikko):
+    def hyokkays_toiminto(yksikko, ei_kykyja=False):
         vaihtoehdot = {}
         yksikko.laske_hyokkayksen_kohteet(False)
         for vihollinen in yksikko.hyokkayksen_kohteet:
@@ -47,16 +47,16 @@ class Tekoaly:
             suhde *= elamakerroin
             vaihtoehdot[vihollinen] = suhde
 
-
-        kyky1_pisteet = 0
-        kyky2_pisteet = 0
-        # katsotaan voidaanko kykyjä käyttää, jos voidaan, pisteytetään ne
-        if yksikko.ominaisuudet.nyk_energia >= yksikko.kyky1_hinta:
-            kyky1_pisteet = yksikko.pisteyta_kyky1()
-            vaihtoehdot["KYKY1"] = kyky1_pisteet
-        if yksikko.ominaisuudet.nyk_energia >= yksikko.kyky2_hinta:
-            kyky2_pisteet = yksikko.pisteyta_kyky2()
-            vaihtoehdot["KYKY2"] = kyky2_pisteet
+        if not ei_kykyja:
+            kyky1_pisteet = 0
+            kyky2_pisteet = 0
+            # katsotaan voidaanko kykyjä käyttää, jos voidaan, pisteytetään ne
+            if yksikko.ominaisuudet.nyk_energia >= yksikko.kyky1_hinta:
+                kyky1_pisteet = yksikko.pisteyta_kyky1()
+                vaihtoehdot["KYKY1"] = kyky1_pisteet
+            if yksikko.ominaisuudet.nyk_energia >= yksikko.kyky2_hinta:
+                kyky2_pisteet = yksikko.pisteyta_kyky2()
+                vaihtoehdot["KYKY2"] = kyky2_pisteet
 
         korkeimmat_pisteet = 0
         paras_kohde = None
@@ -66,6 +66,28 @@ class Tekoaly:
                 korkeimmat_pisteet = vaihtoehdot[vaihtoehto]
                 paras_kohde = vaihtoehto  # voi olla yksikkö tai merkkijono
         return paras_kohde
+
+    # joitain kykyjä varten
+    @staticmethod
+    def pisteyta_pelkka_kohde(yksikko, vihollinen):
+        hyok_vahinko, puol_vahinko, flanking = yksikko.laske_vahinko(yksikko, vihollinen, True)
+        suhde = (puol_vahinko + 0.001) / (hyok_vahinko + 0.001)
+        # priorisoitavat tyypit
+        if vihollinen.__class__.__name__ == "Tykisto":
+            suhde *= yksikko.tykisto_prio
+        elif vihollinen.__class__.__name__ == "Parantaja":
+            suhde *= yksikko.parantaja_prio
+        elif vihollinen.__class__.__name__ == "Jousimiehet":
+            suhde *= yksikko.jousimies_prio
+        elif vihollinen.__class__.__name__ == "Ratsuvaki":
+            suhde *= yksikko.ratsuvaki_prio
+        elif vihollinen.__class__.__name__ == "Jalkavaki":
+            suhde *= yksikko.jalkavaki_prio
+        elamakerroin = 1 / sqrt(vihollinen.ominaisuudet.nyk_elama / vihollinen.ominaisuudet.max_elama)
+        if elamakerroin > yksikko.max_elamakerroin:
+            elamakerroin = yksikko.max_elamakerroin
+        suhde *= elamakerroin
+        return suhde
 
     @staticmethod
     def pisteyta_kantamalla_olevat_viholliset(ruutu, yksikko):

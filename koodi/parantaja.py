@@ -98,6 +98,8 @@ class Parantaja(Yksikko):
         self.peru_kyky1()
         self.kayta_energiaa(self.kyky1_hinta)
         self.hyokatty()
+        teksti = self.__class__.__name__ + " käytti alueparannuksen"
+        self.kayttoliittyma.lisaa_pelilokiin(teksti)
 
     def paranna_yksikko(self, yksikko, maara):
         satunnaisuuskerroin = 0.15
@@ -123,6 +125,8 @@ class Parantaja(Yksikko):
         self.peru_kyky2()
         self.kayta_energiaa(self.kyky2_hinta)
         self.hyokatty()
+        teksti = self.__class__.__name__ + " käytti kirouksen"
+        self.kayttoliittyma.lisaa_pelilokiin(teksti)
 
     def kyky1_voi_kayttaa(self):
         if self.ominaisuudet.nyk_energia >= self.__kyky1_hinta:

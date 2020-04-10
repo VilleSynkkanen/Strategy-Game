@@ -111,7 +111,7 @@ class Kayttoliittyma(QtWidgets.QMainWindow):
         self.__maaston_tiedot.setStyleSheet("font: 9pt Arial")
         self.__maaston_tiedot.setSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Preferred)
 
-        # game log test
+        # peliloki
         self.__peliloki = QtWidgets.QLabel("PELILOKI:\n", self)
         self.__nappi_layout.addWidget(self.__peliloki, 6, 0, 6, 2, alignment=QtCore.Qt.AlignTop)
         self.__peliloki.setStyleSheet("font: 9pt Arial")
@@ -119,6 +119,7 @@ class Kayttoliittyma(QtWidgets.QMainWindow):
         self.__ohjeteksti = QtWidgets.QLabel("OHJETEKSTI\n", self)
         self.__nappi_layout.addWidget(self.__ohjeteksti, 11, 0, 1, 0, alignment=QtCore.Qt.AlignTop)
         self.__ohjeteksti.setStyleSheet("font: 9pt Arial")
+        self.__peliloki_tekstit = []
 
     @property
     def pelinohjain(self):
@@ -175,6 +176,7 @@ class Kayttoliittyma(QtWidgets.QMainWindow):
 
         # näytä peliloki
         self.__peliloki.setText("PELILOKI:\n")
+        self.__nayta_peliloki_tekstit()
         self.__yksikon_tiedot_nappi.setText("YKSIKÖN TIEDOT")
 
         yksikko.grafiikka.muuta_varia(yksikko.grafiikka.pelaaja_valittu_vari)
@@ -297,6 +299,7 @@ class Kayttoliittyma(QtWidgets.QMainWindow):
 
             # näytä peliloki
             self.__peliloki.setText("PELILOKI:\n")
+            self.__nayta_peliloki_tekstit()
             self.__yksikon_tiedot_nappi.setText("YKSIKÖN TIEDOT")
 
             # päivitä napit
@@ -312,6 +315,7 @@ class Kayttoliittyma(QtWidgets.QMainWindow):
     def __yksikon_tiedot(self):
         if self.__yksikon_tiedot_aktiivinen:
             self.__peliloki.setText("PELILOKI:\n")
+            self.__nayta_peliloki_tekstit()
             self.__yksikon_tiedot_nappi.setText("YKSIKÖN TIEDOT")
             self.__yksikon_tiedot_aktiivinen = False
         elif self.__valittu_yksikko is not None:
@@ -473,3 +477,20 @@ class Kayttoliittyma(QtWidgets.QMainWindow):
     def laita_napit_kayttoon(self):
         for nappi in self.__napit:
             nappi.setEnabled(True)
+
+    def lisaa_pelilokiin(self, teksti):
+        # jos peliloki on täynnä, poistetaan ensimmäinen alkio
+        # implementoi tekstin paloittelu, jos se on liian pitkä
+        teksti += "\n"
+        while len(self.__peliloki_tekstit) > 15:
+            del self.__peliloki_tekstit[0]
+        self.__peliloki_tekstit.append(teksti)
+        self.__nayta_peliloki_tekstit()
+
+    def __nayta_peliloki_tekstit(self):
+        naytettava_teksti = "PELILOKI:\n"
+        for txt in self.__peliloki_tekstit:
+            naytettava_teksti += txt
+        self.__peliloki.setText(naytettava_teksti)
+
+

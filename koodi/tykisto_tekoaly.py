@@ -38,6 +38,10 @@ class Tykisto_tekoaly(Tykisto):
         self.__kohteita_kerroin = 0.1
         self.__ei_kohteita_bonus = 10
 
+        # kyvyt
+        self.__kyky2_kohde = None
+        self.__kyky2_prio = 2.5
+
     @property
     def tykisto_prio(self):
         return self.__tykisto_prio
@@ -126,15 +130,30 @@ class Tykisto_tekoaly(Tykisto):
         elif paras_kohde == "KYKY1":
             self.kyky1()
         elif paras_kohde == "KYKY2":
-            self.kyky2()
+            self.kyky2(True)
+            self.kayta_kyky2(self.__kyky2_kohde)
         else:
             paras_kohde.hyokkayksen_kohde(self)
 
+    # returnaa pisteet ja parhaan kohderuudun
     def pisteyta_kyky1(self):
         return 0
 
+    # käyttää kyvyn 2 aina kun mahdollista (hyvin korkeat pisteet)
     def pisteyta_kyky2(self):
-        return 0
+        # muutetaan hyökkäys ja kantama väliaikaisesti
+        self.__kyky2_kohde = None
+        # tekoäly = True
+        self.kyky2(True)
+        # etsitään paras kohde
+        self.__kyky2_kohde = Tekoaly.hyokkays_toiminto(self, True)
+        self.ominaisuudet.hyokkays = self.alkuperainen_hyok
+        self.ominaisuudet.kantama = self.alkuperainen_kant
+        if self.__kyky2_kohde is not None:
+            print("aaaa")
+            return self.__kyky2_prio * Tekoaly.pisteyta_pelkka_kohde(self, self.__kyky2_kohde)
+        else:
+            return 0
 
     def pisteyta_ruutu(self, ruutu, kohderuutu):
         # jos tykistöllä on hyökkäyksen kohteita, vähennetään pisteitä, muussa tapauksessa lisätään

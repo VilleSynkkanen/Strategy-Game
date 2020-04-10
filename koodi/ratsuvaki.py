@@ -66,6 +66,8 @@ class Ratsuvaki(Yksikko):
                                 0, 0, False)
         self.kayta_energiaa(self.kyky1_hinta)
         self.hyokatty()
+        teksti = self.__class__.__name__ + " käytti kolmiokiilan"
+        self.kayttoliittyma.lisaa_pelilokiin(teksti)
 
     def kyky2(self):
         self.__alkuperainen_kant = self.ominaisuudet.kantama
@@ -83,6 +85,8 @@ class Ratsuvaki(Yksikko):
         self.peru_kyky2()
         self.kayta_energiaa(self.kyky2_hinta)
         self.hyokatty()
+        teksti = self.__class__.__name__ + " käytti tiedustelun"
+        self.kayttoliittyma.lisaa_pelilokiin(teksti)
 
     def peru_kyky2(self):
         super(Ratsuvaki, self).peru_kyky2()

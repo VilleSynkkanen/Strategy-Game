@@ -70,6 +70,14 @@ class Tykisto(Yksikko):
     def kyky2_kesto(self):
         return self.__kyky2_kesto
 
+    @property
+    def alkuperainen_hyok(self):
+        return self.__alkuperainen_hyok
+
+    @property
+    def alkuperainen_kant(self):
+        return self.__alkuperainen_kant
+
     # passiivinen tehty
     # kyky 1 toimii jotenkin (ei täydellisesti)
     # kyky 2 tehty (tilavaikutus ei testattu)
@@ -111,19 +119,22 @@ class Tykisto(Yksikko):
         self.peru_kyky1()
         self.kayta_energiaa(self.kyky1_hinta)
         self.hyokatty()
+        teksti = self.__class__.__name__ + " käytti pommituksen"
+        self.kayttoliittyma.lisaa_pelilokiin(teksti)
 
     # kantamaa vähennetään ja hyökkäystä lisätään väliaikaisesti
     # ei pysty ampumaan kohteiden yli
-    def kyky2(self):
+    def kyky2(self, tekoaly=False):
         self.__alkuperainen_hyok = self.ominaisuudet.hyokkays
         self.__alkuperainen_kant = self.ominaisuudet.kantama
         self.ominaisuudet.hyokkays *= self.kyky2_hyokkayskerroin
         self.ominaisuudet.kantama = self.kyky2_kantama
-        self.kyky2_valitsee_kohteita = True
-        self.laske_kantaman_sisalla_olevat_ruudut()
-        self.nayta_kantaman_sisalla_olevat_ruudut()
-        self.laske_hyokkayksen_kohteet(True)
-        self.nayta_hyokkayksen_kohteet()
+        if not tekoaly:
+            self.kyky2_valitsee_kohteita = True
+            self.laske_kantaman_sisalla_olevat_ruudut()
+            self.nayta_kantaman_sisalla_olevat_ruudut()
+            self.laske_hyokkayksen_kohteet(True)
+            self.nayta_hyokkayksen_kohteet()
 
     def kayta_kyky2(self, kohde):
         kohde.hyokkays(self)
@@ -132,6 +143,8 @@ class Tykisto(Yksikko):
         self.peru_kyky2()
         self.kayta_energiaa(self.kyky2_hinta)
         self.hyokatty()
+        teksti = self.__class__.__name__ + " käytti kanisterilaukauksen"
+        self.kayttoliittyma.lisaa_pelilokiin(teksti)
 
     def peru_kyky2(self):
         super(Tykisto, self).peru_kyky2()

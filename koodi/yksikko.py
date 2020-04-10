@@ -149,7 +149,8 @@ class Yksikko:
             if kohde.yksikko is not None and kohde.yksikko.omistaja != self.__omistaja and \
                     self.__kayttoliittyma.pelinohjain.polunhaku.heuristiikka(ruutu, kohde) \
                     <= self.__ominaisuudet.kantama:
-                if self.__kayttoliittyma.pelinohjain.kartta.nakyvyys(ruutu, kohde):
+                if self.__kayttoliittyma.pelinohjain.kartta.nakyvyys(ruutu, kohde) \
+                        or self.__class__.__name__ == "Tykisto":
                     viholliset_kantamalla.append(kohde.yksikko)
         return viholliset_kantamalla
 
@@ -204,6 +205,9 @@ class Yksikko:
         self.__grafiikka.paivita_sijainti(self.__ruutu)
         self.liikuttu()
         self.laske_hyokkayksen_kohteet(False)
+        teksti = self.__class__.__name__ + \
+                 " liikkui ruutuun (" + str(ruutu.koordinaatit.x) + ", " + str(ruutu.koordinaatit.y) + ")"
+        self.kayttoliittyma.lisaa_pelilokiin(teksti)
         if self.omistaja == "PLR":
             self.kayttoliittyma.paivita_nappien_aktiivisuus()
             if len(self.__hyokkayksen_kohteet) == 0 or self.__hyokkays_kaytetty:
@@ -346,6 +350,11 @@ class Yksikko:
         hyokkaajan_vahinko, puolustajan_vahinko = self.laske_vahinko(hyokkaaja, self, False)
         self.ota_vahinkoa(puolustajan_vahinko)
         hyokkaaja.ota_vahinkoa(hyokkaajan_vahinko)
+        teksti1 = hyokkaaja.__class__.__name__ + " hyokkasi " + self.__class__.__name__ + " kimppuun:"
+        teksti2 = "Hyökkääjä otti " + str(hyokkaajan_vahinko) + " vahinkoa ja puolustaja otti " \
+                  + str(puolustajan_vahinko) + " vahinkoa"
+        self.kayttoliittyma.lisaa_pelilokiin(teksti1)
+        self.kayttoliittyma.lisaa_pelilokiin(teksti2)
         # jalkaväen passiivinen kyky
         if hyokkaaja.__class__.__name__ == "Jalkavaki":
             hyokkaaja.parannu(hyokkaaja.parannus_hyokkayksessa)
@@ -375,6 +384,8 @@ class Yksikko:
         vaikutus = Tilavaikutus(self, kesto, hyokkays, puolustus, liikkuminen, verenvuoto, taintuminen, loppuvaikutus)
         self.__ominaisuudet.tilavaikutukset.append(vaikutus)
         self.grafiikka.elamapalkki.paivita_tilavaikutukset()
+        teksti = self.__class__.__name__ + " sai tilavaikutuksen"
+        self.kayttoliittyma.lisaa_pelilokiin(teksti)
 
     def muuta_hyokkaysta(self, maara):
         self.__ominaisuudet.hyokkays += maara
@@ -403,6 +414,8 @@ class Yksikko:
                 self.muuta_puolustusta(-vaikutus.puolustusbonus)
                 self.muuta_liikkumista(-vaikutus.liikkumisbonus)
                 self.__ominaisuudet.tilavaikutukset.remove(vaikutus)
+                teksti = self.__class__.__name__ + " tilavaikutus loppui"
+                self.kayttoliittyma.lisaa_pelilokiin(teksti)
                 if vaikutus.loppuvaikutus is not None:
                     v = vaikutus.loppuvaikutus
                     self.lisaa_tilavaikutus(v.kesto, v.hyokkaysbonus, v.puolustusbonus, v.liikkumisbonus,
@@ -427,6 +440,8 @@ class Yksikko:
     def __tuhoudu(self):
         # poistaa kaikki olemassa olevat viittaukset yksikköön ja piilottaa sen graafiset komponentit
         # jos valittu yksikkö, poista käyttöliittymästä
+        teksti = self.__class__.__name__ + " tuhoutui"
+        self.kayttoliittyma.lisaa_pelilokiin(teksti)
         if self.__kayttoliittyma.valittu_yksikko == self:
             self.__kayttoliittyma.tyhjenna_valinta()
         # poista kartan listasta

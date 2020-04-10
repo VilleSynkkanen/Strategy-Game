@@ -11,7 +11,6 @@ Seuraavaksi:
 		-kyky2
 	tykistö
 		-kyky1
-		-kyky2
 	parantaja
 		-kyky1
 		-kyky2
@@ -30,20 +29,26 @@ Teköäly
 -tietty liikkumisjärjestys ja kykyjen käyttöjärjestys
 	-määritelty tekoälyn ohjauksessa
 -ensin kaikki liikkuvat, sitten kykyjen käyttö/hyökkäykset
+-liikuminen omien läpi???
 
 Tiedostojen lukeminen:
--virheiden sieto
+-virheiden sieto: tarkistus ja virheilmoitus päävalikossa
 
 Ohjetekstit, peliloki
--???
+-pelilokin hionta:
+	-tekstien kieliasu
+	-mitä kerrotaan, mitä ei
+	-enemmän rivejä???
 
 Testaus
--tekoäly(?)
+-tekoäly: vain yleiset metodit
 -tiedostojen luku
 
 Bugeja
 -joskus ei voi valita yksiköitä (vuoron vaihdon jälkeen(?), napit toimivat)
 -ratsuväki tekoäly värjää joskus ruutuja
+-kaatuminen vuoron vaihtuessa pelaajalle: ominaisuudet on none(?)
+-kaatuminen: pelaajan yksikkö kuolee verenvuotoon
 
 Aikataulu
 -tekoäly 17.4 mennessä

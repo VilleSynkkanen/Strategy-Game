@@ -89,12 +89,16 @@ class Jousimiehet(Yksikko):
         self.peru_kyky1()
         self.kayta_energiaa(self.kyky1_hinta)
         self.hyokatty()
+        teksti = self.__class__.__name__ + " käytti nuolisateen"
+        self.kayttoliittyma.lisaa_pelilokiin(teksti)
 
     def kyky2(self):
         if self.ruutu.kiilat is None:
             self.ruutu.luo_kiilat(self.kyky2_bonus, self.kyky2_bonus_ratsuvaki)
             self.kayta_energiaa(self.kyky2_hinta)
             self.hyokatty()
+            teksti = self.__class__.__name__ + " käytti kiilat"
+            self.kayttoliittyma.lisaa_pelilokiin(teksti)
 
     def kyky1_voi_kayttaa(self):
         if self.ominaisuudet.nyk_energia >= self.__kyky1_hinta:
