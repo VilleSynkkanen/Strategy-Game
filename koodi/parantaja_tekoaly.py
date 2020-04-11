@@ -41,10 +41,18 @@ class Parantaja_tekoaly(Parantaja):
         self.__etaisyys_vihollisista_eksp = 4
 
         # kyvyt
+        self.__kyky1_prio_kerroin = 175
+        self.__kyky1_jalkavaki_prio = 1
+        self.__kyky1_ratsuvaki_prio = 1.1
+        self.__kyky1_jousimiehet_prio = 1.2
+        self.__kyky1_parantaja_prio = 1.4
+        self.__kyky1_tykisto_prio = 1.3
+
+        self.__kyky1_kohde = None
+
         self.__kyky2_kohde = None
         self.__kyky2_elama_potenssi = 2
         self.__kyky2_voima_kerroin = 0.1
-
 
     @property
     def tykisto_prio(self):
@@ -136,14 +144,55 @@ class Parantaja_tekoaly(Parantaja):
         if paras_kohde is None:
             pass
         elif paras_kohde == "KYKY1":
-            self.kyky1()
+            self.kyky1_lisaa_kohde(self.__kyky1_kohde, True)
         elif paras_kohde == "KYKY2":
             self.kayta_kyky2(self.__kyky2_kohde)
         else:
             paras_kohde.hyokkayksen_kohde(self)
 
     def pisteyta_kyky1(self):
-        return 0
+        self.__kyky1_kohde = None
+        # käydään läpi kaikki mahdolliset ruudut ja pisteytetään ne
+        self.laske_kantaman_sisalla_olevat_ruudut()
+        vaihtoehdot = {}
+        vaihtoehdot[self.ruutu] = self.__pisteyta_ruutu_kyky2(self.ruutu)
+        for ruutu in self.ruudut_kantamalla:
+            vaihtoehdot[ruutu] = self.__pisteyta_ruutu_kyky2(ruutu)
+
+        paras = self.ruutu
+        for ruutu in vaihtoehdot:
+            if vaihtoehdot[ruutu] > vaihtoehdot[paras]:
+                paras = ruutu
+        self.__kyky1_kohde = paras
+        return vaihtoehdot[paras]
+
+    def __pisteyta_ruutu_kyky2(self, ruutu):
+        # pisteytyksessä lasketaan painotettu parannusmäärä
+        # haetaan ruudut etsimällä annetun ruudun naapurit ja niiden naapurit
+        alue = []
+        alue.append(self.ruutu)
+        for alkio in self.kayttoliittyma.pelinohjain.kartta.ruudut:
+            if self.kayttoliittyma.pelinohjain.polunhaku.heuristiikka(ruutu, alkio) <= self.kyky1_kantama:
+                alue.append(alkio)
+        pisteet = 0
+        for paikka in alue:
+            if paikka.yksikko is not None and paikka.yksikko.omistaja == "COM":
+                puuttuva_elama = paikka.yksikko.ominaisuudet.puuttuva_elama()
+                parannus = self.laske_kyky2_parannus(ruutu, paikka)
+                if parannus > puuttuva_elama:
+                    parannus = puuttuva_elama
+                if paikka.yksikko.__class__.__name__ == "Tykisto":
+                    parannus *= self.__kyky1_jalkavaki_prio
+                elif paikka.yksikko.__class__.__name__ == "Parantaja":
+                    parannus *= self.__kyky1_parantaja_prio
+                elif paikka.yksikko.__class__.__name__ == "Jousimiehet":
+                    parannus *= self.__kyky1_jousimiehet_prio
+                elif paikka.yksikko.__class__.__name__ == "Ratsuvaki":
+                    parannus *= self.__kyky1_ratsuvaki_prio
+                elif paikka.yksikko.__class__.__name__ == "Jalkavaki":
+                    parannus *= self.__kyky1_jalkavaki_prio
+                pisteet += parannus
+        return pisteet * self.__kyky1_prio_kerroin
 
     def pisteyta_kyky2(self):
         # muutetaan hyökkäys ja kantama väliaikaisesti

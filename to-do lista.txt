@@ -1,14 +1,10 @@
 Seuraavaksi:
 -tekoäly
-	-jalkaväki
-		-kyky2
 	-jousimiehet
 		-kyky1
 		-kyky2
 			-kiilojen vaikuts pisteytykseen
 	tykistö
-		-kyky1
-	parantaja
 		-kyky1
 	-tekoälyn ohjaus
 		-määrittele järjestykset (tee siten, että helposti mahdollista lukea tiedostosta)
@@ -20,7 +16,7 @@ Seuraavaksi:
 -tiedostojen lukeminen: virheidensieto
 -tallennus
 -viimeistelyä
-	
+
 Ideoita:
 -käyttöliittymän kokoasetukset tiedostossa
 -tiedostojen resetointi
@@ -60,7 +56,6 @@ Bugeja
 -joskus ei voi valita yksiköitä (vuoron vaihdon jälkeen(?), napit toimivat)
 -ratsuväki tekoäly värjää joskus ruutuja
 -kaatuminen, jos pelaajalla ei ole yksiköitä ja vuoro vaihtuu
--kaatuminen vuoron vaihtuessa pelaajalle: ominaisuudet on none(?)
 -kaatuminen: pelaajan yksikkö kuolee verenvuotoon
 -tekoäly ratsuväki saattaa yrittää liikkua kuoleman jälkeen: kaatuminen
 

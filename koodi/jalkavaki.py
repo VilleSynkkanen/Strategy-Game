@@ -80,7 +80,8 @@ class Jalkavaki(Yksikko):
         self.lisaa_tilavaikutus(1, self.kyky2_bonushyokkays, 0, liikkuminen, 0, False)
         self.kayta_energiaa(self.kyky2_hinta)
         self.palauta_liikkumispisteet()
-        self.kayttoliittyma.valitse_yksikko(self)   # helpoin tapa "resetoida" vuoro
+        if self.omistaja == "PLR":
+            self.kayttoliittyma.valitse_yksikko(self)   # helpoin tapa "resetoida" vuoro
         self.hyokkays_vaikutus = Tilavaikutus(None, self.__kyky2_taintuminen_kesto, 0, 0, 0, 0, True)
         teksti = self.__class__.__name__ + " käytti rynnäkön"
         self.kayttoliittyma.lisaa_pelilokiin(teksti)

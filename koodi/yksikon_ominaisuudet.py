@@ -86,6 +86,9 @@ class Yksikon_ominaisuudet:
             .format(self.__tyyppi, self.__liikkuminen, self.__nyk_elama, self.__max_elama, self.__nyk_energia, self.__max_energia,
                     self.__hyokkays, self.__puolustus, self.__kantama)
 
+    def puuttuva_elama(self):
+        return self.max_elama - self.nyk_elama
+
     def tilavaikutukset_yhteensa(self):
         hyokkays = 0
         puolustus = 0

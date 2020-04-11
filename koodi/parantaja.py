@@ -75,25 +75,34 @@ class Parantaja(Yksikko):
     # parannuksen määrä = hyökkäys * parannuskerroin / sqrt(etäisyys + 1) (+-15% satunnaisuus)
     # kykyihin pätee näkyvyyssäännöt
 
-    def kyky1_lisaa_kohde(self, ruutu):
+    def kyky1_lisaa_kohde(self, ruutu, tekoaly=False):
         # lisätään kantaman päässä olevat ruudut, sitten käytetään kyky
         if ruutu in self.ruudut_kantamalla:
             self.kyky1_kohteet.append(ruutu)
-            ruutu.grafiikka.muuta_vari(ruutu.grafiikka.valittu_kohteeksi_vari)
+            if not tekoaly:
+                ruutu.grafiikka.muuta_vari(ruutu.grafiikka.valittu_kohteeksi_vari)
             for Ruutu in self.kayttoliittyma.pelinohjain.kartta.ruudut:
                 if self.kayttoliittyma.pelinohjain.polunhaku.heuristiikka(ruutu, Ruutu) <= self.kyky1_kantama and \
                         Ruutu not in self.kyky1_kohteet:
                     self.kyky1_kohteet.append(Ruutu)
-                    Ruutu.grafiikka.muuta_vari(Ruutu.grafiikka.valittu_kohteeksi_vari)
-            Ajastin.aloita_ajastin(self.visualisointi_viive, self.__kayta_kyky1)
+                    if not tekoaly:
+                        Ruutu.grafiikka.muuta_vari(Ruutu.grafiikka.valittu_kohteeksi_vari)
+            if not tekoaly:
+                Ajastin.aloita_ajastin(self.visualisointi_viive, self.__kayta_kyky1)
+            else:
+                self.__kayta_kyky1()
+
+    def laske_kyky2_parannus(self, kohderuutu, ruutu):
+        etaisyys = self.kayttoliittyma.pelinohjain.polunhaku.heuristiikka(ruutu, kohderuutu)
+        parannus = self.ominaisuudet.hyokkays * self.kyky1_parannuskerroin / sqrt(etaisyys + 1)
+        return parannus
 
     def __kayta_kyky1(self):
         for ruutu in self.kyky1_kohteet:
             ruutu.grafiikka.palauta_vari()
             if ruutu.yksikko is not None and ruutu.yksikko.omistaja == self.omistaja:
                 # etäisyys keskimmäisestä ruudusta
-                etaisyys = self.kayttoliittyma.pelinohjain.polunhaku.heuristiikka(self.kyky1_kohteet[0], ruutu)
-                parannus = self.ominaisuudet.hyokkays * self.kyky1_parannuskerroin / sqrt(etaisyys + 1)
+                parannus = self.laske_kyky2_parannus(self.kyky1_kohteet[0], ruutu)
                 self.paranna_yksikko(ruutu.yksikko, parannus)
         self.peru_kyky1()
         self.kayta_energiaa(self.kyky1_hinta)

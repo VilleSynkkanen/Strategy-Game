@@ -2,6 +2,7 @@ from jalkavaki import Jalkavaki
 from tekoaly import  Tekoaly
 from ajastin import Ajastin
 from math import sqrt
+from PyQt5 import QtTest
 
 class Jalkavaki_tekoaly(Jalkavaki):
     
@@ -40,6 +41,12 @@ class Jalkavaki_tekoaly(Jalkavaki):
         # kykyjen pisteytys
         self.__kyky1_etaisyys_raja = 4
         self.__kyky1_viholliset_min = 2
+
+        # kykyä 2 varten
+        self.__kohderuutu = None
+        self.__kyky2_ruutu = None
+        self.__kyky2_prio = 0.05
+        self.__kyky2_ei_vihollista_kerroin = 0.1
 
     @property
     def tykisto_prio(self):
@@ -145,6 +152,7 @@ class Jalkavaki_tekoaly(Jalkavaki):
     '''
 
     def liike(self, kohderuutu):
+        self.__kohderuutu = kohderuutu
         Tekoaly.liike(self, kohderuutu)
 
     def hyokkays_toiminto(self):
@@ -157,6 +165,11 @@ class Jalkavaki_tekoaly(Jalkavaki):
             self.kyky1()
         elif paras_kohde == "KYKY2":
             self.kyky2()
+            self.liiku_ruutuun(self.__kyky2_ruutu)
+            QtTest.QTest.qWait(self.kayttoliittyma.pelinohjain.viive)
+            kohde = Tekoaly.hyokkays_toiminto(self, True)
+            if kohde is not None:
+                kohde.hyokkayksen_kohde(self)
         else:
             paras_kohde.hyokkayksen_kohde(self)
 
@@ -172,10 +185,33 @@ class Jalkavaki_tekoaly(Jalkavaki):
             etaisyydella = 0
         return etaisyydella
 
-    # pisteytys: jos kyky2 kantama sisällä on parempi kohde kuin vieressö oleva, enemmän pisteitä
+    # pisteytys: jos kyky2 kantama sisällä on parempi kohde kuin vieressä oleva, enemmän pisteitä
     def pisteyta_kyky2(self):
-        # implementoi pisteytys
-        return 0
+        self.__kyky2_ruutu = None
+        # muutetaan liikkuminen väliaikaisesti, sitten pisteytetään ruudut
+        alkuperainen = self.ominaisuudet.liikkuminen
+        self.ominaisuudet.liikkuminen = self.kyky2_kantama
+        self.laske_mahdolliset_ruudut()
+        vaihtoehdot = {}
+        vaihtoehdot[self.ruutu] = self.pisteyta_ruutu(self.ruutu, self.__kohderuutu)
+        for ruutu in self.mahdolliset_ruudut:
+            vaihtoehdot[ruutu] = self.pisteyta_ruutu(ruutu, self.__kohderuutu)
+        paras = self.ruutu
+        for ruutu in vaihtoehdot:
+            if vaihtoehdot[ruutu] > vaihtoehdot[paras]:
+                paras = ruutu
+
+        self.ominaisuudet.liikkuminen = alkuperainen
+        self.__kohderuutu = None
+        self.__kyky2_ruutu = paras
+        # jos kohteen vieressä ei ole vihollisia, vähennetään pistemäärää
+        viholliset = False
+        for ruutu in self.__kyky2_ruutu.naapurit:
+            if ruutu.yksikko is not None and ruutu.yksikko.omistaja == "PLR":
+                viholliset = True
+        if not viholliset:
+            vaihtoehdot[paras] *= self.__kyky2_ei_vihollista_kerroin
+        return vaihtoehdot[paras] * self.__kyky2_prio
 
     def pisteyta_ruutu(self, ruutu, kohderuutu):
         # pisteytys vihollisten perusteella

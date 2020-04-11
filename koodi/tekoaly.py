@@ -4,7 +4,7 @@ from math import sqrt
 class Tekoaly:
 
     @staticmethod
-    def liike(yksikko, kohderuutu):
+    def liike(yksikko, kohderuutu, palauta=False):
         # sanakirja, johon lisätään ruudut, avaimena pisteytys
         # jokaiselle ruudulle kutsutaan pistytysmetodi
         vaihtoehdot = {}
@@ -18,6 +18,9 @@ class Tekoaly:
         for ruutu in vaihtoehdot:
             if vaihtoehdot[ruutu] > vaihtoehdot[paras]:
                 paras = ruutu
+
+        if palauta:
+            return paras, vaihtoehdot[paras]
 
         # liiku ruutuun
         if paras != yksikko.ruutu:
@@ -62,9 +65,10 @@ class Tekoaly:
         paras_kohde = None
         for vaihtoehto in vaihtoehdot:
             # puolustajan vahingon täytyy olla suurempi tai yhtä suuri kuin hyökkääjän, jotta hyökkäys tapahtuisi
-            if vaihtoehdot[vaihtoehto] > korkeimmat_pisteet and vaihtoehdot[vaihtoehto] >= 1:
-                korkeimmat_pisteet = vaihtoehdot[vaihtoehto]
-                paras_kohde = vaihtoehto  # voi olla yksikkö tai merkkijono
+            if vaihtoehdot[vaihtoehto] is not None:
+                if vaihtoehdot[vaihtoehto] > korkeimmat_pisteet and vaihtoehdot[vaihtoehto] >= 1:
+                    korkeimmat_pisteet = vaihtoehdot[vaihtoehto]
+                    paras_kohde = vaihtoehto  # voi olla yksikkö tai merkkijono
         return paras_kohde
 
     # joitain kykyjä varten

@@ -32,6 +32,7 @@ class Yksikko:
         # hyökkäyksessä aiheutettava tilavaikutus
         self.__hyokkays_vaikutus = None
 
+
     # propertyt vain luku-muuttujia varten
     @property
     def hyokkays_vaikutus(self):
@@ -369,8 +370,9 @@ class Yksikko:
         self.__ominaisuudet.nyk_elama += maara
         if self.__ominaisuudet.nyk_elama > self.__ominaisuudet.max_elama:
             self.__ominaisuudet.nyk_elama = self.__ominaisuudet.max_elama
+        self.__grafiikka.elamapalkki.paivita_koko()
         self.__grafiikka.paivita_tooltip()
-        #print("Parannus: ", maara)
+        print("Parannus: ", maara)
 
     # saa yhden energian
     def saa_energiaa(self):
@@ -381,20 +383,24 @@ class Yksikko:
         self.__ominaisuudet.nyk_energia -= maara
 
     def lisaa_tilavaikutus(self, kesto, hyokkays, puolustus, liikkuminen, verenvuoto, taintuminen, loppuvaikutus=None):
-        vaikutus = Tilavaikutus(self, kesto, hyokkays, puolustus, liikkuminen, verenvuoto, taintuminen, loppuvaikutus)
-        self.__ominaisuudet.tilavaikutukset.append(vaikutus)
-        self.grafiikka.elamapalkki.paivita_tilavaikutukset()
-        teksti = self.__class__.__name__ + " sai tilavaikutuksen"
-        self.kayttoliittyma.lisaa_pelilokiin(teksti)
+        if self.__ominaisuudet is not None:
+            vaikutus = Tilavaikutus(self, kesto, hyokkays, puolustus, liikkuminen, verenvuoto, taintuminen, loppuvaikutus)
+            self.__ominaisuudet.tilavaikutukset.append(vaikutus)
+            self.grafiikka.elamapalkki.paivita_tilavaikutukset()
+            teksti = self.__class__.__name__ + " sai tilavaikutuksen"
+            self.kayttoliittyma.lisaa_pelilokiin(teksti)
 
     def muuta_hyokkaysta(self, maara):
-        self.__ominaisuudet.hyokkays += maara
+        if self.ominaisuudet is not None:
+            self.__ominaisuudet.hyokkays += maara
 
     def muuta_puolustusta(self, maara):
-        self.__ominaisuudet.puolustus += maara
+        if self.ominaisuudet is not None:
+            self.__ominaisuudet.puolustus += maara
 
     def muuta_liikkumista(self, maara):
-        self.__ominaisuudet.liikkuminen += maara
+        if self.ominaisuudet is not None:
+            self.__ominaisuudet.liikkuminen += maara
 
     def onko_taintunut(self):
         for vaikutus in self.__ominaisuudet.tilavaikutukset:
