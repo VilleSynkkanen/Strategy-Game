@@ -8,7 +8,6 @@ KANTAMA: 10
 PISTEHINTA: 60
 KYVYT:
 kyky1_hinta: 8
-kyky1_kohteiden_maara: 7
 kyky1_kantama: 1
 kyky1_hyokkayskerroin: 0.75
 kyky1_liikkuminen: -1

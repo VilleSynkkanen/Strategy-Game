@@ -40,6 +40,11 @@ class Jousimiehet_tekoaly(Jousimiehet):
         # etäisyys vihollisista
         self.__etaisyys_vihollisista_eksp = 2
 
+        # kyky2
+        self.__kyky2_prio = 1000
+        self.__kyky2_etaisyys_max = 4
+        self.__kyky2_ratsuvaki_painotus = 2
+
     @property
     def tykisto_prio(self):
         return self.__tykisto_prio
@@ -130,17 +135,87 @@ class Jousimiehet_tekoaly(Jousimiehet):
         if paras_kohde is None:
             pass
         elif paras_kohde == "KYKY1":
-            self.kyky1()
+            self.kyky1_hyokkays()
+            self.kyky1_kohteet = []
         elif paras_kohde == "KYKY2":
             self.kyky2()
         else:
             paras_kohde.hyokkayksen_kohde(self)
 
     def pisteyta_kyky1(self):
-        return 0
+        self.kyky1_kohteet = []
+        # katsotaan ruudut, joissa on vihollisia
+        # valitaan paras ja katsotaan, voidaanko sitä yhdistää johonkin muuhun ruutuun
+        # seuraavien ruutujen valinta tehdään kantamajärjestyksessä: lähimmät ensin, ei ollenkaan liian kaukana olevia
+
+        paras_kohde, pisteet = Tekoaly.hyokkays_toiminto(self, True, True)
+
+        muut_kohteet = {}
+        for vihollinen in self.hyokkayksen_kohteet:
+            if vihollinen != paras_kohde and \
+                    self.kayttoliittyma.pelinohjain.polunhaku.heuristiikka(vihollinen.ruutu, paras_kohde.ruutu) + 1 <= \
+                    self.kyky1_kohteiden_maara:
+                muut_kohteet[vihollinen] = Tekoaly.pisteyta_pelkka_kohde(self, vihollinen)
+
+        # valitaan toiseksi paras toiseksi kohteeksi
+        # sitten katsotaan, voidaanko valita vielä kolmas
+        parhaat_pisteet = 0
+        paras = None
+        for kohde in muut_kohteet:
+            if muut_kohteet[kohde] > parhaat_pisteet:
+                parhaat_pisteet = muut_kohteet[kohde]
+                paras = kohde
+        # ei pisteitä, jos vain yksi mahdollinen kohde (silloin käytetään mielummin tavallinen hyökkäys)
+        if paras is None:
+            return 0
+        kohteet = [paras_kohde.ruutu, paras.ruutu]
+        # jos on vieressä voidaan valita jomman kumman naapureista
+        viimeinen_paras = None
+        if paras.ruutu in paras_kohde.ruutu.naapurit:
+            kandidaatit = []
+            for vihollinen in muut_kohteet:
+                if vihollinen != paras and vihollinen.ruutu in paras.ruutu.naapurit \
+                        or vihollinen.ruutu in paras_kohde.ruutu.naapurit:
+                    kandidaatit.append(vihollinen)
+            # etsitään taas paras vaihtoehto
+            parhaat_pisteet = 0
+            for kohde in kandidaatit:
+                if muut_kohteet[kohde] > parhaat_pisteet:
+                    parhaat_pisteet = muut_kohteet[kohde]
+                    viimeinen_paras = kohde
+            if viimeinen_paras is not None:
+                kohteet.append(viimeinen_paras.ruutu)
+        # jos ei, valitaan ruutu, joka on kummankin naapuri
+        else:
+            for ruutu in paras_kohde.ruutu.naapurit:
+                if ruutu in paras.ruutu.naapurit:
+                    kohteet.append(ruutu)
+            if len(kohteet) != 3:
+                #print(len(kohteet))
+                return 0
+        # lisätään kohteisiin
+        for kohde in kohteet:
+            self.kyky1_kohteet.append(kohde)
+        if paras is not None:
+            pisteet += muut_kohteet[paras]
+        if viimeinen_paras is not None:
+            pisteet += muut_kohteet[viimeinen_paras]
+        return pisteet
 
     def pisteyta_kyky2(self):
-        return 0
+        # perustuu lähellä olevien vihollisten määrään, ratsuväkipainotus
+        # jos on jo kiilat, ei laiteta uusia
+        if self.ruutu.kiilat is not None:
+            return 0
+        viholliset = 0
+        for vihollinen in self.kayttoliittyma.pelinohjain.kartta.pelaajan_yksikot:
+            if self.kayttoliittyma.pelinohjain.polunhaku.heuristiikka(vihollinen.ruutu, self.ruutu) <= self.__kyky2_etaisyys_max:
+                if vihollinen.__class__.__name__ == "Ratsuvaki":
+                    viholliset += self.__kyky2_ratsuvaki_painotus
+                else:
+                    viholliset += 1
+        #print("VIH: ", viholliset)
+        return self.__kyky2_prio * viholliset
 
     def pisteyta_ruutu(self, ruutu, kohderuutu):
         # pisteytys vihollisten perusteella

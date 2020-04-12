@@ -27,7 +27,7 @@ class Tekoaly:
             yksikko.liiku_ruutuun(paras)
 
     @staticmethod
-    def hyokkays_toiminto(yksikko, ei_kykyja=False):
+    def hyokkays_toiminto(yksikko, ei_kykyja=False, pisteet=False):
         vaihtoehdot = {}
         yksikko.laske_hyokkayksen_kohteet(False)
         for vihollinen in yksikko.hyokkayksen_kohteet:
@@ -69,6 +69,8 @@ class Tekoaly:
                 if vaihtoehdot[vaihtoehto] > korkeimmat_pisteet and vaihtoehdot[vaihtoehto] >= 1:
                     korkeimmat_pisteet = vaihtoehdot[vaihtoehto]
                     paras_kohde = vaihtoehto  # voi olla yksikkö tai merkkijono
+        if pisteet:
+            return paras_kohde, korkeimmat_pisteet
         return paras_kohde
 
     # joitain kykyjä varten
@@ -138,9 +140,16 @@ class Tekoaly:
                 maastokerroin = yksikko.min_maastokerroin
             kerroin *= maastokerroin
 
-            # flankkays
-            if vihollinen.vieressa_monta_vihollista(True):
+            # flankkays, tarkistetaan vieressäolo
+            if vihollinen.vieressa_monta_vihollista(True) and yksikko.ruutu in ruutu.naapurit:
                 kerroin *= yksikko.flanking_kerroin
+
+            # kiilat
+            if vihollinen.ruutu.kiilat is not None:
+                if yksikko.__class__.__name__ == "Ratsuvaki":
+                    kerroin *= 1 / vihollinen.ruutu.kiilat.puolustusbonus_ratsuvaki
+                else:
+                    kerroin *= 1 / vihollinen.ruutu.kiilat.puolustusbonus
 
             # suurimman kertoimen määrittely
             if kerroin > suurin_kerroin:
@@ -154,6 +163,10 @@ class Tekoaly:
         # jos kerroin huonompi kuin 1, vähennetään, jos parempi, niin lisätään
         maastokerroin += yksikko.oma_maastokerroin_hyokkays * (ruutu.maasto.hyokkayskerroin - 1)
         maastokerroin += yksikko.oma_maastokerroin_puolustus * (ruutu.maasto.puolustuskerroin - 1)
+
+        # kiilat
+        if ruutu.kiilat is not None:
+            maastokerroin *= ruutu.kiilat.puolustusbonus
         return maastokerroin
 
     @staticmethod

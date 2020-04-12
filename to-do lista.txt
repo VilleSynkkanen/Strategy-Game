@@ -1,31 +1,18 @@
 Seuraavaksi:
--tekoäly
-	-jousimiehet
-		-kyky1
-		-kyky2
-			-kiilojen vaikuts pisteytykseen
-	tykistö
-		-kyky1
+-tekoäly (ma)
+	jousimiehet: korjaus
 	-tekoälyn ohjaus
 		-määrittele järjestykset (tee siten, että helposti mahdollista lukea tiedostosta)
--kaatumiset, bugit
--ohjeteksti
--pelin ohjaus loppuun: voitto, häviö, korjauksia
--päävalikko
+-kaatumiset, bugit (ma)
+-ohjeteksti (ma)
+-pelin ohjaus loppuun: voitto, häviö, korjauksia (ti)
+-päävalikko (ti)
 -kenttäeditori
 -tiedostojen lukeminen: virheidensieto
 -tallennus
 -viimeistelyä
 
-Ideoita:
--käyttöliittymän kokoasetukset tiedostossa
--tiedostojen resetointi
-(-ajastin implementaatio (qwait vs oma)?)
-(-tekoälyn parametrit, vahingon laskemiseen yms liittyvät tiedot tiedostossa)
-(-pelinohjaukseen liittyvät lukuarvot (viiveet tms. tiedostossa))
-
 Teköäly
--kyvyt loppuun
 -hiominen
 -pelitestaus
 -yksikkötestaus
@@ -33,6 +20,8 @@ Teköäly
 
 Tiedostojen lukeminen:
 -virheiden sieto: tarkistus ja virheilmoitus päävalikossa
+-käyttöliittymän kokoasetukset tiedostossa
+-tiedostojen resetointi
 
 Ohjetekstit, peliloki
 -pelilokin hionta:
@@ -45,9 +34,6 @@ Testaus
 -tekoäly: vain yleiset metodit
 -tiedostojen luku(?)
 
-Pelin ohjaus
--loppuun
-
 Käyttöliittymä
 -viimeistely
 -skaalaus eri kokoisille ruuduille
@@ -58,14 +44,20 @@ Bugeja
 -kaatuminen, jos pelaajalla ei ole yksiköitä ja vuoro vaihtuu
 -kaatuminen: pelaajan yksikkö kuolee verenvuotoon
 -tekoäly ratsuväki saattaa yrittää liikkua kuoleman jälkeen: kaatuminen
+-jousimiehet kyky1: tekoäly ei osaa aina valita kolmea kohdetta (myös: toimii ainoastaan kolmella kohteella), ratkaisu: muuta siten, että täytyy olla alkuperäisen naapurissa
 
 Aikataulu
--tekoäly 17.4 mennessä
--tapahtumaloki, ohjetekstit, pelin ohjauksen viimeistely 19.4
--tiedostojen lukemisen viimeistely 22.4
--päävalikko, kenttäeditori 26.4
--tallennus 28.4
--lisää testausta + testausmuutokset 30.4
--viimeistely 3.5
+-tekoäly 14.4 mennessä
+-tapahtumaloki, ohjetekstit, pelin ohjauksen viimeistely 16.4
+-päävalikko, kenttäeditori 20.4
+-tiedostojen lukemisen viimeistely 24.4
+-tallennus 26.4
+-lisää testausta + testausmuutokset 28.4
+-viimeistely 1.5
 -dokumentaatio 8.5
+
+Muuta:
+-ajastin implementaatio (qwait vs oma)?
+(-tekoälyn parametrit, vahingon laskemiseen yms liittyvät tiedot tiedostossa)
+(-pelinohjaukseen liittyvät lukuarvot (viiveet tms. tiedostossa))
 

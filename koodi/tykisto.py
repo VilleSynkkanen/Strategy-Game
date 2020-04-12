@@ -10,7 +10,6 @@ class Tykisto(Yksikko):
 
         # kyky 1 tiedot
         self.__kyky1_hinta = int(kyvyt["kyky1_hinta"])
-        self.__kyky1_kohteiden_maara = int(kyvyt["kyky1_kohteiden_maara"])
         self.__kyky1_kantama = int(kyvyt["kyky1_kantama"])
         self.__kyky1_hyokkayskerroin = kyvyt["kyky1_hyokkayskerroin"]
         self.__kyky1_liikkuminen = int(kyvyt["kyky1_liikkuminen"])
@@ -33,10 +32,6 @@ class Tykisto(Yksikko):
     @property
     def kyky1_hinta(self):
         return self.__kyky1_hinta
-
-    @property
-    def kyky1_kohteiden_maara(self):
-        return self.__kyky1_kohteiden_maara
 
     @property
     def kyky1_kantama(self):
@@ -82,24 +77,22 @@ class Tykisto(Yksikko):
     # kyky 1 toimii jotenkin (ei täydellisesti)
     # kyky 2 tehty (tilavaikutus ei testattu)
 
-    # kohteet: ruutu ja sen naapurit + muita ruutuja, yhteensä 7
-    def kyky1_lisaa_kohde(self, ruutu):
-        # tarkista, onko ruutu aikaisemmin valittujen vieressä
-        if ruutu in self.ruudut_kantamalla:
-            if len(self.kyky1_kohteet) > 0:
-                for Ruutu in self.kyky1_kohteet:
-                    if ruutu in Ruutu.naapurit and ruutu not in self.kyky1_kohteet:
-                        self.kyky1_kohteet.append(ruutu)
-                        ruutu.grafiikka.muuta_vari(ruutu.grafiikka.valittu_kohteeksi_vari)
-            else:
-                for Ruutu in self.kayttoliittyma.pelinohjain.kartta.ruudut:
-                    if self.kayttoliittyma.pelinohjain.polunhaku.heuristiikka(ruutu, Ruutu) <= self.kyky1_kantama \
-                            and Ruutu not in self.kyky1_kohteet:
-                        self.kyky1_kohteet.append(Ruutu)
-                        Ruutu.grafiikka.muuta_vari(Ruutu.grafiikka.valittu_kohteeksi_vari)
-        if len(self.kyky1_kohteet) >= self.kyky1_kohteiden_maara:
-            # hyökkää, kun tarpeeksi kohteita on valittu
+    # kohteet: ruutu ja sen naapurit
+    def kyky1_lisaa_kohde(self, ruutu, tekoaly=False):
+        # tarkista, onko ruutu kantamalla
+        if ruutu in self.ruudut_kantamalla or tekoaly:
+            for Ruutu in self.kayttoliittyma.pelinohjain.kartta.ruudut:
+                if self.kayttoliittyma.pelinohjain.polunhaku.heuristiikka(ruutu, Ruutu) <= self.kyky1_kantama \
+                        and Ruutu not in self.kyky1_kohteet:
+                    self.kyky1_kohteet.append(Ruutu)
+                    Ruutu.grafiikka.muuta_vari(Ruutu.grafiikka.valittu_kohteeksi_vari)
+        # hyökkäys
+        if not tekoaly:
             Ajastin.aloita_ajastin(self.visualisointi_viive, self.__kyky1_hyokkays)
+        else:
+            # print(self.kyky1_kohteet)
+            # print("ko ", ruutu.koordinaatit.x, " ", ruutu.koordinaatit.x)
+            self.__kyky1_hyokkays()
 
     # normaalit hyökkäyssäännöt pätevät
     # hyökkäyksen muuttaminen väliaikaisesti
@@ -111,7 +104,6 @@ class Tykisto(Yksikko):
             if ruutu.kiilat is not None:
                 ruutu.kiilat.tuhoa()
             ruutu.grafiikka.palauta_vari()
-            # lisää maaston vahingoittaminen
             if ruutu.yksikko is not None:
                 ruutu.yksikko.lisaa_tilavaikutus(self.__kyky1_kesto, 0, 0, self.__kyky1_liikkuminen, 0, False)
                 ruutu.yksikko.hyokkays(self)
@@ -182,8 +174,7 @@ class Tykisto(Yksikko):
 
     def kyky1_tooltip_teksti(self):
         return "Ampuu kohdealuetta \n" \
-               "(valittu ruutu, sen naapurit ja " + str(self.__kyky1_kohteiden_maara - 5) + \
-                " niiden viereistä ruutua).\nHyökkää kaikkien alueella olevien yksiköiden kimppuun\n(" \
+               "(valittu ruutu ja sen naapurit.\nHyökkää kaikkien alueella olevien yksiköiden kimppuun\n(" \
                + str(100*self.__kyky1_hyokkayskerroin) +"% normaalista hyökkäyksestä).\n" + \
                "Vähentää kohteiden liikkumista " + str(-self.__kyky1_liikkuminen) + " verran " + \
                str(self.__kyky1_kesto) + " vuoron\najaksi. "\

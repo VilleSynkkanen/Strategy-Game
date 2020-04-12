@@ -37,6 +37,10 @@ class Kartta:
     def tietokoneen_yksikot(self):
         return self.__tietokoneen_yksikot
 
+    @tietokoneen_yksikot.setter
+    def tietokoneen_yksikot(self, arvo):
+        self.__tietokoneen_yksikot = arvo
+
     @property
     def pelaajan_toimivat_yksikot(self):
         return self.__pelaajan_toimivat_yksikot

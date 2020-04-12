@@ -77,7 +77,7 @@ class Jousimiehet(Yksikko):
 
     # jousimiesten hyökkäystä muutetaan hyökkäysten ajaksi
     # normaalit hyökkäyssäännöt pätevät
-    def __kyky1_hyokkays(self):
+    def kyky1_hyokkays(self):
         alkuperainen = self.ominaisuudet.hyokkays
         self.ominaisuudet.hyokkays *= self.kyky1_hyokkayskerroin
         for ruutu in self.kyky1_kohteet:

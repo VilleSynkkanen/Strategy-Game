@@ -42,6 +42,9 @@ class Tykisto_tekoaly(Tykisto):
         self.__etaisyys_vihollisista_eksp = 2
 
         # kyvyt
+        self.__kyky1_kohde = None
+        self.__kyky1_prio = 0.7
+
         self.__kyky2_kohde = None
         self.__kyky2_prio = 2.5
 
@@ -135,16 +138,52 @@ class Tykisto_tekoaly(Tykisto):
         if paras_kohde is None:
             pass
         elif paras_kohde == "KYKY1":
-            self.kyky1()
+            self.kyky1_lisaa_kohde(self.__kyky1_kohde, True)
         elif paras_kohde == "KYKY2":
             self.kyky2(True)
             self.kayta_kyky2(self.__kyky2_kohde)
         else:
             paras_kohde.hyokkayksen_kohde(self)
 
-    # returnaa pisteet ja parhaan kohderuudun
+    # palauttaa parhaat pisteet ja tallentaa parhaan kohderuudun
     def pisteyta_kyky1(self):
-        return 0
+        self.__kyky1_kohde = None
+        self.laske_kantaman_sisalla_olevat_ruudut()
+        # muutetaan hyökkäystä väliaikaisesti
+        alkuperainen = self.ominaisuudet.hyokkays
+        self.ominaisuudet.hyokkays *= self.kyky1_hyokkayskerroin
+        vaihtoehdot = {}
+        for ruutu in self.ruudut_kantamalla:
+            ruudut = [ruutu]
+            for Ruutu in ruutu.naapurit:
+                ruudut.append(Ruutu)
+            # pisteytetään ruuduissa oleviin aiheutuva vahinko
+            pisteet = 0
+            vihollinen_ruudussa = False
+            for kohde in ruudut:
+                if kohde.yksikko is not None:
+                    # jos omistaja on tietokone, pisteet menevät nollaan
+                    if kohde.yksikko.omistaja == "COM":
+                        pisteet = 0
+                        break
+                    elif kohde.yksikko.omistaja == "PLR":
+                        #print(kohde.yksikko.__class__.__name__)
+                        pisteet += Tekoaly.pisteyta_pelkka_kohde(self, kohde.yksikko)
+                        vihollinen_ruudussa = True
+            if vihollinen_ruudussa:
+                vaihtoehdot[ruutu] = pisteet
+
+        korkeimmat_pisteet = 0
+        paras_kohde = None
+        for vaihtoehto in vaihtoehdot:
+            if vaihtoehdot[vaihtoehto] > korkeimmat_pisteet:
+                korkeimmat_pisteet = vaihtoehdot[vaihtoehto]
+                paras_kohde = vaihtoehto
+                # print(korkeimmat_pisteet)
+                # print(paras_kohde.koordinaatit.x, " ", paras_kohde.koordinaatit.y)
+        self.__kyky1_kohde = paras_kohde
+        self.ominaisuudet.hyokkays = alkuperainen
+        return korkeimmat_pisteet * self.__kyky1_prio
 
     # käyttää kyvyn 2 aina kun mahdollista (hyvin korkeat pisteet)
     def pisteyta_kyky2(self):

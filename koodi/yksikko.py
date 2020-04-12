@@ -86,6 +86,10 @@ class Yksikko:
     def kyky1_kohteet(self):
         return self.__kyky1_kohteet
 
+    @kyky1_kohteet.setter
+    def kyky1_kohteet(self, arvo):
+        self.__kyky1_kohteet = arvo
+
     @property
     def mahdolliset_ruudut(self):
         return self.__mahdolliset_ruudut
@@ -427,7 +431,8 @@ class Yksikko:
                     self.lisaa_tilavaikutus(v.kesto, v.hyokkaysbonus, v.puolustusbonus, v.liikkumisbonus,
                                             v.verenvuoto, v.taintuminen)
                     #print("loppuvaikutus")
-        self.grafiikka.elamapalkki.paivita_tilavaikutukset()
+        if self.grafiikka.elamapalkki is not None:
+            self.grafiikka.elamapalkki.paivita_tilavaikutukset()
 
     def __inspiraatio_bonus(self):
         # käy läpi kaikki yksiköt ja tarkistaa, onko parantaja inspiraation kantamalla, jos on, lisätään bonusta
