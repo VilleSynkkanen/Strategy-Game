@@ -19,6 +19,8 @@ class Jousimiehet(Yksikko):
         self.__kyky1_verenvuoto = int(kyvyt["kyky1_verenvuoto"])
         self.__kyky1_verenvuoto_kesto = int(kyvyt["kyky1_verenvuoto_kesto"])
 
+        self.__kyky1_keskipiste = None
+
     @property
     def jalka_ratsu_vahinko_hyokkays(self):
         return self.__jalka_ratsu_vahinko_hyokkays
@@ -64,16 +66,21 @@ class Jousimiehet(Yksikko):
         if ruutu in self.ruudut_kantamalla:
             if len(self.kyky1_kohteet) > 0:
                 for Ruutu in self.kyky1_kohteet:
-                    if ruutu in Ruutu.naapurit and ruutu not in self.kyky1_kohteet:
+                    if ruutu in Ruutu.naapurit and ruutu not in self.kyky1_kohteet \
+                            and ruutu in self.__kyky1_keskipiste.naapurit:
                         self.kyky1_kohteet.append(ruutu)
                         ruutu.grafiikka.muuta_vari(ruutu.grafiikka.valittu_kohteeksi_vari)
                         break
             else:
+                self.__kyky1_keskipiste = ruutu
                 self.kyky1_kohteet.append(ruutu)
                 ruutu.grafiikka.muuta_vari(ruutu.grafiikka.valittu_kohteeksi_vari)
+                for ruutu in self.ruudut_kantamalla:
+                    if ruutu not in self.__kyky1_keskipiste.naapurit and ruutu != self.__kyky1_keskipiste:
+                        ruutu.grafiikka.palauta_vari()
             if len(self.kyky1_kohteet) == self.kyky1_kohteiden_maara:
                 # hyökkää, kun tarpeeksi kohteita on valittu
-                Ajastin.aloita_ajastin(self.visualisointi_viive, self.__kyky1_hyokkays)
+                Ajastin.aloita_ajastin(self.visualisointi_viive, self.kyky1_hyokkays)
 
     # jousimiesten hyökkäystä muutetaan hyökkäysten ajaksi
     # normaalit hyökkäyssäännöt pätevät
@@ -124,7 +131,8 @@ class Jousimiehet(Yksikko):
         return "Tekee " + str(int(100*(self.__jalka_ratsu_vahinko_hyokkays - 1))) + "% bonusvahinkoa jalka- " \
                                                                              "ja ratsuväkeen \nhyökkäyksessä"
     def kyky1_tooltip_teksti(self):
-        return "Ampuu kohdealuetta (" + str(self.__kyky1_kohteiden_maara) + " itse valittua vierekkäistä\nruutua)." \
+        return "Ampuu kohdealuetta (" + str(self.__kyky1_kohteiden_maara) + " itse valittua ruutua.\n" \
+                "Valittujen ruutujen täytyy olla \nensin valitun ruudun vieressä).\n" \
                "Hyökkää alueella olevien vihollisten kimppuun\n(" \
                + str(100*self.__kyky1_hyokkayskerroin) +"% normaalista hyökkäyksestä)\n" \
                "Aiheuttaa " + str(self.__kyky1_verenvuoto) + " verenvuotoa " + str(self.__kyky1_verenvuoto_kesto) \

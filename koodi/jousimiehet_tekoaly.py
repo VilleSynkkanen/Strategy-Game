@@ -40,7 +40,9 @@ class Jousimiehet_tekoaly(Jousimiehet):
         # etäisyys vihollisista
         self.__etaisyys_vihollisista_eksp = 2
 
-        # kyky2
+        # kyvyt
+        self.__kyky1_prio = 0.9
+
         self.__kyky2_prio = 1000
         self.__kyky2_etaisyys_max = 4
         self.__kyky2_ratsuvaki_painotus = 2
@@ -145,62 +147,49 @@ class Jousimiehet_tekoaly(Jousimiehet):
     def pisteyta_kyky1(self):
         self.kyky1_kohteet = []
         # katsotaan ruudut, joissa on vihollisia
-        # valitaan paras ja katsotaan, voidaanko sitä yhdistää johonkin muuhun ruutuun
-        # seuraavien ruutujen valinta tehdään kantamajärjestyksessä: lähimmät ensin, ei ollenkaan liian kaukana olevia
+        # arvioidaan jokainen ruutu ja sen naapurit
 
-        paras_kohde, pisteet = Tekoaly.hyokkays_toiminto(self, True, True)
+        vaihtoehdot = {}
+        for ruutu in self.ruudut_kantamalla:
+            kohteet, pisteet = self.__pisteyta_ruutu_kyky1(ruutu)
+            # tallennetaan tiedot tupleen ja lisätään se sanakirjaan
+            tiedot = (pisteet, kohteet)
+            vaihtoehdot[ruutu] = tiedot
 
-        muut_kohteet = {}
-        for vihollinen in self.hyokkayksen_kohteet:
-            if vihollinen != paras_kohde and \
-                    self.kayttoliittyma.pelinohjain.polunhaku.heuristiikka(vihollinen.ruutu, paras_kohde.ruutu) + 1 <= \
-                    self.kyky1_kohteiden_maara:
-                muut_kohteet[vihollinen] = Tekoaly.pisteyta_pelkka_kohde(self, vihollinen)
+        korkeimmat_pisteet = 0
+        paras_kohde = None
+        for vaihtoehto in vaihtoehdot:
+            if vaihtoehdot[vaihtoehto][0] > korkeimmat_pisteet:
+                korkeimmat_pisteet = vaihtoehdot[vaihtoehto][0]
+                paras_kohde = vaihtoehdot[vaihtoehto][1]
 
-        # valitaan toiseksi paras toiseksi kohteeksi
-        # sitten katsotaan, voidaanko valita vielä kolmas
-        parhaat_pisteet = 0
-        paras = None
-        for kohde in muut_kohteet:
-            if muut_kohteet[kohde] > parhaat_pisteet:
-                parhaat_pisteet = muut_kohteet[kohde]
-                paras = kohde
-        # ei pisteitä, jos vain yksi mahdollinen kohde (silloin käytetään mielummin tavallinen hyökkäys)
-        if paras is None:
-            return 0
-        kohteet = [paras_kohde.ruutu, paras.ruutu]
-        # jos on vieressä voidaan valita jomman kumman naapureista
-        viimeinen_paras = None
-        if paras.ruutu in paras_kohde.ruutu.naapurit:
-            kandidaatit = []
-            for vihollinen in muut_kohteet:
-                if vihollinen != paras and vihollinen.ruutu in paras.ruutu.naapurit \
-                        or vihollinen.ruutu in paras_kohde.ruutu.naapurit:
-                    kandidaatit.append(vihollinen)
-            # etsitään taas paras vaihtoehto
-            parhaat_pisteet = 0
-            for kohde in kandidaatit:
-                if muut_kohteet[kohde] > parhaat_pisteet:
-                    parhaat_pisteet = muut_kohteet[kohde]
-                    viimeinen_paras = kohde
-            if viimeinen_paras is not None:
-                kohteet.append(viimeinen_paras.ruutu)
-        # jos ei, valitaan ruutu, joka on kummankin naapuri
-        else:
-            for ruutu in paras_kohde.ruutu.naapurit:
-                if ruutu in paras.ruutu.naapurit:
-                    kohteet.append(ruutu)
-            if len(kohteet) != 3:
-                #print(len(kohteet))
-                return 0
-        # lisätään kohteisiin
-        for kohde in kohteet:
-            self.kyky1_kohteet.append(kohde)
-        if paras is not None:
-            pisteet += muut_kohteet[paras]
-        if viimeinen_paras is not None:
-            pisteet += muut_kohteet[viimeinen_paras]
-        return pisteet
+        self.kyky1_kohteet = paras_kohde
+        return korkeimmat_pisteet * self.__kyky1_prio
+
+    # returnaa ruudun pisteet ja kohteiden määrn mukaisesti parhaat kohteet
+    def __pisteyta_ruutu_kyky1(self, ruutu):
+        pisteet = 0
+        if ruutu.yksikko is not None and ruutu.yksikko.omistaja == "PLR":
+            pisteet += Tekoaly.pisteyta_pelkka_kohde(self, ruutu.yksikko)
+        naapurit = {}
+        #self.laske_kantaman_sisalla_olevat_ruudut()
+        for naapuri in ruutu.naapurit:
+            if naapuri.yksikko is not None and naapuri.yksikko.omistaja == "PLR" and naapuri in self.ruudut_kantamalla:
+                naapurit[naapuri] = Tekoaly.pisteyta_pelkka_kohde(self, naapuri.yksikko)
+            else:
+                naapurit[naapuri] = 0
+        # lajitellaan naapurit
+        lajiteltu = sorted(naapurit.items(), key=lambda x: x[1], reverse=True)
+        #print(lajiteltu)
+        kohteet = [ruutu]
+
+        # lisätään parhaat naapurit kohteisiin ja lisätään niiden pisteet
+        for kohde in lajiteltu:
+            if len(kohteet) < self.kyky1_kohteiden_maara:
+                kohteet.append(kohde[0])
+                pisteet += kohde[1]
+
+        return kohteet, pisteet
 
     def pisteyta_kyky2(self):
         # perustuu lähellä olevien vihollisten määrään, ratsuväkipainotus

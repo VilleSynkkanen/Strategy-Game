@@ -70,11 +70,21 @@ class Tekoalyn_ohjain:
         # lajittelu liikkumista varten
         uusi_lista = []
         if toiminto == "liikkuminen":
-            for yksikko in self.__pelinohjain.kartta.tietokoneen_yksikot:
-                pass
-        # lajittelu hyökkäystä varten
+            i = 0
+            while i < len(self.__liikkumisjarjestys):
+                for yksikko in self.__pelinohjain.kartta.tietokoneen_yksikot:
+                    if yksikko.__class__.__name__ == self.__liikkumisjarjestys[i]:
+                        uusi_lista.append(yksikko)
+                i += 1
+        elif toiminto == "hyokkays":
+            i = 0
+            while i < len(self.__hyokkaysjarjestys):
+                for yksikko in self.__pelinohjain.kartta.tietokoneen_yksikot:
+                    if yksikko.__class__.__name__ == self.__hyokkaysjarjestys[i]:
+                        uusi_lista.append(yksikko)
+                i += 1
 
-        #self.__pelinohjain.kartta.tietokoneen_yksikot = uusi_lista
+        self.__pelinohjain.kartta.tietokoneen_yksikot = uusi_lista
 
 
     def ohjaa_yksikoita(self):
@@ -96,10 +106,12 @@ class Tekoalyn_ohjain:
                 QtTest.QTest.qWait(self.__pelinohjain.viive)
         for yksikko in self.__pelinohjain.kartta.tietokoneen_yksikot:
             # ratsuväki voi liikkua hyökkäyksen jälkeen
-            if yksikko.__class__.__name__ == "Ratsuvaki" and not yksikko.liikkuminen_kaytetty:
+            if yksikko.__class__.__name__ == "Ratsuvaki" and not yksikko.liikkuminen_kaytetty \
+                    and yksikko.ominaisuudet is not None:       # tarkistetaan, ettei ole kuollut
                 yksikko.liike(kohderuutu)
                 QtTest.QTest.qWait(self.__pelinohjain.viive)
                 # joissain tapauksissa hyökkäys voi jäädä käyttämättä
                 if not yksikko.hyokkays_kaytetty:
                     yksikko.hyokkays_toiminto()
                     QtTest.QTest.qWait(self.__pelinohjain.viive)
+                    

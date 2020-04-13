@@ -129,8 +129,9 @@ class Yksikko:
                                                                                   self.__ominaisuudet.liikkuminen)
 
     def nayta_mahdolliset_ruudut(self):
-        for ruutu in self.__mahdolliset_ruudut:
-            ruutu.grafiikka.voi_liikkua()
+        if self.omistaja == "PLR":
+            for ruutu in self.__mahdolliset_ruudut:
+                ruutu.grafiikka.voi_liikkua()
 
     def __tyhjenna_mahdolliset_ruudut(self):
         self.__mahdolliset_ruudut = []
@@ -417,20 +418,22 @@ class Yksikko:
             # ota vahinkoa verenvuodosta
             if vaikutus.verenvuoto > 0:
                 self.ota_vahinkoa(vaikutus.verenvuoto)
-            vaikutus.vahenna_kestoa()
-            # jos vaikutus loppu, poista vaikutukset
-            if vaikutus.kesto <= 0:
-                self.muuta_hyokkaysta(-vaikutus.hyokkaysbonus)
-                self.muuta_puolustusta(-vaikutus.puolustusbonus)
-                self.muuta_liikkumista(-vaikutus.liikkumisbonus)
-                self.__ominaisuudet.tilavaikutukset.remove(vaikutus)
-                teksti = self.__class__.__name__ + " tilavaikutus loppui"
-                self.kayttoliittyma.lisaa_pelilokiin(teksti)
-                if vaikutus.loppuvaikutus is not None:
-                    v = vaikutus.loppuvaikutus
-                    self.lisaa_tilavaikutus(v.kesto, v.hyokkaysbonus, v.puolustusbonus, v.liikkumisbonus,
-                                            v.verenvuoto, v.taintuminen)
-                    #print("loppuvaikutus")
+            # jatka käsittelyä, jos ei ole kuollut
+            if self.__ominaisuudet.tilavaikutukset is not None:
+                vaikutus.vahenna_kestoa()
+                # jos vaikutus loppu, poista vaikutukset
+                if vaikutus.kesto <= 0:
+                    self.muuta_hyokkaysta(-vaikutus.hyokkaysbonus)
+                    self.muuta_puolustusta(-vaikutus.puolustusbonus)
+                    self.muuta_liikkumista(-vaikutus.liikkumisbonus)
+                    self.__ominaisuudet.tilavaikutukset.remove(vaikutus)
+                    teksti = self.__class__.__name__ + " tilavaikutus loppui"
+                    self.kayttoliittyma.lisaa_pelilokiin(teksti)
+                    if vaikutus.loppuvaikutus is not None:
+                        v = vaikutus.loppuvaikutus
+                        self.lisaa_tilavaikutus(v.kesto, v.hyokkaysbonus, v.puolustusbonus, v.liikkumisbonus,
+                                                v.verenvuoto, v.taintuminen)
+                        #print("loppuvaikutus")
         if self.grafiikka.elamapalkki is not None:
             self.grafiikka.elamapalkki.paivita_tilavaikutukset()
 

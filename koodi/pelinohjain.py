@@ -117,15 +117,19 @@ class Pelinohjain:
         # pelaajan vuoron alku
         #print("PLR")
         self.__vuoro = "PLR"
-        self.__kayttoliittyma.laita_napit_kayttoon()
-        self.__kayttoliittyma.tyhjenna_valinta()
-        self.__kayttoliittyma.__valitsee_hyokkayksen_kohdetta = False
-        self.__kartta.palauta_pelaajan_toimivat_yksikot()
-        for yksikko in self.__kartta.pelaajan_yksikot:
-            if not yksikko.onko_taintunut():
-                yksikko.palauta_liikkumispisteet()
-            yksikko.grafiikka.palauta_vari()
-        self.kayttoliittyma.paivita_nappien_aktiivisuus()
+        if len(self.__kartta.pelaajan_yksikot) != 0:
+            self.__kayttoliittyma.laita_napit_kayttoon()
+            self.__kayttoliittyma.tyhjenna_valinta()
+            self.__kayttoliittyma.__valitsee_hyokkayksen_kohdetta = False
+            self.__kartta.palauta_pelaajan_toimivat_yksikot()
+            for yksikko in self.__kartta.pelaajan_yksikot:
+                if not yksikko.onko_taintunut():
+                    yksikko.palauta_liikkumispisteet()
+                yksikko.grafiikka.palauta_vari()
+            self.kayttoliittyma.paivita_nappien_aktiivisuus()
+        else:
+            pass
+            # implementoi häviäminen
 
     def __tietokoneen_vuoron_alku(self):
         # pelaajan vuoron loppu
