@@ -1,4 +1,5 @@
 from PyQt5 import QtWidgets, QtCore, QtGui, Qt
+import sys
 
 class Kayttoliittyma(QtWidgets.QMainWindow):
     '''
@@ -118,7 +119,7 @@ class Kayttoliittyma(QtWidgets.QMainWindow):
 
         self.__ohjeteksti = QtWidgets.QLabel("OHJETEKSTI\n", self)
         self.__nappi_layout.addWidget(self.__ohjeteksti, 11, 0, 1, 0, alignment=QtCore.Qt.AlignTop)
-        self.__ohjeteksti.setStyleSheet("font: 9pt Arial")
+        self.__ohjeteksti.setStyleSheet("font: 18pt Arial")
         self.__peliloki_tekstit = []
 
     @property
@@ -178,6 +179,7 @@ class Kayttoliittyma(QtWidgets.QMainWindow):
         self.__peliloki.setText("PELILOKI:\n")
         self.__nayta_peliloki_tekstit()
         self.__yksikon_tiedot_nappi.setText("YKSIKÖN TIEDOT")
+        self.muuta_ohjeteksti("VALITSE TOIMINTO\n")
 
         yksikko.grafiikka.muuta_varia(yksikko.grafiikka.pelaaja_valittu_vari)
         # vanhan valinnan värin muutos tehdään, kun valinta tyhjennetään (jos yksikkö ei voi tehdä mitään, väri on eri)
@@ -301,6 +303,7 @@ class Kayttoliittyma(QtWidgets.QMainWindow):
             self.__peliloki.setText("PELILOKI:\n")
             self.__nayta_peliloki_tekstit()
             self.__yksikon_tiedot_nappi.setText("YKSIKÖN TIEDOT")
+            self.muuta_ohjeteksti("PELAAJAN VUORO\n")
 
             # päivitä napit
             self.__paivita_kykynapit()
@@ -492,5 +495,28 @@ class Kayttoliittyma(QtWidgets.QMainWindow):
         for txt in self.__peliloki_tekstit:
             naytettava_teksti += txt
         self.__peliloki.setText(naytettava_teksti)
+
+    def muuta_ohjeteksti(self, teksti):
+        self.__ohjeteksti.setText(teksti)
+
+    def voitto(self):
+        self.__pelin_paattyminen()
+        self.__ohjeteksti.setText("VOITIT PELIN\n")
+
+    def havio(self):
+        self.__pelin_paattyminen()
+        self.__ohjeteksti.setText("HÄVISIT PELIN\n")
+
+    def __pelin_paattyminen(self):
+        self.tyhjenna_valinta()
+        for nappi in self.__napit:
+            nappi.setEnabled(False)
+        self.__tallenna_peli_napi.setEnabled(True)
+        self.__tallenna_peli_napi.clicked.connect(self.__poistu_pelista)
+        self.__tallenna_peli_napi.setText("POISTU PELISTÄ")
+
+    def __poistu_pelista(self):
+        sys.exit()
+
 
 

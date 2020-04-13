@@ -256,7 +256,8 @@ class Yksikko:
         if self == self.__kayttoliittyma.valittu_yksikko:
             self.__kayttoliittyma.paivita_valitun_yksikon_tiedot()
         # poista yksiköistä, jotka voivat vielä tehdä jotain
-        self.__kayttoliittyma.pelinohjain.kartta.poista_toimivista_yksikoista(self)
+        if self.omistaja == "PLR":
+            self.__kayttoliittyma.pelinohjain.kartta.poista_toimivista_yksikoista(self)
 
     def hyokkayksen_kohde(self, hyokkaaja):
         self.hyokkays(hyokkaaja)
@@ -468,6 +469,10 @@ class Yksikko:
         self.__grafiikka.poista()
         # poista viittaus ominaisuuksiin
         self.__ominaisuudet = None
+        if self.omistaja == "COM":
+            # tarkistetaan, koska tuhoutuminen voi muuttaa muiden pelaajien yksiköiden toiminnan mahdollisuuksia
+            self.__kayttoliittyma.pelinohjain.kartta.tarkista_toimivat_yksikot()
+            self.kayttoliittyma.pelinohjain.tarkista_voitto()
 
     def kyky1(self):
         luokat = ["Jousimiehet", "Parantaja", "Tykisto"]

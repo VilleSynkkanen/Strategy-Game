@@ -52,6 +52,9 @@ class Pelinohjain:
         # nappien alkutila
         self.kayttoliittyma.paivita_nappien_aktiivisuus()
 
+        # ohjetekstin alkutila
+        self.__kayttoliittyma.muuta_ohjeteksti("PELAAJAN VUORO\n")
+
     @property
     def kayttoliittyma(self):
         return self.__kayttoliittyma
@@ -122,13 +125,14 @@ class Pelinohjain:
             self.__kayttoliittyma.tyhjenna_valinta()
             self.__kayttoliittyma.__valitsee_hyokkayksen_kohdetta = False
             self.__kartta.palauta_pelaajan_toimivat_yksikot()
+            self.__kayttoliittyma.muuta_ohjeteksti("PELAAJAN VUORO\n")
             for yksikko in self.__kartta.pelaajan_yksikot:
                 if not yksikko.onko_taintunut():
                     yksikko.palauta_liikkumispisteet()
                 yksikko.grafiikka.palauta_vari()
             self.kayttoliittyma.paivita_nappien_aktiivisuus()
         else:
-            pass
+            self.kayttoliittyma.havio()
             # implementoi häviäminen
 
     def __tietokoneen_vuoron_alku(self):
@@ -144,6 +148,7 @@ class Pelinohjain:
             yksikko.grafiikka.paivita_tooltip()
 
         # tietokoneen vuoron alku
+        self.__kayttoliittyma.muuta_ohjeteksti("TIETOKONEEN VUORO\n")
         for yksikko in self.__kartta.tietokoneen_yksikot:
             if not yksikko.onko_taintunut():
                 yksikko.palauta_liikkumispisteet()
@@ -158,3 +163,7 @@ class Pelinohjain:
 
         # 1. arg = viive, 2. arg = viiveen jälkeen kutsuttava metodi
         Ajastin.aloita_ajastin(self.__viive, self.vaihda_vuoroa)
+
+    def tarkista_voitto(self):
+        if len(self.kartta.tietokoneen_yksikot) == 0:
+            self.kayttoliittyma.voitto()

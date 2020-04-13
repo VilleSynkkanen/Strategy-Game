@@ -15,4 +15,3 @@ Tykisto: 4,4,COM : 11,3,COM : 6,14,PLR : 9,12,PLR
 Parantaja: 7,3,COM : 8,12,PLR
 YKSIKOTLOPPU
 LOPPU
-

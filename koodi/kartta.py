@@ -97,6 +97,12 @@ class Kartta:
         if yksikko in self.pelaajan_toimivat_yksikot and not yksikko.pystyy_toimimaan():
             self.pelaajan_toimivat_yksikot.remove(yksikko)
 
+    def tarkista_toimivat_yksikot(self):
+        for yksikko in self.pelaajan_toimivat_yksikot:
+            yksikko.laske_hyokkayksen_kohteet(False)
+            if len(yksikko.hyokkayksen_kohteet) == 0 and not yksikko.pystyy_toimimaan():
+                self.pelaajan_toimivat_yksikot.remove(yksikko)
+
     def palauta_pelaajan_toimivat_yksikot(self):
         self.__pelaajan_toimivat_yksikot = []
         for yksikko in self.__pelaajan_yksikot:
