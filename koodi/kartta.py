@@ -137,7 +137,7 @@ class Kartta:
             if ero_x > 0.5:
                 koord_x += 1
             elif ero_x < -0.5:
-                koord_x -=1
+                koord_x -= 1
             if ero_y > 0.5:
                 koord_y += 1
             elif ero_y < -0.5:
@@ -147,3 +147,10 @@ class Kartta:
                     self.ruudut_koordinaateilla[koord_x][koord_y] != loppu:
                 return False
         return True
+
+    def korvaa_ruutu(self, ruutu, uusi_maasto):
+        ruutu.poista_grafiikka()
+        ruutu.tyyppi = uusi_maasto
+        ruutu.luo_maasto(True)
+        ruutu.luo_grafiikka(self.ruudun_koko, self.kayttoliittyma)
+

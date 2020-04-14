@@ -1,14 +1,32 @@
 Seuraavaksi:
--ohjeteksti
--pelin ohjaus loppuun: voitto, häviö, korjauksia
--päävalikko
 -kenttäeditori
+	-yksiköiden lisäys
+	-kentän tallennus
+	-uusi kenttä
+	-muokkaa kenttää
+-päävalikko
+	-tiedostojen lukeminen: virheilmoitukset valikossa
+		-lue kaikki kartat ja tarkista validius
+		-älä anna pelaajan edetä, jos välttämättömissä tiedostoissa on virheitä
+	-pelaa valikko
+		-karttojen selaaminen
+		-kartan kuvan näyttäminen (piirrä jotenkin)
 -tiedostojen lukeminen: virheidensieto
 -tallennus
 -viimeistelyä
 
+Kenttäeditorin napit
+-tekstilaatikot: kentän koko
+-uusi kenttä  -> tallenna
+-muokkaa vanhaa -> poistu
+-tyhjennä kenttä -> vahvista koko
+-toggle nappi: maastot/pelaajan yksiköt/tietokoneen yksiköt
+-jokaista maastoa/yksikköä varten nappi	
+-poista maasto/yksikkö
+-12 nappia + tekstit
+
 Bugit
--jalkaväen väri ei aina muutu vaikka se ei pystyisi tekemään mitään (jos on tilanne, jossa ennen pystyi ja jonkun toisen hyökkäyksen jälkeen ei enää pysty)
+-???
 
 Teköäly
 -parametrien hiominen
@@ -24,8 +42,9 @@ Ohjetekstit, peliloki
 -pelilokin hionta:
 	-tekstien kieliasu
 	-mitä kerrotaan, mitä ei
-	-enemmän rivejä???
--ohjeet pelaajalle
+	-enemmän rivejä?
+-ohjeteksti	
+	-kuinka paljon ohjeita annetaan?
 
 Testaus
 -tekoäly: vain yleiset metodit
@@ -35,8 +54,15 @@ Käyttöliittymä
 -viimeistely
 -skaalaus eri kokoisille ruuduille
 
+Paranneltavia asioita (viimeistely)
+-käyttöliittymä
+-tekoäly
+-testaus
+
+Tekoälyn parametrit:
+-tykistön liikkuminen: liikkuu liian usein, ei välttele vihollisia tarpeeksi
+
 Aikataulu
--tapahtumaloki, ohjetekstit, pelin ohjauksen viimeistely 16.4
 -päävalikko, kenttäeditori 20.4
 -tiedostojen lukemisen viimeistely 24.4
 -tallennus 26.4
@@ -46,6 +72,7 @@ Aikataulu
 
 Muuta:
 -ajastin implementaatio (qwait vs oma)?
+-asioiden poistaminen kunnolla (deletelater?)
 (-tekoälyn parametrit, vahingon laskemiseen yms liittyvät tiedot tiedostossa)
 (-pelinohjaukseen liittyvät lukuarvot (viiveet tms. tiedostossa))
 

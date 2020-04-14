@@ -1,6 +1,8 @@
 from PyQt5 import QtWidgets, QtCore, QtGui, Qt
 from kenttaeditori import Kenttaeditori
 from pelinohjain import Pelinohjain
+from maaston_lukija import Maaston_lukija
+from yksikoiden_lukija import Yksikoiden_lukija
 
 
 class Paavalikko(QtWidgets.QMainWindow):
@@ -38,13 +40,28 @@ class Paavalikko(QtWidgets.QMainWindow):
         self.__paa_layout.addWidget(self.__kenttaeditori_nappi, 1)
         self.__paa_layout.addWidget(self.__poistu_nappi, 1)
 
+        # kenttäeditori
+        self.kenttaeditori = None
+
+        # tiedostojen lukijat
+        self.__maastojen_lukija = Maaston_lukija()
+        self.__yksikoiden_lukija = Yksikoiden_lukija()
+
+    @property
+    def maastojen_lukija(self):
+        return self.__maastojen_lukija
+
+    @property
+    def yksikoiden_lukija(self):
+        return self.__yksikoiden_lukija
 
     def __pelaa(self):
         self.pelinohjain = Pelinohjain()
         self.hide()
 
     def __kenttaeditori(self):
-        self.kenttaeditori = Kenttaeditori()
+        if self.kenttaeditori is None:
+            self.kenttaeditori = Kenttaeditori(self)
         self.kenttaeditori.show()
         self.hide()
 

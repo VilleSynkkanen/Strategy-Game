@@ -4,18 +4,23 @@ from kayttoliittyma import Kayttoliittyma
 
 class Ruutugrafiikka(QtWidgets.QGraphicsRectItem):
 
-    def __init__(self, koordinaatit, koko, kayttoliittyma, vari, ruutu):
+    def __init__(self, koordinaatit, koko, kayttoliittyma, vari, ruutu, kenttaeditori):
         super(Ruutugrafiikka, self).__init__()
         self.__kayttoliittyma = kayttoliittyma
         self.__ruutu = ruutu
 
         # määritellään, onko kartan x- vai y-koko suurempi ja tallennetaan suurempi pituus
-
         pidempi_sivu = 0
-        if self.__kayttoliittyma.pelinohjain.koko[0] > self.__kayttoliittyma.pelinohjain.koko[1]:
-            pidempi_sivu = self.__kayttoliittyma.pelinohjain.koko[0]
+        if kenttaeditori:
+            if self.__kayttoliittyma.koko_x > self.__kayttoliittyma.koko_y:
+                pidempi_sivu = self.__kayttoliittyma.koko_x
+            else:
+                pidempi_sivu = self.__kayttoliittyma.koko_y
         else:
-            pidempi_sivu = self.__kayttoliittyma.pelinohjain.koko[1]
+            if self.__kayttoliittyma.pelinohjain.koko[0] > self.__kayttoliittyma.pelinohjain.koko[1]:
+                pidempi_sivu = self.__kayttoliittyma.pelinohjain.koko[0]
+            else:
+                pidempi_sivu = self.__kayttoliittyma.pelinohjain.koko[1]
 
         self.__koko = self.__kayttoliittyma.scene_size / pidempi_sivu
         self.__koordinaatit = koordinaatit
@@ -67,14 +72,22 @@ class Ruutugrafiikka(QtWidgets.QGraphicsRectItem):
 
     def mousePressEvent(self, *args, **kwargs):
         # print(self.__ruutu.koordinaatit.x, " ", self.__ruutu.koordinaatit.y)
-        if self.__kayttoliittyma.valittu_yksikko is not None:
-            if self.__kayttoliittyma.valittu_yksikko.kyky1_valitsee_kohteita:
-                self.__kayttoliittyma.valittu_yksikko.kyky1_lisaa_kohde(self.__ruutu)
-            elif self.__kayttoliittyma.valittu_yksikko.kyky2_valitsee_kohteita:
-                pass
-            elif self.__ruutu in self.__kayttoliittyma.valittu_yksikko.mahdolliset_ruudut and \
-                    self.__kayttoliittyma.valitsee_hyokkayksen_kohdetta is False:
-                self.__kayttoliittyma.valittu_yksikko.liiku_ruutuun(self.__ruutu)
+        if self.__kayttoliittyma.__class__.__name__ == "Kayttoliittyma":
+            if self.__kayttoliittyma.valittu_yksikko is not None:
+                if self.__kayttoliittyma.valittu_yksikko.kyky1_valitsee_kohteita:
+                    self.__kayttoliittyma.valittu_yksikko.kyky1_lisaa_kohde(self.__ruutu)
+                elif self.__kayttoliittyma.valittu_yksikko.kyky2_valitsee_kohteita:
+                    pass
+                elif self.__ruutu in self.__kayttoliittyma.valittu_yksikko.mahdolliset_ruudut and \
+                        self.__kayttoliittyma.valitsee_hyokkayksen_kohdetta is False:
+                    self.__kayttoliittyma.valittu_yksikko.liiku_ruutuun(self.__ruutu)
+        # kenttäeditorin toiminnallisuus
+        elif self.__kayttoliittyma.__class__.__name__ == "Kenttaeditori":
+            if self.__kayttoliittyma.valittu_elementti is not None:
+                # lisää yksikkö tai poista vanha ruutu ja lisää uusi
+                maastot = ["tasanko", "kukkula", "pelto", "vuoristo", "silta", "joki"]
+                if self.__kayttoliittyma.valittu_elementti in maastot:
+                    self.__ruutu.kayttoliittyma.kartta.korvaa_ruutu(self.__ruutu, self.__kayttoliittyma.valittu_elementti)
 
     # muuta siten, että parametrina annetaan QColor
     def muuta_vari(self, vari):
@@ -104,3 +117,6 @@ class Ruutugrafiikka(QtWidgets.QGraphicsRectItem):
     def voi_liikkua(self):
         brush = QtGui.QBrush(self.__voi_liikkua_vari)
         self.setBrush(brush)
+
+    def poista_grafiikka(self):
+        self.__kayttoliittyma.scene.removeItem(self)

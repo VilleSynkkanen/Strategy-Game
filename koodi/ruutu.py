@@ -52,6 +52,10 @@ class Ruutu:
     def maasto(self):
         return self.__maasto
 
+    @tyyppi.setter
+    def tyyppi(self, arvo):
+        self.__tyyppi = arvo
+
     @property
     def naapurit(self):
         return self.__naapurit
@@ -89,11 +93,15 @@ class Ruutu:
                 self.__yksikko = Parantaja_tekoaly(omistaja, self, self.__kayttoliittyma, ominaisuudet[0], ominaisuudet[1])
         return self.__yksikko
 
-    def luo_grafiikka(self, koko):
-        self.__grafiikka = Ruutugrafiikka(self.__koordinaatit, koko, self.__kayttoliittyma, self.__maasto.vari, self)
+    def luo_grafiikka(self, koko, kenttaeditori=False):
+        self.__grafiikka = Ruutugrafiikka(self.__koordinaatit, koko, self.__kayttoliittyma, self.__maasto.vari,
+                                          self, kenttaeditori)
 
-    def luo_maasto(self):
-        maastot = self.__kayttoliittyma.pelinohjain.maaston_lukija.maastot
+    def luo_maasto(self, kenttaeditori=False):
+        if kenttaeditori:
+            maastot = self.kayttoliittyma.paavalikko.maastojen_lukija.maastot
+        else:
+            maastot = self.__kayttoliittyma.pelinohjain.maaston_lukija.maastot
         ominaisuudet = maastot[self.__tyyppi]
         self.__maasto = Maasto(ominaisuudet.tyyppi, ominaisuudet.liikkuminen, ominaisuudet.liikkumisen_hinta,
                                ominaisuudet.hyokkayskerroin, ominaisuudet.puolustuskerroin, ominaisuudet.vari,
@@ -135,3 +143,7 @@ class Ruutu:
 
     def poista_kiilat(self):
         self.__kiilat = None
+
+    def poista_grafiikka(self):
+        self.__grafiikka.poista_grafiikka()
+        #self.__grafiikka.deleteLater()
