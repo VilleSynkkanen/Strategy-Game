@@ -43,6 +43,10 @@ class Ruutugrafiikka(QtWidgets.QGraphicsRectItem):
                                                      int(0.5 * self.__vari[1]), int(0.5 * self.__vari[2]))
 
     @property
+    def koko(self):
+        return self.__koko
+
+    @property
     def teksti(self):
         return self.__teksti
 
@@ -86,8 +90,20 @@ class Ruutugrafiikka(QtWidgets.QGraphicsRectItem):
             if self.__kayttoliittyma.valittu_elementti is not None:
                 # lisää yksikkö tai poista vanha ruutu ja lisää uusi
                 maastot = ["tasanko", "kukkula", "pelto", "vuoristo", "silta", "joki"]
+                yksikot = ["jalkavaki", "ratsuvaki", "jousimiehet", "tykisto", "parantaja"]
                 if self.__kayttoliittyma.valittu_elementti in maastot:
                     self.__ruutu.kayttoliittyma.kartta.korvaa_ruutu(self.__ruutu, self.__kayttoliittyma.valittu_elementti)
+                elif self.__kayttoliittyma.valittu_elementti in yksikot:
+                    #print(self.__ruutu.kartta)
+                    self.__kayttoliittyma.kartta.lisaa_yksikko(self.__ruutu, self.__kayttoliittyma.valittu_elementti,
+                        self.__kayttoliittyma.paavalikko.yksikoiden_lukija.yksikot[self.__kayttoliittyma.valittu_elementti],
+                                                               self.__kayttoliittyma.valittu_omistaja)
+                elif self.__kayttoliittyma.valittu_elementti == "poista" and self.__ruutu.yksikko is not None:
+                    print("fusk")
+                    self.__kayttoliittyma.kartta.poista_yksikko(self.__ruutu.yksikko)
+                    self.__ruutu.yksikko.tuhoudu()
+
+#¤ruutu, tyyppi, ominaisuudet, omistaja
 
     # muuta siten, että parametrina annetaan QColor
     def muuta_vari(self, vari):

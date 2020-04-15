@@ -107,6 +107,10 @@ class Ruutu:
                                ominaisuudet.hyokkayskerroin, ominaisuudet.puolustuskerroin, ominaisuudet.vari,
                                ominaisuudet.lapinakyvyys)
 
+    # kenttäeditoria varten
+    def etsi_kartta(self):
+        self.__kartta = self.__kayttoliittyma.kartta
+
     def etsi_naapurit(self):
         self.__kartta = self.__kayttoliittyma.pelinohjain.kartta
 

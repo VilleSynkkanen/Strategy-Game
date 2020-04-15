@@ -450,17 +450,18 @@ class Yksikko:
 
     def __tarkasta_tuhoutuminen(self):
         if self.__ominaisuudet.nyk_elama <= 0:
-            self.__tuhoudu()
+            self.tuhoudu()
 
-    def __tuhoudu(self):
+    def tuhoudu(self):
         # poistaa kaikki olemassa olevat viittaukset yksikköön ja piilottaa sen graafiset komponentit
         # jos valittu yksikkö, poista käyttöliittymästä
-        teksti = self.__class__.__name__ + " tuhoutui"
-        self.kayttoliittyma.lisaa_pelilokiin(teksti)
-        if self.__kayttoliittyma.valittu_yksikko == self:
-            self.__kayttoliittyma.tyhjenna_valinta()
-        # poista kartan listasta
-        self.__kayttoliittyma.pelinohjain.kartta.poista_yksikko(self)
+        if self.kayttoliittyma.__class__.__name__ != "Kenttaeditori":
+            teksti = self.__class__.__name__ + " tuhoutui"
+            self.kayttoliittyma.lisaa_pelilokiin(teksti)
+            if self.__kayttoliittyma.valittu_yksikko == self:
+                self.__kayttoliittyma.tyhjenna_valinta()
+            # poista kartan listasta
+            self.__kayttoliittyma.pelinohjain.kartta.poista_yksikko(self)
         # poista ruudusta
         self.__ruutu.poista_yksikko()
         # tuhoa elämäpalkki
@@ -469,7 +470,7 @@ class Yksikko:
         self.__grafiikka.poista()
         # poista viittaus ominaisuuksiin
         self.__ominaisuudet = None
-        if self.omistaja == "COM":
+        if self.omistaja == "COM" and self.kayttoliittyma.__class__.__name__ != "Kenttaeditori":
             # tarkistetaan, koska tuhoutuminen voi muuttaa muiden pelaajien yksiköiden toiminnan mahdollisuuksia
             self.__kayttoliittyma.pelinohjain.kartta.tarkista_toimivat_yksikot()
             self.kayttoliittyma.pelinohjain.tarkista_voitto()

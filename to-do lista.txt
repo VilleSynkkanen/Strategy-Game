@@ -1,9 +1,8 @@
 Seuraavaksi:
 -kenttäeditori
-	-yksiköiden lisäys
 	-kentän tallennus
-	-uusi kenttä
-	-muokkaa kenttää
+	-muokkaa olemassaolevaa kenttää
+	-nappien ja ohjetekstien muutokset
 -päävalikko
 	-tiedostojen lukeminen: virheilmoitukset valikossa
 		-lue kaikki kartat ja tarkista validius
@@ -19,7 +18,7 @@ Kenttäeditorin napit
 -tekstilaatikot: kentän koko
 -uusi kenttä  -> tallenna
 -muokkaa vanhaa -> poistu
--tyhjennä kenttä -> vahvista koko
+-tyhjennä kenttä
 -toggle nappi: maastot/pelaajan yksiköt/tietokoneen yksiköt
 -jokaista maastoa/yksikköä varten nappi	
 -poista maasto/yksikkö
@@ -36,7 +35,7 @@ Teköäly
 Tiedostojen lukeminen:
 -virheiden sieto: tarkistus ja virheilmoitus päävalikossa
 -käyttöliittymän kokoasetukset tiedostossa
--tiedostojen resetointi
+(-tiedostojen resetointi)
 
 Ohjetekstit, peliloki
 -pelilokin hionta:
@@ -63,10 +62,10 @@ Tekoälyn parametrit:
 -tykistön liikkuminen: liikkuu liian usein, ei välttele vihollisia tarpeeksi
 
 Aikataulu
--päävalikko, kenttäeditori 20.4
--tiedostojen lukemisen viimeistely 24.4
--tallennus 26.4
--lisää testausta + testausmuutokset 28.4
+-päävalikko, kenttäeditori 17.4
+-tiedostojen lukemisen viimeistely 19.4
+-tallennus 21.4
+-lisää testausta + testausmuutokset 23.4
 -viimeistely 1.5
 -dokumentaatio 8.5
 

@@ -8,7 +8,7 @@ class Yksikkografiikka(QtWidgets.QGraphicsPolygonItem):
         # yksikön tyyppi luetaan sen luokan nimestä
         tyyppi = luokka.__class__.__name__
         self.__yksikko = yksikko
-        self.__koko = ruutu.kartta.ruudun_koko
+        self.__koko = ruutu.grafiikka.koko
         self.__ruutu = ruutu
         self.__kayttoliittyma = kayttoliittyma
         self.__omistaja = omistaja
@@ -215,16 +215,27 @@ class Yksikkografiikka(QtWidgets.QGraphicsPolygonItem):
         self.setPolygon(polygoni)
 
     def mousePressEvent(self, *args, **kwargs):
-        if self.__kayttoliittyma.pelinohjain.vuoro == "PLR":
-            if self.__kayttoliittyma.valittu_yksikko is not None and \
-                    self.__kayttoliittyma.valittu_yksikko.kyky1_valitsee_kohteita:
-                self.__kayttoliittyma.valittu_yksikko.kyky1_lisaa_kohde(self.__yksikko.ruutu)
-            elif self.__kayttoliittyma.valittu_yksikko is not None and \
-                    self.__kayttoliittyma.valittu_yksikko.kyky2_valitsee_kohteita:
-                if self.__yksikko.omistaja != self.__kayttoliittyma.valittu_yksikko.omistaja:
-                    self.__kayttoliittyma.valittu_yksikko.kayta_kyky2(self.__yksikko)
-            elif self.__yksikko.omistaja == "PLR" and self.__kayttoliittyma.valitsee_hyokkayksen_kohdetta is False:
-                self.__kayttoliittyma.valitse_yksikko(self.__yksikko)
-            elif self.__yksikko.omistaja == "COM" and self.__yksikko.kayttoliittyma.valitsee_hyokkayksen_kohdetta and \
-                    self.__yksikko in self.__kayttoliittyma.valittu_yksikko.hyokkayksen_kohteet:
-                self.__yksikko.hyokkayksen_kohde(self.__kayttoliittyma.valittu_yksikko)
+        if self.__kayttoliittyma.__class__.__name__ == "Kayttoliittyma":
+            if self.__kayttoliittyma.pelinohjain.vuoro == "PLR":
+                if self.__kayttoliittyma.valittu_yksikko is not None and \
+                        self.__kayttoliittyma.valittu_yksikko.kyky1_valitsee_kohteita:
+                    self.__kayttoliittyma.valittu_yksikko.kyky1_lisaa_kohde(self.__yksikko.ruutu)
+                elif self.__kayttoliittyma.valittu_yksikko is not None and \
+                        self.__kayttoliittyma.valittu_yksikko.kyky2_valitsee_kohteita:
+                    if self.__yksikko.omistaja != self.__kayttoliittyma.valittu_yksikko.omistaja:
+                        self.__kayttoliittyma.valittu_yksikko.kayta_kyky2(self.__yksikko)
+                elif self.__yksikko.omistaja == "PLR" and self.__kayttoliittyma.valitsee_hyokkayksen_kohdetta is False:
+                    self.__kayttoliittyma.valitse_yksikko(self.__yksikko)
+                elif self.__yksikko.omistaja == "COM" and self.__yksikko.kayttoliittyma.valitsee_hyokkayksen_kohdetta and \
+                        self.__yksikko in self.__kayttoliittyma.valittu_yksikko.hyokkayksen_kohteet:
+                    self.__yksikko.hyokkayksen_kohde(self.__kayttoliittyma.valittu_yksikko)
+        else:
+            if self.__kayttoliittyma.valittu_elementti is not None:
+                maastot = ["tasanko", "kukkula", "pelto", "vuoristo", "silta", "joki"]
+                if self.__kayttoliittyma.valittu_elementti in maastot:
+                    self.__yksikko.kayttoliittyma.kartta.korvaa_ruutu(self.__yksikko.ruutu,
+                                                                      self.__kayttoliittyma.valittu_elementti)
+                elif self.__kayttoliittyma.valittu_elementti == "poista":
+                    print("fusk")
+                    self.yksikko.tuhoudu()
+                    self.__kayttoliittyma.kartta.poista_yksikko(self)

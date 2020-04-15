@@ -32,32 +32,34 @@ class Kenttaeditori(QtWidgets.QMainWindow):
         self.__nappi_layout = QtWidgets.QGridLayout()
         self.__paa_layout.addLayout(self.__nappi_layout)
 
-        # napit
+        # widgetit
+        self.__uusi_ohje = QtWidgets.QLabel("SYÖTÄ UUDEN\nKENTÄN PITUUS\nJA LEVEYS\nVÄLILYÖNNILLÄ\nEROTETTUNA")
+        self.__uusi_ohje.setSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Preferred)
+        self.__muokkaa_ohje = QtWidgets.QLabel("SYÖTÄ MUOKATTAVAN\nKENTÄN NIMI\nILMAN\nTIEDOSTOPÄÄTETTÄ")
+        self.__muokkaa_ohje.setSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Preferred)
         self.__uusi_kentta_nappi = QtWidgets.QPushButton("UUSI KENTTÄ")
-        self.__uusi_kentta_nappi.setSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Fixed)
+        self.__uusi_kentta_nappi.setSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Preferred)
         self.__muokkaa_vanhaa_nappi = QtWidgets.QPushButton("MUOKKAA KENTTÄÄ")
-        self.__muokkaa_vanhaa_nappi.setSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Fixed)
+        self.__muokkaa_vanhaa_nappi.setSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Preferred)
         self.__vaihda_nappien_sisalto = QtWidgets.QPushButton("YKSIKÖT/MAASTOT")
-        self.__vaihda_nappien_sisalto.setSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Fixed)
+        self.__vaihda_nappien_sisalto.setSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Preferred)
         self.__tasanko_nappi = QtWidgets.QPushButton("TASANKO")
-        self.__tasanko_nappi.setSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Fixed)
+        self.__tasanko_nappi.setSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Preferred)
         self.__kukkula_nappi = QtWidgets.QPushButton("KUKKULA")
-        self.__kukkula_nappi.setSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Fixed)
+        self.__kukkula_nappi.setSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Preferred)
         self.__pelto_nappi = QtWidgets.QPushButton("PELTO")
-        self.__pelto_nappi.setSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Fixed)
+        self.__pelto_nappi.setSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Preferred)
         self.__vuoristo_nappi = QtWidgets.QPushButton("VUORISTO")
-        self.__vuoristo_nappi.setSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Fixed)
+        self.__vuoristo_nappi.setSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Preferred)
         self.__silta_nappi = QtWidgets.QPushButton("SILTA")
-        self.__silta_nappi.setSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Fixed)
+        self.__silta_nappi.setSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Preferred)
         self.__joki_nappi = QtWidgets.QPushButton("JOKI")
-        self.__joki_nappi.setSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Fixed)
-        self.__vahvista_koko = QtWidgets.QPushButton("VAHVISTA KOKO")
-        self.__vahvista_koko.setSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Fixed)
+        self.__joki_nappi.setSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Preferred)
 
-        self.__leveys = QtWidgets.QLineEdit()
-        self.__leveys.setSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Fixed)
-        self.__korkeus = QtWidgets.QLineEdit()
-        self.__korkeus.setSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Fixed)
+        self.__koko = QtWidgets.QLineEdit()
+        self.__koko.setSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Fixed)
+        self.__nimi = QtWidgets.QLineEdit()
+        self.__nimi.setSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Fixed)
 
         self.__napit = []
         self.__napit.append(self.__uusi_kentta_nappi)
@@ -69,8 +71,9 @@ class Kenttaeditori(QtWidgets.QMainWindow):
         self.__napit.append(self.__vuoristo_nappi)
         self.__napit.append(self.__silta_nappi)
         self.__napit.append(self.__joki_nappi)
-        self.__napit.append(self.__vahvista_koko)
 
+        self.__uusi_ohje.setStyleSheet("font: 10pt Arial")
+        self.__muokkaa_ohje.setStyleSheet("font: 10pt Arial")
         self.__uusi_kentta_nappi.setStyleSheet("font: 10pt Arial")
         self.__muokkaa_vanhaa_nappi.setStyleSheet("font: 10pt Arial")
         self.__vaihda_nappien_sisalto.setStyleSheet("font: 10pt Arial")
@@ -80,25 +83,26 @@ class Kenttaeditori(QtWidgets.QMainWindow):
         self.__vuoristo_nappi.setStyleSheet("font: 10pt Arial")
         self.__silta_nappi.setStyleSheet("font: 10pt Arial")
         self.__joki_nappi.setStyleSheet("font: 10pt Arial")
-        self.__vahvista_koko.setStyleSheet("font: 10pt Arial")
-        self.__leveys.setStyleSheet("font: 10pt Arial")
-        self.__korkeus.setStyleSheet("font: 10pt Arial")
+        self.__koko.setStyleSheet("font: 10pt Arial")
+        self.__nimi.setStyleSheet("font: 10pt Arial")
 
         # nappi widgetit
-        self.__nappi_layout.addWidget(self.__uusi_kentta_nappi, 0, 0)
-        self.__nappi_layout.addWidget(self.__muokkaa_vanhaa_nappi, 0, 1)
-        self.__nappi_layout.addWidget(self.__vaihda_nappien_sisalto, 1, 0)
-        self.__nappi_layout.addWidget(self.__tasanko_nappi, 2, 0)
-        self.__nappi_layout.addWidget(self.__kukkula_nappi, 2, 1)
-        self.__nappi_layout.addWidget(self.__pelto_nappi, 3, 0)
-        self.__nappi_layout.addWidget(self.__vuoristo_nappi, 3, 1)
-        self.__nappi_layout.addWidget(self.__silta_nappi, 4, 0)
-        self.__nappi_layout.addWidget(self.__joki_nappi, 4, 1)
-        self.__nappi_layout.addWidget(self.__vahvista_koko, 5, 0)
-        self.__nappi_layout.addWidget(self.__leveys, 6, 0)
-        self.__nappi_layout.addWidget(self.__korkeus, 6, 1)
+        self.__nappi_layout.addWidget(self.__uusi_ohje, 0, 0)
+        self.__nappi_layout.addWidget(self.__muokkaa_ohje, 0, 1)
+        self.__nappi_layout.addWidget(self.__koko, 1, 0)
+        self.__nappi_layout.addWidget(self.__nimi, 1, 1)
+        self.__nappi_layout.addWidget(self.__uusi_kentta_nappi, 2, 0)
+        self.__nappi_layout.addWidget(self.__muokkaa_vanhaa_nappi, 2, 1)
+        self.__nappi_layout.addWidget(self.__vaihda_nappien_sisalto, 3, 0)
+        self.__nappi_layout.addWidget(self.__tasanko_nappi, 4, 0)
+        self.__nappi_layout.addWidget(self.__kukkula_nappi, 4, 1)
+        self.__nappi_layout.addWidget(self.__pelto_nappi, 5, 0)
+        self.__nappi_layout.addWidget(self.__vuoristo_nappi, 5, 1)
+        self.__nappi_layout.addWidget(self.__silta_nappi, 6, 0)
+        self.__nappi_layout.addWidget(self.__joki_nappi, 6, 1)
 
-        self.__vahvista_koko.clicked.connect(self.__lue_koko)
+        self.__uusi_kentta_nappi.clicked.connect(self.__lue_koko)
+        self.__vaihda_nappien_sisalto.clicked.connect(self.__muuta_nappien_toiminnot)
         self.__tasanko_nappi.clicked.connect(self.valitse_tasanko)
         self.__pelto_nappi.clicked.connect(self.valitse_pelto)
         self.__vuoristo_nappi.clicked.connect(self.valitse_vuoristo)
@@ -113,6 +117,7 @@ class Kenttaeditori(QtWidgets.QMainWindow):
 
         # maasto tai yksikkö
         self.__valittu_elementti = None
+        self.__valittu_omistaja = None
 
     @property
     def scene(self):
@@ -142,6 +147,10 @@ class Kenttaeditori(QtWidgets.QMainWindow):
     def kartta(self):
         return self.__kartta
 
+    @property
+    def valittu_omistaja(self):
+        return self.__valittu_omistaja
+
     def __aseta_scene_rect(self, x, y):
         # rectin skaalauskertoimet
         if x > y:
@@ -161,8 +170,9 @@ class Kenttaeditori(QtWidgets.QMainWindow):
 
     def __lue_koko(self):
         try:
-            self.__koko_x = int(self.__leveys.text())
-            self.__koko_y = int(self.__korkeus.text())
+            text = self.__koko.text().split(" ")
+            self.__koko_x = int(text[0])
+            self.__koko_y = int(text[1])
             print(self.__koko_x)
             print(self.__koko_y)
             self.__piirra_tyhja_kartta()
@@ -178,6 +188,7 @@ class Kenttaeditori(QtWidgets.QMainWindow):
         for ruutu in self.__kartta.ruudut:
             ruutu.luo_maasto(True)
             ruutu.luo_grafiikka(self.__kartta.ruudun_koko, True)
+            ruutu.etsi_kartta()
 
         self.__aseta_scene_rect(self.__koko_x, self.__koko_y)
 
@@ -209,6 +220,91 @@ class Kenttaeditori(QtWidgets.QMainWindow):
         self.__valittu_elementti = "silta"
         print(self.__valittu_elementti)
 
-    def muuta_nappien_toiminnot(self, tyyppi):
-        pass
+    def valitse_ratsuvaki(self):
+        self.__valittu_elementti = "ratsuvaki"
+        print(self.__valittu_elementti)
+
+    def valitse_jousimiehet(self):
+        self.__valittu_elementti = "jousimiehet"
+        print(self.__valittu_elementti)
+
+    def valitse_parantaja(self):
+        self.__valittu_elementti = "parantaja"
+        print(self.__valittu_elementti)
+
+    def valitse_tykisto(self):
+        self.__valittu_elementti = "tykisto"
+        print(self.__valittu_elementti)
+
+    def valitse_jalkavaki(self):
+        self.__valittu_elementti = "jalkavaki"
+        print(self.__valittu_elementti)
+
+    def valitse_poista_yksikko(self):
+        self.__valittu_elementti = "poista"
+        print(self.__valittu_elementti)
+
+
+    def __muuta_nappien_toiminnot(self):
+        if self.__valittu_omistaja is None:
+            tyyppi = "pelaaja"
+        elif self.__valittu_omistaja == "PLR":
+            tyyppi = "tietokone"
+        elif self.__valittu_omistaja == "COM":
+            tyyppi = "maastot"
+        if tyyppi == "maastot":
+            self.__valittu_omistaja = None
+            self.__tasanko_nappi.setText("TASANKO")
+            self.__pelto_nappi.setText("PELTO")
+            self.__vuoristo_nappi.setText("VUORISTO")
+            self.__kukkula_nappi.setText("KUKKULA")
+            self.__silta_nappi.setText("SILTA")
+            self.__joki_nappi.setText("JOKI")
+            self.__tasanko_nappi.clicked.connect(self.valitse_tasanko)
+            self.__pelto_nappi.clicked.connect(self.valitse_pelto)
+            self.__vuoristo_nappi.clicked.connect(self.valitse_vuoristo)
+            self.__kukkula_nappi.clicked.connect(self.valitse_kukkula)
+            self.__silta_nappi.clicked.connect(self.valitse_silta)
+            self.__joki_nappi.clicked.connect(self.valitse_joki)
+            self.__tasanko_nappi.clicked.disconnect(self.valitse_jalkavaki)
+            self.__pelto_nappi.clicked.disconnect(self.valitse_ratsuvaki)
+            self.__vuoristo_nappi.clicked.disconnect(self.valitse_jousimiehet)
+            self.__kukkula_nappi.clicked.disconnect(self.valitse_tykisto)
+            self.__silta_nappi.clicked.disconnect(self.valitse_parantaja)
+            self.__joki_nappi.clicked.disconnect(self.valitse_poista_yksikko)
+        elif tyyppi == "pelaaja":
+            self.__valittu_omistaja = "PLR"
+            self.__tasanko_nappi.setText("JALKAVÄKI (PLR)")
+            self.__pelto_nappi.setText("RATSUVÄKI (PLR)")
+            self.__vuoristo_nappi.setText("JOUSIMIEHET (PLR)")
+            self.__kukkula_nappi.setText("TYKISTÖ (PLR)")
+            self.__silta_nappi.setText("PARANTAJA (PLR)")
+            self.__joki_nappi.setText("POISTA YKSIKKÖ")
+            self.__tasanko_nappi.clicked.connect(self.valitse_jalkavaki)
+            self.__pelto_nappi.clicked.connect(self.valitse_ratsuvaki)
+            self.__vuoristo_nappi.clicked.connect(self.valitse_jousimiehet)
+            self.__kukkula_nappi.clicked.connect(self.valitse_tykisto)
+            self.__silta_nappi.clicked.connect(self.valitse_parantaja)
+            self.__joki_nappi.clicked.connect(self.valitse_poista_yksikko)
+            self.__tasanko_nappi.clicked.disconnect(self.valitse_tasanko)
+            self.__pelto_nappi.clicked.disconnect(self.valitse_pelto)
+            self.__vuoristo_nappi.clicked.disconnect(self.valitse_vuoristo)
+            self.__kukkula_nappi.clicked.disconnect(self.valitse_kukkula)
+            self.__silta_nappi.clicked.disconnect(self.valitse_silta)
+            self.__joki_nappi.clicked.disconnect(self.valitse_joki)
+        elif tyyppi == "tietokone":
+            self.__valittu_omistaja = "COM"
+            self.__tasanko_nappi.setText("JALKAVÄKI (COM)")
+            self.__pelto_nappi.setText("RATSUVÄKI (COM)")
+            self.__vuoristo_nappi.setText("JOUSIMIEHET (COM)")
+            self.__kukkula_nappi.setText("TYKISTÖ (COM)")
+            self.__silta_nappi.setText("PARANTAJA (COM)")
+            self.__joki_nappi.setText("POISTA YKSIKKÖ")
+            self.__tasanko_nappi.clicked.connect(self.valitse_jalkavaki)
+            self.__pelto_nappi.clicked.connect(self.valitse_ratsuvaki)
+            self.__vuoristo_nappi.clicked.connect(self.valitse_jousimiehet)
+            self.__kukkula_nappi.clicked.connect(self.valitse_tykisto)
+            self.__silta_nappi.clicked.connect(self.valitse_parantaja)
+            self.__joki_nappi.clicked.connect(self.valitse_poista_yksikko)
+
 
