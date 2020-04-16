@@ -1,8 +1,10 @@
 Seuraavaksi:
 -kenttäeditori
-	-kentän tallennus
+	-viesti tallennuksen onnistumisesta/epäonnistumisesta
 	-muokkaa olemassaolevaa kenttää
-	-nappien ja ohjetekstien muutokset
+	-virheilmoitukset käyttöliittymään
+	-käyttäytyminen onnistuneen tallennuksen jälkeen?
+-10 uutta kenttää
 -päävalikko
 	-tiedostojen lukeminen: virheilmoitukset valikossa
 		-lue kaikki kartat ja tarkista validius
@@ -13,16 +15,6 @@ Seuraavaksi:
 -tiedostojen lukeminen: virheidensieto
 -tallennus
 -viimeistelyä
-
-Kenttäeditorin napit
--tekstilaatikot: kentän koko
--uusi kenttä  -> tallenna
--muokkaa vanhaa -> poistu
--tyhjennä kenttä
--toggle nappi: maastot/pelaajan yksiköt/tietokoneen yksiköt
--jokaista maastoa/yksikköä varten nappi	
--poista maasto/yksikkö
--12 nappia + tekstit
 
 Bugit
 -???
@@ -62,10 +54,10 @@ Tekoälyn parametrit:
 -tykistön liikkuminen: liikkuu liian usein, ei välttele vihollisia tarpeeksi
 
 Aikataulu
--päävalikko, kenttäeditori 17.4
--tiedostojen lukemisen viimeistely 19.4
+-päävalikko, kenttäeditori 19.4
+-tiedostojen lukemisen viimeistely 20.4
 -tallennus 21.4
--lisää testausta + testausmuutokset 23.4
+-lisää testausta + testausmuutokset 24.4
 -viimeistely 1.5
 -dokumentaatio 8.5
 

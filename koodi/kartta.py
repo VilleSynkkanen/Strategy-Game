@@ -80,6 +80,17 @@ class Kartta:
     def lisaa_yksikko(self, ruutu, tyyppi, ominaisuudet, omistaja):
         ruutu.lisaa_yksikko(tyyppi, omistaja, ominaisuudet)
 
+    # kenttäeditoria varten
+    def etsi_yksikot(self):
+        self.__pelaajan_yksikot = []
+        self.__tietokoneen_yksikot = []
+        for ruutu in self.ruudut:
+            if ruutu.yksikko is not None:
+                if ruutu.yksikko.omistaja == "PLR":
+                    self.__pelaajan_yksikot.append(ruutu.yksikko)
+                elif ruutu.yksikko.omistaja == "COM":
+                    self.__tietokoneen_yksikot.append(ruutu.yksikko)
+
     def poista_yksikko(self, yksikko):
         if yksikko.omistaja == "COM":
             for Yksikko in self.tietokoneen_yksikot:
@@ -153,4 +164,11 @@ class Kartta:
         ruutu.tyyppi = uusi_maasto
         ruutu.luo_maasto(True)
         ruutu.luo_grafiikka(self.ruudun_koko, self.kayttoliittyma)
+
+    def tyhjenna(self):
+        for ruutu in self.ruudut:
+            ruutu.poista_grafiikka()
+            if ruutu.yksikko is not None:
+                ruutu.yksikko.tuhoudu()
+        self.__ruudut = []
 

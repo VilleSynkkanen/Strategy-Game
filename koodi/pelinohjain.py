@@ -20,7 +20,7 @@ class Pelinohjain:
 
         # kartan lukeminen
         self.__kartan_lukija = Kartan_lukija()
-        self.__nimi, x, y, ruudut, yksikot = self.__kartan_lukija.lue_kartta("testikentta.txt")
+        self.__nimi, x, y, ruudut, yksikot = self.__kartan_lukija.lue_kartta("kentta1.txt")
         self.__koko = (x, y)
         print(ruudut)
         self.__kartta = Kartta(self.__koko[0], self.__koko[1], ruudut, self.__kayttoliittyma)

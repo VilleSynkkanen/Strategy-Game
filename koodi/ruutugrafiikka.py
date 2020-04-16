@@ -93,7 +93,7 @@ class Ruutugrafiikka(QtWidgets.QGraphicsRectItem):
                 yksikot = ["jalkavaki", "ratsuvaki", "jousimiehet", "tykisto", "parantaja"]
                 if self.__kayttoliittyma.valittu_elementti in maastot:
                     self.__ruutu.kayttoliittyma.kartta.korvaa_ruutu(self.__ruutu, self.__kayttoliittyma.valittu_elementti)
-                elif self.__kayttoliittyma.valittu_elementti in yksikot:
+                elif self.__kayttoliittyma.valittu_elementti in yksikot and self.__ruutu.yksikko is None:
                     #print(self.__ruutu.kartta)
                     self.__kayttoliittyma.kartta.lisaa_yksikko(self.__ruutu, self.__kayttoliittyma.valittu_elementti,
                         self.__kayttoliittyma.paavalikko.yksikoiden_lukija.yksikot[self.__kayttoliittyma.valittu_elementti],
@@ -103,7 +103,6 @@ class Ruutugrafiikka(QtWidgets.QGraphicsRectItem):
                     self.__kayttoliittyma.kartta.poista_yksikko(self.__ruutu.yksikko)
                     self.__ruutu.yksikko.tuhoudu()
 
-#¤ruutu, tyyppi, ominaisuudet, omistaja
 
     # muuta siten, että parametrina annetaan QColor
     def muuta_vari(self, vari):

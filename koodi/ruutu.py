@@ -150,4 +150,5 @@ class Ruutu:
 
     def poista_grafiikka(self):
         self.__grafiikka.poista_grafiikka()
+        self.__grafiikka = None
         #self.__grafiikka.deleteLater()

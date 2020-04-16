@@ -1,5 +1,6 @@
 from PyQt5 import QtWidgets, QtCore, QtGui, Qt
 from kartta import Kartta
+from kentan_tallentaja import Kentan_tallentaja
 import sys
 
 
@@ -43,6 +44,8 @@ class Kenttaeditori(QtWidgets.QMainWindow):
         self.__muokkaa_vanhaa_nappi.setSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Preferred)
         self.__vaihda_nappien_sisalto = QtWidgets.QPushButton("YKSIKÖT/MAASTOT")
         self.__vaihda_nappien_sisalto.setSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Preferred)
+        self.__poistu_nappi = QtWidgets.QPushButton("POISTU EDITORISTA")
+        self.__poistu_nappi.setSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Preferred)
         self.__tasanko_nappi = QtWidgets.QPushButton("TASANKO")
         self.__tasanko_nappi.setSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Preferred)
         self.__kukkula_nappi = QtWidgets.QPushButton("KUKKULA")
@@ -61,22 +64,12 @@ class Kenttaeditori(QtWidgets.QMainWindow):
         self.__nimi = QtWidgets.QLineEdit()
         self.__nimi.setSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Fixed)
 
-        self.__napit = []
-        self.__napit.append(self.__uusi_kentta_nappi)
-        self.__napit.append(self.__muokkaa_vanhaa_nappi)
-        self.__napit.append(self.__vaihda_nappien_sisalto)
-        self.__napit.append(self.__tasanko_nappi)
-        self.__napit.append(self.__kukkula_nappi)
-        self.__napit.append(self.__pelto_nappi)
-        self.__napit.append(self.__vuoristo_nappi)
-        self.__napit.append(self.__silta_nappi)
-        self.__napit.append(self.__joki_nappi)
-
         self.__uusi_ohje.setStyleSheet("font: 10pt Arial")
         self.__muokkaa_ohje.setStyleSheet("font: 10pt Arial")
         self.__uusi_kentta_nappi.setStyleSheet("font: 10pt Arial")
         self.__muokkaa_vanhaa_nappi.setStyleSheet("font: 10pt Arial")
         self.__vaihda_nappien_sisalto.setStyleSheet("font: 10pt Arial")
+        self.__poistu_nappi.setStyleSheet("font: 10pt Arial")
         self.__tasanko_nappi.setStyleSheet("font: 10pt Arial")
         self.__kukkula_nappi.setStyleSheet("font: 10pt Arial")
         self.__pelto_nappi.setStyleSheet("font: 10pt Arial")
@@ -94,6 +87,7 @@ class Kenttaeditori(QtWidgets.QMainWindow):
         self.__nappi_layout.addWidget(self.__uusi_kentta_nappi, 2, 0)
         self.__nappi_layout.addWidget(self.__muokkaa_vanhaa_nappi, 2, 1)
         self.__nappi_layout.addWidget(self.__vaihda_nappien_sisalto, 3, 0)
+        self.__nappi_layout.addWidget(self.__poistu_nappi, 3, 1)
         self.__nappi_layout.addWidget(self.__tasanko_nappi, 4, 0)
         self.__nappi_layout.addWidget(self.__kukkula_nappi, 4, 1)
         self.__nappi_layout.addWidget(self.__pelto_nappi, 5, 0)
@@ -102,7 +96,9 @@ class Kenttaeditori(QtWidgets.QMainWindow):
         self.__nappi_layout.addWidget(self.__joki_nappi, 6, 1)
 
         self.__uusi_kentta_nappi.clicked.connect(self.__lue_koko)
+        self.__muokkaa_vanhaa_nappi.clicked.connect(self.__lue_kentan_nimi)
         self.__vaihda_nappien_sisalto.clicked.connect(self.__muuta_nappien_toiminnot)
+        self.__poistu_nappi.clicked.connect(self.__poistu)
         self.__tasanko_nappi.clicked.connect(self.valitse_tasanko)
         self.__pelto_nappi.clicked.connect(self.valitse_pelto)
         self.__vuoristo_nappi.clicked.connect(self.valitse_vuoristo)
@@ -118,6 +114,9 @@ class Kenttaeditori(QtWidgets.QMainWindow):
         # maasto tai yksikkö
         self.__valittu_elementti = None
         self.__valittu_omistaja = None
+
+        # käyttöliittymän muutokset
+        self.__editoi_kenttaa = False
 
     @property
     def scene(self):
@@ -178,6 +177,11 @@ class Kenttaeditori(QtWidgets.QMainWindow):
             self.__piirra_tyhja_kartta()
         except ValueError:
             print("invalid value")
+        except IndexError:
+            print("invalid value")
+
+    def __lue_kentan_nimi(self):
+        pass
 
     # piirtää tyhjän kartan, jonka mitat ovat koko_x ja koko_y
     def __piirra_tyhja_kartta(self):
@@ -192,9 +196,43 @@ class Kenttaeditori(QtWidgets.QMainWindow):
 
         self.__aseta_scene_rect(self.__koko_x, self.__koko_y)
 
+        # nappien muutokset
+        self.__editoi_kenttaa = True
+        self.__editoi_kenttaa_napit(self.__editoi_kenttaa)
+
+    def __editoi_kenttaa_napit(self, editoi):
+        if editoi:
+            self.__uusi_kentta_nappi.setText("TALLENNA KENTTÄ")
+            self.__uusi_kentta_nappi.clicked.disconnect(self.__lue_koko)
+            self.__uusi_kentta_nappi.clicked.connect(self.__tallenna_kentta)
+            self.__uusi_ohje.setText("SYÖTÄ TALLENNETTAVAN\nKENTÄN NIMI")
+            self.__koko.setText("")
+
+            self.__muokkaa_vanhaa_nappi.setText("TYHJENNÄ KENTTÄ")
+            self.__muokkaa_vanhaa_nappi.clicked.disconnect(self.__lue_kentan_nimi)
+            self.__muokkaa_vanhaa_nappi.clicked.connect(self.__tyhjenna_kartta)
+            self.__muokkaa_ohje.setText("")
+            self.__nimi.setText("")
+
+        else:
+            self.__uusi_kentta_nappi.setText("UUSI KENTTÄ")
+            self.__uusi_kentta_nappi.clicked.disconnect(self.__tallenna_kentta)
+            self.__uusi_kentta_nappi.clicked.connect(self.__lue_koko)
+            self.__uusi_ohje.setText("SYÖTÄ UUDEN\nKENTÄN PITUUS\nJA LEVEYS\nVÄLILYÖNNILLÄ\nEROTETTUNA")
+            self.__koko.setText("")
+
+            self.__muokkaa_vanhaa_nappi.setText("MUOKKAA KENTTÄÄ")
+            self.__muokkaa_vanhaa_nappi.clicked.disconnect(self.__tyhjenna_kartta)
+            self.__muokkaa_vanhaa_nappi.clicked.connect(self.__lue_kentan_nimi)
+            self.__muokkaa_ohje.setText("SYÖTÄ MUOKATTAVAN\nKENTÄN NIMI\nILMAN\nTIEDOSTOPÄÄTETTÄ")
+            self.__nimi.setText("")
+
     def __tyhjenna_kartta(self):
-        # implementoi kartan tyhjennys
-        pass
+        if self.kartta is not None:
+            self.kartta.tyhjenna()
+        if self.__editoi_kenttaa:
+            self.__editoi_kenttaa = False
+            self.__editoi_kenttaa_napit(self.__editoi_kenttaa)
 
     def valitse_tasanko(self):
         self.__valittu_elementti = "tasanko"
@@ -244,13 +282,28 @@ class Kenttaeditori(QtWidgets.QMainWindow):
         self.__valittu_elementti = "poista"
         print(self.__valittu_elementti)
 
+    def __tallenna_kentta(self):
+        self.kartta.etsi_yksikot()
+        #print(self.kartta.ruudut)
+        #print(self.kartta.pelaajan_yksikot)
+        #print(self.kartta.tietokoneen_yksikot)
+        onnistui = Kentan_tallentaja.tallenna_kentta(self.kartta, self.__koko.text())
+        if onnistui:
+            pass
+        else:
+            pass
+
+    def __poistu(self):
+        self.__tyhjenna_kartta()
+        self.paavalikko.show()
+        self.hide()
 
     def __muuta_nappien_toiminnot(self):
         if self.__valittu_omistaja is None:
             tyyppi = "pelaaja"
         elif self.__valittu_omistaja == "PLR":
             tyyppi = "tietokone"
-        elif self.__valittu_omistaja == "COM":
+        else:
             tyyppi = "maastot"
         if tyyppi == "maastot":
             self.__valittu_omistaja = None
