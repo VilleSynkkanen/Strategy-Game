@@ -3,9 +3,9 @@ import os
 class Kentan_tallentaja:
 
     @staticmethod
-    def tallenna_kentta(kartta, nimi):
+    def tallenna_kentta(kartta, nimi, tallenna_paalle=False):
         validi_nimi = Kentan_tallentaja.tarkista_nimi(nimi)
-        if not validi_nimi:
+        if not validi_nimi and tallenna_paalle is False:
             return False
         else:
             '''
@@ -58,7 +58,6 @@ class Kentan_tallentaja:
         nimi += ".txt"
         for tiedosto in tiedostot:
             if tiedosto.name == nimi:
-                print("kenttä olemassa")
                 return False
         return True
 

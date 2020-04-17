@@ -1,6 +1,7 @@
-from PyQt5 import QtWidgets, QtCore, QtGui, Qt
+from PyQt5 import QtWidgets, QtCore, QtGui, QtTest
 from kartta import Kartta
 from kentan_tallentaja import Kentan_tallentaja
+from kartan_lukija import Kartan_lukija
 import sys
 
 
@@ -10,6 +11,7 @@ class Kenttaeditori(QtWidgets.QMainWindow):
         super().__init__()
         self.__scene_size = 880       # kentän koko pikseleinä
         self.__paavalikko = paavalikko
+        self.__viive = 1400
 
         self.setCentralWidget(QtWidgets.QWidget())  # QMainWindown must have a centralWidget to be able to add layouts
         self.__paa_layout = QtWidgets.QHBoxLayout()  # Horizontal main layout
@@ -28,7 +30,6 @@ class Kenttaeditori(QtWidgets.QMainWindow):
         self.__nakyma.adjustSize()
         self.__nakyma.show()
         self.__paa_layout.addWidget(self.__nakyma)
-        # main_layout.addStretch()
 
         self.__nappi_layout = QtWidgets.QGridLayout()
         self.__paa_layout.addLayout(self.__nappi_layout)
@@ -42,7 +43,7 @@ class Kenttaeditori(QtWidgets.QMainWindow):
         self.__uusi_kentta_nappi.setSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Preferred)
         self.__muokkaa_vanhaa_nappi = QtWidgets.QPushButton("MUOKKAA KENTTÄÄ")
         self.__muokkaa_vanhaa_nappi.setSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Preferred)
-        self.__vaihda_nappien_sisalto = QtWidgets.QPushButton("YKSIKÖT/MAASTOT")
+        self.__vaihda_nappien_sisalto = QtWidgets.QPushButton("VAIHDA\nYKSIKÖT/MAASTOT")
         self.__vaihda_nappien_sisalto.setSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Preferred)
         self.__poistu_nappi = QtWidgets.QPushButton("POISTU EDITORISTA")
         self.__poistu_nappi.setSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Preferred)
@@ -68,8 +69,8 @@ class Kenttaeditori(QtWidgets.QMainWindow):
         self.__muokkaa_ohje.setStyleSheet("font: 10pt Arial")
         self.__uusi_kentta_nappi.setStyleSheet("font: 10pt Arial")
         self.__muokkaa_vanhaa_nappi.setStyleSheet("font: 10pt Arial")
-        self.__vaihda_nappien_sisalto.setStyleSheet("font: 10pt Arial")
         self.__poistu_nappi.setStyleSheet("font: 10pt Arial")
+        self.__vaihda_nappien_sisalto.setStyleSheet("font: 10pt Arial")
         self.__tasanko_nappi.setStyleSheet("font: 10pt Arial")
         self.__kukkula_nappi.setStyleSheet("font: 10pt Arial")
         self.__pelto_nappi.setStyleSheet("font: 10pt Arial")
@@ -78,6 +79,14 @@ class Kenttaeditori(QtWidgets.QMainWindow):
         self.__joki_nappi.setStyleSheet("font: 10pt Arial")
         self.__koko.setStyleSheet("font: 10pt Arial")
         self.__nimi.setStyleSheet("font: 10pt Arial")
+
+        self.__vaihda_nappien_sisalto.setEnabled(False)
+        self.__tasanko_nappi.setEnabled(False)
+        self.__kukkula_nappi.setEnabled(False)
+        self.__pelto_nappi.setEnabled(False)
+        self.__vuoristo_nappi.setEnabled(False)
+        self.__silta_nappi.setEnabled(False)
+        self.__joki_nappi.setEnabled(False)
 
         # nappi widgetit
         self.__nappi_layout.addWidget(self.__uusi_ohje, 0, 0)
@@ -106,6 +115,8 @@ class Kenttaeditori(QtWidgets.QMainWindow):
         self.__silta_nappi.clicked.connect(self.valitse_silta)
         self.__joki_nappi.clicked.connect(self.valitse_joki)
 
+        self.__kartan_lukija = Kartan_lukija()
+
         self.__koko_x = 0
         self.__koko_y = 0
 
@@ -117,6 +128,7 @@ class Kenttaeditori(QtWidgets.QMainWindow):
 
         # käyttöliittymän muutokset
         self.__editoi_kenttaa = False
+        self.__muokkaa_vanhaa = False
 
     @property
     def scene(self):
@@ -181,6 +193,34 @@ class Kenttaeditori(QtWidgets.QMainWindow):
             print("invalid value")
 
     def __lue_kentan_nimi(self):
+        nimi = self.__nimi.text()
+        validi = Kentan_tallentaja.tarkista_nimi(nimi)
+        nimi += ".txt"
+        # jos on false, nimen mukainen kenttä löytyi
+        if validi is False:
+            nimi, x, y, ruudut, yksikot = self.__kartan_lukija.lue_kartta(nimi)
+            koko = (x, y)
+            self.__koko_x = koko[0]
+            self.__koko_y = koko[1]
+            # print(ruudut)
+            self.__kartta = Kartta(koko[0], koko[1], ruudut, self)
+
+            self.__aseta_scene_rect(koko[0], koko[1])
+
+            # tehdään vasta koko kartan luomisen jälkeen, kun kaikki ruudut ovat paikallaan
+            for ruutu in self.__kartta.ruudut:
+                ruutu.luo_maasto()
+                ruutu.luo_grafiikka(self.__kartta.ruudun_koko)
+                ruutu.etsi_kartta()
+
+            self.__kartta.lisaa_yksikot(yksikot, self.__paavalikko.yksikoiden_lukija.yksikot)
+            self.__editoi_kenttaa = True
+            self.__muokkaa_vanhaa = True
+            self.__editoi_kenttaa_napit(self.__editoi_kenttaa)
+        else:
+            pass
+
+    def __piirra_kartta(self, kartta):
         pass
 
     # piirtää tyhjän kartan, jonka mitat ovat koko_x ja koko_y
@@ -213,7 +253,17 @@ class Kenttaeditori(QtWidgets.QMainWindow):
             self.__muokkaa_vanhaa_nappi.clicked.connect(self.__tyhjenna_kartta)
             self.__muokkaa_ohje.setText("")
             self.__nimi.setText("")
-
+            self.__vaihda_nappien_sisalto.setEnabled(True)
+            self.__tasanko_nappi.setEnabled(True)
+            self.__kukkula_nappi.setEnabled(True)
+            self.__pelto_nappi.setEnabled(True)
+            self.__vuoristo_nappi.setEnabled(True)
+            self.__silta_nappi.setEnabled(True)
+            self.__joki_nappi.setEnabled(True)
+            if self.__muokkaa_vanhaa is True:
+                self.__uusi_kentta_nappi.setText("TALLENNA KENTTÄ")
+                self.__uusi_ohje.setText("TALLENNA VANHAN\nKENTÄN PÄÄLLE\nSYÖTTÄMÄLLÄ\nVANHAN KENTÄN"
+                                         "\nNIMI TAI\nSYÖTÄ UUSI NIMI")
         else:
             self.__uusi_kentta_nappi.setText("UUSI KENTTÄ")
             self.__uusi_kentta_nappi.clicked.disconnect(self.__tallenna_kentta)
@@ -226,6 +276,13 @@ class Kenttaeditori(QtWidgets.QMainWindow):
             self.__muokkaa_vanhaa_nappi.clicked.connect(self.__lue_kentan_nimi)
             self.__muokkaa_ohje.setText("SYÖTÄ MUOKATTAVAN\nKENTÄN NIMI\nILMAN\nTIEDOSTOPÄÄTETTÄ")
             self.__nimi.setText("")
+            self.__vaihda_nappien_sisalto.setEnabled(False)
+            self.__tasanko_nappi.setEnabled(False)
+            self.__kukkula_nappi.setEnabled(False)
+            self.__pelto_nappi.setEnabled(False)
+            self.__vuoristo_nappi.setEnabled(False)
+            self.__silta_nappi.setEnabled(False)
+            self.__joki_nappi.setEnabled(False)
 
     def __tyhjenna_kartta(self):
         if self.kartta is not None:
@@ -282,16 +339,25 @@ class Kenttaeditori(QtWidgets.QMainWindow):
         self.__valittu_elementti = "poista"
         print(self.__valittu_elementti)
 
+    # tallenna_paalle = päälle tallennettavan kentän nimi
     def __tallenna_kentta(self):
+        tallenna_paalle = False
+        if self.__muokkaa_vanhaa is True:
+            tallenna_paalle = True
         self.kartta.etsi_yksikot()
         #print(self.kartta.ruudut)
         #print(self.kartta.pelaajan_yksikot)
         #print(self.kartta.tietokoneen_yksikot)
-        onnistui = Kentan_tallentaja.tallenna_kentta(self.kartta, self.__koko.text())
+        onnistui = Kentan_tallentaja.tallenna_kentta(self.kartta, self.__koko.text(), tallenna_paalle)
         if onnistui:
-            pass
+            self.__uusi_ohje.setText("TALLENNUS ONNISTUI")
+            QtTest.QTest.qWait(self.__viive)
+            self.__tyhjenna_kartta()
         else:
-            pass
+            self.__uusi_ohje.setText("NIMI KÄYTÖSSÄ")
+            QtTest.QTest.qWait(self.__viive)
+            self.__uusi_ohje.setText("SYÖTÄ TALLENNETTAVAN\nKENTÄN NIMI")
+            self.__koko.setText("")
 
     def __poistu(self):
         self.__tyhjenna_kartta()

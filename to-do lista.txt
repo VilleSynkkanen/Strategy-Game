@@ -1,20 +1,20 @@
 Seuraavaksi:
--kenttäeditori
-	-viesti tallennuksen onnistumisesta/epäonnistumisesta
-	-muokkaa olemassaolevaa kenttää
-	-virheilmoitukset käyttöliittymään
-	-käyttäytyminen onnistuneen tallennuksen jälkeen?
--10 uutta kenttää
 -päävalikko
-	-tiedostojen lukeminen: virheilmoitukset valikossa
-		-lue kaikki kartat ja tarkista validius
-		-älä anna pelaajan edetä, jos välttämättömissä tiedostoissa on virheitä
+	-poistuminen
 	-pelaa valikko
-		-karttojen selaaminen
-		-kartan kuvan näyttäminen (piirrä jotenkin)
--tiedostojen lukeminen: virheidensieto
--tallennus
+			-lue kaikki kartat
+			-karttojen selaaminen
+			-kartan kuvan näyttäminen (piirrä näkymään)
+-tiedostojen lukeminen
+	-virheidensieto
+	-virheilmoitukset päävalikossa
+		-lue kaikki asetustiedostot ja tarkista validius
+		-älä anna pelaajan edetä, jos välttämättömissä tiedostoissa on virheitä
+-testaus + muutokset, kaikkien testien läpikäynti
 -viimeistelyä
+(-tallennus)
+(-tiedostojen resetointi)
+-koodin siistiminen
 
 Bugit
 -???
@@ -26,8 +26,7 @@ Teköäly
 
 Tiedostojen lukeminen:
 -virheiden sieto: tarkistus ja virheilmoitus päävalikossa
--käyttöliittymän kokoasetukset tiedostossa
-(-tiedostojen resetointi)
+-käyttöliittymän kokoasetukset (+ viive) tiedostossa
 
 Ohjetekstit, peliloki
 -pelilokin hionta:
@@ -39,11 +38,13 @@ Ohjetekstit, peliloki
 
 Testaus
 -tekoäly: vain yleiset metodit
--tiedostojen luku(?)
+-muuta?
 
 Käyttöliittymä
--viimeistely
+-ohjetekstit
+-peliloki
 -skaalaus eri kokoisille ruuduille
+-viimeistely
 
 Paranneltavia asioita (viimeistely)
 -käyttöliittymä
@@ -54,16 +55,14 @@ Tekoälyn parametrit:
 -tykistön liikkuminen: liikkuu liian usein, ei välttele vihollisia tarpeeksi
 
 Aikataulu
--päävalikko, kenttäeditori 19.4
--tiedostojen lukemisen viimeistely 20.4
--tallennus 21.4
+-päävalikko 19.4
+-tiedostojen lukemisen viimeistely 21.4
 -lisää testausta + testausmuutokset 24.4
 -viimeistely 1.5
 -dokumentaatio 8.5
 
 Muuta:
 -ajastin implementaatio (qwait vs oma)?
--asioiden poistaminen kunnolla (deletelater?)
-(-tekoälyn parametrit, vahingon laskemiseen yms liittyvät tiedot tiedostossa)
-(-pelinohjaukseen liittyvät lukuarvot (viiveet tms. tiedostossa))
+-asioiden poistaminen kunnolla (deletelater, viittausten perustellinen poistaminen)
+
 

@@ -11,7 +11,7 @@ class Ruutugrafiikka(QtWidgets.QGraphicsRectItem):
 
         # määritellään, onko kartan x- vai y-koko suurempi ja tallennetaan suurempi pituus
         pidempi_sivu = 0
-        if kenttaeditori:
+        if kenttaeditori or self.__ruutu.kayttoliittyma.__class__.__name__ == "Kenttaeditori":
             if self.__kayttoliittyma.koko_x > self.__kayttoliittyma.koko_y:
                 pidempi_sivu = self.__kayttoliittyma.koko_x
             else:

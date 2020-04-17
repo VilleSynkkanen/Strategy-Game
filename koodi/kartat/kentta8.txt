@@ -1,0 +1,17 @@
+NIMI: kentta8
+KOKO: 12*18
+RUUDUT:
+kukkula: 2,7 : 2,8 : 2,9 : 10,14 : 10,15 : 11,14 : 11,15
+pelto: 7,2 : 7,3 : 8,2 : 8,3 : 9,2 : 9,3 : 9,4 : 9,5 : 10,2 : 10,3 : 10,4 : 10,5 : 10,8 : 10,9 : 10,10 : 11,8 : 11,9 : 11,10
+vuoristo: 2,11 : 2,12 : 2,13 : 3,13 : 4,15 : 4,16 : 4,17 : 5,16 : 5,17
+joki: 3,1 : 3,2 : 3,3 : 4,3 : 4,6 : 5,6 : 5,7 : 5,8 : 6,8 : 6,9 : 6,12 : 7,12 : 7,13 : 7,14 : 8,14 : 8,17 : 9,17 : 9,18
+silta: 4,4 : 4,5 : 6,10 : 6,11 : 8,15 : 8,16
+RUUDUTLOPPU
+YKSIKOT:
+jalkavaki: 3,11,PLR : 5,12,PLR : 8,13,PLR : 11,12,PLR : 2,7,COM : 6,5,COM : 9,6,COM : 11,6,COM
+ratsuvaki: 1,14,PLR : 2,15,PLR : 5,2,COM : 6,2,COM
+jousimiehet: 3,13,PLR : 10,14,PLR : 2,5,COM : 7,5,COM : 11,5,COM
+tykisto: 11,14,PLR : 2,3,COM : 11,3,COM
+parantaja: 5,13,PLR : 8,4,COM
+YKSIKOTLOPPU
+LOPPU

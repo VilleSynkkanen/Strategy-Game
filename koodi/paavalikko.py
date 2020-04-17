@@ -42,6 +42,7 @@ class Paavalikko(QtWidgets.QMainWindow):
 
         # kenttäeditori
         self.kenttaeditori = None
+        self.__pelaa_valikko = None
 
         # tiedostojen lukijat
         self.__maastojen_lukija = Maaston_lukija()
