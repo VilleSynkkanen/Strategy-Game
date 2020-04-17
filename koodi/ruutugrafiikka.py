@@ -11,7 +11,7 @@ class Ruutugrafiikka(QtWidgets.QGraphicsRectItem):
 
         # määritellään, onko kartan x- vai y-koko suurempi ja tallennetaan suurempi pituus
         pidempi_sivu = 0
-        if kenttaeditori or self.__ruutu.kayttoliittyma.__class__.__name__ == "Kenttaeditori":
+        if kenttaeditori or self.__ruutu.kayttoliittyma.__class__.__name__ != "Kayttoliittyma":
             if self.__kayttoliittyma.koko_x > self.__kayttoliittyma.koko_y:
                 pidempi_sivu = self.__kayttoliittyma.koko_x
             else:
@@ -86,7 +86,7 @@ class Ruutugrafiikka(QtWidgets.QGraphicsRectItem):
                         self.__kayttoliittyma.valitsee_hyokkayksen_kohdetta is False:
                     self.__kayttoliittyma.valittu_yksikko.liiku_ruutuun(self.__ruutu)
         # kenttäeditorin toiminnallisuus
-        elif self.__kayttoliittyma.__class__.__name__ == "Kenttaeditori":
+        else:
             if self.__kayttoliittyma.valittu_elementti is not None:
                 # lisää yksikkö tai poista vanha ruutu ja lisää uusi
                 maastot = ["tasanko", "kukkula", "pelto", "vuoristo", "silta", "joki"]

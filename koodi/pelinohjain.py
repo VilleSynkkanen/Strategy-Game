@@ -11,16 +11,17 @@ from PyQt5 import QtCore
 
 class Pelinohjain:
 
-    def __init__(self):
+    def __init__(self, kartan_nimi, paavalikko):
         # käyttöliittymä
         self.__kayttoliittyma = Kayttoliittyma(self)
+        self.__paavalikko = paavalikko
 
         self.__vuoro = "PLR"      # PLR = pelaaja, COM = tietokone
         self.__viive = 100     # ms
 
         # kartan lukeminen
         self.__kartan_lukija = Kartan_lukija()
-        self.__nimi, x, y, ruudut, yksikot = self.__kartan_lukija.lue_kartta("aaas.txt")
+        self.__nimi, x, y, ruudut, yksikot = self.__kartan_lukija.lue_kartta(kartan_nimi)
         self.__koko = (x, y)
         #print(ruudut)
         self.__kartta = Kartta(self.__koko[0], self.__koko[1], ruudut, self.__kayttoliittyma)
@@ -55,6 +56,10 @@ class Pelinohjain:
 
         # ohjetekstin alkutila
         self.__kayttoliittyma.muuta_ohjeteksti("PELAAJAN VUORO\n")
+
+    @property
+    def paavalikko(self):
+        return self.__paavalikko
 
     @property
     def kayttoliittyma(self):

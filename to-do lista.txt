@@ -1,19 +1,14 @@
 Seuraavaksi:
--päävalikko
-	-poistuminen
-	-pelaa valikko
-			-lue kaikki kartat
-			-karttojen selaaminen
-			-kartan kuvan näyttäminen (piirrä näkymään)
 -tiedostojen lukeminen
+	-käyttöliittymän asetukset
 	-virheidensieto
 	-virheilmoitukset päävalikossa
 		-lue kaikki asetustiedostot ja tarkista validius
 		-älä anna pelaajan edetä, jos välttämättömissä tiedostoissa on virheitä
 -testaus + muutokset, kaikkien testien läpikäynti
 -viimeistelyä
+(-asetustiedostojen resetointi)
 (-tallennus)
-(-tiedostojen resetointi)
 -koodin siistiminen
 
 Bugit
@@ -23,10 +18,6 @@ Teköäly
 -parametrien hiominen
 -yksikkötestaus
 -algoritmien optimisaatio
-
-Tiedostojen lukeminen:
--virheiden sieto: tarkistus ja virheilmoitus päävalikossa
--käyttöliittymän kokoasetukset (+ viive) tiedostossa
 
 Ohjetekstit, peliloki
 -pelilokin hionta:
@@ -55,9 +46,8 @@ Tekoälyn parametrit:
 -tykistön liikkuminen: liikkuu liian usein, ei välttele vihollisia tarpeeksi
 
 Aikataulu
--päävalikko 19.4
--tiedostojen lukemisen viimeistely 21.4
--lisää testausta + testausmuutokset 24.4
+-päävalikko, tiedostojen lukemisen viimeistely 20.4
+-lisää testausta + testausmuutokset 22.4
 -viimeistely 1.5
 -dokumentaatio 8.5
 

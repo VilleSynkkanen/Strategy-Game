@@ -455,7 +455,7 @@ class Yksikko:
     def tuhoudu(self):
         # poistaa kaikki olemassa olevat viittaukset yksikköön ja piilottaa sen graafiset komponentit
         # jos valittu yksikkö, poista käyttöliittymästä
-        if self.kayttoliittyma.__class__.__name__ != "Kenttaeditori":
+        if self.kayttoliittyma.__class__.__name__ == "Kayttoliittyma":
             teksti = self.__class__.__name__ + " tuhoutui"
             self.kayttoliittyma.lisaa_pelilokiin(teksti)
             if self.__kayttoliittyma.valittu_yksikko == self:
@@ -470,7 +470,7 @@ class Yksikko:
         self.__grafiikka.poista()
         # poista viittaus ominaisuuksiin
         self.__ominaisuudet = None
-        if self.omistaja == "COM" and self.kayttoliittyma.__class__.__name__ != "Kenttaeditori":
+        if self.omistaja == "COM" and self.kayttoliittyma.__class__.__name__ == "Kayttoliittyma":
             # tarkistetaan, koska tuhoutuminen voi muuttaa muiden pelaajien yksiköiden toiminnan mahdollisuuksia
             self.__kayttoliittyma.pelinohjain.kartta.tarkista_toimivat_yksikot()
             self.kayttoliittyma.pelinohjain.tarkista_voitto()

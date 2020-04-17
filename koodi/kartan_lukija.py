@@ -16,6 +16,12 @@ class Kartan_lukija:
     def kartat(self):
         return self.__kartat
 
+    def lue_kaikki_kartat(self):
+        tiedostot = os.scandir('kartat/')
+        for kartta in tiedostot:
+            kartan_nimi, x, y, ruudut, yksikot_sanakirja = self.lue_kartta(kartta.name)
+            self.__kartat[kartta.name] = (x, y, ruudut, yksikot_sanakirja)
+
     def lue_kartta(self, nimi):
         kartan_nimi = ""
         ruudut = []

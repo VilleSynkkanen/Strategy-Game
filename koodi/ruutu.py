@@ -98,7 +98,7 @@ class Ruutu:
                                           self, kenttaeditori)
 
     def luo_maasto(self, kenttaeditori=False):
-        if kenttaeditori or self.kayttoliittyma.__class__.__name__ == "Kenttaeditori":
+        if kenttaeditori or self.kayttoliittyma.__class__.__name__ != "Kayttoliittyma":
             maastot = self.kayttoliittyma.paavalikko.maastojen_lukija.maastot
         else:
             maastot = self.__kayttoliittyma.pelinohjain.maaston_lukija.maastot

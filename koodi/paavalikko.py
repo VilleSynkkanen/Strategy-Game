@@ -3,13 +3,16 @@ from kenttaeditori import Kenttaeditori
 from pelinohjain import Pelinohjain
 from maaston_lukija import Maaston_lukija
 from yksikoiden_lukija import Yksikoiden_lukija
+from kartan_lukija import Kartan_lukija
+from pelaa_valikko import Pelaa_valikko
+import sys
 
 
 class Paavalikko(QtWidgets.QMainWindow):
     
     def __init__(self):
         super(Paavalikko, self).__init__()
-
+        self.__scene_size = 880
         self.setCentralWidget(QtWidgets.QWidget())  # QMainWindown must have a centralWidget to be able to add layouts
         self.__paa_layout = QtWidgets.QVBoxLayout()  # Vertical main layout
         self.centralWidget().setLayout(self.__paa_layout)
@@ -47,6 +50,7 @@ class Paavalikko(QtWidgets.QMainWindow):
         # tiedostojen lukijat
         self.__maastojen_lukija = Maaston_lukija()
         self.__yksikoiden_lukija = Yksikoiden_lukija()
+        self.__kartan_lukija = Kartan_lukija()
 
     @property
     def maastojen_lukija(self):
@@ -56,8 +60,22 @@ class Paavalikko(QtWidgets.QMainWindow):
     def yksikoiden_lukija(self):
         return self.__yksikoiden_lukija
 
+    @property
+    def kartan_lukija(self):
+        return self.__kartan_lukija
+
+    @property
+    def scene_size(self):
+        return self.__scene_size
+
+    @property
+    def pelaa_valikko(self):
+        return self.__pelaa_valikko
+
     def __pelaa(self):
-        self.pelinohjain = Pelinohjain()
+        if self.__pelaa_valikko is None:
+            self.__pelaa_valikko = Pelaa_valikko(self)
+        self.__pelaa_valikko.show()
         self.hide()
 
     def __kenttaeditori(self):
@@ -67,4 +85,4 @@ class Paavalikko(QtWidgets.QMainWindow):
         self.hide()
 
     def __poistu(self):
-        pass
+        sys.exit()

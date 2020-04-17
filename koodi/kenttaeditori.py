@@ -220,8 +220,6 @@ class Kenttaeditori(QtWidgets.QMainWindow):
         else:
             pass
 
-    def __piirra_kartta(self, kartta):
-        pass
 
     # piirtää tyhjän kartan, jonka mitat ovat koko_x ja koko_y
     def __piirra_tyhja_kartta(self):

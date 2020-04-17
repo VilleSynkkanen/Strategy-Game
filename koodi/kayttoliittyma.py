@@ -54,7 +54,7 @@ class Kayttoliittyma(QtWidgets.QMainWindow):
         self.__seuraava_yksikko_nappi.setSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Preferred)
         self.__paata_vuoro_nappi = QtWidgets.QPushButton("PÄÄTÄ VUORO")
         self.__paata_vuoro_nappi.setSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Preferred)
-        self.__tallenna_peli_napi = QtWidgets.QPushButton("TALLENNA PELI")
+        self.__tallenna_peli_napi = QtWidgets.QPushButton("POISTU PELISTÄ")
         self.__tallenna_peli_napi.setSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Preferred)
 
         self.__napit = []
@@ -87,7 +87,7 @@ class Kayttoliittyma(QtWidgets.QMainWindow):
         self.__yksikon_tiedot_nappi.clicked.connect(self.__yksikon_tiedot)
         self.__edellinen_yksikko_nappi.clicked.connect(self.__edellinen_yksikko)
         self.__seuraava_yksikko_nappi.clicked.connect(self.__seuraava_yksikko)
-        self.__tallenna_peli_napi.clicked.connect(self.__tallenna_peli)
+        self.__tallenna_peli_napi.clicked.connect(self.__poistu_pelista)
 
         # nappi widgetit
         self.__nappi_layout.addWidget(self.__hyokkaa_nappi, 0, 0, 1, 2)
@@ -231,7 +231,6 @@ class Kayttoliittyma(QtWidgets.QMainWindow):
     def paivita_nappien_aktiivisuus(self):
         # määrittelee, tekevätkö napit tässä tilanteessa mitään ja aktivoi ne tilanteen mukaan
         # mahdolliset kohteet kantamalla tulisi olla laskettu tässä vaiheessa
-        self.__tallenna_peli_napi.setEnabled(False)
         if self.__valittu_yksikko is None:
             self.__hyokkaa_nappi.setEnabled(False)
             self.__kyky1_nappi.setEnabled(False)
@@ -297,7 +296,8 @@ class Kayttoliittyma(QtWidgets.QMainWindow):
             self.__yksikon_tiedot_aktiivinen = False
             self.__perustiedot.setText("")
             for ruutu in self.__pelinohjain.kartta.ruudut:
-                ruutu.grafiikka.palauta_vari()
+                if ruutu.grafiikka is not None:
+                    ruutu.grafiikka.palauta_vari()
 
             # näytä peliloki
             self.__peliloki.setText("PELILOKI:\n")
@@ -516,7 +516,10 @@ class Kayttoliittyma(QtWidgets.QMainWindow):
         self.__tallenna_peli_napi.setText("POISTU PELISTÄ")
 
     def __poistu_pelista(self):
-        sys.exit()
+        self.pelinohjain.kartta.tyhjenna()
+        self.pelinohjain.paavalikko.show()
+        self.pelinohjain.paavalikko.pelaa_valikko.poista_pelinohjain()
+        self.hide()
 
 
 
