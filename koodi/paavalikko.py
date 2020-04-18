@@ -62,6 +62,10 @@ class Paavalikko(QtWidgets.QMainWindow):
         # virheet
         if not self.__kayttoliittyman_lukija.lukeminen_onnistui:
             self.__virhe_lukemisessa("kayttoliittyma")
+        if not self.__yksikoiden_lukija.lukeminen_onnistui:
+            self.__virhe_lukemisessa("yksikot")
+        if not self.__maastojen_lukija.lukeminen_onnistui:
+            self.__virhe_lukemisessa("maastot")
 
         # keskelle liikuttaminen
         if self.kayttoliittyman_lukija.x != 0 and self.kayttoliittyman_lukija.y != 0:
@@ -99,7 +103,13 @@ class Paavalikko(QtWidgets.QMainWindow):
 
     def __virhe_lukemisessa(self, tyyppi):
         if tyyppi == "kayttoliittyma":
-            self.__virheteksti.setText("Käyttöliittymän lukemisessa tapahtui virhe.\n"
+            self.__virheteksti.setText("Käyttöliittymän tietojen lukemisessa tapahtui virhe.\n"
+                                       "Korjaa tiedosto ja avaa ohjelma uudestaan")
+        elif tyyppi == "yksikot":
+            self.__virheteksti.setText("Yksiköiden tietojen lukemisessa tapahtui virhe.\n"
+                                       "Korjaa tiedosto ja avaa ohjelma uudestaan")
+        elif tyyppi == "maastot":
+            self.__virheteksti.setText("Maastojen tietojen lukemisessa tapahtui virhe.\n"
                                        "Korjaa tiedosto ja avaa ohjelma uudestaan")
 
 

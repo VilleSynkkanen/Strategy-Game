@@ -1,15 +1,15 @@
 Seuraavaksi:
 -tiedostojen lukeminen
 	-virheidensieto
-		-yksiköt
-		-maastot
 		-kartat
+		-tarkista, ettei mitään tietoja puutu (kaikki "muuttujat tallennettu")
+		-entä jos tiedoston nimi tai tyyppitieto muutetaan (korjataan siitä tuleva virhe)
 	-virheilmoitukset päävalikossa
 		-lue kaikki asetustiedostot ja tarkista validius
 		-älä anna pelaajan edetä, jos välttämättömissä tiedostoissa on virheitä
+-asetustiedostojen resetointi
 -testaus + muutokset, kaikkien testien läpikäynti
 -viimeistelyä
-(-asetustiedostojen resetointi)
 (-tallennus)
 -koodin siistiminen
 

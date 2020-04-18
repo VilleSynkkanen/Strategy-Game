@@ -1,6 +1,5 @@
 import os
 
-
 class Kayttoliittyman_lukija:
 
     def __init__(self):
@@ -13,6 +12,7 @@ class Kayttoliittyman_lukija:
         if tiedosto is None:
             self.__lukeminen_onnistui = False
             return
+        lue = None
         try:
             lue = open(tiedosto, 'r')
             self.__x = 0
@@ -23,6 +23,10 @@ class Kayttoliittyman_lukija:
                 rivi = rivi.lower()
                 rivi = rivi.rstrip()
                 rivi = rivi.split(':')
+                i = 0
+                while i < len(rivi):
+                    rivi[i] = rivi[i].strip()
+                    i += 1
                 if rivi[0] == "nayton resoluutio":
                     tieto = rivi[1].split("*")
                     self.__x = int(tieto[0])
@@ -36,12 +40,18 @@ class Kayttoliittyman_lukija:
                     break
         except IndexError:
             self.__lukeminen_onnistui = False
+            if lue is not None and not lue.closed:
+                lue.close()
             return
         except ValueError:
             self.__lukeminen_onnistui = False
+            if lue is not None and not lue.closed:
+                lue.close()
             return
         except OSError:
             self.__lukeminen_onnistui = False
+            if lue is not None and not lue.closed:
+                lue.close()
             return
 
 
