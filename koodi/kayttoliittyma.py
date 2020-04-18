@@ -7,7 +7,7 @@ class Kayttoliittyma(QtWidgets.QMainWindow):
     '''
     def __init__(self, pelinohjain):
         super().__init__()
-        self.__scene_size = 880       # kentän koko pikseleinä
+        self.__scene_size = pelinohjain.paavalikko.scene_size       # kentän koko pikseleinä
         self.__pelinohjain = pelinohjain
 
         # toimintaan liittyviä muuttujia
@@ -20,7 +20,7 @@ class Kayttoliittyma(QtWidgets.QMainWindow):
         self.centralWidget().setLayout(self.__paa_layout)
 
         # set window
-        self.setGeometry(0, 0, self.__scene_size + 420, self.__scene_size + 20)
+        self.setGeometry(0, 0, self.__scene_size + 380, self.__scene_size + 20)
         self.setWindowTitle('Strategiapeli')
         self.show()
 
@@ -158,8 +158,8 @@ class Kayttoliittyma(QtWidgets.QMainWindow):
         #self.setGeometry(0, 0, self.scene_size * x + 420, self.scene_size * y + 20)
 
         # keskelle liikuttaminen
-        res_x = 1920
-        res_y = 1080
+        res_x = self.pelinohjain.paavalikko.kayttoliittyman_lukija.x
+        res_y = self.pelinohjain.paavalikko.kayttoliittyman_lukija.y
         self.move(int(res_x / 2) - int(self.frameSize().width() / 2),
                   int(res_y / 2) - int(self.frameSize().height() / 2))
 

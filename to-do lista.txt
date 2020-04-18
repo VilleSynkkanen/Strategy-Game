@@ -1,7 +1,9 @@
 Seuraavaksi:
 -tiedostojen lukeminen
-	-käyttöliittymän asetukset
 	-virheidensieto
+		-yksiköt
+		-maastot
+		-kartat
 	-virheilmoitukset päävalikossa
 		-lue kaikki asetustiedostot ja tarkista validius
 		-älä anna pelaajan edetä, jos välttämättömissä tiedostoissa on virheitä
@@ -26,6 +28,7 @@ Ohjetekstit, peliloki
 	-enemmän rivejä?
 -ohjeteksti	
 	-kuinka paljon ohjeita annetaan?
+-yksikön tiedot yms. tekstit
 
 Testaus
 -tekoäly: vain yleiset metodit

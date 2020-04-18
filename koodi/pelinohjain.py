@@ -13,11 +13,11 @@ class Pelinohjain:
 
     def __init__(self, kartan_nimi, paavalikko):
         # käyttöliittymä
-        self.__kayttoliittyma = Kayttoliittyma(self)
         self.__paavalikko = paavalikko
+        self.__kayttoliittyma = Kayttoliittyma(self)
 
         self.__vuoro = "PLR"      # PLR = pelaaja, COM = tietokone
-        self.__viive = 100     # ms
+        self.__viive = paavalikko.kayttoliittyman_lukija.viive     # ms
 
         # kartan lukeminen
         self.__kartan_lukija = Kartan_lukija()

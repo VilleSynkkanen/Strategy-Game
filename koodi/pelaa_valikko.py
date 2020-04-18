@@ -16,7 +16,7 @@ class Pelaa_valikko(QtWidgets.QMainWindow):
         self.centralWidget().setLayout(self.__paa_layout)
 
         # set window
-        self.setGeometry(0, 0, self.__scene_size + 420, self.__scene_size + 20)
+        self.setGeometry(0, 0, self.__scene_size + 360, self.__scene_size + 20)
         self.setWindowTitle('Strategiapeli')
         self.show()
 
@@ -112,8 +112,8 @@ class Pelaa_valikko(QtWidgets.QMainWindow):
         # self.setGeometry(0, 0, self.scene_size * x + 420, self.scene_size * y + 20)
 
         # keskelle liikuttaminen
-        res_x = 1920
-        res_y = 1080
+        res_x = self.paavalikko.kayttoliittyman_lukija.x
+        res_y = self.paavalikko.kayttoliittyman_lukija.y
         self.move(int(res_x / 2) - int(self.frameSize().width() / 2),
                   int(res_y / 2) - int(self.frameSize().height() / 2))
 
