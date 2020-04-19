@@ -14,6 +14,9 @@ class Kayttoliittyman_lukija:
             return
         lue = None
         try:
+            koko_loydetty = False
+            x_y_loydetty = False
+            viive_loydetty = False
             lue = open(tiedosto, 'r')
             self.__x = 0
             self.__y = 0
@@ -31,12 +34,17 @@ class Kayttoliittyman_lukija:
                     tieto = rivi[1].split("*")
                     self.__x = int(tieto[0])
                     self.__y = int(tieto[1])
+                    x_y_loydetty = True
                 elif rivi[0] == "ikkunan koko":
                     self.__koko = int(rivi[1])
+                    koko_loydetty = True
                 elif rivi[0] == "viive":
                     self.__viive = int(rivi[1])
+                    viive_loydetty = True
                 elif rivi[0] == "loppu":
                     lue.close()
+                    if not x_y_loydetty or not koko_loydetty or not viive_loydetty:
+                        self.__lukeminen_onnistui = False
                     break
         except IndexError:
             self.__lukeminen_onnistui = False
@@ -53,7 +61,6 @@ class Kayttoliittyman_lukija:
             if lue is not None and not lue.closed:
                 lue.close()
             return
-
 
     @property
     def x(self):

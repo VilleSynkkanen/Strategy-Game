@@ -1,16 +1,19 @@
 Seuraavaksi:
 -tiedostojen lukeminen
 	-virheidensieto
-		-kartat
-		-tarkista, ettei mitään tietoja puutu (kaikki "muuttujat tallennettu")
-		-entä jos tiedoston nimi tai tyyppitieto muutetaan (korjataan siitä tuleva virhe)
+		-maastot, yksiköt:
+			-tarkista, ettei mitään tietoja puutu (kaikki "muuttujat tallennettu")
+			-entä jos tiedoston nimi tai tyyppitieto muutetaan (korjataan siitä tuleva virhe)
+			-oikeat tyypit, kaikki tiedot
 	-virheilmoitukset päävalikossa
-		-lue kaikki asetustiedostot ja tarkista validius
 		-älä anna pelaajan edetä, jos välttämättömissä tiedostoissa on virheitä
--asetustiedostojen resetointi
 -testaus + muutokset, kaikkien testien läpikäynti
+-tallennus
+	-mahdollisuus tallentaa tai poistua tallentamatta
+	-vain yksi tallennettu peli
+	-mahdollisuus pyyhkiä pois päävalikossa
+	-uusi tallennus poistaa vanhan
 -viimeistelyä
-(-tallennus)
 -koodin siistiminen
 
 Bugit
@@ -51,6 +54,7 @@ Tekoälyn parametrit:
 Aikataulu
 -päävalikko, tiedostojen lukemisen viimeistely 20.4
 -lisää testausta + testausmuutokset 22.4
+-tallennus 25.4
 -viimeistely 1.5
 -dokumentaatio 8.5
 

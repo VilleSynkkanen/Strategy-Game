@@ -62,7 +62,6 @@ class Pelaa_valikko(QtWidgets.QMainWindow):
         self.__valittu_elementti = None
         self.__koko_x = 0
         self.__koko_y = 0
-        self.__paavalikko.kartan_lukija.lue_kaikki_kartat()
         self.__kartta_index = 0
         self.__kartat = list(self.__paavalikko.kartan_lukija.kartat.keys())
         self.__piirra_kartta(self.__kartat[self.__kartta_index])

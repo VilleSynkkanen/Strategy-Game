@@ -27,6 +27,7 @@ class Paavalikko(QtWidgets.QMainWindow):
         self.show()
 
         self.__virheteksti = QtWidgets.QLabel("")
+        self.__virheteksti_kartat = QtWidgets.QLabel("")
         self.__pelaa_nappi = QtWidgets.QPushButton("PELAA")
         self.__pelaa_nappi.setSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Preferred)
         self.__kenttaeditori_nappi = QtWidgets.QPushButton("KENTTÄEDITORI")
@@ -35,6 +36,7 @@ class Paavalikko(QtWidgets.QMainWindow):
         self.__poistu_nappi.setSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Preferred)
 
         self.__virheteksti.setStyleSheet("font: 20pt Arial")
+        self.__virheteksti_kartat.setStyleSheet("font: 20pt Arial")
         self.__pelaa_nappi.setStyleSheet("font: 10pt Arial")
         self.__kenttaeditori_nappi.setStyleSheet("font: 10pt Arial")
         self.__poistu_nappi.setStyleSheet("font: 10pt Arial")
@@ -46,6 +48,7 @@ class Paavalikko(QtWidgets.QMainWindow):
 
         # nappi widgetit
         self.__paa_layout.addWidget(self.__virheteksti, 1)
+        self.__paa_layout.addWidget(self.__virheteksti_kartat, 1)
         self.__paa_layout.addWidget(self.__pelaa_nappi, 2)
         self.__paa_layout.addWidget(self.__kenttaeditori_nappi, 2)
         self.__paa_layout.addWidget(self.__poistu_nappi, 2)
@@ -54,10 +57,13 @@ class Paavalikko(QtWidgets.QMainWindow):
         self.kenttaeditori = None
         self.__pelaa_valikko = None
 
+        self.__virheelliset_kartat = []
+
         # tiedostojen lukijat
         self.__maastojen_lukija = Maaston_lukija()
         self.__yksikoiden_lukija = Yksikoiden_lukija()
-        self.__kartan_lukija = Kartan_lukija()
+        self.__kartan_lukija = Kartan_lukija(self)
+        self.kartan_lukija.lue_kaikki_kartat()
 
         # virheet
         if not self.__kayttoliittyman_lukija.lukeminen_onnistui:
@@ -66,6 +72,7 @@ class Paavalikko(QtWidgets.QMainWindow):
             self.__virhe_lukemisessa("yksikot")
         if not self.__maastojen_lukija.lukeminen_onnistui:
             self.__virhe_lukemisessa("maastot")
+        self.__nayta_virheelliset_kartat()
 
         # keskelle liikuttaminen
         if self.kayttoliittyman_lukija.x != 0 and self.kayttoliittyman_lukija.y != 0:
@@ -101,6 +108,9 @@ class Paavalikko(QtWidgets.QMainWindow):
     def pelaa_valikko(self):
         return self.__pelaa_valikko
 
+    def lisaa_virheellinen_kartta(self, nimi):
+        self.__virheelliset_kartat.append(nimi)
+
     def __virhe_lukemisessa(self, tyyppi):
         if tyyppi == "kayttoliittyma":
             self.__virheteksti.setText("Käyttöliittymän tietojen lukemisessa tapahtui virhe.\n"
@@ -111,6 +121,13 @@ class Paavalikko(QtWidgets.QMainWindow):
         elif tyyppi == "maastot":
             self.__virheteksti.setText("Maastojen tietojen lukemisessa tapahtui virhe.\n"
                                        "Korjaa tiedosto ja avaa ohjelma uudestaan")
+
+    def __nayta_virheelliset_kartat(self):
+        if len(self.__virheelliset_kartat) > 0:
+            teksti = "Virheelliset kartat:\n"
+            for kartta in self.__virheelliset_kartat:
+                teksti += kartta + "\n"
+            self.__virheteksti_kartat.setText(teksti)
 
 
     def __pelaa(self):
