@@ -1,13 +1,7 @@
 Seuraavaksi:
--tiedostojen lukeminen
-	-virheidensieto
-		-maastot, yksiköt:
-			-tarkista, ettei mitään tietoja puutu (kaikki "muuttujat tallennettu")
-			-entä jos tiedoston nimi tai tyyppitieto muutetaan (korjataan siitä tuleva virhe)
-			-oikeat tyypit, kaikki tiedot
-	-virheilmoitukset päävalikossa
-		-älä anna pelaajan edetä, jos välttämättömissä tiedostoissa on virheitä
--testaus + muutokset, kaikkien testien läpikäynti
+-testaus
+	-vanhojen testien läpikäynti
+	-tekoäly
 -tallennus
 	-mahdollisuus tallentaa tai poistua tallentamatta
 	-vain yksi tallennettu peli
@@ -29,7 +23,7 @@ Ohjetekstit, peliloki
 	-tekstien kieliasu
 	-mitä kerrotaan, mitä ei
 	-enemmän rivejä?
--ohjeteksti	
+-ohjeteksti
 	-kuinka paljon ohjeita annetaan?
 -yksikön tiedot yms. tekstit
 
@@ -52,14 +46,12 @@ Tekoälyn parametrit:
 -tykistön liikkuminen: liikkuu liian usein, ei välttele vihollisia tarpeeksi
 
 Aikataulu
--päävalikko, tiedostojen lukemisen viimeistely 20.4
 -lisää testausta + testausmuutokset 22.4
--tallennus 25.4
--viimeistely 1.5
+-tallennus 26.4
+-viimeistely, siistiminen 1.5
 -dokumentaatio 8.5
 
 Muuta:
 -ajastin implementaatio (qwait vs oma)?
 -asioiden poistaminen kunnolla (deletelater, viittausten perustellinen poistaminen)
-
 

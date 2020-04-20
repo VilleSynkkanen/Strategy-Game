@@ -34,12 +34,24 @@ class Kayttoliittyman_lukija:
                     tieto = rivi[1].split("*")
                     self.__x = int(tieto[0])
                     self.__y = int(tieto[1])
+                    if self.__x <= 0 or self.__y <= 0:
+                        self.__lukeminen_onnistui = False
+                        lue.close()
+                        return
                     x_y_loydetty = True
                 elif rivi[0] == "ikkunan koko":
                     self.__koko = int(rivi[1])
+                    if self.__koko <= 0:
+                        self.__lukeminen_onnistui = False
+                        lue.close()
+                        return
                     koko_loydetty = True
                 elif rivi[0] == "viive":
                     self.__viive = int(rivi[1])
+                    if self.__viive < 0:
+                        self.__lukeminen_onnistui = False
+                        lue.close()
+                        return
                     viive_loydetty = True
                 elif rivi[0] == "loppu":
                     lue.close()

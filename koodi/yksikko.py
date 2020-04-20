@@ -282,6 +282,11 @@ class Yksikko:
                     (0.5 * (puolustaja.ominaisuudet.nyk_elama / puolustaja.ominaisuudet.max_elama) + 0.5)
         etaisyys = puolustaja.kayttoliittyma.pelinohjain.polunhaku.heuristiikka(puolustaja.ruutu, hyokkaaja.ruutu)
 
+        if hyokkays < 0:
+            hyokkays = 0.00001
+        if puolustus < 0:
+            puolustus = 0.00001
+
         # aiheutettu vahinko = voima / vihollisen voima * perusvahinko, [min_vahinko, max_vahinko]
         # puolustettaessa voima = puolustus, hyökättäessä voima = hyökkäys
         # vahinko voi vaihdella +-15%

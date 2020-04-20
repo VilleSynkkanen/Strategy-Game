@@ -62,6 +62,10 @@ class Kartan_lukija:
                     rivi[1] = rivi[1].split('*')
                     x = int(rivi[1][0])
                     y = int(rivi[1][1])
+                    if x <= 0 or y <= 0:
+                        if tiedosto is not None and not tiedosto.closed:
+                            tiedosto.close()
+                        return False, 0, 0, None, None
                     koko_loydetty = True
                     ruudut = [["tasanko" for i in range(y)] for j in range(x)]
                 elif rivi[0] == "ruudut":
@@ -82,6 +86,10 @@ class Kartan_lukija:
                             koordinaatit[i] = koordinaatit[i].split(",")
                             koordinaatit[i][0] = int(koordinaatit[i][0]) - 1    # vähennetään 1, koska koodissa koordinaatit
                             koordinaatit[i][1] = int(koordinaatit[i][1]) - 1    # alkavat nollasta
+                            if koordinaatit[i][0] < 0 or koordinaatit[i][1] < 0:
+                                if tiedosto is not None and not tiedosto.closed:
+                                    tiedosto.close()
+                                return False, 0, 0, None, None
                             ruudut[koordinaatit[i][0]][koordinaatit[i][1]] = tyyppi  # listaan lisäys (tyyppi)
                             i += 1
                         koordinaatit = tiedosto.readline()
@@ -110,6 +118,10 @@ class Kartan_lukija:
                             yksikot[i] = yksikot[i].split(",")
                             yksikot[i][0] = int(yksikot[i][0]) - 1
                             yksikot[i][1] = int(yksikot[i][1]) - 1
+                            if yksikot[i][0] < 0 or yksikot[i][1] < 0:
+                                if tiedosto is not None and not tiedosto.closed:
+                                    tiedosto.close()
+                                return False, 0, 0, None, None
                             # omistajan validiuden tarkistus
                             if yksikot[i][2].lower() not in omistajat:
                                 if tiedosto is not None and not tiedosto.closed:

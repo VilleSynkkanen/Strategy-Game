@@ -111,7 +111,12 @@ class Paavalikko(QtWidgets.QMainWindow):
     def lisaa_virheellinen_kartta(self, nimi):
         self.__virheelliset_kartat.append(nimi)
 
+    def __kriittinen_virhe(self):
+        self.__pelaa_nappi.setEnabled(False)
+        self.__kenttaeditori_nappi.setEnabled(False)
+
     def __virhe_lukemisessa(self, tyyppi):
+        self.__kriittinen_virhe()
         if tyyppi == "kayttoliittyma":
             self.__virheteksti.setText("Käyttöliittymän tietojen lukemisessa tapahtui virhe.\n"
                                        "Korjaa tiedosto ja avaa ohjelma uudestaan")
