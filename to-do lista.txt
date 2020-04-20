@@ -1,24 +1,25 @@
 Seuraavaksi:
--testaus
-	-vanhojen testien läpikäynti
-	-tekoäly
+-tekoälyn testaus: yleiset metodit
 -tallennus
 	-mahdollisuus tallentaa tai poistua tallentamatta
 	-vain yksi tallennettu peli
 	-mahdollisuus pyyhkiä pois päävalikossa
 	-uusi tallennus poistaa vanhan
 -viimeistelyä
--koodin siistiminen
+	-käyttöliittymä
+	-tekoäly
+	-muuta?
+	-koodin siistiminen/parantelu
 
 Bugit
 -???
 
-Teköäly
--parametrien hiominen
--yksikkötestaus
--algoritmien optimisaatio
+Käyttöliittymä
+-ohjetekstit
+-peliloki
+-ulkoasun viimeistely
 
-Ohjetekstit, peliloki
+Tekstit, peliloki yms.
 -pelilokin hionta:
 	-tekstien kieliasu
 	-mitä kerrotaan, mitä ei
@@ -27,31 +28,17 @@ Ohjetekstit, peliloki
 	-kuinka paljon ohjeita annetaan?
 -yksikön tiedot yms. tekstit
 
-Testaus
--tekoäly: vain yleiset metodit
--muuta?
-
-Käyttöliittymä
--ohjetekstit
--peliloki
--skaalaus eri kokoisille ruuduille
--viimeistely
-
-Paranneltavia asioita (viimeistely)
--käyttöliittymä
--tekoäly
--testaus
-
-Tekoälyn parametrit:
--tykistön liikkuminen: liikkuu liian usein, ei välttele vihollisia tarpeeksi
-
-Aikataulu
--lisää testausta + testausmuutokset 22.4
--tallennus 26.4
--viimeistely, siistiminen 1.5
--dokumentaatio 8.5
+Teköäly
+-parametrien hiominen
+	-tykistön liikkuminen: liikkuu liian usein, ei välttele vihollisia tarpeeksi
+-algoritmien optimisaatio
 
 Muuta:
 -ajastin implementaatio (qwait vs oma)?
--asioiden poistaminen kunnolla (deletelater, viittausten perustellinen poistaminen)
+-tarkista asioiden poistaminen kunnolla (deletelater, viittausten perustellinen poistaminen)
 
+Aikataulu
+-testaus loppuun 22.4
+-tallennus 26.4
+-viimeistely, siistiminen 1.5
+-dokumentaatio 8.5

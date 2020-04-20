@@ -1,5 +1,6 @@
 import unittest
 from pelinohjain import Pelinohjain
+from paavalikko import Paavalikko
 import sys
 from PyQt5.QtWidgets import QApplication
 
@@ -10,7 +11,8 @@ class Nakyvyyden_testaus(unittest.TestCase):
     def Testi(self):
         global app
         app = QApplication(sys.argv)
-        pelinojain = Pelinohjain()
+        paavalikko = Paavalikko()
+        pelinojain = Pelinohjain("testikentta.txt", paavalikko)
         kartta = pelinojain.kartta
         ruudut = kartta.ruudut_koordinaateilla
 

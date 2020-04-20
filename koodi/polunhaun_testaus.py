@@ -1,9 +1,11 @@
 import unittest
 from pelinohjain import Pelinohjain
+from paavalikko import Paavalikko
 import sys
 from PyQt5.QtWidgets import QApplication
 from koordinaatit import Koordinaatit
 from yksikon_ominaisuudet import Yksikon_ominaisuudet
+from yksikoiden_lukija import Yksikoiden_lukija
 
 
 class Polunhaun_testaus(unittest.TestCase):
@@ -11,17 +13,19 @@ class Polunhaun_testaus(unittest.TestCase):
     def Testi(self):
         global app
         app = QApplication(sys.argv)
-        pelinojain = Pelinohjain()
+        paavalikko = Paavalikko()
+        pelinojain = Pelinohjain("testikentta.txt", paavalikko)
         kartta = pelinojain.kartta
         ruudut = kartta.ruudut_koordinaateilla
         polunhaku = pelinojain.polunhaku
+        lukija = Yksikoiden_lukija()
 
         # lisätään yksiköitä siten, että tulee muutama blokattu paikka
         ominaisuudet = Yksikon_ominaisuudet("Jalkavaki", 1, 1, 1, 1, 1, 1, 1, 1, 1, None)
-        kartta.lisaa_yksikko(ruudut[9][10], (ominaisuudet, pelinojain.yksikoiden_lukija.yksikot["jalkavaki"][1]))
-        kartta.lisaa_yksikko(ruudut[7][9], (ominaisuudet, pelinojain.yksikoiden_lukija.yksikot["jalkavaki"][1]))
-        kartta.lisaa_yksikko(ruudut[15][12], (ominaisuudet, pelinojain.yksikoiden_lukija.yksikot["jalkavaki"][1]))
-        kartta.lisaa_yksikko(ruudut[6][4], (ominaisuudet, pelinojain.yksikoiden_lukija.yksikot["jalkavaki"][1]))
+        kartta.lisaa_yksikko(ruudut[9][10], "jalkavaki", lukija.yksikot["jalkavaki"], "COM")
+        kartta.lisaa_yksikko(ruudut[7][9], "jalkavaki", lukija.yksikot["jalkavaki"], "COM")
+        kartta.lisaa_yksikko(ruudut[15][12], "jalkavaki", lukija.yksikot["jalkavaki"], "COM")
+        kartta.lisaa_yksikko(ruudut[6][4], "jalkavaki", lukija.yksikot["jalkavaki"], "COM")
 
         # aloitusruutu
         aloitus = ruudut[10][8]

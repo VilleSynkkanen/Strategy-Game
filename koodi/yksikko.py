@@ -383,7 +383,7 @@ class Yksikko:
             self.__ominaisuudet.nyk_elama = self.__ominaisuudet.max_elama
         self.__grafiikka.elamapalkki.paivita_koko()
         self.__grafiikka.paivita_tooltip()
-        print("Parannus: ", maara)
+        #print("Parannus: ", maara)
 
     # saa yhden energian
     def saa_energiaa(self):

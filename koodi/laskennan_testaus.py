@@ -1,5 +1,7 @@
 import unittest
 from pelinohjain import Pelinohjain
+from paavalikko import Paavalikko
+from yksikoiden_lukija import Yksikoiden_lukija
 import sys
 from PyQt5.QtWidgets import QApplication
 from yksikon_ominaisuudet import Yksikon_ominaisuudet
@@ -20,9 +22,17 @@ class Laskennan_testaus(unittest.TestCase):
     def vahingon_laskenta_testi(self):
         global app
         app = QApplication(sys.argv)
-        pelinojain = Pelinohjain()
+        paavalikko = Paavalikko()
+        pelinojain = Pelinohjain("testikentta.txt", paavalikko)
         kartta = pelinojain.kartta
         ruudut = kartta.ruudut_koordinaateilla
+        lukija = Yksikoiden_lukija()
+
+        # lisätään yksiköitä siten, että tulee muutama blokattu paikka
+        kartta.lisaa_yksikko(ruudut[9][10], "jalkavaki", lukija.yksikot["jalkavaki"], "COM")
+        kartta.lisaa_yksikko(ruudut[7][9], "jalkavaki", lukija.yksikot["jalkavaki"], "COM")
+        kartta.lisaa_yksikko(ruudut[15][12], "jalkavaki", lukija.yksikot["jalkavaki"], "COM")
+        kartta.lisaa_yksikko(ruudut[6][4], "jalkavaki", lukija.yksikot["jalkavaki"], "COM")
 
         # tyyppi, liikkuminen, max_elama, nyk_elama, max_energia, nyk_energia, hyokkays, puolustus,
         # kantama, hinta, tilavaikutukset
@@ -36,9 +46,9 @@ class Laskennan_testaus(unittest.TestCase):
         # tilanne 1: molemmat tasangolla, vierekkäin
         tie = ruudut[13][6]
         pel = ruudut[13][7]
-        kartta.lisaa_yksikko(tie, (ominaisuudet_tiet, pelinojain.yksikoiden_lukija.yksikot["jalkavaki"][1]))
-        kartta.lisaa_yksikko(pel, (ominaisuudet_pel, pelinojain.yksikoiden_lukija.yksikot["jalkavaki"][1]),
-                             "PLR")
+        kartta.lisaa_yksikko(tie, "jalkavaki", (ominaisuudet_tiet, lukija.yksikot["jalkavaki"][1]), "COM")
+        kartta.lisaa_yksikko(pel, "jalkavaki", (ominaisuudet_pel, lukija.yksikot["jalkavaki"][1]), "PLR")
+
         tiet_yks = tie.yksikko
         pel_yks = pel.yksikko
         self.vahingon_laskenta(tiet_yks, pel_yks)
@@ -46,9 +56,9 @@ class Laskennan_testaus(unittest.TestCase):
         # tilanne 2: toinen kukkulalla, toinen tasangolla
         tie = ruudut[2][3]
         pel = ruudut[1][3]
-        kartta.lisaa_yksikko(tie, (ominaisuudet_tiet, pelinojain.yksikoiden_lukija.yksikot["jalkavaki"][1]))
-        kartta.lisaa_yksikko(pel, (ominaisuudet_pel, pelinojain.yksikoiden_lukija.yksikot["jalkavaki"][1]),
-                             "PLR")
+        kartta.lisaa_yksikko(tie, "jalkavaki", (ominaisuudet_tiet, lukija.yksikot["jalkavaki"][1]), "COM")
+        kartta.lisaa_yksikko(pel, "jalkavaki", (ominaisuudet_pel, lukija.yksikot["jalkavaki"][1]), "PLR")
+
         tiet_yks = tie.yksikko
         pel_yks = pel.yksikko
         self.vahingon_laskenta(pel_yks, tiet_yks)
@@ -56,9 +66,9 @@ class Laskennan_testaus(unittest.TestCase):
         # 3: toinen sillalla, toinen tasangolla
         tie = ruudut[8][6]
         pel = ruudut[8][7]
-        kartta.lisaa_yksikko(tie, (ominaisuudet_tiet, pelinojain.yksikoiden_lukija.yksikot["jalkavaki"][1]))
-        kartta.lisaa_yksikko(pel, (ominaisuudet_pel, pelinojain.yksikoiden_lukija.yksikot["jalkavaki"][1]),
-                             "PLR")
+        kartta.lisaa_yksikko(tie, "jalkavaki", (ominaisuudet_tiet, lukija.yksikot["jalkavaki"][1]), "COM")
+        kartta.lisaa_yksikko(pel, "jalkavaki", (ominaisuudet_pel, lukija.yksikot["jalkavaki"][1]), "PLR")
+
         tiet_yks = tie.yksikko
         pel_yks = pel.yksikko
         self.vahingon_laskenta(tiet_yks, pel_yks)
@@ -66,9 +76,9 @@ class Laskennan_testaus(unittest.TestCase):
         # 4: molemmat pellolla
         tie = ruudut[2][9]
         pel = ruudut[2][10]
-        kartta.lisaa_yksikko(tie, (ominaisuudet_tiet, pelinojain.yksikoiden_lukija.yksikot["jalkavaki"][1]))
-        kartta.lisaa_yksikko(pel, (ominaisuudet_pel, pelinojain.yksikoiden_lukija.yksikot["jalkavaki"][1]),
-                             "PLR")
+        kartta.lisaa_yksikko(tie, "jalkavaki", (ominaisuudet_tiet, lukija.yksikot["jalkavaki"][1]), "COM")
+        kartta.lisaa_yksikko(pel, "jalkavaki", (ominaisuudet_pel, lukija.yksikot["jalkavaki"][1]), "PLR")
+
         tiet_yks = tie.yksikko
         pel_yks = pel.yksikko
         self.vahingon_laskenta(pel_yks, tiet_yks)
@@ -76,9 +86,9 @@ class Laskennan_testaus(unittest.TestCase):
         # 5: toinen vuoristossa, toinen tasangolla
         tie = ruudut[16][6]
         pel = ruudut[16][7]
-        kartta.lisaa_yksikko(tie, (ominaisuudet_tiet, pelinojain.yksikoiden_lukija.yksikot["jalkavaki"][1]))
-        kartta.lisaa_yksikko(pel, (ominaisuudet_pel, pelinojain.yksikoiden_lukija.yksikot["jalkavaki"][1]),
-                             "PLR")
+        kartta.lisaa_yksikko(tie, "jalkavaki", (ominaisuudet_tiet, lukija.yksikot["jalkavaki"][1]), "COM")
+        kartta.lisaa_yksikko(pel, "jalkavaki", (ominaisuudet_pel, lukija.yksikot["jalkavaki"][1]), "PLR")
+
         tiet_yks = tie.yksikko
         pel_yks = pel.yksikko
         self.vahingon_laskenta(pel_yks, tiet_yks)
@@ -86,9 +96,9 @@ class Laskennan_testaus(unittest.TestCase):
         # 6: toinen kiiloissa, molemmat tasangolla
         tie = ruudut[15][14]
         pel = ruudut[16][14]
-        kartta.lisaa_yksikko(tie, (ominaisuudet_tiet, pelinojain.yksikoiden_lukija.yksikot["jalkavaki"][1]))
-        kartta.lisaa_yksikko(pel, (ominaisuudet_pel, pelinojain.yksikoiden_lukija.yksikot["jalkavaki"][1]),
-                             "PLR")
+        kartta.lisaa_yksikko(tie, "jalkavaki", (ominaisuudet_tiet, lukija.yksikot["jalkavaki"][1]), "COM")
+        kartta.lisaa_yksikko(pel, "jalkavaki", (ominaisuudet_pel, lukija.yksikot["jalkavaki"][1]), "PLR")
+
         pel.luo_kiilat(1.15, 1.5)
         tiet_yks = tie.yksikko
         pel_yks = pel.yksikko
@@ -97,9 +107,9 @@ class Laskennan_testaus(unittest.TestCase):
         # 7: flank, molemmat vuoristossa
         tie = ruudut[18][6]
         pel = ruudut[17][6]
-        kartta.lisaa_yksikko(tie, (ominaisuudet_tiet, pelinojain.yksikoiden_lukija.yksikot["jalkavaki"][1]))
-        kartta.lisaa_yksikko(pel, (ominaisuudet_pel, pelinojain.yksikoiden_lukija.yksikot["jalkavaki"][1]),
-                             "PLR")
+        kartta.lisaa_yksikko(tie, "jalkavaki", (ominaisuudet_tiet, lukija.yksikot["jalkavaki"][1]), "COM")
+        kartta.lisaa_yksikko(pel, "jalkavaki", (ominaisuudet_pel, lukija.yksikot["jalkavaki"][1]), "PLR")
+
         tiet_yks = tie.yksikko
         pel_yks = pel.yksikko
         self.vahingon_laskenta(tiet_yks, pel_yks)
@@ -107,9 +117,9 @@ class Laskennan_testaus(unittest.TestCase):
         # 8: pidempi kantama, molemmat tasangolla
         tie = ruudut[0][15]
         pel = ruudut[3][15]
-        kartta.lisaa_yksikko(tie, (ominaisuudet_tiet, pelinojain.yksikoiden_lukija.yksikot["jalkavaki"][1]))
-        kartta.lisaa_yksikko(pel, (ominaisuudet_pel, pelinojain.yksikoiden_lukija.yksikot["jalkavaki"][1]),
-                             "PLR")
+        kartta.lisaa_yksikko(tie, "jalkavaki", (ominaisuudet_tiet, lukija.yksikot["jalkavaki"][1]), "COM")
+        kartta.lisaa_yksikko(pel, "jalkavaki", (ominaisuudet_pel, lukija.yksikot["jalkavaki"][1]), "PLR")
+
         tiet_yks = tie.yksikko
         pel_yks = pel.yksikko
         self.vahingon_laskenta(pel_yks, tiet_yks)
@@ -120,9 +130,9 @@ class Laskennan_testaus(unittest.TestCase):
 
         tie = ruudut[0][5]
         pel = ruudut[0][4]
-        kartta.lisaa_yksikko(tie, (ominaisuudet_tiet, pelinojain.yksikoiden_lukija.yksikot["jalkavaki"][1]))
-        kartta.lisaa_yksikko(pel, (ominaisuudet_pel, pelinojain.yksikoiden_lukija.yksikot["jalkavaki"][1]),
-                             "PLR")
+        kartta.lisaa_yksikko(tie, "jalkavaki", (ominaisuudet_tiet, lukija.yksikot["jalkavaki"][1]), "COM")
+        kartta.lisaa_yksikko(pel, "jalkavaki", (ominaisuudet_pel, lukija.yksikot["jalkavaki"][1]), "PLR")
+
         tiet_yks = tie.yksikko
         pel_yks = pel.yksikko
         self.vahingon_laskenta(tiet_yks, pel_yks)
@@ -133,9 +143,9 @@ class Laskennan_testaus(unittest.TestCase):
 
         tie = ruudut[7][15]
         pel = ruudut[8][15]
-        kartta.lisaa_yksikko(tie, (ominaisuudet_tiet, pelinojain.yksikoiden_lukija.yksikot["jalkavaki"][1]))
-        kartta.lisaa_yksikko(pel, (ominaisuudet_pel, pelinojain.yksikoiden_lukija.yksikot["jalkavaki"][1]),
-                             "PLR")
+        kartta.lisaa_yksikko(tie, "jalkavaki", (ominaisuudet_tiet, lukija.yksikot["jalkavaki"][1]), "COM")
+        kartta.lisaa_yksikko(pel, "jalkavaki", (ominaisuudet_pel, lukija.yksikot["jalkavaki"][1]), "PLR")
+
         tiet_yks = tie.yksikko
         pel_yks = pel.yksikko
         self.vahingon_laskenta(pel_yks, tiet_yks)
@@ -146,9 +156,9 @@ class Laskennan_testaus(unittest.TestCase):
 
         tie = ruudut[0][0]
         pel = ruudut[0][1]
-        kartta.lisaa_yksikko(tie, (ominaisuudet_tiet, pelinojain.yksikoiden_lukija.yksikot["jalkavaki"][1]))
-        kartta.lisaa_yksikko(pel, (ominaisuudet_pel, pelinojain.yksikoiden_lukija.yksikot["jalkavaki"][1]),
-                             "PLR")
+        kartta.lisaa_yksikko(tie, "jalkavaki", (ominaisuudet_tiet, lukija.yksikot["jalkavaki"][1]), "COM")
+        kartta.lisaa_yksikko(pel, "jalkavaki", (ominaisuudet_pel, lukija.yksikot["jalkavaki"][1]), "PLR")
+
         tiet_yks = tie.yksikko
         pel_yks = pel.yksikko
         self.vahingon_laskenta(pel_yks, tiet_yks)
@@ -159,9 +169,9 @@ class Laskennan_testaus(unittest.TestCase):
 
         tie = ruudut[13][6]
         pel = ruudut[13][7]
-        kartta.lisaa_yksikko(tie, (ominaisuudet_tiet, pelinojain.yksikoiden_lukija.yksikot["jalkavaki"][1]))
-        kartta.lisaa_yksikko(pel, (ominaisuudet_pel, pelinojain.yksikoiden_lukija.yksikot["jalkavaki"][1]),
-                             "PLR")
+        kartta.lisaa_yksikko(tie, "jalkavaki", (ominaisuudet_tiet, lukija.yksikot["jalkavaki"][1]), "COM")
+        kartta.lisaa_yksikko(pel, "jalkavaki", (ominaisuudet_pel, lukija.yksikot["jalkavaki"][1]), "PLR")
+
         tiet_yks = tie.yksikko
         pel_yks = pel.yksikko
 
@@ -175,12 +185,15 @@ class Laskennan_testaus(unittest.TestCase):
         # testataan, muuttaako tilavaikutus ominaisuuksia odotetusti ja loppuuko se oikeaan aikaan
         global app
         app = QApplication(sys.argv)
-        pelinojain = Pelinohjain()
+        paavalikko = Paavalikko()
+        pelinojain = Pelinohjain("testikentta.txt", paavalikko)
         kartta = pelinojain.kartta
         ruudut = kartta.ruudut_koordinaateilla
+        lukija = Yksikoiden_lukija()
 
         ominaisuudet = Yksikon_ominaisuudet("Jalkavaki", 1, 100, 100, 10, 10, 10, 10, 10, 10, None)
-        kartta.lisaa_yksikko(ruudut[0][0], (ominaisuudet, pelinojain.yksikoiden_lukija.yksikot["jalkavaki"][1]))
+        kartta.lisaa_yksikko(ruudut[0][0], "jalkavaki", (ominaisuudet, lukija.yksikot["jalkavaki"][1]), "COM")
+
         yksikko = ruudut[0][0].yksikko
         om = yksikko.ominaisuudet
 
@@ -222,9 +235,11 @@ class Laskennan_testaus(unittest.TestCase):
     def vahingon_ottaminen_testi(self):
         global app
         app = QApplication(sys.argv)
-        pelinojain = Pelinohjain()
+        paavalikko = Paavalikko()
+        pelinojain = Pelinohjain("testikentta.txt", paavalikko)
         kartta = pelinojain.kartta
         ruudut = kartta.ruudut_koordinaateilla
+        lukija = Yksikoiden_lukija()
 
         # yksinkertainen ota_vahinkoa-metodin testi
         # 2 tilannetta: yksikkö kuolee/ei kuole
@@ -236,9 +251,9 @@ class Laskennan_testaus(unittest.TestCase):
 
         tie = ruudut[0][0]
         pel = ruudut[0][1]
-        kartta.lisaa_yksikko(tie, (ominaisuudet_tiet, pelinojain.yksikoiden_lukija.yksikot["jalkavaki"][1]))
-        kartta.lisaa_yksikko(pel, (ominaisuudet_pel, pelinojain.yksikoiden_lukija.yksikot["jalkavaki"][1]),
-                             "PLR")
+        kartta.lisaa_yksikko(tie, "jalkavaki", (ominaisuudet_tiet, lukija.yksikot["jalkavaki"][1]), "COM")
+        kartta.lisaa_yksikko(pel, "jalkavaki", (ominaisuudet_pel, lukija.yksikot["jalkavaki"][1]), "PLR")
+
         tiet_yks = tie.yksikko
         pel_yks = pel.yksikko
 
@@ -253,9 +268,11 @@ class Laskennan_testaus(unittest.TestCase):
     def parannus_testi(self):
         global app
         app = QApplication(sys.argv)
-        pelinojain = Pelinohjain()
+        paavalikko = Paavalikko()
+        pelinojain = Pelinohjain("testikentta.txt", paavalikko)
         kartta = pelinojain.kartta
         ruudut = kartta.ruudut_koordinaateilla
+        lukija = Yksikoiden_lukija()
 
         # yksinkertainen parannus-metodin testi
         # 2 tilannetta: menee yli/ei mene yli
@@ -267,9 +284,8 @@ class Laskennan_testaus(unittest.TestCase):
 
         tie = ruudut[0][0]
         pel = ruudut[0][1]
-        kartta.lisaa_yksikko(tie, (ominaisuudet_tiet, pelinojain.yksikoiden_lukija.yksikot["jalkavaki"][1]))
-        kartta.lisaa_yksikko(pel, (ominaisuudet_pel, pelinojain.yksikoiden_lukija.yksikot["jalkavaki"][1]),
-                             "PLR")
+        kartta.lisaa_yksikko(tie, "jalkavaki", (ominaisuudet_tiet, lukija.yksikot["jalkavaki"][1]), "COM")
+        kartta.lisaa_yksikko(pel, "jalkavaki", (ominaisuudet_pel, lukija.yksikot["jalkavaki"][1]), "PLR")
         tiet_yks = tie.yksikko
         pel_yks = pel.yksikko
 
