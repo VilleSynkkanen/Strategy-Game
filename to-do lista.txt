@@ -1,5 +1,10 @@
 Seuraavaksi:
--tekoälyn testaus: yleiset metodit
+-tekoälyn testaus
+	-ruudun pisteytys kantamalla olevien vihollisten perusteella
+    -maaston pisteytys
+    -kohteen lähestyminen
+    -oman yksikön läheisyys
+    -vihollisten välttely
 -tallennus
 	-mahdollisuus tallentaa tai poistua tallentamatta
 	-vain yksi tallennettu peli
@@ -10,6 +15,7 @@ Seuraavaksi:
 	-tekoäly
 	-muuta?
 	-koodin siistiminen/parantelu
+		-toisteisuuden poisto (missä mahdollista)
 
 Bugit
 -???
