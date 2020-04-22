@@ -1,10 +1,4 @@
 Seuraavaksi:
--tekoälyn testaus
-	-ruudun pisteytys kantamalla olevien vihollisten perusteella
-    -maaston pisteytys
-    -kohteen lähestyminen
-    -oman yksikön läheisyys
-    -vihollisten välttely
 -tallennus
 	-mahdollisuus tallentaa tai poistua tallentamatta
 	-vain yksi tallennettu peli
@@ -12,8 +6,7 @@ Seuraavaksi:
 	-uusi tallennus poistaa vanhan
 -viimeistelyä
 	-käyttöliittymä
-	-tekoäly
-	-muuta?
+	-muuta
 	-koodin siistiminen/parantelu
 		-toisteisuuden poisto (missä mahdollista)
 
@@ -34,17 +27,16 @@ Tekstit, peliloki yms.
 	-kuinka paljon ohjeita annetaan?
 -yksikön tiedot yms. tekstit
 
-Teköäly
--parametrien hiominen
-	-tykistön liikkuminen: liikkuu liian usein, ei välttele vihollisia tarpeeksi
--algoritmien optimisaatio
-
 Muuta:
 -ajastin implementaatio (qwait vs oma)?
 -tarkista asioiden poistaminen kunnolla (deletelater, viittausten perustellinen poistaminen)
 
+Huonot puolet:
+-tekoälyn optimisaatio
+-käyttöliittymän ulkoasu
+-??
+
 Aikataulu
--testaus loppuun 22.4
 -tallennus 26.4
 -viimeistely, siistiminen 1.5
 -dokumentaatio 8.5

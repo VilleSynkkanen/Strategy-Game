@@ -21,8 +21,8 @@ class Tykisto_tekoaly(Tykisto):
         self.__flanking_kerroin = 1
 
         # maaston pisteytys
-        self.__oma_maastokerroin_hyokkays = 0.75
-        self.__oma_maastokerroin_puolustus = 0.25
+        self.__oma_maastokerroin_hyokkays = 1
+        self.__oma_maastokerroin_puolustus = 0.3
 
         # etäisyys kohteesta pisteytys
         self.__kulmakerroin = -0.016
