@@ -5,6 +5,7 @@ from maaston_lukija import Maaston_lukija
 from yksikoiden_lukija import Yksikoiden_lukija
 from polunhaku import Polunhaku
 from tekoalyn_ohjain import Tekoalyn_ohjain
+from pelin_tallentaja import Pelin_tallentaja
 from ajastin import Ajastin
 from PyQt5 import QtCore
 
@@ -14,6 +15,7 @@ class Pelinohjain:
     def __init__(self, kartan_nimi, paavalikko):
         # käyttöliittymä
         self.__paavalikko = paavalikko
+        self.__tallentaja = Pelin_tallentaja(self)
         self.__kayttoliittyma = Kayttoliittyma(self)
 
         self.__vuoro = "PLR"      # PLR = pelaaja, COM = tietokone
@@ -23,15 +25,14 @@ class Pelinohjain:
         self.__kartan_lukija = Kartan_lukija()
         self.__nimi, x, y, ruudut, yksikot = self.__kartan_lukija.lue_kartta(kartan_nimi)
         self.__koko = (x, y)
+        self.__nimi = kartan_nimi
         #print(ruudut)
         self.__kartta = Kartta(self.__koko[0], self.__koko[1], ruudut, self.__kayttoliittyma)
 
         self.__kayttoliittyma.aseta_scene_rect(self.__koko[0], self.__koko[1])
 
-        # maastojen lukeminen
+        # lukeminen
         self.__maaston_lukija = Maaston_lukija()
-
-        # yksiköiden lukeminen
         self.__yksikoiden_lukija = Yksikoiden_lukija()
 
         # tehdään vasta koko kartan luomisen jälkeen, kun kaikki ruudut ovat paikallaan
@@ -66,12 +67,20 @@ class Pelinohjain:
         return self.__kayttoliittyma
 
     @property
+    def tallentaja(self):
+        return self.__tallentaja
+
+    @property
     def viive(self):
         return self.__viive
 
     @property
     def vuoro(self):
         return self.__vuoro
+
+    @property
+    def nimi(self):
+        return self.__nimi
 
     @property
     def kartta(self):

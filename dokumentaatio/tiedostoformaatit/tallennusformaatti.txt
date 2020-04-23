@@ -1,10 +1,8 @@
 PELITILANNE
 KENTAN NIMI: "nimi"
-YKSIKOIDEN SIJOITTELU:
-PELAAJA
-YKSIKKO
-("x-koordinaatti", "y-koordinaatti")
-("yksikön tyyppi", "elama", "energia", "vuoro kaytetty/kayttamaton")
+YKSIKOT:
+12,12,PLR,jalkavaki,60,3,ei,ei,tilavaikutus: ____,tilavaikutus:1,0,3,-1,0,ei,tilavaikutus: ____
+
 ...
 TIETOKONE
 YKSIKKO

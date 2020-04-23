@@ -54,8 +54,10 @@ class Kayttoliittyma(QtWidgets.QMainWindow):
         self.__seuraava_yksikko_nappi.setSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Preferred)
         self.__paata_vuoro_nappi = QtWidgets.QPushButton("PÄÄTÄ VUORO")
         self.__paata_vuoro_nappi.setSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Preferred)
-        self.__tallenna_peli_napi = QtWidgets.QPushButton("POISTU PELISTÄ")
+        self.__tallenna_peli_napi = QtWidgets.QPushButton("TALLENNA JA\nPOISTU PELISTÄ")
         self.__tallenna_peli_napi.setSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Preferred)
+        self.__poistu_pelista_nappi = QtWidgets.QPushButton("POISTU PELISTÄ")
+        self.__poistu_pelista_nappi.setSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Preferred)
 
         self.__napit = []
         self.__napit.append(self.__hyokkaa_nappi)
@@ -67,6 +69,7 @@ class Kayttoliittyma(QtWidgets.QMainWindow):
         self.__napit.append(self.__seuraava_yksikko_nappi)
         self.__napit.append(self.__paata_vuoro_nappi)
         self.__napit.append(self.__tallenna_peli_napi)
+        self.__napit.append(self.__poistu_pelista_nappi)
 
         self.__hyokkaa_nappi.setStyleSheet("font: 10pt Arial")
         self.__kyky1_nappi.setStyleSheet("font: 10pt Arial")
@@ -77,6 +80,7 @@ class Kayttoliittyma(QtWidgets.QMainWindow):
         self.__seuraava_yksikko_nappi.setStyleSheet("font: 10pt Arial")
         self.__paata_vuoro_nappi.setStyleSheet("font: 10pt Arial")
         self.__tallenna_peli_napi.setStyleSheet("font: 10pt Arial")
+        self.__poistu_pelista_nappi.setStyleSheet("font: 10pt Arial")
 
         # nappien yhdistäminen
         self.__hyokkaa_nappi.clicked.connect(self.__hyokkaa)
@@ -87,18 +91,20 @@ class Kayttoliittyma(QtWidgets.QMainWindow):
         self.__yksikon_tiedot_nappi.clicked.connect(self.__yksikon_tiedot)
         self.__edellinen_yksikko_nappi.clicked.connect(self.__edellinen_yksikko)
         self.__seuraava_yksikko_nappi.clicked.connect(self.__seuraava_yksikko)
-        self.__tallenna_peli_napi.clicked.connect(self.__poistu_pelista)
+        self.__poistu_pelista_nappi.clicked.connect(self.poistu_pelista)
+        self.__tallenna_peli_napi.clicked.connect(self.__pelinohjain.tallentaja.tallenna_peli)
 
         # nappi widgetit
-        self.__nappi_layout.addWidget(self.__hyokkaa_nappi, 0, 0, 1, 2)
+        self.__nappi_layout.addWidget(self.__hyokkaa_nappi, 0, 0)
         self.__nappi_layout.addWidget(self.__kyky1_nappi, 1, 0)
         self.__nappi_layout.addWidget(self.__kyky2_nappi, 1, 1)
         self.__nappi_layout.addWidget(self.__peru_valinta_nappi, 2, 0)
-        self.__nappi_layout.addWidget(self.__yksikon_tiedot_nappi, 2, 1)
+        self.__nappi_layout.addWidget(self.__yksikon_tiedot_nappi, 0, 1)
         self.__nappi_layout.addWidget(self.__edellinen_yksikko_nappi, 3, 0)
         self.__nappi_layout.addWidget(self.__seuraava_yksikko_nappi, 3, 1)
-        self.__nappi_layout.addWidget(self.__paata_vuoro_nappi, 4, 0)
-        self.__nappi_layout.addWidget(self.__tallenna_peli_napi, 4, 1)
+        self.__nappi_layout.addWidget(self.__paata_vuoro_nappi, 2, 1)
+        self.__nappi_layout.addWidget(self.__tallenna_peli_napi, 4, 0)
+        self.__nappi_layout.addWidget(self.__poistu_pelista_nappi, 4, 1)
 
         # unit info
         self.__perustiedot = QtWidgets.QLabel("")
@@ -512,10 +518,10 @@ class Kayttoliittyma(QtWidgets.QMainWindow):
         for nappi in self.__napit:
             nappi.setEnabled(False)
         self.__tallenna_peli_napi.setEnabled(True)
-        self.__tallenna_peli_napi.clicked.connect(self.__poistu_pelista)
+        self.__tallenna_peli_napi.clicked.connect(self.poistu_pelista)
         self.__tallenna_peli_napi.setText("POISTU PELISTÄ")
 
-    def __poistu_pelista(self):
+    def poistu_pelista(self):
         self.pelinohjain.kartta.tyhjenna()
         self.pelinohjain.paavalikko.show()
         self.pelinohjain.paavalikko.pelaa_valikko.poista_pelinohjain()

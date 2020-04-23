@@ -1,17 +1,19 @@
 Seuraavaksi:
 -tallennus
-	-mahdollisuus tallentaa tai poistua tallentamatta
-	-vain yksi tallennettu peli
-	-mahdollisuus pyyhkiä pois päävalikossa
-	-uusi tallennus poistaa vanhan
+	-tallennetun pelin lukeminen
+	-pelin jatkaminen
+	-virheensieto
+	-tallennuksen poistaminen (päävalikossa)
 -viimeistelyä
 	-käyttöliittymä
 	-muuta
+	-buginkorjaukset
+	-pelitestausta
 	-koodin siistiminen/parantelu
 		-toisteisuuden poisto (missä mahdollista)
 
 Bugit
--???
+-kiilat piirtyvät väärään paikkaan
 
 Käyttöliittymä
 -ohjetekstit
