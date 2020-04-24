@@ -6,6 +6,7 @@ from yksikoiden_lukija import Yksikoiden_lukija
 from kartan_lukija import Kartan_lukija
 from kayttoliittyman_lukija import Kayttoliittyman_lukija
 from pelaa_valikko import Pelaa_valikko
+from pelitilanteen_lukija import Pelitilanteen_lukija
 import sys
 
 
@@ -28,6 +29,8 @@ class Paavalikko(QtWidgets.QMainWindow):
 
         self.__virheteksti = QtWidgets.QLabel("")
         self.__virheteksti_kartat = QtWidgets.QLabel("")
+        self.__jatka_nappi = QtWidgets.QPushButton("JATKA PELIÄ")
+        self.__jatka_nappi.setSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Preferred)
         self.__pelaa_nappi = QtWidgets.QPushButton("PELAA")
         self.__pelaa_nappi.setSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Preferred)
         self.__kenttaeditori_nappi = QtWidgets.QPushButton("KENTTÄEDITORI")
@@ -36,12 +39,14 @@ class Paavalikko(QtWidgets.QMainWindow):
         self.__poistu_nappi.setSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Preferred)
 
         self.__virheteksti.setStyleSheet("font: 20pt Arial")
+        self.__jatka_nappi.setStyleSheet("font: 10pt Arial")
         self.__virheteksti_kartat.setStyleSheet("font: 20pt Arial")
         self.__pelaa_nappi.setStyleSheet("font: 10pt Arial")
         self.__kenttaeditori_nappi.setStyleSheet("font: 10pt Arial")
         self.__poistu_nappi.setStyleSheet("font: 10pt Arial")
 
         # nappien yhdistäminen
+        self.__jatka_nappi.clicked.connect(self.__jatka)
         self.__pelaa_nappi.clicked.connect(self.__pelaa)
         self.__kenttaeditori_nappi.clicked.connect(self.__kenttaeditori)
         self.__poistu_nappi.clicked.connect(self.__poistu)
@@ -49,6 +54,7 @@ class Paavalikko(QtWidgets.QMainWindow):
         # nappi widgetit
         self.__paa_layout.addWidget(self.__virheteksti, 1)
         self.__paa_layout.addWidget(self.__virheteksti_kartat, 1)
+        self.__paa_layout.addWidget(self.__jatka_nappi, 2)
         self.__paa_layout.addWidget(self.__pelaa_nappi, 2)
         self.__paa_layout.addWidget(self.__kenttaeditori_nappi, 2)
         self.__paa_layout.addWidget(self.__poistu_nappi, 2)
@@ -64,6 +70,9 @@ class Paavalikko(QtWidgets.QMainWindow):
         self.__yksikoiden_lukija = Yksikoiden_lukija()
         self.__kartan_lukija = Kartan_lukija(self)
         self.kartan_lukija.lue_kaikki_kartat()
+        self.__pelitilanteen_lukija = Pelitilanteen_lukija()
+        self.__kartan_nimi, self.__tilanne = self.__pelitilanteen_lukija.lue_pelitilanne()
+        print(self.__tilanne)
 
         # virheet
         if not self.__kayttoliittyman_lukija.lukeminen_onnistui:
@@ -134,6 +143,12 @@ class Paavalikko(QtWidgets.QMainWindow):
                 teksti += kartta + "\n"
             self.__virheteksti_kartat.setText(teksti)
 
+    def __jatka(self):
+        # luodaan pelinohjain ja kartta ilman yksiköitä
+        self.__pelinohjain = Pelinohjain(self.__kartan_nimi, self, False)
+        print(self.__tilanne[0])
+
+        # lisätään yksiköt, muutetaan niiden elämä ja energia sopivaksi, lisätään tilavaikutukset
 
     def __pelaa(self):
         if self.__pelaa_valikko is None:

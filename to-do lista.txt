@@ -1,8 +1,14 @@
 Seuraavaksi:
 -tallennus
+	-yksiköiden lisääminen kentälle
 	-tallennetun pelin lukeminen
-	-pelin jatkaminen
+		-loppuvaikutus
+		-kiilat
 	-virheensieto
+		-tallennus
+		-lataaminen
+		-virheviesti päävalikossa
+		-jos yksiköitä päätyy ei-valideille alueille, palataan päävalikkoon
 	-tallennuksen poistaminen (päävalikossa)
 -viimeistelyä
 	-käyttöliittymä

@@ -12,7 +12,7 @@ from PyQt5 import QtCore
 
 class Pelinohjain:
 
-    def __init__(self, kartan_nimi, paavalikko):
+    def __init__(self, kartan_nimi, paavalikko, luo_yksikot=True):
         # käyttöliittymä
         self.__paavalikko = paavalikko
         self.__tallentaja = Pelin_tallentaja(self)
@@ -44,7 +44,8 @@ class Pelinohjain:
         for ruutu in self.__kartta.ruudut:
             ruutu.etsi_naapurit()
 
-        self.__kartta.lisaa_yksikot(yksikot, self.__yksikoiden_lukija.yksikot)
+        if luo_yksikot:
+            self.__kartta.lisaa_yksikot(yksikot, self.__yksikoiden_lukija.yksikot)
 
         # polunhaku
         self.__polunhaku = Polunhaku()
