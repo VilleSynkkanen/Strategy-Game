@@ -46,7 +46,7 @@ class Kartan_lukija:
             koko_loydetty = False
             ruudut_loydetty = False
             yksikot_loydetty = False
-            print(nimi)
+            #print(nimi)
             tiedosto = open('kartat/' + nimi, 'r')
             for rivi in tiedosto:
                 rivi = rivi.lower()

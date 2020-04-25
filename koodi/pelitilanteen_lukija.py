@@ -1,4 +1,5 @@
 from tilavaikutus import Tilavaikutus
+import re
 
 
 class Pelitilanteen_lukija:
@@ -19,7 +20,7 @@ class Pelitilanteen_lukija:
                 rivi = rivi.lower()
                 rivi = rivi.rstrip()
                 rivi = rivi.split(",")
-                while rivi[0] != "kiilat":
+                while rivi[0][0] != "k":    # kiilat alkaa k:lla
                     #print(rivi)
                     # tallennetaan numerot tupleen
                     # x,y,omistaja,tyyppi,elämä,energia,liikkuminen,hyökkäys,taintuminen
@@ -29,25 +30,17 @@ class Pelitilanteen_lukija:
                     #print(yksikko)
                     if rivi[8] != "ei":
                         rivi[8] = rivi[8].split(":")[1]  # muutetaan tilavaikutuksen ensimmäinen alkio pelkäksi kestoksi
-                        taintuminen = False
-                        if rivi[13].strip(";") == "kylla":
-                            taintuminen = True
-                        hyokkaysvaikutus = Tilavaikutus(None, int(rivi[8]), int(rivi[9]), int(rivi[10]), int(rivi[11]),
-                                                        int(rivi[12]), taintuminen, None)  # ei impl loppuvaikutusta
+                        hyokkaysvaikutus = self.lue_vaikutus(rivi, 8)
                         # hyökkäysvaikutuksen jälkeinen indeksi
                         i = 15
                     else:
                         # indeksi, jos hyökkäysvaikutusta ei ole
                         i = 9
                     tilavaikutukset = []
+                    print(rivi)
                     while i < len(rivi):
                         if rivi[i].split(":")[0] == "tilavaikutus":
-                            rivi[i] = rivi[i].split(":")[1]
-                            taintuminen = False
-                            if rivi[i + 6].strip(";") == "kylla":
-                                taintuminen = True
-                            tilavaikutus = Tilavaikutus(None, int(rivi[i]), int(rivi[i+1]), int(rivi[i+2]),
-                                                            int(rivi[i+3]),int(rivi[i+4]), taintuminen, None)
+                            tilavaikutus = self.lue_vaikutus(rivi, i)
                             tilavaikutukset.append(tilavaikutus)
                             i += 7
                         else:
@@ -59,5 +52,31 @@ class Pelitilanteen_lukija:
                     rivi = rivi.rstrip()
                     rivi = rivi.split(",")
                 # kiilojen lukeminen
+                uusi = []
+                for elem in rivi:
+                    elem = elem.split(":")
+                    for alkio in elem:
+                        if alkio != "kiilat":
+                            uusi.append(int(alkio))
+                kiilat = []
+                i = 0
+                while i + 1 < len(uusi):
+                    koord = (uusi[i], uusi[i + 1])
+                    kiilat.append(koord)
+                    i += 2
+                print(kiilat)
+
                 tiedosto.close()
-                return nimi, yksikot
+                return nimi, yksikot, kiilat
+
+    def lue_vaikutus(self, rivi, i):
+        rivi[i] = rivi[i].split(":")[1]
+        taintuminen = False
+        if rivi[i + 5].strip(";") == "kylla":
+            taintuminen = True
+        loppuvaikutus = None
+        if rivi[i + 6].strip(";") != "ei":
+            loppuvaikutus = self.lue_vaikutus(rivi, i + 6)
+        tilavaikutus = Tilavaikutus(None, int(rivi[i]), int(rivi[i + 1]), int(rivi[i + 2]),
+                                    int(rivi[i + 3]), int(rivi[i + 4]), taintuminen, loppuvaikutus)
+        return tilavaikutus

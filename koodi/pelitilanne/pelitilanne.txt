@@ -21,5 +21,5 @@ YKSIKOT:
 5,12,COM,Jalkavaki,77,4,ei,ei,ei,tilavaikutus:1,0,3,-1,0,ei,ei;,tilavaikutus:3,0,0,0,3,ei,ei;
 6,13,COM,Jalkavaki,81,5,kylla,ei,ei
 7,17,COM,Jalkavaki,78,3,kylla,kylla,ei
-KIILAT
+KIILAT:0,0:1,1:6,2
 LOPPU

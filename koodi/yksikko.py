@@ -530,3 +530,10 @@ class Yksikko:
             return False
         else:
             return True
+
+    def pystyy_kayttamaan_kykyja(self):
+        if self.__ominaisuudet.nyk_energia < self.kyky1_hinta and \
+                self.__ominaisuudet.nyk_energia < self.kyky2_hinta and self.__liikkuminen_kaytetty:
+            return False
+        else:
+            return True

@@ -71,8 +71,9 @@ class Paavalikko(QtWidgets.QMainWindow):
         self.__kartan_lukija = Kartan_lukija(self)
         self.kartan_lukija.lue_kaikki_kartat()
         self.__pelitilanteen_lukija = Pelitilanteen_lukija()
-        self.__kartan_nimi, self.__tilanne = self.__pelitilanteen_lukija.lue_pelitilanne()
-        print(self.__tilanne)
+        self.__kartan_nimi, self.__tilanne, self.__kiilat = self.__pelitilanteen_lukija.lue_pelitilanne()
+        self.__pelinohjain = None
+        #print(self.__tilanne)
 
         # virheet
         if not self.__kayttoliittyman_lukija.lukeminen_onnistui:
@@ -146,9 +147,52 @@ class Paavalikko(QtWidgets.QMainWindow):
     def __jatka(self):
         # luodaan pelinohjain ja kartta ilman yksiköitä
         self.__pelinohjain = Pelinohjain(self.__kartan_nimi, self, False)
-        print(self.__tilanne[0])
+        #print(self.__tilanne[0])
 
         # lisätään yksiköt, muutetaan niiden elämä ja energia sopivaksi, lisätään tilavaikutukset
+        for yksikko in self.__tilanne:
+            tiedot = yksikko[0]
+            #print(tiedot)
+            x = tiedot[0]
+            y = tiedot[1]
+            self.__pelinohjain.kartta.lisaa_yksikko(self.__pelinohjain.kartta.ruudut_koordinaateilla[x][y], tiedot[3],
+                                                self.yksikoiden_lukija.yksikot[tiedot[3]], tiedot[2])
+            self.__pelinohjain.kartta.ruudut_koordinaateilla[x][y].yksikko.ominaisuudet.nyk_elama = tiedot[4]
+            self.__pelinohjain.kartta.ruudut_koordinaateilla[x][y].yksikko.ominaisuudet.nyk_energia = tiedot[5]
+            if tiedot[5] == "kylla":
+                self.__pelinohjain.kartta.ruudut_koordinaateilla[x][y].yksikko.liikuttu()
+            if tiedot[6] == "kylla":
+                self.__pelinohjain.kartta.ruudut_koordinaateilla[x][y].yksikko.hyokatty()
+            # tilavaikutusten lisäys
+            hyokkaysvaikutus = yksikko[1]
+            vaikutukset = yksikko[2]
+            for v in vaikutukset:
+                self.__pelinohjain.kartta.ruudut_koordinaateilla[x][y].yksikko.lisaa_tilavaikutus(v.kesto,
+                    v.hyokkaysbonus, v.puolustusbonus, v.liikkumisbonus, v.verenvuoto, v.taintuminen, v.loppuvaikutus)
+
+        self.__pelinohjain.kartta.etsi_yksikot()
+        self.__pelinohjain.kartta.palauta_pelaajan_toimivat_yksikot()
+        self.__pelinohjain.kartta.tarkista_toimivat_yksikot()
+        for yksikko in self.__pelinohjain.kartta.pelaajan_yksikot:
+            yksikko.grafiikka.palauta_vari()
+            yksikko.grafiikka.elamapalkki.paivita_koko()
+            yksikko.grafiikka.elamapalkki.paivita_tilavaikutukset()
+            yksikko.grafiikka.paivita_tooltip()
+        self.__pelinohjain.kayttoliittyma.tyhjenna_valinta()
+        self.__pelinohjain.kayttoliittyma.laita_napit_kayttoon()
+        self.__pelinohjain.kayttoliittyma.paivita_nappien_aktiivisuus()
+
+        # kiilojen lisäys
+        for kiila in self.__kiilat:
+            x = kiila[0]
+            y = kiila[1]
+            tiedot = self.yksikoiden_lukija.yksikot["jousimiehet"][1]
+            print(tiedot)
+            self.__pelinohjain.kartta.ruudut_koordinaateilla[x][y].luo_kiilat(
+                float(tiedot['kyky2_bonus']), float(tiedot['kyky2_bonus_ratsuvaki']))
+            #print(tiedot['kyky2_bonus'], ",", tiedot['kyky2_bonus_ratsuvaki'])
+
+
 
     def __pelaa(self):
         if self.__pelaa_valikko is None:
@@ -164,3 +208,6 @@ class Paavalikko(QtWidgets.QMainWindow):
 
     def __poistu(self):
         sys.exit()
+
+    def poista_pelinohjain(self):
+        self.__pelinohjain = None

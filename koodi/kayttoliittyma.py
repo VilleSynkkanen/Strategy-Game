@@ -524,7 +524,10 @@ class Kayttoliittyma(QtWidgets.QMainWindow):
     def poistu_pelista(self):
         self.pelinohjain.kartta.tyhjenna()
         self.pelinohjain.paavalikko.show()
-        self.pelinohjain.paavalikko.pelaa_valikko.poista_pelinohjain()
+        if self.pelinohjain.paavalikko.pelaa_valikko is not None:
+            self.pelinohjain.paavalikko.pelaa_valikko.poista_pelinohjain()
+        else:
+            self.pelinohjain.paavalikko.poista_pelinohjain()
         self.hide()
 
 

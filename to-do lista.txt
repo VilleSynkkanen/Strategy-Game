@@ -1,15 +1,11 @@
 Seuraavaksi:
 -tallennus
-	-yksiköiden lisääminen kentälle
-	-tallennetun pelin lukeminen
-		-loppuvaikutus
-		-kiilat
 	-virheensieto
 		-tallennus
 		-lataaminen
-		-virheviesti päävalikossa
+		-virheviesti päävalikossa, jos epäonnistuu
 		-jos yksiköitä päätyy ei-valideille alueille, palataan päävalikkoon
-	-tallennuksen poistaminen (päävalikossa)
+	-tallenteen poistaminen (päävalikossa)
 -viimeistelyä
 	-käyttöliittymä
 	-muuta
@@ -17,9 +13,7 @@ Seuraavaksi:
 	-pelitestausta
 	-koodin siistiminen/parantelu
 		-toisteisuuden poisto (missä mahdollista)
-
-Bugit
--kiilat piirtyvät väärään paikkaan
+		-yksityiset muuttujat/metodit
 
 Käyttöliittymä
 -ohjetekstit
@@ -35,6 +29,10 @@ Tekstit, peliloki yms.
 	-kuinka paljon ohjeita annetaan?
 -yksikön tiedot yms. tekstit
 
+Bugit
+-kiilat piirtyvät väärään paikkaan
+-toimivat yksiköt määrittely ei aina toimi oikein
+
 Muuta:
 -ajastin implementaatio (qwait vs oma)?
 -tarkista asioiden poistaminen kunnolla (deletelater, viittausten perustellinen poistaminen)
@@ -42,9 +40,11 @@ Muuta:
 Huonot puolet:
 -tekoälyn optimisaatio
 -käyttöliittymän ulkoasu
--??
+-???
 
 Aikataulu
--tallennus 26.4
--viimeistely, siistiminen 1.5
+-tallennus 27.4
+-käyttöliittymä 28.4
+-bugit tms. 29.4
+-koodin siistiminen, testaus 1.5
 -dokumentaatio 8.5
