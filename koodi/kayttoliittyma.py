@@ -521,14 +521,17 @@ class Kayttoliittyma(QtWidgets.QMainWindow):
         self.__tallenna_peli_napi.clicked.connect(self.poistu_pelista)
         self.__tallenna_peli_napi.setText("POISTU PELISTÄ")
 
-    def poistu_pelista(self):
+    def poistu_pelista(self, virhe=False):
         self.pelinohjain.kartta.tyhjenna()
         self.pelinohjain.paavalikko.show()
         if self.pelinohjain.paavalikko.pelaa_valikko is not None:
             self.pelinohjain.paavalikko.pelaa_valikko.poista_pelinohjain()
         else:
             self.pelinohjain.paavalikko.poista_pelinohjain()
+        if not virhe:
+            self.pelinohjain.paavalikko.lue_tallennus()
         self.hide()
+
 
 
 

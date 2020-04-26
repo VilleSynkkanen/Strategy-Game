@@ -29,6 +29,7 @@ class Paavalikko(QtWidgets.QMainWindow):
 
         self.__virheteksti = QtWidgets.QLabel("")
         self.__virheteksti_kartat = QtWidgets.QLabel("")
+        self.__virheteksti_lataus = QtWidgets.QLabel("")
         self.__jatka_nappi = QtWidgets.QPushButton("JATKA PELIÄ")
         self.__jatka_nappi.setSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Preferred)
         self.__pelaa_nappi = QtWidgets.QPushButton("PELAA")
@@ -41,6 +42,7 @@ class Paavalikko(QtWidgets.QMainWindow):
         self.__virheteksti.setStyleSheet("font: 20pt Arial")
         self.__jatka_nappi.setStyleSheet("font: 10pt Arial")
         self.__virheteksti_kartat.setStyleSheet("font: 20pt Arial")
+        self.__virheteksti_lataus.setStyleSheet("font: 20pt Arial")
         self.__pelaa_nappi.setStyleSheet("font: 10pt Arial")
         self.__kenttaeditori_nappi.setStyleSheet("font: 10pt Arial")
         self.__poistu_nappi.setStyleSheet("font: 10pt Arial")
@@ -54,6 +56,7 @@ class Paavalikko(QtWidgets.QMainWindow):
         # nappi widgetit
         self.__paa_layout.addWidget(self.__virheteksti, 1)
         self.__paa_layout.addWidget(self.__virheteksti_kartat, 1)
+        self.__paa_layout.addWidget(self.__virheteksti_lataus, 1)
         self.__paa_layout.addWidget(self.__jatka_nappi, 2)
         self.__paa_layout.addWidget(self.__pelaa_nappi, 2)
         self.__paa_layout.addWidget(self.__kenttaeditori_nappi, 2)
@@ -71,7 +74,7 @@ class Paavalikko(QtWidgets.QMainWindow):
         self.__kartan_lukija = Kartan_lukija(self)
         self.kartan_lukija.lue_kaikki_kartat()
         self.__pelitilanteen_lukija = Pelitilanteen_lukija()
-        self.__kartan_nimi, self.__tilanne, self.__kiilat = self.__pelitilanteen_lukija.lue_pelitilanne()
+        self.lue_tallennus()
         self.__pelinohjain = None
         #print(self.__tilanne)
 
@@ -126,16 +129,21 @@ class Paavalikko(QtWidgets.QMainWindow):
         self.__kenttaeditori_nappi.setEnabled(False)
 
     def __virhe_lukemisessa(self, tyyppi):
-        self.__kriittinen_virhe()
         if tyyppi == "kayttoliittyma":
+            self.__kriittinen_virhe()
             self.__virheteksti.setText("Käyttöliittymän tietojen lukemisessa tapahtui virhe.\n"
                                        "Korjaa tiedosto ja avaa ohjelma uudestaan")
         elif tyyppi == "yksikot":
+            self.__kriittinen_virhe()
             self.__virheteksti.setText("Yksiköiden tietojen lukemisessa tapahtui virhe.\n"
                                        "Korjaa tiedosto ja avaa ohjelma uudestaan")
         elif tyyppi == "maastot":
+            self.__kriittinen_virhe()
             self.__virheteksti.setText("Maastojen tietojen lukemisessa tapahtui virhe.\n"
                                        "Korjaa tiedosto ja avaa ohjelma uudestaan")
+        elif tyyppi == "tilanne":
+            self.__jatka_nappi.setEnabled(False)
+            self.__virheteksti_lataus.setText("Pelitilanteen lukeminen epäonnistui")
 
     def __nayta_virheelliset_kartat(self):
         if len(self.__virheelliset_kartat) > 0:
@@ -159,13 +167,14 @@ class Paavalikko(QtWidgets.QMainWindow):
                                                 self.yksikoiden_lukija.yksikot[tiedot[3]], tiedot[2])
             self.__pelinohjain.kartta.ruudut_koordinaateilla[x][y].yksikko.ominaisuudet.nyk_elama = tiedot[4]
             self.__pelinohjain.kartta.ruudut_koordinaateilla[x][y].yksikko.ominaisuudet.nyk_energia = tiedot[5]
-            if tiedot[5] == "kylla":
-                self.__pelinohjain.kartta.ruudut_koordinaateilla[x][y].yksikko.liikuttu()
             if tiedot[6] == "kylla":
+                self.__pelinohjain.kartta.ruudut_koordinaateilla[x][y].yksikko.liikuttu()
+            if tiedot[7] == "kylla":
                 self.__pelinohjain.kartta.ruudut_koordinaateilla[x][y].yksikko.hyokatty()
             # tilavaikutusten lisäys
             hyokkaysvaikutus = yksikko[1]
             vaikutukset = yksikko[2]
+            self.__pelinohjain.kartta.ruudut_koordinaateilla[x][y].yksikko.hyokkays_vaikutus = hyokkaysvaikutus
             for v in vaikutukset:
                 self.__pelinohjain.kartta.ruudut_koordinaateilla[x][y].yksikko.lisaa_tilavaikutus(v.kesto,
                     v.hyokkaysbonus, v.puolustusbonus, v.liikkumisbonus, v.verenvuoto, v.taintuminen, v.loppuvaikutus)
@@ -175,6 +184,10 @@ class Paavalikko(QtWidgets.QMainWindow):
         self.__pelinohjain.kartta.tarkista_toimivat_yksikot()
         for yksikko in self.__pelinohjain.kartta.pelaajan_yksikot:
             yksikko.grafiikka.palauta_vari()
+            yksikko.grafiikka.elamapalkki.paivita_koko()
+            yksikko.grafiikka.elamapalkki.paivita_tilavaikutukset()
+            yksikko.grafiikka.paivita_tooltip()
+        for yksikko in self.__pelinohjain.kartta.tietokoneen_yksikot:
             yksikko.grafiikka.elamapalkki.paivita_koko()
             yksikko.grafiikka.elamapalkki.paivita_tilavaikutukset()
             yksikko.grafiikka.paivita_tooltip()
@@ -209,5 +222,19 @@ class Paavalikko(QtWidgets.QMainWindow):
     def __poistu(self):
         sys.exit()
 
+    def lue_tallennus(self):
+        if self.__pelitilanteen_lukija.lue_pelitilanne(self.__kartan_lukija.kartat, self.__yksikoiden_lukija.yksikot) \
+                is not None:
+            self.__kartan_nimi, self.__tilanne, self.__kiilat = self.__pelitilanteen_lukija.lue_pelitilanne\
+                (self.__kartan_lukija.kartat, self.__yksikoiden_lukija.yksikot)
+            self.__jatka_nappi.setEnabled(True)
+        else:
+            self.__jatka_nappi.setEnabled(False)
+        if not self.__pelitilanteen_lukija.lukeminen_onnistui:
+            self.__virhe_lukemisessa("tilanne")
+        else:
+            self.__virheteksti_lataus.setText("")
+
     def poista_pelinohjain(self):
+        self.__pelinohjain.kayttoliittyma.deleteLater()
         self.__pelinohjain = None

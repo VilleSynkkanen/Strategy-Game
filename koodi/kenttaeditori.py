@@ -130,6 +130,11 @@ class Kenttaeditori(QtWidgets.QMainWindow):
         self.__editoi_kenttaa = False
         self.__muokkaa_vanhaa = False
 
+        res_x = self.paavalikko.kayttoliittyman_lukija.x
+        res_y = self.paavalikko.kayttoliittyman_lukija.y
+        self.move(int(res_x / 2) - int(self.frameSize().width() / 2),
+                  int(res_y / 2) - int(self.frameSize().height() / 2))
+
     @property
     def scene(self):
         return self.__scene
