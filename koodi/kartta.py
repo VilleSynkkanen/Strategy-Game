@@ -104,18 +104,14 @@ class Kartta:
                         self.pelaajan_toimivat_yksikot.remove(yksikko)
 
     def poista_toimivista_yksikoista(self, yksikko):
-        # hyökkäyksen kohteiden määrän tarkistus tehdään ennen, kuin kutsutaan tätä metodia
+        # hyökkäyksen kohteiden laskenta tehdään ennen, kuin kutsutaan tätä metodia
         if yksikko in self.pelaajan_toimivat_yksikot and not yksikko.pystyy_toimimaan():
             self.pelaajan_toimivat_yksikot.remove(yksikko)
 
     def tarkista_toimivat_yksikot(self):
         for yksikko in self.pelaajan_toimivat_yksikot:
             yksikko.laske_hyokkayksen_kohteet(False)
-            print(yksikko.pystyy_toimimaan())
-            if not yksikko.pystyy_toimimaan() or (len(yksikko.hyokkayksen_kohteet) == 0
-                                                  and not yksikko.pystyy_kayttamaan_kykyja()):
-                self.pelaajan_toimivat_yksikot.remove(yksikko)
-
+            self.poista_toimivista_yksikoista(yksikko)
 
     def palauta_pelaajan_toimivat_yksikot(self):
         self.__pelaajan_toimivat_yksikot = []
@@ -174,4 +170,3 @@ class Kartta:
             if ruutu.yksikko is not None:
                 ruutu.yksikko.tuhoudu()
         self.__ruudut = []
-

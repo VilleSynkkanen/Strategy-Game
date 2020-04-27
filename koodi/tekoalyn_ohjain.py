@@ -89,12 +89,7 @@ class Tekoalyn_ohjain:
 
     def ohjaa_yksikoita(self):
         kohderuutu = self.paata_kohdealue()
-        # käydään liikkumis loop kahdesti blokkauksen välttämiseksi, auttaa joissain tilanteissa
         self.__lajittele_listat("liikkuminen")
-        for yksikko in self.__pelinohjain.kartta.tietokoneen_yksikot:
-            if not yksikko.liikkuminen_kaytetty:
-                yksikko.liike(kohderuutu)
-                QtTest.QTest.qWait(self.__pelinohjain.viive)
         for yksikko in self.__pelinohjain.kartta.tietokoneen_yksikot:
             if not yksikko.liikkuminen_kaytetty:
                 yksikko.liike(kohderuutu)
@@ -114,4 +109,3 @@ class Tekoalyn_ohjain:
                 if not yksikko.hyokkays_kaytetty:
                     yksikko.hyokkays_toiminto()
                     QtTest.QTest.qWait(self.__pelinohjain.viive)
-                    

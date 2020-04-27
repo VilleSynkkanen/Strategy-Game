@@ -70,7 +70,7 @@ class Ratsuvaki(Yksikko):
                                 0, 0, False)
         self.kayta_energiaa(self.kyky1_hinta)
         self.hyokatty()
-        teksti = self.__class__.__name__ + " käytti kolmiokiilan"
+        teksti = self.__class__.__name__ + self.omistaja_teksti + " käytti kolmiokiilan"
         self.kayttoliittyma.lisaa_pelilokiin(teksti)
 
     def kyky2(self, tekoaly=False):
@@ -90,7 +90,7 @@ class Ratsuvaki(Yksikko):
         self.peru_kyky2()
         self.kayta_energiaa(self.kyky2_hinta)
         self.hyokatty()
-        teksti = self.__class__.__name__ + " käytti tiedustelun"
+        teksti = self.__class__.__name__ + self.omistaja_teksti + " käytti tiedustelun"
         self.kayttoliittyma.lisaa_pelilokiin(teksti)
 
     def peru_kyky2(self):
@@ -127,7 +127,7 @@ class Ratsuvaki(Yksikko):
 
     def kyky1_tooltip_teksti(self):
         return "Lisää hyökkäystä " + str(self.__kyky1_hyokkaysbonus)  \
-               + " ja vähentää puolustusta " + str(-self.__kyky1_puolustusvahennys) + "\n" + str(self.__kyky1_kesto) \
+               + " ja vähentää puolustusta " + str(self.__kyky1_puolustusvahennys) + "\n" + str(self.__kyky1_kesto) \
                + " vuoron ajaksi"
 
     def kyky2_tooltip_teksti(self):

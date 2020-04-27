@@ -7,6 +7,10 @@ class Yksikko:
 
     def __init__(self, omistaja, ruutu, kayttoliittyma, ominaisuudet):
         self.__omistaja = omistaja
+        # teksti, joka näytetään pelilokissa
+        self.__omistaja_teksti = " (PEL)"
+        if self.__omistaja == "COM":
+            self.__omistaja_teksti = " (TIET)"
         self.__ruutu = ruutu
         self.__kayttoliittyma = kayttoliittyma
         self.__grafiikka = None
@@ -45,6 +49,10 @@ class Yksikko:
     @property
     def visualisointi_viive(self):
         return self.__visualisointi_viive
+
+    @property
+    def omistaja_teksti(self):
+        return self.__omistaja_teksti
 
     @property
     def liikkuminen_kaytetty(self):
@@ -138,15 +146,16 @@ class Yksikko:
 
     def laske_hyokkayksen_kohteet(self, nayta):
         # laskee kantamalla olevat ruudut ja lisää kohteisiin niissä olevat viholliset
-        self.__hyokkayksen_kohteet = []
-        self.laske_kantaman_sisalla_olevat_ruudut()
-        for ruutu in self.__ruudut_kantamalla:
-            if ruutu.yksikko is not None and ruutu.yksikko.omistaja != self.__omistaja:
-                self.__hyokkayksen_kohteet.append(ruutu.yksikko)
-        if not nayta:
-            return
-        self.nayta_hyokkayksen_kohteet()
-        self.nayta_kantaman_sisalla_olevat_ruudut()
+        if not self.hyokkays_kaytetty:
+            self.__hyokkayksen_kohteet = []
+            self.laske_kantaman_sisalla_olevat_ruudut()
+            for ruutu in self.__ruudut_kantamalla:
+                if ruutu.yksikko is not None and ruutu.yksikko.omistaja != self.__omistaja:
+                    self.__hyokkayksen_kohteet.append(ruutu.yksikko)
+            if not nayta:
+                return
+            self.nayta_hyokkayksen_kohteet()
+            self.nayta_kantaman_sisalla_olevat_ruudut()
 
     # eroaa laske_kantaman_sisalla_olevat_ruudut siten, että ruutu voi olla mikä tahansa ja tyhjiä ruutuja ei lasketa
     def kantamalla_olevat_viholliset(self, ruutu):
@@ -211,9 +220,6 @@ class Yksikko:
         self.__grafiikka.paivita_sijainti(self.__ruutu)
         self.liikuttu()
         self.laske_hyokkayksen_kohteet(False)
-        teksti = self.__class__.__name__ + \
-                 " liikkui ruutuun (" + str(ruutu.koordinaatit.x) + ", " + str(ruutu.koordinaatit.y) + ")"
-        self.kayttoliittyma.lisaa_pelilokiin(teksti)
         if self.omistaja == "PLR":
             self.kayttoliittyma.paivita_nappien_aktiivisuus()
             if len(self.__hyokkayksen_kohteet) == 0 or self.__hyokkays_kaytetty:
@@ -362,7 +368,8 @@ class Yksikko:
         hyokkaajan_vahinko, puolustajan_vahinko = self.laske_vahinko(hyokkaaja, self, False)
         self.ota_vahinkoa(puolustajan_vahinko)
         hyokkaaja.ota_vahinkoa(hyokkaajan_vahinko)
-        teksti1 = hyokkaaja.__class__.__name__ + " hyokkasi " + self.__class__.__name__ + " kimppuun:"
+        teksti1 = hyokkaaja.__class__.__name__ + hyokkaaja.__omistaja_teksti + " hyokkasi " + self.__class__.__name__ \
+                  + self.__omistaja_teksti + " kimppuun:"
         teksti2 = "Hyökkääjä otti " + str(hyokkaajan_vahinko) + " vahinkoa ja puolustaja otti " \
                   + str(puolustajan_vahinko) + " vahinkoa"
         self.kayttoliittyma.lisaa_pelilokiin(teksti1)
@@ -380,7 +387,12 @@ class Yksikko:
     def parannu(self, maara):
         self.__ominaisuudet.nyk_elama += maara
         if self.__ominaisuudet.nyk_elama > self.__ominaisuudet.max_elama:
+            maara = self.__ominaisuudet.max_elama - self.__ominaisuudet.nyk_elama
             self.__ominaisuudet.nyk_elama = self.__ominaisuudet.max_elama
+            teksti = self.__class__.__name__ + self.__omistaja_teksti + " parani täyteen elämään"
+        else:
+            teksti = self.__class__.__name__ + self.__omistaja_teksti + " parani " + str(maara) + " verran"
+        self.kayttoliittyma.lisaa_pelilokiin(teksti)
         self.__grafiikka.elamapalkki.paivita_koko()
         self.__grafiikka.paivita_tooltip()
         #print("Parannus: ", maara)
@@ -398,7 +410,7 @@ class Yksikko:
             vaikutus = Tilavaikutus(self, kesto, hyokkays, puolustus, liikkuminen, verenvuoto, taintuminen, loppuvaikutus)
             self.__ominaisuudet.tilavaikutukset.append(vaikutus)
             self.grafiikka.elamapalkki.paivita_tilavaikutukset()
-            teksti = self.__class__.__name__ + " sai tilavaikutuksen"
+            teksti = self.__class__.__name__ + self.__omistaja_teksti + " sai tilavaikutuksen"
             self.kayttoliittyma.lisaa_pelilokiin(teksti)
 
     def muuta_hyokkaysta(self, maara):
@@ -433,7 +445,7 @@ class Yksikko:
                     self.muuta_puolustusta(-vaikutus.puolustusbonus)
                     self.muuta_liikkumista(-vaikutus.liikkumisbonus)
                     self.__ominaisuudet.tilavaikutukset.remove(vaikutus)
-                    teksti = self.__class__.__name__ + " tilavaikutus loppui"
+                    teksti = self.__class__.__name__ + self.__omistaja_teksti + " tilavaikutus loppui"
                     self.kayttoliittyma.lisaa_pelilokiin(teksti)
                     if vaikutus.loppuvaikutus is not None:
                         v = vaikutus.loppuvaikutus
@@ -461,7 +473,7 @@ class Yksikko:
         # poistaa kaikki olemassa olevat viittaukset yksikköön ja piilottaa sen graafiset komponentit
         # jos valittu yksikkö, poista käyttöliittymästä
         if self.kayttoliittyma.__class__.__name__ == "Kayttoliittyma":
-            teksti = self.__class__.__name__ + " tuhoutui"
+            teksti = self.__class__.__name__ + self.__omistaja_teksti + " tuhoutui"
             self.kayttoliittyma.lisaa_pelilokiin(teksti)
             if self.__kayttoliittyma.valittu_yksikko == self:
                 self.__kayttoliittyma.tyhjenna_valinta()
@@ -523,17 +535,18 @@ class Yksikko:
         self.kayttoliittyma.paivita_peru_nappi()
 
     def pystyy_toimimaan(self):
-        if self.__ominaisuudet.nyk_energia < self.kyky1_hinta and \
-                self.__ominaisuudet.nyk_energia < self.kyky2_hinta and self.__liikkuminen_kaytetty:
-            return False
-        elif self.__liikkuminen_kaytetty and self.__hyokkays_kaytetty:
-            return False
+        if self.__liikkuminen_kaytetty:
+            if self.__hyokkays_kaytetty:
+                return False
+            elif not self.__pystyy_kayttamaan_kykyja() and len(self.hyokkayksen_kohteet) == 0:
+                return False
+            else:
+                return True
         else:
             return True
 
-    def pystyy_kayttamaan_kykyja(self):
-        if self.__ominaisuudet.nyk_energia < self.kyky1_hinta and \
-                self.__ominaisuudet.nyk_energia < self.kyky2_hinta and self.__liikkuminen_kaytetty:
+    def __pystyy_kayttamaan_kykyja(self):
+        if self.__ominaisuudet.nyk_energia < self.kyky1_hinta and self.__ominaisuudet.nyk_energia < self.kyky2_hinta:
             return False
         else:
             return True

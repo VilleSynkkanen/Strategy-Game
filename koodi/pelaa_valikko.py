@@ -16,7 +16,7 @@ class Pelaa_valikko(QtWidgets.QMainWindow):
         self.centralWidget().setLayout(self.__paa_layout)
 
         # set window
-        self.setGeometry(0, 0, self.__scene_size + 360, self.__scene_size + 20)
+        self.setGeometry(0, 0, self.__scene_size + 410, self.__scene_size + 20)
         self.setWindowTitle('Strategiapeli')
         self.show()
 

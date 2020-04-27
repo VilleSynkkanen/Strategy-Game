@@ -396,11 +396,11 @@ class Kenttaeditori(QtWidgets.QMainWindow):
             self.__joki_nappi.clicked.disconnect(self.valitse_poista_yksikko)
         elif tyyppi == "pelaaja":
             self.__valittu_omistaja = "PLR"
-            self.__tasanko_nappi.setText("JALKAVÄKI (PLR)")
-            self.__pelto_nappi.setText("RATSUVÄKI (PLR)")
-            self.__vuoristo_nappi.setText("JOUSIMIEHET (PLR)")
-            self.__kukkula_nappi.setText("TYKISTÖ (PLR)")
-            self.__silta_nappi.setText("PARANTAJA (PLR)")
+            self.__tasanko_nappi.setText("JALKAVÄKI (PEL)")
+            self.__pelto_nappi.setText("RATSUVÄKI (PEL)")
+            self.__vuoristo_nappi.setText("JOUSIMIEHET (PEL)")
+            self.__kukkula_nappi.setText("TYKISTÖ (PEL)")
+            self.__silta_nappi.setText("PARANTAJA (PEL)")
             self.__joki_nappi.setText("POISTA YKSIKKÖ")
             self.__tasanko_nappi.clicked.connect(self.valitse_jalkavaki)
             self.__pelto_nappi.clicked.connect(self.valitse_ratsuvaki)
@@ -416,11 +416,11 @@ class Kenttaeditori(QtWidgets.QMainWindow):
             self.__joki_nappi.clicked.disconnect(self.valitse_joki)
         elif tyyppi == "tietokone":
             self.__valittu_omistaja = "COM"
-            self.__tasanko_nappi.setText("JALKAVÄKI (COM)")
-            self.__pelto_nappi.setText("RATSUVÄKI (COM)")
-            self.__vuoristo_nappi.setText("JOUSIMIEHET (COM)")
-            self.__kukkula_nappi.setText("TYKISTÖ (COM)")
-            self.__silta_nappi.setText("PARANTAJA (COM)")
+            self.__tasanko_nappi.setText("JALKAVÄKI (TIET)")
+            self.__pelto_nappi.setText("RATSUVÄKI (TIET)")
+            self.__vuoristo_nappi.setText("JOUSIMIEHET (TIET)")
+            self.__kukkula_nappi.setText("TYKISTÖ (TIET)")
+            self.__silta_nappi.setText("PARANTAJA (TIET)")
             self.__joki_nappi.setText("POISTA YKSIKKÖ")
             self.__tasanko_nappi.clicked.connect(self.valitse_jalkavaki)
             self.__pelto_nappi.clicked.connect(self.valitse_ratsuvaki)
@@ -428,5 +428,3 @@ class Kenttaeditori(QtWidgets.QMainWindow):
             self.__kukkula_nappi.clicked.connect(self.valitse_tykisto)
             self.__silta_nappi.clicked.connect(self.valitse_parantaja)
             self.__joki_nappi.clicked.connect(self.valitse_poista_yksikko)
-
-

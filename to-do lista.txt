@@ -1,41 +1,29 @@
 Seuraavaksi:
--viimeistelyä
-	-buginkorjaukset
-	-käyttöliittymä
-	-muuta
-	-pelitestausta, korjauksia
-	-koodin siistiminen/parantelu
-		-toisteisuuden poisto (missä mahdollista)
-		-yksityiset muuttujat/metodit
-		
+-pelitestausta, korjauksia
+-koodin siistiminen/parantelu
+	-toisteisuuden poisto (missä mahdollista)
+	-yksityiset muuttujat/metodit
+-dokumentaatio
+-readme
+-repon siistiminen (järjestely, poista turhat)
+-tarkista, että kaikki on ok
+-palautus (dl 8.5 klo 14)
+
 Bugit
--toimivat yksiköt määrittely ei aina toimi oikein
+-mahdolliset kaatumiset (testaus)
 
-Käyttöliittymä
--ohjetekstit
--peliloki
--ulkoasun viimeistely
-
-Tekstit, peliloki yms.
--pelilokin hionta:
-	-tekstien kieliasu
-	-mitä kerrotaan, mitä ei
-	-enemmän rivejä?
--ohjeteksti
-	-kuinka paljon ohjeita annetaan?
--yksikön tiedot yms. tekstit
-
-Muuta:
--ajastin implementaatio (qwait vs oma)?
--tarkista asioiden poistaminen kunnolla (deletelater, viittausten perustellinen poistaminen)
+Testaus:
+-testaa yksikkötestit
+-pelaa
+-yritä saada kaatumaan
+-kokeile läppärillä
 
 Huonot puolet:
 -tekoälyn toiminnalliset puutteet
 -tekoälyn optimisaatio
--käyttöliittymän ulkoasu
+-käyttöliittymän ulkoasu/muut puutteet
 
 Aikataulu
--käyttöliittymä 28.4
--testaus, korjaukset tms. 30.4
+-testaus, korjaukset tms. 29.4
 -koodin siistiminen 1.5
 -dokumentaatio 8.5

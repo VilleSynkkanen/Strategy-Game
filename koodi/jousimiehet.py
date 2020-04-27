@@ -96,7 +96,7 @@ class Jousimiehet(Yksikko):
         self.peru_kyky1()
         self.kayta_energiaa(self.kyky1_hinta)
         self.hyokatty()
-        teksti = self.__class__.__name__ + " käytti nuolisateen"
+        teksti = self.__class__.__name__ + self.omistaja_teksti + " käytti nuolisateen"
         self.kayttoliittyma.lisaa_pelilokiin(teksti)
 
     def kyky2(self):
@@ -104,7 +104,7 @@ class Jousimiehet(Yksikko):
             self.ruutu.luo_kiilat(self.kyky2_bonus, self.kyky2_bonus_ratsuvaki)
             self.kayta_energiaa(self.kyky2_hinta)
             self.hyokatty()
-            teksti = self.__class__.__name__ + " käytti kiilat"
+            teksti = self.__class__.__name__ + self.omistaja_teksti + " käytti kiilat"
             self.kayttoliittyma.lisaa_pelilokiin(teksti)
 
     def kyky1_voi_kayttaa(self):

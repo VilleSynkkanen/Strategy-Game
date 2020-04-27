@@ -23,7 +23,7 @@ class Paavalikko(QtWidgets.QMainWindow):
         self.__paa_layout = QtWidgets.QVBoxLayout()  # Vertical main layout
         self.centralWidget().setLayout(self.__paa_layout)
 
-        self.setGeometry(0, 0, self.__scene_size + 360, self.__scene_size + 20)
+        self.setGeometry(0, 0, self.__scene_size + 410, self.__scene_size + 20)
         self.setWindowTitle('Strategiapeli')
         self.show()
 
@@ -182,6 +182,8 @@ class Paavalikko(QtWidgets.QMainWindow):
         self.__pelinohjain.kartta.etsi_yksikot()
         self.__pelinohjain.kartta.palauta_pelaajan_toimivat_yksikot()
         self.__pelinohjain.kartta.tarkista_toimivat_yksikot()
+        self.__pelinohjain.kartta.tarkista_toimivat_yksikot()
+        #print(self.__pelinohjain.kartta.pelaajan_toimivat_yksikot)
         for yksikko in self.__pelinohjain.kartta.pelaajan_yksikot:
             yksikko.grafiikka.palauta_vari()
             yksikko.grafiikka.elamapalkki.paivita_koko()
@@ -200,7 +202,7 @@ class Paavalikko(QtWidgets.QMainWindow):
             x = kiila[0]
             y = kiila[1]
             tiedot = self.yksikoiden_lukija.yksikot["jousimiehet"][1]
-            print(tiedot)
+            #print(tiedot)
             self.__pelinohjain.kartta.ruudut_koordinaateilla[x][y].luo_kiilat(
                 float(tiedot['kyky2_bonus']), float(tiedot['kyky2_bonus_ratsuvaki']))
             #print(tiedot['kyky2_bonus'], ",", tiedot['kyky2_bonus_ratsuvaki'])
@@ -236,5 +238,6 @@ class Paavalikko(QtWidgets.QMainWindow):
             self.__virheteksti_lataus.setText("")
 
     def poista_pelinohjain(self):
-        self.__pelinohjain.kayttoliittyma.deleteLater()
-        self.__pelinohjain = None
+        if self.__pelinohjain is not None:
+            self.__pelinohjain.kayttoliittyma.deleteLater()
+            self.__pelinohjain = None

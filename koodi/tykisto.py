@@ -111,7 +111,7 @@ class Tykisto(Yksikko):
         self.peru_kyky1()
         self.kayta_energiaa(self.kyky1_hinta)
         self.hyokatty()
-        teksti = self.__class__.__name__ + " käytti pommituksen"
+        teksti = self.__class__.__name__ + self.omistaja_teksti + " käytti pommituksen"
         self.kayttoliittyma.lisaa_pelilokiin(teksti)
 
     # kantamaa vähennetään ja hyökkäystä lisätään väliaikaisesti
@@ -135,7 +135,7 @@ class Tykisto(Yksikko):
         self.peru_kyky2()
         self.kayta_energiaa(self.kyky2_hinta)
         self.hyokatty()
-        teksti = self.__class__.__name__ + " käytti kanisterilaukauksen"
+        teksti = self.__class__.__name__ + self.omistaja_teksti + " käytti kanisterilaukauksen"
         self.kayttoliittyma.lisaa_pelilokiin(teksti)
 
     def peru_kyky2(self):
@@ -174,7 +174,7 @@ class Tykisto(Yksikko):
 
     def kyky1_tooltip_teksti(self):
         return "Ampuu kohdealuetta \n" \
-               "(valittu ruutu ja sen naapurit.\nHyökkää kaikkien alueella olevien yksiköiden kimppuun\n(" \
+               "(valittu ruutu ja sen naapurit).\nHyökkää kaikkien alueella olevien yksiköiden kimppuun\n(" \
                + str(100*self.__kyky1_hyokkayskerroin) +"% normaalista hyökkäyksestä).\n" + \
                "Vähentää kohteiden liikkumista " + str(-self.__kyky1_liikkuminen) + " verran " + \
                str(self.__kyky1_kesto) + " vuoron\najaksi. "\

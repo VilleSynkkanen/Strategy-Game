@@ -34,7 +34,7 @@ class Pelin_tallentaja:
         tiedosto = None
         try:
             tiedosto = open("pelitilanne/pelitilanne.txt", "w")
-            print(self.__pelinohjain.nimi)
+            #print(self.__pelinohjain.nimi)
             tiedosto.write("KENTAN NIMI: " + self.__pelinohjain.nimi)
             tiedosto.write("\nYKSIKOT:\n")
             kaikki_yksikot = []
@@ -104,16 +104,3 @@ class Pelin_tallentaja:
 
     def tyhjenna_tallennus(self):
         pass
-
-
-
-
-
-
-
-
-
-
-
-
-

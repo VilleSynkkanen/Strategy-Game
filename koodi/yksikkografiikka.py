@@ -226,7 +226,8 @@ class Yksikkografiikka(QtWidgets.QGraphicsPolygonItem):
                         self.__kayttoliittyma.valittu_yksikko.kayta_kyky2(self.__yksikko)
                 elif self.__yksikko.omistaja == "PLR" and self.__kayttoliittyma.valitsee_hyokkayksen_kohdetta is False:
                     self.__kayttoliittyma.valitse_yksikko(self.__yksikko)
-                elif self.__yksikko.omistaja == "COM" and self.__yksikko.kayttoliittyma.valitsee_hyokkayksen_kohdetta and \
+                elif self.__kayttoliittyma.valittu_yksikko is not None and self.__yksikko.omistaja == "COM" \
+                        and self.__yksikko.kayttoliittyma.valitsee_hyokkayksen_kohdetta and \
                         self.__yksikko in self.__kayttoliittyma.valittu_yksikko.hyokkayksen_kohteet:
                     self.__yksikko.hyokkayksen_kohde(self.__kayttoliittyma.valittu_yksikko)
         else:

@@ -20,7 +20,7 @@ class Kayttoliittyma(QtWidgets.QMainWindow):
         self.centralWidget().setLayout(self.__paa_layout)
 
         # set window
-        self.setGeometry(0, 0, self.__scene_size + 380, self.__scene_size + 20)
+        self.setGeometry(0, 0, self.__scene_size + 410, self.__scene_size + 20)
         self.setWindowTitle('Strategiapeli')
         self.show()
 
@@ -124,8 +124,8 @@ class Kayttoliittyma(QtWidgets.QMainWindow):
         self.__peliloki.setStyleSheet("font: 9pt Arial")
 
         self.__ohjeteksti = QtWidgets.QLabel("OHJETEKSTI\n", self)
-        self.__nappi_layout.addWidget(self.__ohjeteksti, 11, 0, 1, 0, alignment=QtCore.Qt.AlignTop)
-        self.__ohjeteksti.setStyleSheet("font: 18pt Arial")
+        self.__nappi_layout.addWidget(self.__ohjeteksti, 12, 0, 1, 0, alignment=QtCore.Qt.AlignBottom)
+        self.__ohjeteksti.setStyleSheet("font: 16pt Arial")
         self.__peliloki_tekstit = []
 
     @property
@@ -531,7 +531,3 @@ class Kayttoliittyma(QtWidgets.QMainWindow):
         if not virhe:
             self.pelinohjain.paavalikko.lue_tallennus()
         self.hide()
-
-
-
-

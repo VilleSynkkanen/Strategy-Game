@@ -68,7 +68,7 @@ class Jalkavaki(Yksikko):
         self.lisaa_tilavaikutus(self.kyky1_kesto, 0, self.kyky1_puolustus, self.kyky1_liikkuminen, 0, False)
         self.kayta_energiaa(self.kyky1_hinta)
         self.hyokatty()
-        teksti = self.__class__.__name__ + " käytti kilpiseinän"
+        teksti = self.__class__.__name__ + self.omistaja_teksti + " käytti kilpiseinän"
         self.kayttoliittyma.lisaa_pelilokiin(teksti)
 
     # voi käyttää myös pelkkään liikkumiseen
@@ -83,7 +83,7 @@ class Jalkavaki(Yksikko):
         if self.omistaja == "PLR":
             self.kayttoliittyma.valitse_yksikko(self)   # helpoin tapa "resetoida" vuoro
         self.hyokkays_vaikutus = Tilavaikutus(None, self.__kyky2_taintuminen_kesto, 0, 0, 0, 0, True)
-        teksti = self.__class__.__name__ + " käytti rynnäkön"
+        teksti = self.__class__.__name__ + self.omistaja_teksti + " käytti rynnäkön"
         self.kayttoliittyma.lisaa_pelilokiin(teksti)
 
     def kasittele_tilavaikutukset(self):
