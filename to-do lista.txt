@@ -26,6 +26,5 @@ Huonot puolet:
 -käyttöliittymän ulkoasu/muut puutteet
 
 Aikataulu
--koodin siistiminen 29.4
--testaus, korjaukset tms. 1.5
--dokumentaatio 8.5
+-koodin siistiminen, testaus, korjaukset tms. 1.5
+-dokumentaatio, readme tms. 7.5

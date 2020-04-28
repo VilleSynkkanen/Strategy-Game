@@ -382,10 +382,11 @@ class Yksikko:
             hyokkaaja.parannu(hyokkaaja.parannus_hyokkayksessa)
 
     def ota_vahinkoa(self, vahinko):
-        self.__ominaisuudet.nyk_elama -= vahinko
-        self.__grafiikka.elamapalkki.paivita_koko()
-        self.__grafiikka.paivita_tooltip()
-        self.__tarkasta_tuhoutuminen()
+        if self.__ominaisuudet is not None:
+            self.__ominaisuudet.nyk_elama -= vahinko
+            self.__grafiikka.elamapalkki.paivita_koko()
+            self.__grafiikka.paivita_tooltip()
+            self.__tarkasta_tuhoutuminen()
 
     def parannu(self, maara):
         if self.__ominaisuudet is not None:
@@ -442,7 +443,7 @@ class Yksikko:
                 if vaikutus.verenvuoto > 0:
                     self.ota_vahinkoa(vaikutus.verenvuoto)
                 # jatka käsittelyä, jos ei ole kuollut
-                if self.__ominaisuudet.tilavaikutukset is not None:
+                if self.__ominaisuudet is not None and self.__ominaisuudet.tilavaikutukset is not None:
                     vaikutus.vahenna_kestoa()
                     # jos vaikutus loppu, poista vaikutukset
                     if vaikutus.kesto <= 0:
