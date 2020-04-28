@@ -23,7 +23,7 @@ class Paavalikko(QtWidgets.QMainWindow):
         self.__paa_layout = QtWidgets.QVBoxLayout()  # Vertical main layout
         self.centralWidget().setLayout(self.__paa_layout)
 
-        self.setGeometry(0, 0, self.__scene_size + 410, self.__scene_size + 20)
+        self.setGeometry(0, 0, self.__scene_size + 420, self.__scene_size + 20)
         self.setWindowTitle('Strategiapeli')
         self.show()
 

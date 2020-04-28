@@ -20,7 +20,7 @@ class Kayttoliittyma(QtWidgets.QMainWindow):
         self.centralWidget().setLayout(self.__paa_layout)
 
         # set window
-        self.setGeometry(0, 0, self.__scene_size + 410, self.__scene_size + 20)
+        self.setGeometry(0, 0, self.__scene_size + 420, self.__scene_size + 20)
         self.setWindowTitle('Strategiapeli')
         self.show()
 
@@ -517,9 +517,7 @@ class Kayttoliittyma(QtWidgets.QMainWindow):
         self.tyhjenna_valinta()
         for nappi in self.__napit:
             nappi.setEnabled(False)
-        self.__tallenna_peli_napi.setEnabled(True)
-        self.__tallenna_peli_napi.clicked.connect(self.poistu_pelista)
-        self.__tallenna_peli_napi.setText("POISTU PELISTÄ")
+        self.__poistu_pelista_nappi.setEnabled(True)
 
     def poistu_pelista(self, virhe=False):
         self.pelinohjain.kartta.tyhjenna()

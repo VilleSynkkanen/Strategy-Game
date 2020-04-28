@@ -1,8 +1,8 @@
 Seuraavaksi:
--pelitestausta, korjauksia
 -koodin siistiminen/parantelu
 	-toisteisuuden poisto (missä mahdollista)
 	-yksityiset muuttujat/metodit
+-pelitestausta, korjauksia
 -dokumentaatio
 -readme
 -repon siistiminen (järjestely, poista turhat)
@@ -11,6 +11,8 @@ Seuraavaksi:
 
 Bugit
 -mahdolliset kaatumiset (testaus)
+	-kaatuminen, kuin yksikön ominaisuudet on None
+		-tarkista kaikki tapaukset, missä yksikkö voi kuolla ennen jonkun asian yrittämistä
 
 Testaus:
 -testaa yksikkötestit
@@ -24,6 +26,6 @@ Huonot puolet:
 -käyttöliittymän ulkoasu/muut puutteet
 
 Aikataulu
--testaus, korjaukset tms. 29.4
--koodin siistiminen 1.5
+-koodin siistiminen 29.4
+-testaus, korjaukset tms. 1.5
 -dokumentaatio 8.5

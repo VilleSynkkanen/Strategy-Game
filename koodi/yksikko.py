@@ -133,8 +133,9 @@ class Yksikko:
         return om
 
     def laske_mahdolliset_ruudut(self):
-        self.__mahdolliset_ruudut = self.__kayttoliittyma.pelinohjain.laske_polut(self.__ruutu,
-                                                                                  self.__ominaisuudet.liikkuminen)
+        if self.__ominaisuudet is not None:
+            self.__mahdolliset_ruudut = self.__kayttoliittyma.pelinohjain.laske_polut(self.__ruutu,
+                                                                                      self.__ominaisuudet.liikkuminen)
 
     def nayta_mahdolliset_ruudut(self):
         if self.omistaja == "PLR":
@@ -243,7 +244,7 @@ class Yksikko:
         for ruutu in self.__ruutu.naapurit:
             if ruutu.yksikko is not None and ruutu.yksikko.omistaja != self.__omistaja:
                 viholliset += 1
-        if viholliset > 1 or viholliset == 1 and yksi == True:
+        if viholliset > 1 or viholliset == 1 and yksi is True:
             return True
         return False
 
@@ -368,12 +369,14 @@ class Yksikko:
         hyokkaajan_vahinko, puolustajan_vahinko = self.laske_vahinko(hyokkaaja, self, False)
         self.ota_vahinkoa(puolustajan_vahinko)
         hyokkaaja.ota_vahinkoa(hyokkaajan_vahinko)
-        teksti1 = hyokkaaja.__class__.__name__ + hyokkaaja.__omistaja_teksti + " hyokkasi " + self.__class__.__name__ \
-                  + self.__omistaja_teksti + " kimppuun:"
-        teksti2 = "Hyökkääjä otti " + str(hyokkaajan_vahinko) + " vahinkoa ja puolustaja otti " \
-                  + str(puolustajan_vahinko) + " vahinkoa"
+        teksti1 = hyokkaaja.__class__.__name__ + hyokkaaja.__omistaja_teksti + " hyökkäsi "
+        teksti2 = self.__class__.__name__ + self.__omistaja_teksti + " kimppuun:"
+        teksti3 = "Hyökkääjä otti " + str(hyokkaajan_vahinko) + " vahinkoa ja"
+        teksti4 = "puolustaja otti " + str(puolustajan_vahinko) + " vahinkoa"
         self.kayttoliittyma.lisaa_pelilokiin(teksti1)
         self.kayttoliittyma.lisaa_pelilokiin(teksti2)
+        self.kayttoliittyma.lisaa_pelilokiin(teksti3)
+        self.kayttoliittyma.lisaa_pelilokiin(teksti4)
         # jalkaväen passiivinen kyky
         if hyokkaaja.__class__.__name__ == "Jalkavaki":
             hyokkaaja.parannu(hyokkaaja.parannus_hyokkayksessa)
@@ -385,17 +388,18 @@ class Yksikko:
         self.__tarkasta_tuhoutuminen()
 
     def parannu(self, maara):
-        self.__ominaisuudet.nyk_elama += maara
-        if self.__ominaisuudet.nyk_elama > self.__ominaisuudet.max_elama:
-            maara = self.__ominaisuudet.max_elama - self.__ominaisuudet.nyk_elama
-            self.__ominaisuudet.nyk_elama = self.__ominaisuudet.max_elama
-            teksti = self.__class__.__name__ + self.__omistaja_teksti + " parani täyteen elämään"
-        else:
-            teksti = self.__class__.__name__ + self.__omistaja_teksti + " parani " + str(maara) + " verran"
-        self.kayttoliittyma.lisaa_pelilokiin(teksti)
-        self.__grafiikka.elamapalkki.paivita_koko()
-        self.__grafiikka.paivita_tooltip()
-        #print("Parannus: ", maara)
+        if self.__ominaisuudet is not None:
+            self.__ominaisuudet.nyk_elama += maara
+            if self.__ominaisuudet.nyk_elama > self.__ominaisuudet.max_elama:
+                maara = self.__ominaisuudet.max_elama - self.__ominaisuudet.nyk_elama
+                self.__ominaisuudet.nyk_elama = self.__ominaisuudet.max_elama
+                teksti = self.__class__.__name__ + self.__omistaja_teksti + " parani täyteen elämään"
+            else:
+                teksti = self.__class__.__name__ + self.__omistaja_teksti + " parani " + str(maara) + " verran"
+            self.kayttoliittyma.lisaa_pelilokiin(teksti)
+            self.__grafiikka.elamapalkki.paivita_koko()
+            self.__grafiikka.paivita_tooltip()
+            #print("Parannus: ", maara)
 
     # saa yhden energian
     def saa_energiaa(self):
@@ -432,28 +436,29 @@ class Yksikko:
         return False
 
     def kasittele_tilavaikutukset(self):
-        for vaikutus in self.__ominaisuudet.tilavaikutukset:
-            # ota vahinkoa verenvuodosta
-            if vaikutus.verenvuoto > 0:
-                self.ota_vahinkoa(vaikutus.verenvuoto)
-            # jatka käsittelyä, jos ei ole kuollut
-            if self.__ominaisuudet.tilavaikutukset is not None:
-                vaikutus.vahenna_kestoa()
-                # jos vaikutus loppu, poista vaikutukset
-                if vaikutus.kesto <= 0:
-                    self.muuta_hyokkaysta(-vaikutus.hyokkaysbonus)
-                    self.muuta_puolustusta(-vaikutus.puolustusbonus)
-                    self.muuta_liikkumista(-vaikutus.liikkumisbonus)
-                    self.__ominaisuudet.tilavaikutukset.remove(vaikutus)
-                    teksti = self.__class__.__name__ + self.__omistaja_teksti + " tilavaikutus loppui"
-                    self.kayttoliittyma.lisaa_pelilokiin(teksti)
-                    if vaikutus.loppuvaikutus is not None:
-                        v = vaikutus.loppuvaikutus
-                        self.lisaa_tilavaikutus(v.kesto, v.hyokkaysbonus, v.puolustusbonus, v.liikkumisbonus,
-                                                v.verenvuoto, v.taintuminen)
-                        #print("loppuvaikutus")
-        if self.grafiikka.elamapalkki is not None:
-            self.grafiikka.elamapalkki.paivita_tilavaikutukset()
+        if self.__ominaisuudet is not None:
+            for vaikutus in self.__ominaisuudet.tilavaikutukset:
+                # ota vahinkoa verenvuodosta
+                if vaikutus.verenvuoto > 0:
+                    self.ota_vahinkoa(vaikutus.verenvuoto)
+                # jatka käsittelyä, jos ei ole kuollut
+                if self.__ominaisuudet.tilavaikutukset is not None:
+                    vaikutus.vahenna_kestoa()
+                    # jos vaikutus loppu, poista vaikutukset
+                    if vaikutus.kesto <= 0:
+                        self.muuta_hyokkaysta(-vaikutus.hyokkaysbonus)
+                        self.muuta_puolustusta(-vaikutus.puolustusbonus)
+                        self.muuta_liikkumista(-vaikutus.liikkumisbonus)
+                        self.__ominaisuudet.tilavaikutukset.remove(vaikutus)
+                        teksti = self.__class__.__name__ + self.__omistaja_teksti + " tilavaikutus loppui"
+                        self.kayttoliittyma.lisaa_pelilokiin(teksti)
+                        if vaikutus.loppuvaikutus is not None:
+                            v = vaikutus.loppuvaikutus
+                            self.lisaa_tilavaikutus(v.kesto, v.hyokkaysbonus, v.puolustusbonus, v.liikkumisbonus,
+                                                    v.verenvuoto, v.taintuminen)
+                            #print("loppuvaikutus")
+            if self.grafiikka.elamapalkki is not None:
+                self.grafiikka.elamapalkki.paivita_tilavaikutukset()
 
     def __inspiraatio_bonus(self):
         # käy läpi kaikki yksiköt ja tarkistaa, onko parantaja inspiraation kantamalla, jos on, lisätään bonusta
