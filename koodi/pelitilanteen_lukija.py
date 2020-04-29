@@ -24,7 +24,6 @@ class Pelitilanteen_lukija:
                 rivi = rivi.split(":")
                 if rivi[0] == "kentan nimi":
                     nimi = rivi[1].strip()
-                    # nimen validius
                     validi = False
                     kartat = os.scandir('kartat/')
                     for kartta in kartat:
@@ -54,7 +53,7 @@ class Pelitilanteen_lukija:
                         if not 1 <= int(rivi[0]) <= x_koko or not 1 <= int(rivi[1]) <= y_koko:
                             self.__ei_validi(tiedosto)
                             return None, None, None
-                        # omistajan täytyy olla plr tai com, yksikkötyypin täytyy olla oikae
+                        # omistajan täytyy olla plr tai com, yksikkötyypin täytyy olla oikea
                         if rivi[2].upper() not in omistajat or rivi[3] not in tyypit:
                             self.__ei_validi(tiedosto)
                             return None, None, None
@@ -74,13 +73,11 @@ class Pelitilanteen_lukija:
                             if uusi_rivi[0] != "tilavaikutus":
                                 self.__ei_validi(tiedosto)
                                 return None, None, None
-                        #print(rivi)
                         # tallennetaan numerot tupleen
                         # x,y,omistaja,tyyppi,elämä,energia,liikkuminen,hyökkäys,taintuminen
                         yksikko = (int(rivi[0]) - 1, int(rivi[1]) - 1, rivi[2].upper(), rivi[3], int(rivi[4]), int(rivi[5]),
                                    rivi[6], rivi[7])
                         hyokkaysvaikutus = None
-                        #print(yksikko)
                         if rivi[8] != "ei":
                             hyokkaysvaikutus = self.lue_vaikutus(rivi, 8)
                             if hyokkaysvaikutus is None:
@@ -91,8 +88,8 @@ class Pelitilanteen_lukija:
                         else:
                             # indeksi, jos hyökkäysvaikutusta ei ole
                             i = 9
+                        # tilavaikutusten lukeminen
                         tilavaikutukset = []
-                        #print(rivi)
                         while i < len(rivi):
                             if rivi[i].split(":")[0] == "tilavaikutus":
                                 tilavaikutus = self.lue_vaikutus(rivi, i)
@@ -126,8 +123,8 @@ class Pelitilanteen_lukija:
                         kiilat.append(koord)
                         i += 2
                     self.__kiilat_loydetty = True
-                    # print(kiilat)
                     tiedosto.close()
+                    # tietojen validiustarkastus
                     if not self.__yksikot_loydetty or not self.__kiilat_loydetty or not self.__nimi_loydetty:
                         self.__ei_validi(tiedosto)
                         return None, None, None
@@ -147,11 +144,10 @@ class Pelitilanteen_lukija:
 
     def lue_vaikutus(self, rivi, i):
         try:
+            # mahdolliset totuusarvot
             tot_arvot = ["kylla", "ei"]
-            #print(rivi[i])
             rivi[i] = rivi[i].split(":")[1]
             # vaikutuksen validiuden tarkistus
-            # kesto, hyokkays, puolustus, liikkuminen, verenvuoto, taintuminen, loppuvaikutus
             if int(rivi[i]) <= 0 or int(rivi[i + 4]) < 0 or rivi[i + 5].strip(";") not in tot_arvot:
                 return None
             vaikutus = rivi[i + 6].split(":")
@@ -162,6 +158,7 @@ class Pelitilanteen_lukija:
                 taintuminen = True
             loppuvaikutus = None
             if rivi[i + 6].strip(";") != "ei":
+                # loppuvaikutus luetaan kuten kaikki muutkin vaikutukset
                 loppuvaikutus = self.lue_vaikutus(rivi, i + 6)
             tilavaikutus = Tilavaikutus(None, int(rivi[i]), int(rivi[i + 1]), int(rivi[i + 2]),
                                         int(rivi[i + 3]), int(rivi[i + 4]), taintuminen, loppuvaikutus)

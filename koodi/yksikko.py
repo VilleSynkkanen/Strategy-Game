@@ -3,6 +3,7 @@ from yksikon_ominaisuudet import Yksikon_ominaisuudet
 from tilavaikutus import Tilavaikutus
 from random import randrange
 
+
 class Yksikko:
 
     def __init__(self, omistaja, ruutu, kayttoliittyma, ominaisuudet):
@@ -400,7 +401,6 @@ class Yksikko:
             self.kayttoliittyma.lisaa_pelilokiin(teksti)
             self.__grafiikka.elamapalkki.paivita_koko()
             self.__grafiikka.paivita_tooltip()
-            #print("Parannus: ", maara)
 
     # saa yhden energian
     def saa_energiaa(self):
@@ -457,7 +457,6 @@ class Yksikko:
                             v = vaikutus.loppuvaikutus
                             self.lisaa_tilavaikutus(v.kesto, v.hyokkaysbonus, v.puolustusbonus, v.liikkumisbonus,
                                                     v.verenvuoto, v.taintuminen)
-                            #print("loppuvaikutus")
             if self.grafiikka.elamapalkki is not None:
                 self.grafiikka.elamapalkki.paivita_tilavaikutukset()
 

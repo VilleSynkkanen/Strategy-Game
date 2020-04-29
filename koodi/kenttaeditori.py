@@ -290,51 +290,39 @@ class Kenttaeditori(QtWidgets.QMainWindow):
 
     def valitse_tasanko(self):
         self.__valittu_elementti = "tasanko"
-        print(self.__valittu_elementti)
 
     def valitse_kukkula(self):
         self.__valittu_elementti = "kukkula"
-        print(self.__valittu_elementti)
 
     def valitse_pelto(self):
         self.__valittu_elementti = "pelto"
-        print(self.__valittu_elementti)
 
     def valitse_vuoristo(self):
         self.__valittu_elementti = "vuoristo"
-        print(self.__valittu_elementti)
 
     def valitse_joki(self):
         self.__valittu_elementti = "joki"
-        print(self.__valittu_elementti)
 
     def valitse_silta(self):
         self.__valittu_elementti = "silta"
-        print(self.__valittu_elementti)
 
     def valitse_ratsuvaki(self):
         self.__valittu_elementti = "ratsuvaki"
-        print(self.__valittu_elementti)
 
     def valitse_jousimiehet(self):
         self.__valittu_elementti = "jousimiehet"
-        print(self.__valittu_elementti)
 
     def valitse_parantaja(self):
         self.__valittu_elementti = "parantaja"
-        print(self.__valittu_elementti)
 
     def valitse_tykisto(self):
         self.__valittu_elementti = "tykisto"
-        print(self.__valittu_elementti)
 
     def valitse_jalkavaki(self):
         self.__valittu_elementti = "jalkavaki"
-        print(self.__valittu_elementti)
 
     def valitse_poista_yksikko(self):
         self.__valittu_elementti = "poista"
-        print(self.__valittu_elementti)
 
     def __tallenna_kentta(self):
         tallenna_paalle = False

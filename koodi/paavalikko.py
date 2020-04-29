@@ -1,4 +1,4 @@
-from PyQt5 import QtWidgets, QtCore, QtGui, Qt
+from PyQt5 import QtWidgets
 from kenttaeditori import Kenttaeditori
 from pelinohjain import Pelinohjain
 from maaston_lukija import Maaston_lukija
@@ -18,15 +18,17 @@ class Paavalikko(QtWidgets.QMainWindow):
         if self.__kayttoliittyman_lukija.koko != 0:
             self.__scene_size = self.__kayttoliittyman_lukija.koko
         else:
+            # siltä varalta että tiedoston lukeminen epäonnistuu, määritellään oletuskoko
             self.__scene_size = 880
-        self.setCentralWidget(QtWidgets.QWidget())  # QMainWindown must have a centralWidget to be able to add layouts
-        self.__paa_layout = QtWidgets.QVBoxLayout()  # Vertical main layout
+        self.setCentralWidget(QtWidgets.QWidget())
+        self.__paa_layout = QtWidgets.QVBoxLayout()
         self.centralWidget().setLayout(self.__paa_layout)
 
         self.setGeometry(0, 0, self.__scene_size + 420, self.__scene_size + 20)
         self.setWindowTitle('Strategiapeli')
         self.show()
 
+        # widgetit
         self.__virheteksti = QtWidgets.QLabel("")
         self.__virheteksti_kartat = QtWidgets.QLabel("")
         self.__virheteksti_lataus = QtWidgets.QLabel("")
@@ -76,7 +78,6 @@ class Paavalikko(QtWidgets.QMainWindow):
         self.__pelitilanteen_lukija = Pelitilanteen_lukija()
         self.lue_tallennus()
         self.__pelinohjain = None
-        #print(self.__tilanne)
 
         # virheet
         if not self.__kayttoliittyman_lukija.lukeminen_onnistui:
@@ -129,6 +130,7 @@ class Paavalikko(QtWidgets.QMainWindow):
         self.__kenttaeditori_nappi.setEnabled(False)
 
     def __virhe_lukemisessa(self, tyyppi):
+        # virheen sattuessa näytetään päävalikossa virheteksti
         if tyyppi == "kayttoliittyma":
             self.__kriittinen_virhe()
             self.__virheteksti.setText("Käyttöliittymän tietojen lukemisessa tapahtui virhe.\n"
@@ -146,12 +148,14 @@ class Paavalikko(QtWidgets.QMainWindow):
             self.__virheteksti_lataus.setText("Pelitilanteen lukeminen epäonnistui")
 
     def __nayta_virheelliset_kartat(self):
+        # näytetään virheelliset kartat päävalikossa
         if len(self.__virheelliset_kartat) > 0:
             teksti = "Virheelliset kartat:\n"
             for kartta in self.__virheelliset_kartat:
                 teksti += kartta + "\n"
             self.__virheteksti_kartat.setText(teksti)
 
+    # kutsutaan, kun tallennettu peli ladataan
     def __jatka(self):
         # luodaan pelinohjain ja kartta ilman yksiköitä
         self.__pelinohjain = Pelinohjain(self.__kartan_nimi, self, False)
@@ -177,11 +181,12 @@ class Paavalikko(QtWidgets.QMainWindow):
                 self.__pelinohjain.kartta.ruudut_koordinaateilla[x][y].yksikko.lisaa_tilavaikutus(v.kesto,
                     v.hyokkaysbonus, v.puolustusbonus, v.liikkumisbonus, v.verenvuoto, v.taintuminen, v.loppuvaikutus)
 
+        # tehdään pelin jatkamiseksi tarvittavat toiminnot
         self.__pelinohjain.kartta.etsi_yksikot()
         self.__pelinohjain.kartta.palauta_pelaajan_toimivat_yksikot()
+        # tarkistus joudutaan tekemään jostain syystä kahdesti
         self.__pelinohjain.kartta.tarkista_toimivat_yksikot()
         self.__pelinohjain.kartta.tarkista_toimivat_yksikot()
-        #print(self.__pelinohjain.kartta.pelaajan_toimivat_yksikot)
         for yksikko in self.__pelinohjain.kartta.pelaajan_yksikot:
             yksikko.grafiikka.palauta_vari()
             yksikko.grafiikka.elamapalkki.paivita_koko()
@@ -200,11 +205,8 @@ class Paavalikko(QtWidgets.QMainWindow):
             x = kiila[0]
             y = kiila[1]
             tiedot = self.yksikoiden_lukija.yksikot["jousimiehet"][1]
-            #print(tiedot)
             self.__pelinohjain.kartta.ruudut_koordinaateilla[x][y].luo_kiilat(
                 float(tiedot['kyky2_bonus']), float(tiedot['kyky2_bonus_ratsuvaki']))
-            #print(tiedot['kyky2_bonus'], ",", tiedot['kyky2_bonus_ratsuvaki'])
-
 
     def __pelaa(self):
         if self.__pelaa_valikko is None:

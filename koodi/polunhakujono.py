@@ -1,5 +1,6 @@
 from jonon_elementti import Jonon_elementti
 
+
 # prioriteettijono polunhakua varten
 class Polunhakujono:
     def __init__(self):
@@ -16,7 +17,7 @@ class Polunhakujono:
 
     # poistaa elementin, jolla on pienin prioriteetti
     def poista(self):
-        min = 0     # pienimmän indeksi
+        min = 0     # pienimmän elementin indeksi
         for i in range(len(self.__jono)):
             if self.__jono[i].prioriteetti < self.__jono[min].prioriteetti:
                 min = i

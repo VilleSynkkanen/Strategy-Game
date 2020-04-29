@@ -2,6 +2,7 @@ import os
 
 from yksikon_ominaisuudet import Yksikon_ominaisuudet
 
+
 class Yksikoiden_lukija:
 
     def __init__(self):
@@ -38,7 +39,6 @@ class Yksikoiden_lukija:
                 kyvyt = {}
                 for rivi in lue:
                     rivi = rivi.lower()
-                    #print(rivi)
                     rivi = rivi.rstrip()
                     rivi = rivi.split(':')
                     i = 0
@@ -129,7 +129,6 @@ class Yksikoiden_lukija:
                 self.__luettu_maara += 1
                 lue.close()  # muista sulkea aina
 
-            #print(self.__luettu_maara)
             if self.__luettu_maara < 5:
                 self.__lukeminen_onnistui = False
 

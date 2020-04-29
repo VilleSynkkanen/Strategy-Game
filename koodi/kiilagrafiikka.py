@@ -6,7 +6,6 @@ class Kiilagrafiikka(QtWidgets.QGraphicsPolygonItem):
     def __init__(self, ruutu):
         super(Kiilagrafiikka, self).__init__()
         self.__koko = ruutu.grafiikka.koko
-        print(self.__koko)
         self.__ruutu = ruutu
         self.__kayttoliittyma = self.__ruutu.kayttoliittyma
         self.__vari = QtGui.QBrush(QtGui.QColor(140, 70, 20))

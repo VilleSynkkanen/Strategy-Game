@@ -20,7 +20,6 @@ class Kentan_tallentaja:
             tiedosto = open("kartat/" + tied_nimi, "w")
             x = len(kartta.ruudut_koordinaateilla)
             y = len(kartta.ruudut_koordinaateilla[0])
-            print(x, y)
             tiedosto.write("NIMI: " + nimi + "\n")
             tiedosto.write("KOKO: " + str(x) + "*" + str(y) + "\n")
             tiedosto.write("RUUDUT:")

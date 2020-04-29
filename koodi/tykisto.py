@@ -1,6 +1,6 @@
 from yksikko import Yksikko
-from time import sleep
 from ajastin import Ajastin
+
 
 class Tykisto(Yksikko):
 
@@ -90,8 +90,6 @@ class Tykisto(Yksikko):
         if not tekoaly:
             Ajastin.aloita_ajastin(self.visualisointi_viive, self.__kyky1_hyokkays)
         else:
-            # print(self.kyky1_kohteet)
-            # print("ko ", ruutu.koordinaatit.x, " ", ruutu.koordinaatit.x)
             self.__kyky1_hyokkays()
 
     # normaalit hyökkäyssäännöt pätevät

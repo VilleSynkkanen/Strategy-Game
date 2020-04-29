@@ -9,21 +9,21 @@ class Pelaa_valikko(QtWidgets.QMainWindow):
         super(Pelaa_valikko, self).__init__()
         self.__scene_size = paavalikko.scene_size  # kentän koko pikseleinä
         self.__paavalikko = paavalikko
-        self.__viive = 1400
+        self.__viive = 1500
 
-        self.setCentralWidget(QtWidgets.QWidget())  # QMainWindown must have a centralWidget to be able to add layouts
-        self.__paa_layout = QtWidgets.QHBoxLayout()  # Horizontal main layout
+        self.setCentralWidget(QtWidgets.QWidget())
+        self.__paa_layout = QtWidgets.QHBoxLayout()
         self.centralWidget().setLayout(self.__paa_layout)
 
-        # set window
+        # ikkuna
         self.setGeometry(0, 0, self.__scene_size + 420, self.__scene_size + 20)
         self.setWindowTitle('Strategiapeli')
         self.show()
 
-        # Add a scene for drawing 2d objects
+        # scene
         self.__scene = QtWidgets.QGraphicsScene()
 
-        # Add a view for showing the scene
+        # näkymä
         self.__nakyma = QtWidgets.QGraphicsView(self.__scene, self)
         self.__nakyma.adjustSize()
         self.__nakyma.show()
@@ -57,6 +57,7 @@ class Pelaa_valikko(QtWidgets.QMainWindow):
         self.__valitse_kentta.clicked.connect(self.__valitse)
         self.__poistu_nappi.clicked.connect(self.__poistu)
 
+        # karttojen piirtämiseen tarvittavat elementit
         self.__pelinohjain = None
         self.__kartta = None
         self.__valittu_elementti = None
@@ -108,7 +109,6 @@ class Pelaa_valikko(QtWidgets.QMainWindow):
             x /= y
             y = 1
         self.__scene.setSceneRect(0, 0, self.__scene_size * x, self.__scene_size * y)
-        # self.setGeometry(0, 0, self.scene_size * x + 420, self.scene_size * y + 20)
 
         # keskelle liikuttaminen
         res_x = self.paavalikko.kayttoliittyman_lukija.x
@@ -119,18 +119,15 @@ class Pelaa_valikko(QtWidgets.QMainWindow):
     def poista_pelinohjain(self):
         self.__pelinohjain = None
 
-
     def __piirra_kartta(self, nimi):
         x, y, ruudut, yksikot = self.__paavalikko.kartan_lukija.kartat[nimi]
         koko = (x, y)
         self.__koko_x = koko[0]
         self.__koko_y = koko[1]
-        # print(ruudut)
         self.__kartta = Kartta(koko[0], koko[1], ruudut, self)
-
         self.__aseta_scene_rect(koko[0], koko[1])
 
-        # tehdään vasta koko kartan luomisen jälkeen, kun kaikki ruudut ovat paikallaan
+        # lisätään maastot ja yksiköt vasta koko kartan luomisen jälkeen, kun kaikki ruudut ovat paikallaan
         for ruutu in self.__kartta.ruudut:
             ruutu.luo_maasto()
             ruutu.luo_grafiikka()
@@ -138,6 +135,7 @@ class Pelaa_valikko(QtWidgets.QMainWindow):
 
         self.__kartta.lisaa_yksikot(yksikot, self.__paavalikko.yksikoiden_lukija.yksikot)
 
+    # karttojen selaaminen eteenpäin
     def __seuraava(self):
         self.kartta.tyhjenna()
         self.__kartta_index += 1
@@ -146,6 +144,7 @@ class Pelaa_valikko(QtWidgets.QMainWindow):
         self.__piirra_kartta(self.__kartat[self.__kartta_index])
         self.__valitse_kentta.setText("VALITSE\n" + self.__kartat[self.__kartta_index])
 
+    # karttojen selaaminen taaksepäin
     def __edellinen(self):
         self.kartta.tyhjenna()
         self.__kartta_index -= 1

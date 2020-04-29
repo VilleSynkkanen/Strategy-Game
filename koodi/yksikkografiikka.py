@@ -1,6 +1,7 @@
 from PyQt5 import QtWidgets, QtGui, QtCore, Qt
 from elamapalkki import Elamapalkki
 
+
 class Yksikkografiikka(QtWidgets.QGraphicsPolygonItem):
 
     def __init__(self, luokka, ruutu, kayttoliittyma, omistaja, yksikko):
@@ -237,6 +238,5 @@ class Yksikkografiikka(QtWidgets.QGraphicsPolygonItem):
                     self.__yksikko.kayttoliittyma.kartta.korvaa_ruutu(self.__yksikko.ruutu,
                                                                       self.__kayttoliittyma.valittu_elementti)
                 elif self.__kayttoliittyma.valittu_elementti == "poista":
-                    print("fusk")
                     self.yksikko.tuhoudu()
                     self.__kayttoliittyma.kartta.poista_yksikko(self)

@@ -3,7 +3,6 @@ from pelinohjain import Pelinohjain
 from paavalikko import Paavalikko
 import sys
 from PyQt5.QtWidgets import QApplication
-from koordinaatit import Koordinaatit
 from yksikon_ominaisuudet import Yksikon_ominaisuudet
 from yksikoiden_lukija import Yksikoiden_lukija
 
@@ -70,7 +69,7 @@ class Polunhaun_testaus(unittest.TestCase):
         self.assertFalse(polunhaku.hae_polkua(aloitus, ruudut[3][3])[0])
         self.assertFalse(polunhaku.hae_polkua(aloitus, ruudut[14][10])[0])
 
-    # kutsu vain ruuduille, joihin pääsee varmuudella
+    # kutsu tätä metodia vain ruuduille, joihin pääsee varmuudella
     def ruutu_hinta(self, aloitus, kohde, polunhaku):
         ruudut, hinnat = polunhaku.hae_polkua(aloitus, kohde)
         hinta = polunhaku.laske_hinta(hinnat, kohde)

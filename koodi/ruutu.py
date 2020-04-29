@@ -1,7 +1,5 @@
-from koordinaatit import Koordinaatit
 from maasto import Maasto
 from ruutugrafiikka import Ruutugrafiikka
-from yksikko import Yksikko
 from jalkavaki import Jalkavaki
 from ratsuvaki import Ratsuvaki
 from jousimiehet import Jousimiehet

@@ -1,12 +1,13 @@
-from ruutu import Ruutu
-from koordinaatit import Koordinaatit
 from polunhakujono import Polunhakujono
+
 
 class Polunhaku:
 
     '''
-    osa koodista ja algoritmin periaate perustuu seuraavaan sivustoon:
+    polunhaku on toteutettu A*-algoritmilla
+    hae_polkua ja rakenna_polku -metodit perustuvat seuraavalta sivustolta löytyvään koodiin:
     https://www.redblobgames.com/pathfinding/a-star/implementation.html
+    koodiin on tehty jonkin verran muutoksia ja lisäyksiä
     '''
 
     def hae_polkua(self, alku, loppu, blokkaus=True):
@@ -21,7 +22,6 @@ class Polunhaku:
 
         while not jono.tyhja():
             nykyinen = jono.poista()
-
             if nykyinen == loppu:
                 break
             elif nyk_tulopaikat == len(tulopaikat):
@@ -29,10 +29,12 @@ class Polunhaku:
             nyk_tulopaikat = len(tulopaikat)
             if epaonnistumiset > 50:
                 # jos tulopaikkojen kasvatus epäonnistuu tarpeeksi, todetaan, että ruutuun ei pääse
+                # tehdään näin, jotta looppi ei jäisi jumiin
                 return False, False
 
             # nykyinen = ruutu
             if nykyinen is not None:
+                # laskenta, jos blokkaus otetaan huomioon
                 if blokkaus:
                     for seuraava in nykyinen.vapaat_naapurit():
                         uusi_hinta = hinta_tahan_mennessa[nykyinen] + seuraava.maasto.liikkumisen_hinta

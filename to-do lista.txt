@@ -1,15 +1,13 @@
 Seuraavaksi:
--koodin siistiminen/parantelu: tehty maastoon asti
+-koodin siistiminen/parantelu: tehty polunhaun testaukseen asti
 	-toisteisuuden poisto (missä mahdollista)
 	-kommentit
-	-turhat importit
-	-printit pois
-	-yksityiset metodit (toisella läpikäynnillä?)
+	-muut parannukset
 -testausta, korjauksia
 -dokumentaatio
 -readme
 -repon siistiminen (järjestely, poista turhat)
--tarkista, että kaikki on ok
+-lopputestaus ja -tarkistus
 -palautus (dl 8.5 klo 14)
 
 Bugit

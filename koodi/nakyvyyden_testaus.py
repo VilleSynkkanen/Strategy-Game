@@ -4,6 +4,7 @@ from paavalikko import Paavalikko
 import sys
 from PyQt5.QtWidgets import QApplication
 
+
 class Nakyvyyden_testaus(unittest.TestCase):
 
     # testi perustuu testikenttä-karttaan

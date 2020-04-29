@@ -49,7 +49,6 @@ class Parantaja_tekoaly(Parantaja):
         self.__kyky1_tykisto_prio = 1.3
 
         self.__kyky1_kohde = None
-
         self.__kyky2_kohde = None
         self.__kyky2_elama_potenssi = 2
         self.__kyky2_voima_kerroin = 0.1
@@ -140,7 +139,6 @@ class Parantaja_tekoaly(Parantaja):
     def hyokkays_toiminto(self):
         # katsotaan ensin, mahdolliset hyökkäyksen kohteet ja tallennetaan ne sanakirjaan
         paras_kohde = Tekoaly.hyokkays_toiminto(self)
-
         if paras_kohde is None:
             pass
         elif paras_kohde == "KYKY1":
@@ -155,9 +153,9 @@ class Parantaja_tekoaly(Parantaja):
         # käydään läpi kaikki mahdolliset ruudut ja pisteytetään ne
         self.laske_kantaman_sisalla_olevat_ruudut()
         vaihtoehdot = {}
-        vaihtoehdot[self.ruutu] = self.__pisteyta_ruutu_kyky2(self.ruutu)
+        vaihtoehdot[self.ruutu] = self.__pisteyta_ruutu_kyky1(self.ruutu)
         for ruutu in self.ruudut_kantamalla:
-            vaihtoehdot[ruutu] = self.__pisteyta_ruutu_kyky2(ruutu)
+            vaihtoehdot[ruutu] = self.__pisteyta_ruutu_kyky1(ruutu)
 
         paras = self.ruutu
         for ruutu in vaihtoehdot:
@@ -166,7 +164,7 @@ class Parantaja_tekoaly(Parantaja):
         self.__kyky1_kohde = paras
         return vaihtoehdot[paras]
 
-    def __pisteyta_ruutu_kyky2(self, ruutu):
+    def __pisteyta_ruutu_kyky1(self, ruutu):
         # pisteytyksessä lasketaan painotettu parannusmäärä
         # haetaan ruudut etsimällä annetun ruudun naapurit ja niiden naapurit
         alue = []
@@ -175,10 +173,11 @@ class Parantaja_tekoaly(Parantaja):
             if self.kayttoliittyma.pelinohjain.polunhaku.heuristiikka(ruutu, alkio) <= self.kyky1_kantama:
                 alue.append(alkio)
         pisteet = 0
+        # lasketaan jokaista alueen ruutua kohtaan painotettu (odotettu) parannusmäärä ja lasketaan ne yhteen
         for paikka in alue:
             if paikka.yksikko is not None and paikka.yksikko.omistaja == "COM":
                 puuttuva_elama = paikka.yksikko.ominaisuudet.puuttuva_elama()
-                parannus = self.laske_kyky2_parannus(ruutu, paikka)
+                parannus = self.laske_kyky1_parannus(ruutu, paikka)
                 if parannus > puuttuva_elama:
                     parannus = puuttuva_elama
                 if paikka.yksikko.__class__.__name__ == "Tykisto":

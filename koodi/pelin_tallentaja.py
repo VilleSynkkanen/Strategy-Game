@@ -1,5 +1,3 @@
-
-
 class Pelin_tallentaja:
 
     def __init__(self, pelinohjain):
@@ -34,7 +32,6 @@ class Pelin_tallentaja:
         tiedosto = None
         try:
             tiedosto = open("pelitilanne/pelitilanne.txt", "w")
-            #print(self.__pelinohjain.nimi)
             tiedosto.write("KENTAN NIMI: " + self.__pelinohjain.nimi)
             tiedosto.write("\nYKSIKOT:\n")
             kaikki_yksikot = []
@@ -42,7 +39,6 @@ class Pelin_tallentaja:
                 kaikki_yksikot.append(yksikko)
             for yksikko in self.__pelinohjain.kartta.tietokoneen_yksikot:
                 kaikki_yksikot.append(yksikko)
-
             # yksiköiden tallennus
             for yksikko in kaikki_yksikot:
                 x = str(yksikko.ruutu.koordinaatit.x + 1)
@@ -67,8 +63,7 @@ class Pelin_tallentaja:
                 for vaikutus in yksikko.ominaisuudet.tilavaikutukset:
                     self.__kirjoita_tilavaikutus(tiedosto, vaikutus)
                 tiedosto.write("\n")
-
-            # kiilat
+            # kiilojen tallennus
             tiedosto.write("KIILAT")
             for ruutu in self.__pelinohjain.kartta.ruudut:
                 if ruutu.kiilat is not None:
@@ -76,7 +71,6 @@ class Pelin_tallentaja:
                     y = str(ruutu.koordinaatit.y + 1)
                     tiedosto.write(":" + x + "," + y)
             tiedosto.write("\n")
-
             tiedosto.write("LOPPU")
             tiedosto.close()
             self.__pelinohjain.kayttoliittyma.poistu_pelista()
@@ -96,11 +90,9 @@ class Pelin_tallentaja:
         tiedosto.write("tilavaikutus:" + str(tilavaikutus.kesto) + "," + str(tilavaikutus.hyokkaysbonus)
                        + "," + str(tilavaikutus.puolustusbonus) + "," + str(tilavaikutus.liikkumisbonus)
                        + "," + str(tilavaikutus.verenvuoto) + "," + taintuminen)
+        # loppuvaikutus kirjoitetaan kuten mikä tahansa muu tilavaikutus
         if tilavaikutus.loppuvaikutus is not None:
             tiedosto.write(",")
             self.__kirjoita_tilavaikutus(tiedosto, tilavaikutus.loppuvaikutus, True)
         else:
             tiedosto.write(",ei;")
-
-    def tyhjenna_tallennus(self):
-        pass

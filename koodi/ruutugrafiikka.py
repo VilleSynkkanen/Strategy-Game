@@ -1,6 +1,5 @@
-from PyQt5 import QtGui, QtWidgets, QtCore, Qt
+from PyQt5 import QtGui, QtWidgets, Qt
 
-from kayttoliittyma import Kayttoliittyma
 
 class Ruutugrafiikka(QtWidgets.QGraphicsRectItem):
 
@@ -75,7 +74,6 @@ class Ruutugrafiikka(QtWidgets.QGraphicsRectItem):
         self.__kayttoliittyma.scene.addItem(self)
 
     def mousePressEvent(self, *args, **kwargs):
-        # print(self.__ruutu.koordinaatit.x, " ", self.__ruutu.koordinaatit.y)
         if self.__kayttoliittyma.__class__.__name__ == "Kayttoliittyma":
             if self.__kayttoliittyma.valittu_yksikko is not None:
                 if self.__kayttoliittyma.valittu_yksikko.kyky1_valitsee_kohteita:
@@ -94,12 +92,10 @@ class Ruutugrafiikka(QtWidgets.QGraphicsRectItem):
                 if self.__kayttoliittyma.valittu_elementti in maastot:
                     self.__ruutu.kayttoliittyma.kartta.korvaa_ruutu(self.__ruutu, self.__kayttoliittyma.valittu_elementti)
                 elif self.__kayttoliittyma.valittu_elementti in yksikot and self.__ruutu.yksikko is None:
-                    #print(self.__ruutu.kartta)
                     self.__kayttoliittyma.kartta.lisaa_yksikko(self.__ruutu, self.__kayttoliittyma.valittu_elementti,
                         self.__kayttoliittyma.paavalikko.yksikoiden_lukija.yksikot[self.__kayttoliittyma.valittu_elementti],
                                                                self.__kayttoliittyma.valittu_omistaja)
                 elif self.__kayttoliittyma.valittu_elementti == "poista" and self.__ruutu.yksikko is not None:
-                    print("fusk")
                     self.__kayttoliittyma.kartta.poista_yksikko(self.__ruutu.yksikko)
                     self.__ruutu.yksikko.tuhoudu()
 

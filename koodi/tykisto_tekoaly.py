@@ -1,6 +1,7 @@
 from tekoaly import Tekoaly
 from tykisto import Tykisto
 
+
 class Tykisto_tekoaly(Tykisto):
 
     def __init__(self, omistaja, ruutu, kayttoliittyma, ominaisuudet, kyvyt):
@@ -167,7 +168,6 @@ class Tykisto_tekoaly(Tykisto):
                         pisteet = 0
                         break
                     elif kohde.yksikko.omistaja == "PLR":
-                        #print(kohde.yksikko.__class__.__name__)
                         pisteet += Tekoaly.pisteyta_pelkka_kohde(self, kohde.yksikko)
                         vihollinen_ruudussa = True
             if vihollinen_ruudussa:
@@ -179,8 +179,6 @@ class Tykisto_tekoaly(Tykisto):
             if vaihtoehdot[vaihtoehto] > korkeimmat_pisteet:
                 korkeimmat_pisteet = vaihtoehdot[vaihtoehto]
                 paras_kohde = vaihtoehto
-                # print(korkeimmat_pisteet)
-                # print(paras_kohde.koordinaatit.x, " ", paras_kohde.koordinaatit.y)
         self.__kyky1_kohde = paras_kohde
         self.ominaisuudet.hyokkays = alkuperainen
         return korkeimmat_pisteet * self.__kyky1_prio

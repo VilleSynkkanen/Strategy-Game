@@ -6,6 +6,7 @@ from PyQt5.QtWidgets import QApplication
 import sys
 import unittest
 
+
 class Tekoalyn_testaus(unittest.TestCase):
 
     '''
