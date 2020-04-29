@@ -1,6 +1,7 @@
 from yksikko import  Yksikko
 from tilavaikutus import Tilavaikutus
 
+
 class Jalkavaki(Yksikko):
 
     def __init__(self, omistaja, ruutu, kayttoliittyma, ominaisuudet, kyvyt):
@@ -8,7 +9,7 @@ class Jalkavaki(Yksikko):
         self.luo_grafiikka()
         # pelkkä numero (ei prosentti/kerroin)
         # ottaa ensin vahinkoa, sitten paranee
-        self.__parannus_hyokkayksessa = 2
+        self.__parannus_hyokkayksessa = int(kyvyt["parannus_hyokkayksessa"])
 
         self.__kyky1_hinta = int(kyvyt["kyky1_hinta"])
         self.__kyky1_kesto = int(kyvyt["kyky1_kesto"])
@@ -19,9 +20,6 @@ class Jalkavaki(Yksikko):
         self.__kyky2_kantama = int(kyvyt["kyky2_kantama"])
         self.__kyky2_bonushyokkays = int(kyvyt["kyky2_bonushyokkays"])
         self.__kyky2_taintuminen_kesto = int(kyvyt["kyky2_taintuminen_kesto"])
-
-
-    # propertyt
 
     @property
     def parannus_hyokkayksessa(self):
@@ -59,10 +57,7 @@ class Jalkavaki(Yksikko):
     def kyky2_taintuminen_kesto(self):
         return self.__kyky2_taintuminen_kesto
 
-    # passiivinen tehty
-    # kyky 1 tehty
-    # kyky 2 tehty
-
+    # kyky1 lisää tilavaikutuksen yksikölle
     def kyky1(self):
         super(Jalkavaki, self).kyky1()
         self.lisaa_tilavaikutus(self.kyky1_kesto, 0, self.kyky1_puolustus, self.kyky1_liikkuminen, 0, False)
@@ -71,10 +66,8 @@ class Jalkavaki(Yksikko):
         teksti = self.__class__.__name__ + self.omistaja_teksti + " käytti kilpiseinän"
         self.kayttoliittyma.lisaa_pelilokiin(teksti)
 
-    # voi käyttää myös pelkkään liikkumiseen
-    # ensin valitaan ruutu, siten hyökkäyksen kohde
-    # käytännössä antaa uuden vuoron, vähentää liikkumista ja nostaa hyökkäystä väliaikaisesti
-    # lisäämällä yhden vuoron tilavaikutuksen
+    # kyky2 antaa uuden vuoron, vähentää liikkumista ja nostaa hyökkäystä väliaikaisesti
+    # lisäämällä yhden vuoron tilavaikutuksen ja lisää hyökkäykseen tilavaikutuksen
     def kyky2(self):
         liikkuminen = self.kyky2_kantama - self.ominaisuudet.liikkuminen
         self.lisaa_tilavaikutus(1, self.kyky2_bonushyokkays, 0, liikkuminen, 0, False)
@@ -86,9 +79,9 @@ class Jalkavaki(Yksikko):
         teksti = self.__class__.__name__ + self.omistaja_teksti + " käytti rynnäkön"
         self.kayttoliittyma.lisaa_pelilokiin(teksti)
 
+    # hyökkäysvaikutus poistetaan vaikutusten käsittelyn yhteydessä
     def kasittele_tilavaikutukset(self):
         super(Jalkavaki, self).kasittele_tilavaikutukset()
-        # jos kyky 2 on antanut hyökkäykseen vaikutuksen, se poistetaan vuoron lopussa
         if self.hyokkays_vaikutus is not None:
             self.hyokkays_vaikutus = None
 

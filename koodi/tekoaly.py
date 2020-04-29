@@ -2,6 +2,33 @@ from math import sqrt
 
 
 class Tekoaly:
+    '''
+        -jos on kohteita kantamalla, valitsee niistä yhden, jonka viereen liikkuu pisteytyksen perusteella
+            -heikompien/tiettyjen yksikkötyyppejen priorisaatio
+            -ei mieluiten mene huonoon maastoon
+        -vaihtoehtoisesti liikkuu hyvään maastoon, jos ei heikkoja vihollisia tarjolla
+
+        eli siis pisteytykseen vaikuttaa:
+        -mahdollisen vihollisen puolustus, elämä, tyyppi, ruudun maasto
+        -maasto
+        (-läheiset omat yksiköt) jos toimii hyvin
+        -pääsy lähemmäs vihollista
+
+        mahdollisia apukeinoja:
+        -ylempi voima, joka päättää, mitä kohti liikutaan, mahdollisesti useita vaihtoehtoja
+            -päättää, ollanko aggressiivisia vai passiivisia, mahdollinen säätö tiedostojen kautta
+            -alue, jota kohti liikutaan
+            -yksiköiden päätöksenteko hoitaa yksityiskohdat
+
+        ensin katsotaan, halutaanko liikkua johonkin
+        mahdollisen liikkumisen jälkeen katsotaan, halutaanko käyttää kykyjä tai hyökätä
+
+        Kohteen/kyvyn valintaan vaikuttaa:
+        -kohteiden tyyppi (priorisaatiokertoimet)
+        -odotettujen vahinkojen suhde (suurempi parempi)
+        -onko mahdollista käyttää kyky: jokaisella kyvyllä oma pisteytys
+        '''
+
 
     @staticmethod
     def liike(yksikko, kohderuutu, palauta=False):

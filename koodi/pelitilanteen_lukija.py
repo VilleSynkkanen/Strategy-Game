@@ -141,6 +141,9 @@ class Pelitilanteen_lukija:
         except ValueError:
             self.__ei_validi(tiedosto)
             return None, None, None
+        except KeyError:
+            self.__ei_validi(tiedosto)
+            return None, None, None
 
     def lue_vaikutus(self, rivi, i):
         try:

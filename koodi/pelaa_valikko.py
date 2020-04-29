@@ -133,7 +133,7 @@ class Pelaa_valikko(QtWidgets.QMainWindow):
         # tehdään vasta koko kartan luomisen jälkeen, kun kaikki ruudut ovat paikallaan
         for ruutu in self.__kartta.ruudut:
             ruutu.luo_maasto()
-            ruutu.luo_grafiikka(self.__kartta.ruudun_koko)
+            ruutu.luo_grafiikka()
             ruutu.etsi_kartta()
 
         self.__kartta.lisaa_yksikot(yksikot, self.__paavalikko.yksikoiden_lukija.yksikot)

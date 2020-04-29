@@ -1,5 +1,6 @@
 import os
 
+
 class Kayttoliittyman_lukija:
 
     def __init__(self):
@@ -35,22 +36,19 @@ class Kayttoliittyman_lukija:
                     self.__x = int(tieto[0])
                     self.__y = int(tieto[1])
                     if self.__x <= 0 or self.__y <= 0:
-                        self.__lukeminen_onnistui = False
-                        lue.close()
+                        self.__ei_validi(lue)
                         return
                     x_y_loydetty = True
                 elif rivi[0] == "ikkunan koko":
                     self.__koko = int(rivi[1])
                     if self.__koko <= 0:
-                        self.__lukeminen_onnistui = False
-                        lue.close()
+                        self.__ei_validi(lue)
                         return
                     koko_loydetty = True
                 elif rivi[0] == "viive":
                     self.__viive = int(rivi[1])
                     if self.__viive < 0:
-                        self.__lukeminen_onnistui = False
-                        lue.close()
+                        self.__ei_validi(lue)
                         return
                     viive_loydetty = True
                 elif rivi[0] == "loppu":
@@ -59,19 +57,13 @@ class Kayttoliittyman_lukija:
                         self.__lukeminen_onnistui = False
                     break
         except IndexError:
-            self.__lukeminen_onnistui = False
-            if lue is not None and not lue.closed:
-                lue.close()
+            self.__ei_validi(lue)
             return
         except ValueError:
-            self.__lukeminen_onnistui = False
-            if lue is not None and not lue.closed:
-                lue.close()
+            self.__ei_validi(lue)
             return
         except OSError:
-            self.__lukeminen_onnistui = False
-            if lue is not None and not lue.closed:
-                lue.close()
+            self.__ei_validi(lue)
             return
 
     @property
@@ -93,3 +85,8 @@ class Kayttoliittyman_lukija:
     @property
     def lukeminen_onnistui(self):
         return self.__lukeminen_onnistui
+
+    def __ei_validi(self, tiedosto):
+        self.__lukeminen_onnistui = False
+        if tiedosto is not None and not tiedosto.closed:
+            tiedosto.close()

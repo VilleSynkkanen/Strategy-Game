@@ -7,6 +7,7 @@ PUOLUSTUS: 13
 KANTAMA: 1
 PISTEHINTA: 60
 KYVYT:
+parannus_hyokkayksessa: 2
 kyky1_hinta: 6
 kyky1_kesto: 3
 kyky1_puolustus: 3

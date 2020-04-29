@@ -12,9 +12,7 @@ class Elamapalkki(QtWidgets.QGraphicsPolygonItem):
         self.__vaikutus_vari = QtGui.QBrush(QtGui.QColor(115, 0, 115))
         self.__yksikko = yksikko
 
-        # piirrä palkki
         self.paivita_koko()
-
         brush = QtGui.QBrush(self.__vari)
         self.setBrush(brush)
 
@@ -45,6 +43,7 @@ class Elamapalkki(QtWidgets.QGraphicsPolygonItem):
 
     # palkin väri muuttuu ja palkki saa tooltipin, kun yksiköllä on jokin tilavaikutus
     def paivita_tilavaikutukset(self):
+        # jos on vaikutuksia, etsitään ne
         if len(self.__yksikko.ominaisuudet.tilavaikutukset) != 0:
             brush = QtGui.QBrush(self.__vaikutus_vari)
             self.setBrush(brush)

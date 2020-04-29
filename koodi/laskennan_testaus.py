@@ -9,6 +9,7 @@ from yksikko import Yksikko
 from random import randrange
 from tilavaikutus import Tilavaikutus
 
+
 class Laskennan_testaus(unittest.TestCase):
 
     '''
@@ -295,8 +296,6 @@ class Laskennan_testaus(unittest.TestCase):
         self.assertEqual(pel_yks.ominaisuudet.nyk_elama, pel_yks.ominaisuudet.max_elama)
 
     def vahingon_laskenta(self, hyokkaaja, puolustaja, odotettu=True):
-        # perustuu tällä hetkellä kovakoodattuihin arvoihin
-        # voi joutua muuttamaan myöhemmin
         perusvahinko = 10
         min_vahinko = 2
         max_vahinko = 40

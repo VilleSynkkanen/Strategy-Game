@@ -1,13 +1,11 @@
 from jalkavaki import Jalkavaki
 from tekoaly import  Tekoaly
-from ajastin import Ajastin
-from math import sqrt
 from PyQt5 import QtTest
+
 
 class Jalkavaki_tekoaly(Jalkavaki):
     
     def __init__(self, omistaja, ruutu, kayttoliittyma, ominaisuudet, kyvyt):
-        # tarvitaan (ainakin) grafiikan luontia varten
         self.__class__.__name__ = "Jalkavaki"
         super(Jalkavaki_tekoaly, self).__init__(omistaja, ruutu, kayttoliittyma, ominaisuudet, kyvyt)
 
@@ -124,41 +122,14 @@ class Jalkavaki_tekoaly(Jalkavaki):
     def laheisyys_bonus_yksikot(self):
         return self.__laheisyys_bonus_yksikot
 
-    '''
-    -jos on kohteita kantamalla, valitsee niistä yhden, jonka viereen liikkuu pisteytyksen perusteella
-        -heikompien/tiettyjen yksikkötyyppejen priorisaatio
-        -ei mieluiten mene huonoon maastoon
-    -vaihtoehtoisesti liikkuu hyvään maastoon, jos ei heikkoja vihollisia tarjolla
-    
-    eli siis pisteytykseen vaikuttaa:
-    -mahdollisen vihollisen puolustus, elämä, tyyppi, ruudun maasto
-    -maasto
-    (-läheiset omat yksiköt) jos toimii hyvin
-    -pääsy lähemmäs vihollista
-    
-    mahdollisia apukeinoja: 
-    -ylempi voima, joka päättää, mitä kohti liikutaan, mahdollisesti useita vaihtoehtoja
-        -päättää, ollanko aggressiivisia vai passiivisia, mahdollinen säätö tiedostojen kautta
-        -alue, jota kohti liikutaan
-        -yksiköiden päätöksenteko hoitaa yksityiskohdat
-        
-    ensin katsotaan, halutaanko liikkua johonkin
-    mahdollisen liikkumisen jälkeen katsotaan, halutaanko käyttää kykyjä tai hyökätä
-    
-    Kohteen/kyvyn valintaan vaikuttaa:
-    -kohteiden tyyppi (priorisaatiokertoimet)
-    -odotettujen vahinkojen suhde (suurempi parempi)
-    -onko mahdollista käyttää kyky: jokaisella kyvyllä oma pisteytys
-    '''
-
     def liike(self, kohderuutu):
+        # arvioidaan paras kohde liikkumiselle
         self.__kohderuutu = kohderuutu
         Tekoaly.liike(self, kohderuutu)
 
     def hyokkays_toiminto(self):
-        # katsotaan ensin, mahdolliset hyökkäyksen kohteet ja tallennetaan ne sanakirjaan
+        # katsotaan ensin, mahdolliset hyökkäyksen kohteet ja kyvyt ja tallennetaan ne sanakirjaan
         paras_kohde = Tekoaly.hyokkays_toiminto(self)
-
         if paras_kohde is None:
             pass
         elif paras_kohde == "KYKY1":
@@ -185,7 +156,7 @@ class Jalkavaki_tekoaly(Jalkavaki):
             etaisyydella = 0
         return etaisyydella
 
-    # pisteytys: jos kyky2 kantama sisällä on parempi kohde kuin vieressä oleva, enemmän pisteitä
+    # pisteytys sen perusteella, minkä vihollisyksiköiden viereen voidaan liikkua, jos kyky käytetään
     def pisteyta_kyky2(self):
         self.__kyky2_ruutu = None
         # muutetaan liikkuminen väliaikaisesti, sitten pisteytetään ruudut
@@ -204,11 +175,11 @@ class Jalkavaki_tekoaly(Jalkavaki):
         self.ominaisuudet.liikkuminen = alkuperainen
         self.__kohderuutu = None
         self.__kyky2_ruutu = paras
-        # jos kohteen vieressä ei ole vihollisia, vähennetään pistemäärää
         viholliset = False
         for ruutu in self.__kyky2_ruutu.naapurit:
             if ruutu.yksikko is not None and ruutu.yksikko.omistaja == "PLR":
                 viholliset = True
+        # jos kohteen vieressä ei ole vihollisia, vähennetään pistemäärää
         if not viholliset:
             vaihtoehdot[paras] *= self.__kyky2_ei_vihollista_kerroin
         return vaihtoehdot[paras] * self.__kyky2_prio
@@ -228,5 +199,5 @@ class Jalkavaki_tekoaly(Jalkavaki):
         # läheinen oma yksikkö
         etaisyyskerroin = Tekoaly.pisteyta_oman_yksikon_laheisyys(self, ruutu)
         pisteet *= etaisyyskerroin
-        #print(pisteet)
+
         return pisteet

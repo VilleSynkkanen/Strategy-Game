@@ -179,6 +179,8 @@ class Yksikoiden_lukija:
         try:
             if tyyppi == "jalkavaki":
                 # tarkistus
+                if kyvyt['parannus_hyokkayksessa'] <= 0:
+                    return False
                 if kyvyt['kyky1_hinta'] <= 0:
                     return False
                 if kyvyt['kyky1_kesto'] <= 0:

@@ -1,8 +1,7 @@
-from PyQt5 import QtWidgets, QtCore, QtGui, QtTest
+from PyQt5 import QtWidgets, QtTest
 from kartta import Kartta
 from kentan_tallentaja import Kentan_tallentaja
 from kartan_lukija import Kartan_lukija
-import sys
 
 
 class Kenttaeditori(QtWidgets.QMainWindow):
@@ -11,21 +10,21 @@ class Kenttaeditori(QtWidgets.QMainWindow):
         super().__init__()
         self.__scene_size = paavalikko.scene_size       # kentän koko pikseleinä
         self.__paavalikko = paavalikko
-        self.__viive = 1400
+        self.__viive = 1500             # tallennuksen onnistumisen ja päävalikkoon palaamisen välinen viive
 
-        self.setCentralWidget(QtWidgets.QWidget())  # QMainWindown must have a centralWidget to be able to add layouts
-        self.__paa_layout = QtWidgets.QHBoxLayout()  # Horizontal main layout
+        self.setCentralWidget(QtWidgets.QWidget())
+        self.__paa_layout = QtWidgets.QHBoxLayout()
         self.centralWidget().setLayout(self.__paa_layout)
 
-        # set window
+        # ikkuna
         self.setGeometry(0, 0, self.__scene_size + 420, self.__scene_size + 20)
         self.setWindowTitle('Strategiapeli')
         self.show()
 
-        # Add a scene for drawing 2d objects
+        # scene
         self.__scene = QtWidgets.QGraphicsScene()
 
-        # Add a view for showing the scene
+        # näkymä
         self.__nakyma = QtWidgets.QGraphicsView(self.__scene, self)
         self.__nakyma.adjustSize()
         self.__nakyma.show()
@@ -88,7 +87,6 @@ class Kenttaeditori(QtWidgets.QMainWindow):
         self.__silta_nappi.setEnabled(False)
         self.__joki_nappi.setEnabled(False)
 
-        # nappi widgetit
         self.__nappi_layout.addWidget(self.__uusi_ohje, 0, 0)
         self.__nappi_layout.addWidget(self.__muokkaa_ohje, 0, 1)
         self.__nappi_layout.addWidget(self.__koko, 1, 0)
@@ -122,7 +120,7 @@ class Kenttaeditori(QtWidgets.QMainWindow):
 
         self.__kartta = None
 
-        # maasto tai yksikkö
+        # voi olla maasto tai yksikkö
         self.__valittu_elementti = None
         self.__valittu_omistaja = None
 
@@ -130,6 +128,7 @@ class Kenttaeditori(QtWidgets.QMainWindow):
         self.__editoi_kenttaa = False
         self.__muokkaa_vanhaa = False
 
+        # ikkunan keskittäminen
         res_x = self.paavalikko.kayttoliittyman_lukija.x
         res_y = self.paavalikko.kayttoliittyman_lukija.y
         self.move(int(res_x / 2) - int(self.frameSize().width() / 2),
@@ -176,7 +175,6 @@ class Kenttaeditori(QtWidgets.QMainWindow):
             x /= y
             y = 1
         self.__scene.setSceneRect(0, 0, self.__scene_size * x, self.__scene_size * y)
-        #self.setGeometry(0, 0, self.scene_size * x + 420, self.scene_size * y + 20)
 
         # keskelle liikuttaminen
         res_x = self.paavalikko.kayttoliittyman_lukija.x
@@ -189,13 +187,11 @@ class Kenttaeditori(QtWidgets.QMainWindow):
             text = self.__koko.text().split(" ")
             self.__koko_x = int(text[0])
             self.__koko_y = int(text[1])
-            print(self.__koko_x)
-            print(self.__koko_y)
             self.__piirra_tyhja_kartta()
         except ValueError:
-            print("invalid value")
+            self.__koko.setText("")
         except IndexError:
-            print("invalid value")
+            self.__koko.setText("")
 
     def __lue_kentan_nimi(self):
         nimi = self.__nimi.text()
@@ -207,15 +203,13 @@ class Kenttaeditori(QtWidgets.QMainWindow):
             koko = (x, y)
             self.__koko_x = koko[0]
             self.__koko_y = koko[1]
-            # print(ruudut)
             self.__kartta = Kartta(koko[0], koko[1], ruudut, self)
-
             self.__aseta_scene_rect(koko[0], koko[1])
 
-            # tehdään vasta koko kartan luomisen jälkeen, kun kaikki ruudut ovat paikallaan
+            # luodaan maastot ja lisätään yksiköt vasta koko kartan luomisen jälkeen, kun kaikki ruudut ovat paikallaan
             for ruutu in self.__kartta.ruudut:
                 ruutu.luo_maasto()
-                ruutu.luo_grafiikka(self.__kartta.ruudun_koko)
+                ruutu.luo_grafiikka()
                 ruutu.etsi_kartta()
 
             self.__kartta.lisaa_yksikot(yksikot, self.__paavalikko.yksikoiden_lukija.yksikot)
@@ -225,7 +219,6 @@ class Kenttaeditori(QtWidgets.QMainWindow):
         else:
             pass
 
-
     # piirtää tyhjän kartan, jonka mitat ovat koko_x ja koko_y
     def __piirra_tyhja_kartta(self):
         self.__tyhjenna_kartta()
@@ -234,7 +227,7 @@ class Kenttaeditori(QtWidgets.QMainWindow):
 
         for ruutu in self.__kartta.ruudut:
             ruutu.luo_maasto(True)
-            ruutu.luo_grafiikka(self.__kartta.ruudun_koko, True)
+            ruutu.luo_grafiikka(True)
             ruutu.etsi_kartta()
 
         self.__aseta_scene_rect(self.__koko_x, self.__koko_y)
@@ -244,6 +237,7 @@ class Kenttaeditori(QtWidgets.QMainWindow):
         self.__editoi_kenttaa_napit(self.__editoi_kenttaa)
 
     def __editoi_kenttaa_napit(self, editoi):
+        # muuttaa käyttöliittymää sen perusteella, editoidaanko kenttää vai ei
         if editoi:
             self.__uusi_kentta_nappi.setText("TALLENNA KENTTÄ")
             self.__uusi_kentta_nappi.clicked.disconnect(self.__lue_koko)
@@ -342,15 +336,11 @@ class Kenttaeditori(QtWidgets.QMainWindow):
         self.__valittu_elementti = "poista"
         print(self.__valittu_elementti)
 
-    # tallenna_paalle = päälle tallennettavan kentän nimi
     def __tallenna_kentta(self):
         tallenna_paalle = False
         if self.__muokkaa_vanhaa is True:
             tallenna_paalle = True
         self.kartta.etsi_yksikot()
-        #print(self.kartta.ruudut)
-        #print(self.kartta.pelaajan_yksikot)
-        #print(self.kartta.tietokoneen_yksikot)
         onnistui = Kentan_tallentaja.tallenna_kentta(self.kartta, self.__koko.text(), tallenna_paalle)
         if onnistui:
             self.__uusi_ohje.setText("TALLENNUS ONNISTUI")
@@ -365,9 +355,11 @@ class Kenttaeditori(QtWidgets.QMainWindow):
     def __poistu(self):
         self.__tyhjenna_kartta()
         self.paavalikko.show()
+        self.paavalikko.kartan_lukija.lue_kaikki_kartat()
         self.hide()
 
     def __muuta_nappien_toiminnot(self):
+        # vaihtaa maastojen ja yksiköiden lisäyksen välillä
         if self.__valittu_omistaja is None:
             tyyppi = "pelaaja"
         elif self.__valittu_omistaja == "PLR":

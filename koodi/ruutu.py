@@ -17,7 +17,7 @@ from parantaja_tekoaly import Parantaja_tekoaly
 
 class Ruutu:
 
-    def __init__(self, koordinaatit, koko, tyyppi, kayttoliittyma):
+    def __init__(self, koordinaatit, tyyppi, kayttoliittyma):
         self.__tyyppi = tyyppi
         self.__kayttoliittyma = kayttoliittyma
         self.__koordinaatit = koordinaatit
@@ -93,8 +93,8 @@ class Ruutu:
                 self.__yksikko = Parantaja_tekoaly(omistaja, self, self.__kayttoliittyma, ominaisuudet[0], ominaisuudet[1])
         return self.__yksikko
 
-    def luo_grafiikka(self, koko, kenttaeditori=False):
-        self.__grafiikka = Ruutugrafiikka(self.__koordinaatit, koko, self.__kayttoliittyma, self.__maasto.vari,
+    def luo_grafiikka(self, kenttaeditori=False):
+        self.__grafiikka = Ruutugrafiikka(self.__koordinaatit, self.__kayttoliittyma, self.__maasto.vari,
                                           self, kenttaeditori)
 
     def luo_maasto(self, kenttaeditori=False):

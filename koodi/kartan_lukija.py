@@ -1,16 +1,18 @@
 import os
 from koordinaatit import Koordinaatit
 
+
 class Kartan_lukija:
 
     def __init__(self, paavalikko=None):
-        self.__kartat = {}  # sanakirja, johon lisätään validit kartat (avain = kartan nimi)
+        # sanakirja, johon lisätään validit kartat (avain = kartan nimi)
+        self.__kartat = {}
         self.__paavalikko = paavalikko
         '''
         tallentaa lukemansa tiedot kaksiulotteiseen listaan (ruuduista), jossa
         jokainen jäsen on maaston tyyppi
         
-        toinen lista yksiköistä 
+        yksiköt tallennetaan sanakirjaan
         '''
 
     @property
@@ -46,7 +48,6 @@ class Kartan_lukija:
             koko_loydetty = False
             ruudut_loydetty = False
             yksikot_loydetty = False
-            #print(nimi)
             tiedosto = open('kartat/' + nimi, 'r')
             for rivi in tiedosto:
                 rivi = rivi.lower()
@@ -59,13 +60,12 @@ class Kartan_lukija:
                 if rivi[0] == "nimi":
                     nimi = rivi[1]
                     nimi_loydetty = True
-                elif rivi[0] == "koko":     #koko tulee olla ennen  ruutuja
+                elif rivi[0] == "koko":             # koko tulee olla ennen ruutuja
                     rivi[1] = rivi[1].split('*')
                     x = int(rivi[1][0])
                     y = int(rivi[1][1])
                     if x <= 0 or y <= 0:
-                        if tiedosto is not None and not tiedosto.closed:
-                            tiedosto.close()
+                        self.__ei_validi(tiedosto)
                         return False, 0, 0, None, None
                     koko_loydetty = True
                     ruudut = [["tasanko" for i in range(y)] for j in range(x)]
@@ -74,22 +74,20 @@ class Kartan_lukija:
                     koordinaatit = koordinaatit.lower()
                     koordinaatit = koordinaatit.split(':')
                     while koordinaatit[0] != "ruudutloppu":
-                        # lukee ruudut, jotka on annettu listana ja lisää ne annettuun kaksiulotteiseen listaan ja palauttaa sen
+                        # lukee ruudut, jotka on annettu listana ja lisää ne annettuun
+                        # kaksiulotteiseen listaan ja palauttaa sen
                         tyyppi = koordinaatit[0].lower()
-                        # tyypin validiuden tarkistus
                         if tyyppi not in maastot:
-                            if tiedosto is not None and not tiedosto.closed:
-                                tiedosto.close()
+                            self.__ei_validi(tiedosto)
                             return False, 0, 0, None, None
                         i = 1
                         while i < len(koordinaatit):
                             koordinaatit[i] = koordinaatit[i].strip()
                             koordinaatit[i] = koordinaatit[i].split(",")
-                            koordinaatit[i][0] = int(koordinaatit[i][0]) - 1    # vähennetään 1, koska koodissa koordinaatit
-                            koordinaatit[i][1] = int(koordinaatit[i][1]) - 1    # alkavat nollasta
+                            koordinaatit[i][0] = int(koordinaatit[i][0]) - 1    # vähennetään 1, koska koodissa
+                            koordinaatit[i][1] = int(koordinaatit[i][1]) - 1    # koordinaatit alkavat nollasta
                             if koordinaatit[i][0] < 0 or koordinaatit[i][1] < 0:
-                                if tiedosto is not None and not tiedosto.closed:
-                                    tiedosto.close()
+                                self.__ei_validi(tiedosto)
                                 return False, 0, 0, None, None
                             ruudut[koordinaatit[i][0]][koordinaatit[i][1]] = tyyppi  # listaan lisäys (tyyppi)
                             i += 1
@@ -107,10 +105,8 @@ class Kartan_lukija:
                     yksikot = yksikot.split(':')
                     while yksikot[0] != "ruudutloppu":
                         tyyppi = yksikot[0].lower()
-                        # tyypin validiuden tarkistus
                         if tyyppi not in yksikkotyypit:
-                            if tiedosto is not None and not tiedosto.closed:
-                                tiedosto.close()
+                            self.__ei_validi(tiedosto)
                             return False, 0, 0, None, None
                         i = 1
                         lista = []
@@ -120,13 +116,10 @@ class Kartan_lukija:
                             yksikot[i][0] = int(yksikot[i][0]) - 1
                             yksikot[i][1] = int(yksikot[i][1]) - 1
                             if yksikot[i][0] < 0 or yksikot[i][1] < 0:
-                                if tiedosto is not None and not tiedosto.closed:
-                                    tiedosto.close()
+                                self.__ei_validi(tiedosto)
                                 return False, 0, 0, None, None
-                            # omistajan validiuden tarkistus
                             if yksikot[i][2].lower() not in omistajat:
-                                if tiedosto is not None and not tiedosto.closed:
-                                    tiedosto.close()
+                                self.__ei_validi(tiedosto)
                                 return False, 0, 0, None, None
                             yksikko = (Koordinaatit(yksikot[i][0],  yksikot[i][1]), yksikot[i][2].upper())
                             lista.append(yksikko)
@@ -146,14 +139,15 @@ class Kartan_lukija:
                     else:
                         return kartan_nimi, x, y, ruudut, yksikot_sanakirja
         except OSError:
-            if tiedosto is not None and not tiedosto.closed:
-                tiedosto.close()
+            self.__ei_validi(tiedosto)
             return False, 0, 0, None, None
         except ValueError:
-            if tiedosto is not None and not tiedosto.closed:
-                tiedosto.close()
+            self.__ei_validi(tiedosto)
             return False, 0, 0, None, None
         except IndexError:
-            if tiedosto is not None and not tiedosto.closed:
-                tiedosto.close()
+            self.__ei_validi(tiedosto)
             return False, 0, 0, None, None
+
+    def __ei_validi(self, tiedosto):
+        if tiedosto is not None and not tiedosto.closed:
+            tiedosto.close()

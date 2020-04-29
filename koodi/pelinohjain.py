@@ -38,7 +38,7 @@ class Pelinohjain:
         # tehdään vasta koko kartan luomisen jälkeen, kun kaikki ruudut ovat paikallaan
         for ruutu in self.__kartta.ruudut:
             ruutu.luo_maasto()
-            ruutu.luo_grafiikka(self.__kartta.ruudun_koko)
+            ruutu.luo_grafiikka()
 
         # maastot täytyy luoda ensin, jotta saadaan naapurit, joihin liikkuminen on mahdollista
         for ruutu in self.__kartta.ruudut:

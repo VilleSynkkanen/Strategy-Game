@@ -42,7 +42,6 @@ class Jousimiehet_tekoaly(Jousimiehet):
 
         # kyvyt
         self.__kyky1_prio = 0.9
-
         self.__kyky2_prio = 1000
         self.__kyky2_etaisyys_max = 4
         self.__kyky2_ratsuvaki_painotus = 2
@@ -133,7 +132,6 @@ class Jousimiehet_tekoaly(Jousimiehet):
     def hyokkays_toiminto(self):
         # katsotaan ensin, mahdolliset hyökkäyksen kohteet ja tallennetaan ne sanakirjaan
         paras_kohde = Tekoaly.hyokkays_toiminto(self)
-
         if paras_kohde is None:
             pass
         elif paras_kohde == "KYKY1":
@@ -146,9 +144,7 @@ class Jousimiehet_tekoaly(Jousimiehet):
 
     def pisteyta_kyky1(self):
         self.kyky1_kohteet = []
-        # katsotaan ruudut, joissa on vihollisia
-        # arvioidaan jokainen ruutu ja sen naapurit
-
+        # katsotaan ruudut, joissa on vihollisia, arvioidaan jokainen ruutu ja sen naapurit
         vaihtoehdot = {}
         for ruutu in self.ruudut_kantamalla:
             kohteet, pisteet = self.__pisteyta_ruutu_kyky1(ruutu)
@@ -156,6 +152,7 @@ class Jousimiehet_tekoaly(Jousimiehet):
             tiedot = (pisteet, kohteet)
             vaihtoehdot[ruutu] = tiedot
 
+        # valitaan paras vaihtoehto ja tallennetaan se instanssimuuttujaan myöhempää käyttöä varten
         korkeimmat_pisteet = 0
         paras_kohde = None
         for vaihtoehto in vaihtoehdot:
@@ -166,13 +163,12 @@ class Jousimiehet_tekoaly(Jousimiehet):
         self.kyky1_kohteet = paras_kohde
         return korkeimmat_pisteet * self.__kyky1_prio
 
-    # returnaa ruudun pisteet ja kohteiden määrn mukaisesti parhaat kohteet
+    # palauttaa ruudun pisteet ja kohteiden määrän mukaisesti parhaat kohteet
     def __pisteyta_ruutu_kyky1(self, ruutu):
         pisteet = 0
         if ruutu.yksikko is not None and ruutu.yksikko.omistaja == "PLR":
             pisteet += Tekoaly.pisteyta_pelkka_kohde(self, ruutu.yksikko)
         naapurit = {}
-        #self.laske_kantaman_sisalla_olevat_ruudut()
         for naapuri in ruutu.naapurit:
             if naapuri.yksikko is not None and naapuri.yksikko.omistaja == "PLR" and naapuri in self.ruudut_kantamalla:
                 naapurit[naapuri] = Tekoaly.pisteyta_pelkka_kohde(self, naapuri.yksikko)
@@ -180,10 +176,9 @@ class Jousimiehet_tekoaly(Jousimiehet):
                 naapurit[naapuri] = 0
         # lajitellaan naapurit
         lajiteltu = sorted(naapurit.items(), key=lambda x: x[1], reverse=True)
-        #print(lajiteltu)
         kohteet = [ruutu]
 
-        # lisätään parhaat naapurit kohteisiin ja lisätään niiden pisteet
+        # lisätään parhaat naapurit kohteisiin ja lisätään niiden pisteet kokonaispisteisiin
         for kohde in lajiteltu:
             if len(kohteet) < self.kyky1_kohteiden_maara:
                 kohteet.append(kohde[0])
@@ -203,7 +198,6 @@ class Jousimiehet_tekoaly(Jousimiehet):
                     viholliset += self.__kyky2_ratsuvaki_painotus
                 else:
                     viholliset += 1
-        #print("VIH: ", viholliset)
         return self.__kyky2_prio * viholliset
 
     def pisteyta_ruutu(self, ruutu, kohderuutu):

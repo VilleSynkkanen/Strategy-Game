@@ -1,10 +1,8 @@
-from PyQt5 import QtWidgets, QtCore, QtGui, Qt
-import sys
+from PyQt5 import QtWidgets, QtCore, Qt
+
 
 class Kayttoliittyma(QtWidgets.QMainWindow):
-    '''
-    Käyttöliittymä piirtää pelilaudan, napit ja tekstielementit
-    '''
+
     def __init__(self, pelinohjain):
         super().__init__()
         self.__scene_size = pelinohjain.paavalikko.scene_size       # kentän koko pikseleinä
@@ -15,24 +13,23 @@ class Kayttoliittyma(QtWidgets.QMainWindow):
         self.__yksikon_tiedot_aktiivinen = False
         self.__valitsee_hyokkayksen_kohdetta = False
 
-        self.setCentralWidget(QtWidgets.QWidget())  # QMainWindown must have a centralWidget to be able to add layouts
-        self.__paa_layout = QtWidgets.QHBoxLayout()  # Horizontal main layout
+        self.setCentralWidget(QtWidgets.QWidget())
+        self.__paa_layout = QtWidgets.QHBoxLayout()
         self.centralWidget().setLayout(self.__paa_layout)
 
-        # set window
+        # ikkuna
         self.setGeometry(0, 0, self.__scene_size + 420, self.__scene_size + 20)
         self.setWindowTitle('Strategiapeli')
         self.show()
 
-        # Add a scene for drawing 2d objects
+        # scene
         self.__scene = QtWidgets.QGraphicsScene()
 
-        # Add a view for showing the scene
+        # näkymä sceneä varten
         self.__nakyma = QtWidgets.QGraphicsView(self.__scene, self)
         self.__nakyma.adjustSize()
         self.__nakyma.show()
         self.__paa_layout.addWidget(self.__nakyma)
-        # main_layout.addStretch()
 
         self.__nappi_layout = QtWidgets.QGridLayout()
         self.__paa_layout.addLayout(self.__nappi_layout)
@@ -106,7 +103,7 @@ class Kayttoliittyma(QtWidgets.QMainWindow):
         self.__nappi_layout.addWidget(self.__tallenna_peli_napi, 4, 0)
         self.__nappi_layout.addWidget(self.__poistu_pelista_nappi, 4, 1)
 
-        # unit info
+        # yksikön tiedot
         self.__perustiedot = QtWidgets.QLabel("")
         self.__nappi_layout.addWidget(self.__perustiedot, 5, 0, 1, 1, alignment=QtCore.Qt.AlignTop)
         self.__perustiedot.setStyleSheet("font: 9pt Arial")
@@ -122,11 +119,12 @@ class Kayttoliittyma(QtWidgets.QMainWindow):
         self.__peliloki = QtWidgets.QLabel("PELILOKI:\n", self)
         self.__nappi_layout.addWidget(self.__peliloki, 6, 0, 6, 2, alignment=QtCore.Qt.AlignTop)
         self.__peliloki.setStyleSheet("font: 9pt Arial")
+        self.__peliloki_tekstit = []
 
+        # ohjeteksti
         self.__ohjeteksti = QtWidgets.QLabel("OHJETEKSTI\n", self)
         self.__nappi_layout.addWidget(self.__ohjeteksti, 12, 0, 1, 0, alignment=QtCore.Qt.AlignBottom)
         self.__ohjeteksti.setStyleSheet("font: 16pt Arial")
-        self.__peliloki_tekstit = []
 
     @property
     def pelinohjain(self):
@@ -161,7 +159,6 @@ class Kayttoliittyma(QtWidgets.QMainWindow):
             x /= y
             y = 1
         self.__scene.setSceneRect(0, 0, self.__scene_size * x, self.__scene_size * y)
-        #self.setGeometry(0, 0, self.scene_size * x + 420, self.scene_size * y + 20)
 
         # keskelle liikuttaminen
         res_x = self.pelinohjain.paavalikko.kayttoliittyman_lukija.x
@@ -173,7 +170,6 @@ class Kayttoliittyma(QtWidgets.QMainWindow):
         self.tyhjenna_valinta()
         # valinnan muuttaminen
         self.__valittu_yksikko = yksikko
-
         liikuttu = "ei"
         hyokatty = "ei"
         if self.__valittu_yksikko.liikkuminen_kaytetty:
@@ -188,14 +184,14 @@ class Kayttoliittyma(QtWidgets.QMainWindow):
         self.muuta_ohjeteksti("VALITSE TOIMINTO\n")
 
         yksikko.grafiikka.muuta_varia(yksikko.grafiikka.pelaaja_valittu_vari)
-        # vanhan valinnan värin muutos tehdään, kun valinta tyhjennetään (jos yksikkö ei voi tehdä mitään, väri on eri)
+        # vanhan valinnan värin muutos tehdään, kun valinta tyhjennetään
         for yks in self.__pelinohjain.kartta.pelaajan_yksikot:
             if yks != self.__valittu_yksikko:
                 yks.grafiikka.palauta_vari()
         for ruutu in self.__pelinohjain.kartta.ruudut:
             ruutu.grafiikka.palauta_vari()
 
-        # polkujen näyttäminen ja mahdollisten hyökkäysten laskenta (nappia varten)
+        # polkujen näyttäminen ja mahdollisten hyökkäyksen kohteiden laskenta (napin tilaa varten)
         if not self.__valittu_yksikko.liikkuminen_kaytetty:
             self.__valittu_yksikko.laske_mahdolliset_ruudut()
         self.__valittu_yksikko.nayta_mahdolliset_ruudut()
@@ -226,7 +222,6 @@ class Kayttoliittyma(QtWidgets.QMainWindow):
             self.__peru_valinta_nappi.setText("PERU\nVALINTA")
 
     def __paivita_nappien_tooltipit(self):
-        # nappien tooltipit
         QtWidgets.QToolTip.setFont(Qt.QFont('SansSerif', 10))
         if self.__valittu_yksikko is not None:
             self.__kyky1_nappi.setToolTip(self.__valittu_yksikko.kyky1_tooltip_teksti())
@@ -263,7 +258,7 @@ class Kayttoliittyma(QtWidgets.QMainWindow):
                 self.__hyokkaa_nappi.setEnabled(False)
                 self.__kyky1_nappi.setEnabled(False)
                 self.__kyky2_nappi.setEnabled(False)
-            # täytyy laskea uudestaan, jotta ei tyhjenisi kykyjen tarkastuksen kohdalla
+            # täytyy laskea hyökkäyksen kohteet uudestaan, jotta ei tyhjenisi kykyjen tarkastuksen kohdalla
             # voi tapahtua ainakin tykistöllä
             self.__valittu_yksikko.laske_hyokkayksen_kohteet(False)
         if len(self.pelinohjain.kartta.pelaajan_toimivat_yksikot) == 0 or \
@@ -279,17 +274,17 @@ class Kayttoliittyma(QtWidgets.QMainWindow):
         if self.__valittu_yksikko.hyokkays_kaytetty:
             hyokatty = "kyllä"
 
-        # nappien päivitys
+        # nappien ja tietojen päivitys
         self.paivita_peru_nappi()
         self.paivita_nappien_aktiivisuus()
 
         self.__perustiedot.setText("Perustiedot:\n" + self.__valittu_yksikko.ominaisuudet.__str__() +
                                  "\nLiikkuminen käytetty: " + liikuttu + "\n"
                                                                        "Hyökkäys käytetty: " + hyokatty)
-
         self.__maaston_tiedot.setText("Maaston tiedot:\n" + self.__valittu_yksikko.ruutu.maasto.__str__())
 
     def tyhjenna_valinta(self):
+        # poistetaan yksikön valinta ja perutaan mahdolliset kohteiden valinnat
         if self.__valittu_yksikko is not None:
             if self.__valitsee_hyokkayksen_kohdetta is True:
                 self.__valittu_yksikko.peru_hyokkayksen_kohteiden_nayttaminen()
@@ -336,6 +331,7 @@ class Kayttoliittyma(QtWidgets.QMainWindow):
         if len(self.__pelinohjain.kartta.pelaajan_toimivat_yksikot) == 0:
             return
         i = 0
+        # jos yksikköä ei ole valittu, valitaan listan ensimmäinen
         if self.__valittu_yksikko is None:
             self.valitse_yksikko(self.__pelinohjain.kartta.pelaajan_toimivat_yksikot[len(self.__pelinohjain.kartta.
                                                                                          pelaajan_toimivat_yksikot) - 1])
@@ -343,6 +339,8 @@ class Kayttoliittyma(QtWidgets.QMainWindow):
             if self.__valitsee_hyokkayksen_kohdetta:
                 self.__peru_valinta()
             indeksi = self.__pelinohjain.kartta.pelaajan_yksikot.index(self.__valittu_yksikko)
+            # käydään yksiköitä läpi takaperin, kunnes tulee vastaan toimiva
+            # jos päästään listan alkuun, jatketaan sen lopusta
             while i < len(self.__pelinohjain.kartta.pelaajan_toimivat_yksikot):
                 if self.__valittu_yksikko not in self.__pelinohjain.kartta.pelaajan_toimivat_yksikot:
                     j = -1
@@ -373,14 +371,16 @@ class Kayttoliittyma(QtWidgets.QMainWindow):
         if len(self.__pelinohjain.kartta.pelaajan_toimivat_yksikot) == 0:
             return
         i = 0
+        # jos yksikköä ei ole valittu, valitaan listan ensimmäinen
         if self.__valittu_yksikko is None:
             self.valitse_yksikko(self.__pelinohjain.kartta.pelaajan_toimivat_yksikot[0])
         else:
             if self.__valitsee_hyokkayksen_kohdetta:
                 self.__peru_valinta()
             indeksi = self.__pelinohjain.kartta.pelaajan_yksikot.index(self.__valittu_yksikko)
+            # käydään yksiköitä läpi, kunnes tulee vastaan toimiva
+            # jos päästään listan loppuun, jatketaan sen alusta
             while i < len(self.__pelinohjain.kartta.pelaajan_toimivat_yksikot):
-                # jos ei toimivissa yksiköissä, etsitään seuraava yksikkö, joka on
                 if self.__valittu_yksikko not in self.__pelinohjain.kartta.pelaajan_toimivat_yksikot:
                     j = 1
                     if indeksi + j == len(self.__pelinohjain.kartta.pelaajan_yksikot):
@@ -407,6 +407,8 @@ class Kayttoliittyma(QtWidgets.QMainWindow):
         pass
 
     def __peru_valinta(self):
+        # peruu tällä hetkellä tapahtuvan valinnan
+        # toiminta riippuu siitä, mitä valitaan
         if self.__valitsee_hyokkayksen_kohdetta is True:
             self.peru_kohteen_valinta()
             self.__valittu_yksikko.nayta_mahdolliset_ruudut()
@@ -419,8 +421,8 @@ class Kayttoliittyma(QtWidgets.QMainWindow):
                 self.tyhjenna_valinta()
 
     def __valitse_kohde(self):
-        self.__valitsee_hyokkayksen_kohdetta = True
         # värjää mahdolliset kohteet, poistaa ruutujen värjäyksen
+        self.__valitsee_hyokkayksen_kohdetta = True
         self.__valittu_yksikko.peru_mahdollisten_ruutujen_nayttaminen()
         self.__valittu_yksikko.laske_hyokkayksen_kohteet(True)
         self.paivita_peru_nappi()
@@ -429,7 +431,7 @@ class Kayttoliittyma(QtWidgets.QMainWindow):
     def peru_kohteen_valinta(self):
         self.__valittu_yksikko.peru_hyokkayksen_kohteiden_nayttaminen()
         self.__valitsee_hyokkayksen_kohdetta = False
-        # lasketaan uudestaan nappejen aktiivisuuden määrittelyä varten
+        # lasketaan kohteet uudestaan nappejen aktiivisuuden määrittelyä varten
         self.__valittu_yksikko.laske_hyokkayksen_kohteet(False)
         self.paivita_peru_nappi()
         self.paivita_nappien_aktiivisuus()
@@ -448,6 +450,7 @@ class Kayttoliittyma(QtWidgets.QMainWindow):
             self.__valittu_yksikko.nayta_mahdolliset_ruudut()
 
     def __kyky_1(self):
+        # kyky 1 nappi
         valitse = True
         if self.__valittu_yksikko is not None and \
                 self.__valittu_yksikko.ominaisuudet.nyk_energia >= self.__valittu_yksikko.kyky1_hinta:
@@ -464,6 +467,7 @@ class Kayttoliittyma(QtWidgets.QMainWindow):
                     self.__valittu_yksikko.kyky1()
 
     def __kyky_2(self):
+        # kyky 2 nappi
         valitse = True
         if self.__valittu_yksikko is not None and \
                 self.__valittu_yksikko.ominaisuudet.nyk_energia >= self.__valittu_yksikko.kyky2_hinta:
@@ -489,7 +493,6 @@ class Kayttoliittyma(QtWidgets.QMainWindow):
 
     def lisaa_pelilokiin(self, teksti):
         # jos peliloki on täynnä, poistetaan ensimmäinen alkio
-        # implementoi tekstin paloittelu, jos se on liian pitkä
         teksti += "\n"
         while len(self.__peliloki_tekstit) > 15:
             del self.__peliloki_tekstit[0]
@@ -520,6 +523,7 @@ class Kayttoliittyma(QtWidgets.QMainWindow):
         self.__poistu_pelista_nappi.setEnabled(True)
 
     def poistu_pelista(self, virhe=False):
+        # kun poistutaan pelistä, tyhjennetään kartta ja poistetaan pelinohjain ja luetaan tallennus uudestaan
         self.pelinohjain.kartta.tyhjenna()
         self.pelinohjain.paavalikko.show()
         if self.pelinohjain.paavalikko.pelaa_valikko is not None:

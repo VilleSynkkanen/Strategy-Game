@@ -155,12 +155,10 @@ class Paavalikko(QtWidgets.QMainWindow):
     def __jatka(self):
         # luodaan pelinohjain ja kartta ilman yksiköitä
         self.__pelinohjain = Pelinohjain(self.__kartan_nimi, self, False)
-        #print(self.__tilanne[0])
 
         # lisätään yksiköt, muutetaan niiden elämä ja energia sopivaksi, lisätään tilavaikutukset
         for yksikko in self.__tilanne:
             tiedot = yksikko[0]
-            #print(tiedot)
             x = tiedot[0]
             y = tiedot[1]
             self.__pelinohjain.kartta.lisaa_yksikko(self.__pelinohjain.kartta.ruudut_koordinaateilla[x][y], tiedot[3],
@@ -206,7 +204,6 @@ class Paavalikko(QtWidgets.QMainWindow):
             self.__pelinohjain.kartta.ruudut_koordinaateilla[x][y].luo_kiilat(
                 float(tiedot['kyky2_bonus']), float(tiedot['kyky2_bonus_ratsuvaki']))
             #print(tiedot['kyky2_bonus'], ",", tiedot['kyky2_bonus_ratsuvaki'])
-
 
 
     def __pelaa(self):

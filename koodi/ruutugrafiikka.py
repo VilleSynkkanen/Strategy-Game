@@ -4,7 +4,7 @@ from kayttoliittyma import Kayttoliittyma
 
 class Ruutugrafiikka(QtWidgets.QGraphicsRectItem):
 
-    def __init__(self, koordinaatit, koko, kayttoliittyma, vari, ruutu, kenttaeditori):
+    def __init__(self, koordinaatit, kayttoliittyma, vari, ruutu, kenttaeditori):
         super(Ruutugrafiikka, self).__init__()
         self.__kayttoliittyma = kayttoliittyma
         self.__ruutu = ruutu

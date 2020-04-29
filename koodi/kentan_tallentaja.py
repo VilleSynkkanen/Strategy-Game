@@ -1,5 +1,6 @@
 import os
 
+
 class Kentan_tallentaja:
 
     @staticmethod
@@ -11,9 +12,9 @@ class Kentan_tallentaja:
             '''
             tallennettavat asiat:
             -nimi
-            -koko (lue ruudut koordinaateilla-listasta)
-            -ruudut (lue ruuduista ja lajittele)
-            -yksiköt: lue yksiköistä tyyppi kerrallaan (lisää yhteen listaan ja lajittele)
+            -koko (luetaan ruudut_koordinaateilla-listasta)
+            -ruudut (luetaan ruuduista ja lajitellaan)
+            -yksiköt: luetaan yksiköistä tyyppi kerrallaan (lisää yhteen listaan ja lajittele)
             '''
             tied_nimi = nimi + ".txt"
             tiedosto = open("kartat/" + tied_nimi, "w")
@@ -23,6 +24,7 @@ class Kentan_tallentaja:
             tiedosto.write("NIMI: " + nimi + "\n")
             tiedosto.write("KOKO: " + str(x) + "*" + str(y) + "\n")
             tiedosto.write("RUUDUT:")
+            # ruudut lajitellaan, jotta ne voidaan tallentaa tyyppi kerrallaan tiedostoon
             ruudut = Kentan_tallentaja.lajittele_ruudut(kartta.ruudut)
             ruututyyppi = " "
             for ruutu in ruudut:
@@ -35,6 +37,7 @@ class Kentan_tallentaja:
                     ruututyyppi = ruutu.tyyppi
             tiedosto.write("\nRUUDUTLOPPU\n")
             tiedosto.write("YKSIKOT:")
+            # yksiköt lajitellaan, jotta ne voidaan tallentaa tyyppi kerrallaan tiedostoon
             yksikot = Kentan_tallentaja.lajittele_yksikot(kartta.pelaajan_yksikot, kartta.tietokoneen_yksikot)
             yksikkotyyppi = " "
             for yksikko in yksikot:

@@ -1,12 +1,13 @@
 from yksikko import Yksikko
 from ajastin import Ajastin
 
+
 class Jousimiehet(Yksikko):
 
     def __init__(self, omistaja, ruutu, kayttoliittyma, ominaisuudet, kyvyt):
         super().__init__(omistaja, ruutu, kayttoliittyma, ominaisuudet)
         self.luo_grafiikka()
-        # kerroin jalka- ja ratsuväkeä vastaan hyökkäyksessä ja kiiloissa puolustaessa (myös muille yksiköille)
+        # kerroin jalka- ja ratsuväkeä vastaan hyökkäyksessä
         self.__jalka_ratsu_vahinko_hyokkays = kyvyt["jalka_ratsu_vahinko_hyokkays"]
 
         self.__kyky2_hinta = int(kyvyt["kyky2_hinta"])
@@ -57,12 +58,9 @@ class Jousimiehet(Yksikko):
     def kyky2_bonus_ratsuvaki(self):
         return self.__kyky2_bonus_ratsuvaki
 
-    # passiivinen tehty
-    # kyky 1 (osittain) tehty
-    # kyky 2 tehty (ei testattu)
-
     def kyky1_lisaa_kohde(self, ruutu):
-        # tarkista, onko ruutu aikaisemmin valittujen vieressä
+        # tarkistetaan, onko ruutu kantamalla ja onko ruutu ensimmäisen valitun ruudun vieressä (jos se on valittu)
+        # ruutujen väriä muutetaan valinnan merkitsemiseksi
         if ruutu in self.ruudut_kantamalla:
             if len(self.kyky1_kohteet) > 0:
                 for Ruutu in self.kyky1_kohteet:
@@ -100,6 +98,7 @@ class Jousimiehet(Yksikko):
         self.kayttoliittyma.lisaa_pelilokiin(teksti)
 
     def kyky2(self):
+        # luo kiilat ruutuun, jos siinä ei ole jo kiiloja
         if self.ruutu.kiilat is None:
             self.ruutu.luo_kiilat(self.kyky2_bonus, self.kyky2_bonus_ratsuvaki)
             self.kayta_energiaa(self.kyky2_hinta)

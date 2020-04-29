@@ -1,4 +1,5 @@
-from PyQt5 import QtWidgets, QtGui, QtCore, Qt
+from PyQt5 import QtWidgets, QtGui, QtCore
+
 
 class Kiilagrafiikka(QtWidgets.QGraphicsPolygonItem):
 
@@ -33,7 +34,8 @@ class Kiilagrafiikka(QtWidgets.QGraphicsPolygonItem):
 
         # origin piste keskelle
         self.setTransformOriginPoint(self.__koko / 2, self.__koko / 2)
-        # aseta yksikön ja ruudun väliin
+
+        # asettaa kiilan yksikön ja ruudun väliin
         self.setZValue(-1)
         self.setPos(self.__ruutu.koordinaatit.x * self.__koko, self.__ruutu.koordinaatit.y * self.__koko)
         self.__kayttoliittyma.scene.addItem(self)

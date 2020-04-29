@@ -2,11 +2,11 @@ from koordinaatit import Koordinaatit
 from ruutu import Ruutu
 from math import sqrt
 
+
 class Kartta:
 
     def __init__(self, x, y, ruudut, kayttoliittyma):
         self.__kayttoliittyma = kayttoliittyma
-        self.__ruudun_koko = 44
         # ruudut = tavallinen lista, ruudut_koordinaateilla = 2d-lista (näkemisen laskemiseen)
         self.__ruudut, self.__ruudut_koordinaateilla = self.__luo_ruudut(x, y, ruudut)
         self.__pelaajan_yksikot = []
@@ -16,10 +16,6 @@ class Kartta:
     @property
     def kayttoliittyma(self):
         return self.__kayttoliittyma
-
-    @property
-    def ruudun_koko(self):
-        return self.__ruudun_koko
 
     @property
     def ruudut(self):
@@ -51,7 +47,7 @@ class Kartta:
         for i in range(0, x, 1):
             for j in range(0, y, 1):
                 koordinaatit = Koordinaatit(i, j)
-                ruutu = Ruutu(koordinaatit, self.ruudun_koko, ruudut[i][j], self.kayttoliittyma)
+                ruutu = Ruutu(koordinaatit, ruudut[i][j], self.kayttoliittyma)
                 lista.append(ruutu)
         for ruutu in lista:
             x_koord = ruutu.koordinaatit.x
@@ -62,7 +58,6 @@ class Kartta:
     def lisaa_yksikot(self, yksikot, ominaisuudet):
         # yksikot = yksiköiden sijainnit
         # ominaisuudet = yksiköiden ominaisuudet (luettu tiedostoista)
-
         # lisää ominaisuudet yksiköihin
         for elementti in yksikot:
             # elementti = yksikön tyyppi
@@ -80,7 +75,7 @@ class Kartta:
     def lisaa_yksikko(self, ruutu, tyyppi, ominaisuudet, omistaja):
         ruutu.lisaa_yksikko(tyyppi, omistaja, ominaisuudet)
 
-    # kenttäeditoria varten
+    # jos yksiköt lisätään yksitellen, ne täytyy lopuksi vielä lisätä listoihin
     def etsi_yksikot(self):
         self.__pelaajan_yksikot = []
         self.__tietokoneen_yksikot = []
@@ -113,6 +108,7 @@ class Kartta:
             yksikko.laske_hyokkayksen_kohteet(False)
             self.poista_toimivista_yksikoista(yksikko)
 
+    # palautetaan yksiköt toimivien listaan, jos ne eivöt ole taintuneita
     def palauta_pelaajan_toimivat_yksikot(self):
         self.__pelaajan_toimivat_yksikot = []
         for yksikko in self.__pelaajan_yksikot:
@@ -152,18 +148,21 @@ class Kartta:
                 koord_y += 1
             elif ero_y < -0.5:
                 koord_y -= 1
+                # jos päädytään ruutuun, jonka läpi ei näe ja joka ei ole aloitus- tai lopetusruutu, palautetaan False
             if self.ruudut_koordinaateilla[koord_x][koord_y].maasto.lapinakyvyys is False and \
                     self.ruudut_koordinaateilla[koord_x][koord_y] != alku and \
                     self.ruudut_koordinaateilla[koord_x][koord_y] != loppu:
                 return False
         return True
 
+    # kenttäeditoria varten
     def korvaa_ruutu(self, ruutu, uusi_maasto):
         ruutu.poista_grafiikka()
         ruutu.tyyppi = uusi_maasto
         ruutu.luo_maasto(True)
-        ruutu.luo_grafiikka(self.ruudun_koko, self.kayttoliittyma)
+        ruutu.luo_grafiikka(self.kayttoliittyma)
 
+    # kenttäeditoria varten
     def tyhjenna(self):
         for ruutu in self.ruudut:
             ruutu.poista_grafiikka()

@@ -1,8 +1,11 @@
 Seuraavaksi:
--koodin siistiminen/parantelu
+-koodin siistiminen/parantelu: tehty maastoon asti
 	-toisteisuuden poisto (missä mahdollista)
-	-yksityiset muuttujat/metodit
--pelitestausta, korjauksia
+	-kommentit
+	-turhat importit
+	-printit pois
+	-yksityiset metodit (toisella läpikäynnillä?)
+-testausta, korjauksia
 -dokumentaatio
 -readme
 -repon siistiminen (järjestely, poista turhat)
@@ -26,5 +29,5 @@ Huonot puolet:
 -käyttöliittymän ulkoasu/muut puutteet
 
 Aikataulu
--koodin siistiminen, testaus, korjaukset tms. 1.5
--dokumentaatio, readme tms. 7.5
+-koodin siistiminen, korjaukset, alustava testaus 1.5
+-dokumentaatio, readme, lopputestaus 7.5
