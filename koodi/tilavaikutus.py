@@ -18,7 +18,7 @@ class Tilavaikutus:
             self.__yksikko.muuta_liikkumista(self.__liikkumisbonus)
 
             if self.__taintuminen:
-                # jos taintui, poista kyky liikkua ja hyökätä
+                # jos taintui, poistetaan kyky liikkua ja hyökätä
                 # palautetaan vuoron alussa, jos taintuminen ei enää voimassa
                 self.__yksikko.liikuttu()
                 self.__yksikko.hyokatty()

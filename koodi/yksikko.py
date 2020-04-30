@@ -37,8 +37,6 @@ class Yksikko:
         # hyökkäyksessä aiheutettava tilavaikutus
         self.__hyokkays_vaikutus = None
 
-
-    # propertyt vain luku-muuttujia varten
     @property
     def hyokkays_vaikutus(self):
         return self.__hyokkays_vaikutus

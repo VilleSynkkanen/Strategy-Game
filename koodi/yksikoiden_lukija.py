@@ -1,22 +1,20 @@
 import os
-
 from yksikon_ominaisuudet import Yksikon_ominaisuudet
 
 
 class Yksikoiden_lukija:
 
     def __init__(self):
-        self.__yksikot = {}  # sanakirja, johon lisätään yksiköt (avain = yksikön nimi)
+        # sanakirja, johon lisätään yksiköt (avain = yksikön nimi)
+        self.__yksikot = {}
         lue = None
         self.__lukeminen_onnistui = True
         self.__luettu_maara = 0
         yksikkotyypit = ["jalkavaki", "ratsuvaki", "jousimiehet", "tykisto", "parantaja"]
         try:
             tiedostot = os.scandir('yksikot/')
-
             # lukee jokaisesta tiedostosta yksikön tiedot
             # tietojen järjestyksellä ei ole väliä
-
             for tiedosto in tiedostot:
                 lue = open(tiedosto, 'r')
                 tyyppi = ""
@@ -45,79 +43,70 @@ class Yksikoiden_lukija:
                     while i < len(rivi):
                         rivi[i] = rivi[i].strip()
                         i += 1
+                    # tarkistetaan, että luetut tiedot ovat valideja
                     if rivi[0] == "tyyppi":
                         tyyppi = rivi[1]
                         if tyyppi not in yksikkotyypit:
-                            self.__lukeminen_onnistui = False
-                            lue.close()
+                            self.__ei_validi(lue)
                             return
                         tyyppi_loydetty = True
                     elif rivi[0] == "liikkumispisteet":
                         liikkumispisteet = int(rivi[1])
                         if liikkumispisteet < 0:
-                            self.__lukeminen_onnistui = False
-                            lue.close()
+                            self.__ei_validi(lue)
                             return
                         liikkumispisteet_loydetty = True
                     elif rivi[0] == "maksimielama":
                         max_elama = int(rivi[1])
                         if max_elama <= 0:
-                            self.__lukeminen_onnistui = False
-                            lue.close()
+                            self.__ei_validi(lue)
                             return
                         max_elama_loydetty = True
                     elif rivi[0] == "maksimienergia":
                         max_energia = int(rivi[1])
                         if max_energia <= 0:
-                            self.__lukeminen_onnistui = False
-                            lue.close()
+                            self.__ei_validi(lue)
                             return
                         max_energia_loydetty = True
                     elif rivi[0] == "hyokkays":
                         hyokkays = int(rivi[1])
                         if hyokkays <= 0:
-                            self.__lukeminen_onnistui = False
-                            lue.close()
+                            self.__ei_validi(lue)
                             return
                         hyokkays_loydetty = True
                     elif rivi[0] == "puolustus":
                         puolustus = int(rivi[1])
                         if puolustus <= 0:
-                            self.__lukeminen_onnistui = False
-                            lue.close()
+                            self.__ei_validi(lue)
                             return
                         puolustus_loydetty = True
                     elif rivi[0] == "kantama":
                         kantama = int(rivi[1])
                         if kantama <= 0:
-                            self.__lukeminen_onnistui = False
-                            lue.close()
+                            self.__ei_validi(lue)
                             return
                         kantama_loydetty = True
                     elif rivi[0] == "pistehinta":
                         hinta = int(rivi[1])
                         if hinta <= 0:
-                            self.__lukeminen_onnistui = False
-                            lue.close()
+                            self.__ei_validi(lue)
                             return
                         hinta_loydetty = True
                     elif rivi[0] == "kyvyt":
-                        # jokaisella tyypillä eri kykyihin liittyvät muuttujat, joten käytetään eri metodeita lukemiseen
-                        # numerot tallennetaan sanakirjaan
+                        # luetaan kyvyt ja tallennetaan ne sanakirjaan
                         kyvyt = self.__lue_kyvyt(lue)
                         kyvyt_loydetty = self.__kykyjen_tarkistus(tyyppi, kyvyt)
                         if kyvyt is False:
-                            self.__lukeminen_onnistui = False
-                            lue.close()
+                            self.__ei_validi(lue)
                             return
                     elif rivi[0] == "loppu":
                         break
 
+                # tietojen validiuden tarkastus
                 if not tyyppi_loydetty or not liikkumispisteet_loydetty or not hyokkays_loydetty or \
                         not puolustus_loydetty or not max_elama_loydetty or not max_energia_loydetty or \
                         not kantama_loydetty or not hinta_loydetty or not kyvyt_loydetty:
-                    self.__lukeminen_onnistui = False
-                    lue.close()
+                    self.__ei_validi(lue)
                     return
 
                 # luo uuden yksikkö-instanssin, johon tiedot säilötään
@@ -127,25 +116,20 @@ class Yksikoiden_lukija:
                                                hyokkays, puolustus, kantama, hinta, []), kyvyt)
                 self.__yksikot[tyyppi.lower()] = yksikko
                 self.__luettu_maara += 1
-                lue.close()  # muista sulkea aina
+                lue.close()
 
+            # tarkistetaan, että kaikki tiedostot tulee luettua
             if self.__luettu_maara < 5:
                 self.__lukeminen_onnistui = False
 
         except IndexError:
-            self.__lukeminen_onnistui = False
-            if lue is not None and not lue.closed:
-                lue.close()
+            self.__ei_validi(lue)
             return
         except ValueError:
-            self.__lukeminen_onnistui = False
-            if lue is not None and not lue.closed:
-                lue.close()
+            self.__ei_validi(lue)
             return
         except OSError:
-            self.__lukeminen_onnistui = False
-            if lue is not None and not lue.closed:
-                lue.close()
+            self.__ei_validi(lue)
             return
 
     @property
@@ -155,6 +139,11 @@ class Yksikoiden_lukija:
     @property
     def lukeminen_onnistui(self):
         return self.__lukeminen_onnistui
+
+    def __ei_validi(self, tiedosto):
+        self.__lukeminen_onnistui = False
+        if tiedosto is not None and not tiedosto.closed:
+            tiedosto.close()
 
     def __lue_kyvyt(self, tiedosto):
         try:

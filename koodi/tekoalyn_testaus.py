@@ -20,8 +20,8 @@ class Tekoalyn_testaus(unittest.TestCase):
     '''
 
     def kohteen_valinta_testi(self):
-        # luo kartta, lisää yksikkö ja sen kantamalle (viereen) mahdolliset kohteet
-        # kutsu funktiota, joka pisteyttää kohteet
+        # luo kartan, lisää yksikön ja sen kantamalle (viereen) mahdolliset kohteet
+        # kutsuu funktiota, joka pisteyttää kohteet
         # viisi eri tilannetta
         global app
         app = QApplication(sys.argv)

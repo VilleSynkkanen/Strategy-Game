@@ -27,8 +27,6 @@ class Tykisto(Yksikko):
         self.__alkuperainen_hyok = self.ominaisuudet.hyokkays
         self.__alkuperainen_kant = self.ominaisuudet.kantama
 
-    # propertyt
-
     @property
     def kyky1_hinta(self):
         return self.__kyky1_hinta

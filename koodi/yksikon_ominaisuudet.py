@@ -90,6 +90,7 @@ class Yksikon_ominaisuudet:
         return self.max_elama - self.nyk_elama
 
     def tilavaikutukset_yhteensa(self):
+        # laskee kaikki tilavaikutukset yhteen
         hyokkays = 0
         puolustus = 0
         liikkuminen = 0

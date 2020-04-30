@@ -13,7 +13,7 @@ class Yksikkografiikka(QtWidgets.QGraphicsPolygonItem):
         self.__ruutu = ruutu
         self.__kayttoliittyma = kayttoliittyma
         self.__omistaja = omistaja
-        self.__ylaosan_koko = 0.75        # alas jää 1 - ylaosan_koko ruutua elämänpalkille
+        self.__ylaosan_koko = 0.75        # ruudun alaosaan jää 1 - ylaosan_koko ruutua elämänpalkille
 
         # eri tilanteissa käytettävien värien määrittely
         self.__tietokoneen_vari = QtGui.QBrush(QtGui.QColor(180, 0, 0))
@@ -41,7 +41,6 @@ class Yksikkografiikka(QtWidgets.QGraphicsPolygonItem):
 
         # origin piste keskelle
         self.setTransformOriginPoint(self.__koko / 2, self.__koko / 2)
-
         self.setPos(self.__ruutu.koordinaatit.x * self.__koko, self.__ruutu.koordinaatit.y * self.__koko)
         self.__kayttoliittyma.scene.addItem(self)
 
@@ -216,6 +215,7 @@ class Yksikkografiikka(QtWidgets.QGraphicsPolygonItem):
         self.setPolygon(polygoni)
 
     def mousePressEvent(self, *args, **kwargs):
+        # toiminnallisuus pelitilanteessa
         if self.__kayttoliittyma.__class__.__name__ == "Kayttoliittyma":
             if self.__kayttoliittyma.pelinohjain.vuoro == "PLR":
                 if self.__kayttoliittyma.valittu_yksikko is not None and \
@@ -231,6 +231,7 @@ class Yksikkografiikka(QtWidgets.QGraphicsPolygonItem):
                         and self.__yksikko.kayttoliittyma.valitsee_hyokkayksen_kohdetta and \
                         self.__yksikko in self.__kayttoliittyma.valittu_yksikko.hyokkayksen_kohteet:
                     self.__yksikko.hyokkayksen_kohde(self.__kayttoliittyma.valittu_yksikko)
+        # toiminnallisuus kenttäeditorissa
         else:
             if self.__kayttoliittyma.valittu_elementti is not None:
                 maastot = ["tasanko", "kukkula", "pelto", "vuoristo", "silta", "joki"]

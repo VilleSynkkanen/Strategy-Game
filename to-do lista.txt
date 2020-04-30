@@ -1,13 +1,16 @@
 Seuraavaksi:
--koodin siistiminen/parantelu: tehty polunhaun testaukseen asti
-	-toisteisuuden poisto (missä mahdollista)
-	-kommentit
-	-muut parannukset
+-koodin siistiminen/parantelu:
+	-yksiköt tiedosto:
+		-kommentit	
+		-muut parannukset
+		-kaatumistarkistukset
+-alustava testaus
+
 -testausta, korjauksia
 -dokumentaatio
 -readme
 -repon siistiminen (järjestely, poista turhat)
--lopputestaus ja -tarkistus
+-lopputarkistus
 -palautus (dl 8.5 klo 14)
 
 Bugit
@@ -27,5 +30,4 @@ Huonot puolet:
 -käyttöliittymän ulkoasu/muut puutteet
 
 Aikataulu
--koodin siistiminen, korjaukset, alustava testaus 1.5
--dokumentaatio, readme, lopputestaus 7.5
+-dokumentaatio, readme, testaus, korjaukset 7.5

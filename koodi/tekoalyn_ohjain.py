@@ -1,5 +1,6 @@
 from PyQt5 import QtTest
 
+
 class Tekoalyn_ohjain:
 
     def __init__(self, pelinohjain):
@@ -16,15 +17,17 @@ class Tekoalyn_ohjain:
         self.__liikkumisjarjestys = ["Ratsuvaki", "Jalkavaki", "Jousimiehet", "Parantaja", "Tykisto"]
         self.__hyokkaysjarjestys = ["Tykisto", "Jousimiehet", "Ratsuvaki", "Parantaja", "Jalkavaki"]
 
-    # säätö: aggressiivinen, lähestyy kohdealuetta
+    # tekoäly: aggressiivinen, lähestyy kohdealuetta
     # yksikön oma tekoäly hoitaa tarkemmat päätökset
     # pieni pistebonus kohdealuetta kohdi liikkumisessa
     # priorisoi alueen valinnassa tärkeitä yksiköitä
 
+    # määritellään kohderuutu, jota kohti liikkumiseen yksiköt saavat lisäpisteitä
     def paata_kohdealue(self):
         x = 0
         y = 0
         maara = 0
+        # kohderuutu saadaan laskemalla pelaajan yksiköiden koordinaattien painotettu keskiarvo
         for yksikko in self.__pelinohjain.kartta.pelaajan_yksikot:
             kerroin = 0
             # priorisoitavat tyypit
@@ -48,6 +51,7 @@ class Tekoalyn_ohjain:
             x = int(x)
             y = int(y)
 
+            # jos kohderuudussa ei ole pelaajan yksikköä, etsitään sitä lähin ruutu, jossa on
             if self.__pelinohjain.kartta.ruudut_koordinaateilla[x][y].yksikko is not None and \
                     self.__pelinohjain.kartta.ruudut_koordinaateilla[x][y].yksikko.omistaja == "PLR":
                 return self.__pelinohjain.kartta.ruudut_koordinaateilla[x][y]
@@ -67,7 +71,8 @@ class Tekoalyn_ohjain:
         return lahin_ruutu
 
     def __lajittele_listat(self, toiminto):
-        # lajittelu liikkumista varten
+        # lajittelu liikkumista ja hyökkäystä varten
+        # listan järjestys määrittelee yksiköiden toimintajärjestyksen
         uusi_lista = []
         if toiminto == "liikkuminen":
             i = 0
@@ -83,11 +88,10 @@ class Tekoalyn_ohjain:
                     if yksikko.__class__.__name__ == self.__hyokkaysjarjestys[i]:
                         uusi_lista.append(yksikko)
                 i += 1
-
         self.__pelinohjain.kartta.tietokoneen_yksikot = uusi_lista
 
-
     def ohjaa_yksikoita(self):
+        # ensin määritellään kohdealue, sitten liikutetaan kaikkia yksiköitä, minkä jälkeen hyökätään
         kohderuutu = self.paata_kohdealue()
         self.__lajittele_listat("liikkuminen")
         for yksikko in self.__pelinohjain.kartta.tietokoneen_yksikot:
@@ -100,12 +104,12 @@ class Tekoalyn_ohjain:
                 yksikko.hyokkays_toiminto()
                 QtTest.QTest.qWait(self.__pelinohjain.viive)
         for yksikko in self.__pelinohjain.kartta.tietokoneen_yksikot:
-            # ratsuväki voi liikkua hyökkäyksen jälkeen
+            # ratsuväki voi liikkua hyökkäyksen jälkeen, jos se ei liikkunut ennen sitä
             if yksikko.__class__.__name__ == "Ratsuvaki" and not yksikko.liikkuminen_kaytetty \
                     and yksikko.ominaisuudet is not None:       # tarkistetaan, ettei ole kuollut
                 yksikko.liike(kohderuutu)
                 QtTest.QTest.qWait(self.__pelinohjain.viive)
-                # joissain tapauksissa hyökkäys voi jäädä käyttämättä
+                # joissain tapauksissa hyökkäys voi jäädä käyttämättä, joten tarkistetaan kohteet vielä kerran
                 if not yksikko.hyokkays_kaytetty:
                     yksikko.hyokkays_toiminto()
                     QtTest.QTest.qWait(self.__pelinohjain.viive)

@@ -133,9 +133,8 @@ class Tykisto_tekoaly(Tykisto):
         Tekoaly.liike(self, kohderuutu)
 
     def hyokkays_toiminto(self):
-        # katsotaan ensin, mahdolliset hyökkäyksen kohteet ja tallennetaan ne sanakirjaan
+        # etsitään ensin mahdolliset hyökkäyksen kohteet ja tallennetaan ne sanakirjaan
         paras_kohde = Tekoaly.hyokkays_toiminto(self)
-
         if paras_kohde is None:
             pass
         elif paras_kohde == "KYKY1":
@@ -200,6 +199,7 @@ class Tykisto_tekoaly(Tykisto):
 
     def pisteyta_ruutu(self, ruutu, kohderuutu):
         # jos tykistöllä on hyökkäyksen kohteita, vähennetään pisteitä, muussa tapauksessa lisätään
+        # tykistö ei siis mielellään liiku, jos se pystyy hyökkäämään
         self.laske_hyokkayksen_kohteet(False)
         ei_kohteita = False
         if len(self.hyokkayksen_kohteet) == 0 and ruutu != self.ruutu:

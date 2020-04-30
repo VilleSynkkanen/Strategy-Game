@@ -1,4 +1,4 @@
-from yksikko import  Yksikko
+from yksikko import Yksikko
 
 
 class Ratsuvaki(Yksikko):
@@ -59,10 +59,6 @@ class Ratsuvaki(Yksikko):
     def alkuperainen_kant(self):
         return self.__alkuperainen_kant
 
-    # passiivinen tehty
-    # kyky 1 tehty
-    # kyky 2 tehty
-
     def kyky1(self):
         super(Ratsuvaki, self).kyky1()
         self.lisaa_tilavaikutus(self.kyky1_kesto, self.kyky1_hyokkaysbonus, -self.kyky1_puolustusvahennys,
@@ -73,6 +69,7 @@ class Ratsuvaki(Yksikko):
         self.kayttoliittyma.lisaa_pelilokiin(teksti)
 
     def kyky2(self, tekoaly=False):
+        # muutetaan kantama väliaikaisesti, sitten lasketaan mahdolliset kohteet
         self.__alkuperainen_kant = self.ominaisuudet.kantama
         self.ominaisuudet.kantama = self.kyky2_kantama
         if not tekoaly:
@@ -81,7 +78,6 @@ class Ratsuvaki(Yksikko):
             self.laske_kantaman_sisalla_olevat_ruudut()
             self.nayta_kantaman_sisalla_olevat_ruudut()
             self.laske_hyokkayksen_kohteet(True)
-            #self.nayta_hyokkayksen_kohteet()
             self.kayttoliittyma.paivita_peru_nappi()
 
     def kayta_kyky2(self, kohde):

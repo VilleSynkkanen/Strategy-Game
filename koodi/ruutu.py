@@ -20,9 +20,9 @@ class Ruutu:
         self.__kayttoliittyma = kayttoliittyma
         self.__koordinaatit = koordinaatit
         self.__grafiikka = None
-        self.__kartta = None  # etsitään myöhemmin
-        self.__maasto = None  # luodaan myöhemmin
-        self.__naapurit = []  # etsitään myöhemmin
+        self.__kartta = None
+        self.__maasto = None
+        self.__naapurit = []
         self.__yksikko = None
         self.__kiilat = None
 
@@ -67,6 +67,7 @@ class Ruutu:
         return self.__kiilat
 
     def lisaa_yksikko(self, tyyppi, omistaja, ominaisuudet):
+        # lisätään joko yksikkö tai sen tekoälyversio riippuen omistajasta
         if omistaja == "PLR":
             if tyyppi == "jalkavaki":
                 self.__yksikko = Jalkavaki(omistaja, self, self.__kayttoliittyma, ominaisuudet[0], ominaisuudet[1])
@@ -105,20 +106,17 @@ class Ruutu:
                                ominaisuudet.hyokkayskerroin, ominaisuudet.puolustuskerroin, ominaisuudet.vari,
                                ominaisuudet.lapinakyvyys)
 
-    # kenttäeditoria varten
     def etsi_kartta(self):
         self.__kartta = self.__kayttoliittyma.kartta
 
     def etsi_naapurit(self):
         self.__kartta = self.__kayttoliittyma.pelinohjain.kartta
-
         # suunnat naapureiden löytämistä varten
         pohjoinen = (self.__koordinaatit.x, self.__koordinaatit.y + 1)
         ita = (self.__koordinaatit.x + 1, self.__koordinaatit.y)
         etela = (self.__koordinaatit.x, self.__koordinaatit.y - 1)
         lansi = (self.__koordinaatit.x - 1, self.__koordinaatit.y)
         naapuri_koordinaatit = (pohjoinen, ita, etela, lansi)
-
         self.__naapurit = []
         for ruutu in self.__kartta.ruudut:
             if (ruutu.koordinaatit.x, ruutu.koordinaatit.y) in naapuri_koordinaatit:
@@ -149,4 +147,3 @@ class Ruutu:
     def poista_grafiikka(self):
         self.__grafiikka.poista_grafiikka()
         self.__grafiikka = None
-        #self.__grafiikka.deleteLater()

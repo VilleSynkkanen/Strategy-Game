@@ -9,6 +9,7 @@ class Ruutugrafiikka(QtWidgets.QGraphicsRectItem):
         self.__ruutu = ruutu
 
         # määritellään, onko kartan x- vai y-koko suurempi ja tallennetaan suurempi pituus
+        # sivun pituus määrittelee ruutujen koon pelinäkymässä
         pidempi_sivu = 0
         if kenttaeditori or self.__ruutu.kayttoliittyma.__class__.__name__ != "Kayttoliittyma":
             if self.__kayttoliittyma.koko_x > self.__kayttoliittyma.koko_y:
@@ -23,7 +24,8 @@ class Ruutugrafiikka(QtWidgets.QGraphicsRectItem):
 
         self.__koko = self.__kayttoliittyma.scene_size / pidempi_sivu
         self.__koordinaatit = koordinaatit
-        self.__vari = vari    # self.vari = alkuperäinen väri
+        # alkuperäinen väri
+        self.__vari = vari
 
         # teksti
         self.__teksti = QtWidgets.QGraphicsTextItem("", self)
@@ -74,6 +76,7 @@ class Ruutugrafiikka(QtWidgets.QGraphicsRectItem):
         self.__kayttoliittyma.scene.addItem(self)
 
     def mousePressEvent(self, *args, **kwargs):
+        # pelin toiminnallisuus
         if self.__kayttoliittyma.__class__.__name__ == "Kayttoliittyma":
             if self.__kayttoliittyma.valittu_yksikko is not None:
                 if self.__kayttoliittyma.valittu_yksikko.kyky1_valitsee_kohteita:
@@ -121,7 +124,6 @@ class Ruutugrafiikka(QtWidgets.QGraphicsRectItem):
             liikkuminen = "ei"
         if maasto.lapinakyvyys is False:
             lapinakyvyys = "ei"
-
         self.__aseta_tooltip(self.__ruutu.maasto.__str__())
 
     def voi_liikkua(self):

@@ -3,31 +3,31 @@ from math import sqrt
 
 class Tekoaly:
     '''
-        -jos on kohteita kantamalla, valitsee niistä yhden, jonka viereen liikkuu pisteytyksen perusteella
-            -heikompien/tiettyjen yksikkötyyppejen priorisaatio
-            -ei mieluiten mene huonoon maastoon
-        -vaihtoehtoisesti liikkuu hyvään maastoon, jos ei heikkoja vihollisia tarjolla
+    Tekoälyn yleinen toimintaperiaate:
+    -jos on kohteita kantamalla, valitsee niistä yhden, jonka viereen liikkuu pisteytyksen perusteella
+        -heikompien/tiettyjen yksikkötyyppejen priorisaatio
+        -ei mieluiten mene huonoon maastoon
+    -vaihtoehtoisesti liikkuu hyvään maastoon, jos ei heikkoja vihollisia tarjolla
 
-        eli siis pisteytykseen vaikuttaa:
-        -mahdollisen vihollisen puolustus, elämä, tyyppi, ruudun maasto
-        -maasto
-        (-läheiset omat yksiköt) jos toimii hyvin
-        -pääsy lähemmäs vihollista
+    ts. pisteytykseen vaikuttaa:
+    -mahdollisen vihollisen puolustus, elämä, tyyppi, ruudun maasto
+    -maasto
+    -läheiset omat yksiköt
+    -pääsy lähemmäs vihollista
 
-        mahdollisia apukeinoja:
-        -ylempi voima, joka päättää, mitä kohti liikutaan, mahdollisesti useita vaihtoehtoja
-            -päättää, ollanko aggressiivisia vai passiivisia, mahdollinen säätö tiedostojen kautta
-            -alue, jota kohti liikutaan
-            -yksiköiden päätöksenteko hoitaa yksityiskohdat
+    apukeino:
+    -"ylempi voima", joka päättää, mitä kohti liikutaan
+        -ruutu, jota kohti liikutaan
+        -yksiköiden päätöksenteko hoitaa yksityiskohdat
 
-        ensin katsotaan, halutaanko liikkua johonkin
-        mahdollisen liikkumisen jälkeen katsotaan, halutaanko käyttää kykyjä tai hyökätä
+    -ensin katsotaan, halutaanko liikkua johonkin
+    -mahdollisen liikkumisen jälkeen katsotaan, halutaanko käyttää kykyjä tai hyökätä
 
-        Kohteen/kyvyn valintaan vaikuttaa:
-        -kohteiden tyyppi (priorisaatiokertoimet)
-        -odotettujen vahinkojen suhde (suurempi parempi)
-        -onko mahdollista käyttää kyky: jokaisella kyvyllä oma pisteytys
-        '''
+    Kohteen/kyvyn valintaan vaikuttaa:
+    -kohteiden tyyppi (priorisaatiokertoimet)
+    -odotettujen vahinkojen suhde (suurempi parempi)
+    -onko mahdollista käyttää kyky: jokaisella kyvyllä oma pisteytys
+    '''
 
 
     @staticmethod
@@ -36,7 +36,8 @@ class Tekoaly:
         # jokaiselle ruudulle kutsutaan pistytysmetodi
         vaihtoehdot = {}
         yksikko.laske_mahdolliset_ruudut()
-        yksikko.mahdolliset_ruudut.append(yksikko.ruutu)  # lisätään, koska muuten ei tule lisättyä
+        # lisätään yksikön oma ruutu, koska muuten ei tule lisättyä
+        yksikko.mahdolliset_ruudut.append(yksikko.ruutu)
         for ruutu in yksikko.mahdolliset_ruudut:
             vaihtoehdot[ruutu] = yksikko.pisteyta_ruutu(ruutu, kohderuutu)
 
@@ -45,16 +46,15 @@ class Tekoaly:
         for ruutu in vaihtoehdot:
             if vaihtoehdot[ruutu] > vaihtoehdot[paras]:
                 paras = ruutu
-
         if palauta:
             return paras, vaihtoehdot[paras]
-
         # liiku ruutuun
         if paras != yksikko.ruutu:
             yksikko.liiku_ruutuun(paras)
 
     @staticmethod
     def hyokkays_toiminto(yksikko, ei_kykyja=False, pisteet=False):
+        # pisteyttää jokaisen hyökkäyksen kohteen (ja kyvyn) ja palauttaa parhaan kohteen (ja mahdollisesti pisteet)
         vaihtoehdot = {}
         yksikko.laske_hyokkayksen_kohteet(False)
         for vihollinen in yksikko.hyokkayksen_kohteet:
@@ -95,12 +95,12 @@ class Tekoaly:
             if vaihtoehdot[vaihtoehto] is not None:
                 if vaihtoehdot[vaihtoehto] > korkeimmat_pisteet and vaihtoehdot[vaihtoehto] >= 1:
                     korkeimmat_pisteet = vaihtoehdot[vaihtoehto]
-                    paras_kohde = vaihtoehto  # voi olla yksikkö tai merkkijono
+                    paras_kohde = vaihtoehto    # voi olla yksikkö tai merkkijono
         if pisteet:
             return paras_kohde, korkeimmat_pisteet
         return paras_kohde
 
-    # joitain kykyjä varten
+    # joitain kykyjä varten tulee pisteyttää pelkkä kohde
     @staticmethod
     def pisteyta_pelkka_kohde(yksikko, vihollinen):
         hyok_vahinko, puol_vahinko, flanking = yksikko.laske_vahinko(yksikko, vihollinen, True)
@@ -190,7 +190,6 @@ class Tekoaly:
         # jos kerroin huonompi kuin 1, vähennetään, jos parempi, niin lisätään
         maastokerroin += yksikko.oma_maastokerroin_hyokkays * (ruutu.maasto.hyokkayskerroin - 1)
         maastokerroin += yksikko.oma_maastokerroin_puolustus * (ruutu.maasto.puolustuskerroin - 1)
-
         # kiilat
         if ruutu.kiilat is not None:
             maastokerroin *= ruutu.kiilat.puolustusbonus
@@ -199,7 +198,7 @@ class Tekoaly:
     @staticmethod
     def pisteyta_kohteen_lahestyminen(yksikko, ruutu, kohderuutu):
         # lasketaan, lähestytäänkö kohderuutua liikuttaessa ruutuun
-        # lasketaan hinta ilman blokkausta (oletetaan, että tilanne muuttuu)
+        # lasketaan hinta ilman blokkausta (ikään kuin oletetaan, että tilanne muuttuu)
         kerroin = 1
         polku, hinnat = yksikko.kayttoliittyma.pelinohjain.polunhaku.hae_polkua(ruutu, kohderuutu, False)
         if hinnat is not False:
@@ -210,6 +209,7 @@ class Tekoaly:
 
     @staticmethod
     def pisteyta_oman_yksikon_laheisyys(yksikko, ruutu):
+        # jos omia yksiköitä on tarpeeksi monta tarpeeksi lähellä ruutuam siitä saa lisäpisteitä
         etaisyyskerroin = 1
         yksikot = 0
         for oma in yksikko.kayttoliittyma.pelinohjain.kartta.tietokoneen_yksikot:
@@ -222,6 +222,8 @@ class Tekoaly:
 
     @staticmethod
     def pisteyta_vihollisten_valttely(yksikko, ruutu):
+        # jotkut yksiköt pyrkivät pysymään mahdollisimman kaukana vihollisesta (mutta kuitenkin kantamalla)
+        # kerrointa vähennetään, jos kohderuutu on lähempänä vihollista kuin yksikön maksimikantama
         kerroin = 1
         for vihollinen in yksikko.kayttoliittyma.pelinohjain.kartta.pelaajan_yksikot:
             polku, hinnat = yksikko.kayttoliittyma.pelinohjain.polunhaku.hae_polkua(ruutu, vihollinen.ruutu, False)

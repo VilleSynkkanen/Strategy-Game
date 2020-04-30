@@ -16,7 +16,7 @@ class Ratsuvaki_tekoaly(Ratsuvaki):
         self.__jalkavaki_prio = 1
         self.__max_elamakerroin = 1.75
 
-        # seuraavat vaikuttavat pelkästään liikkumiseen vihollisen viereen
+        # seuraavat muuttujat vaikuttavat pelkästään liikkumiseen vihollisen viereen
         self.__min_puolustuskerroin = 0.5
         self.__max_puolustuskerroin = 2
         self.__min_maastokerroin = 0.75
@@ -127,9 +127,8 @@ class Ratsuvaki_tekoaly(Ratsuvaki):
         Tekoaly.liike(self, kohderuutu)
 
     def hyokkays_toiminto(self):
-        # katsotaan ensin, mahdolliset hyökkäyksen kohteet ja tallennetaan ne sanakirjaan
+        # etsitään ensin mahdolliset hyökkäyksen kohteet ja tallennetaan ne sanakirjaan
         paras_kohde = Tekoaly.hyokkays_toiminto(self)
-
         if paras_kohde is None:
             pass
         elif paras_kohde == "KYKY1":
@@ -141,8 +140,8 @@ class Ratsuvaki_tekoaly(Ratsuvaki):
             paras_kohde.hyokkayksen_kohde(self)
 
     def pisteyta_kyky1(self):
-        # mitä enemmän elämää, sitä suuremmat pisteet
-        # täytyy olla vihollinen tarpeeksi lähellä
+        # mitä enemmän elämää yksiköllä on, sitä suuremmat pisteet
+        # lisäksi vihollisten läheisyys lisää pisteitä
         viholliset = 0
         for vihollinen in self.kayttoliittyma.pelinohjain.kartta.pelaajan_yksikot:
             if self.__kyky1_vihollinen_etaisyys <= \
@@ -157,7 +156,6 @@ class Ratsuvaki_tekoaly(Ratsuvaki):
     def pisteyta_kyky2(self):
         # muutetaan hyökkäys ja kantama väliaikaisesti
         self.__kyky2_kohde = None
-        # tekoäly = True
         self.kyky2(True)
         # etsitään paras kohde
         pisteet, self.__kyky2_kohde = self.__kyky2_pisteytys()
