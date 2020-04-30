@@ -1,11 +1,4 @@
 Seuraavaksi:
--koodin siistiminen/parantelu:
-	-yksiköt tiedosto:
-		-kommentit	
-		-muut parannukset
-		-kaatumistarkistukset
--alustava testaus
-
 -testausta, korjauksia
 -dokumentaatio
 -readme
@@ -13,15 +6,8 @@ Seuraavaksi:
 -lopputarkistus
 -palautus (dl 8.5 klo 14)
 
-Bugit
--mahdolliset kaatumiset (testaus)
-	-kaatuminen, kuin yksikön ominaisuudet on None
-		-tarkista kaikki tapaukset, missä yksikkö voi kuolla ennen jonkun asian yrittämistä
-
 Testaus:
--testaa yksikkötestit
--pelaa
--yritä saada kaatumaan
+-pelitestaus
 -kokeile läppärillä
 
 Huonot puolet:
@@ -30,4 +16,4 @@ Huonot puolet:
 -käyttöliittymän ulkoasu/muut puutteet
 
 Aikataulu
--dokumentaatio, readme, testaus, korjaukset 7.5
+-loppuun 7.5

@@ -8,7 +8,7 @@ class Yksikko:
 
     def __init__(self, omistaja, ruutu, kayttoliittyma, ominaisuudet):
         self.__omistaja = omistaja
-        # teksti, joka näytetään pelilokissa
+        # teksti, joka näytetään pelilokissa tapahtumien yhteydessä
         self.__omistaja_teksti = " (PEL)"
         if self.__omistaja == "COM":
             self.__omistaja_teksti = " (TIET)"
@@ -27,10 +27,8 @@ class Yksikko:
         self.__liikkuminen_kaytetty = False
         self.__hyokkays_kaytetty = False
 
-        # niille yksiköille, joiden kyky 1 valitsee kohteiksi ruutuja
         self.__kyky1_valitsee_kohteita = False
         self.__kyky1_kohteet = []
-
         self.__kyky2_valitsee_kohteita = False
         self.__visualisointi_viive = 200
 
@@ -146,7 +144,7 @@ class Yksikko:
 
     def laske_hyokkayksen_kohteet(self, nayta):
         # laskee kantamalla olevat ruudut ja lisää kohteisiin niissä olevat viholliset
-        if not self.hyokkays_kaytetty:
+        if self.__ominaisuudet is not None and not self.hyokkays_kaytetty:
             self.__hyokkayksen_kohteet = []
             self.laske_kantaman_sisalla_olevat_ruudut()
             for ruutu in self.__ruudut_kantamalla:
@@ -157,7 +155,8 @@ class Yksikko:
             self.nayta_hyokkayksen_kohteet()
             self.nayta_kantaman_sisalla_olevat_ruudut()
 
-    # eroaa laske_kantaman_sisalla_olevat_ruudut siten, että ruutu voi olla mikä tahansa ja tyhjiä ruutuja ei lasketa
+    # eroaa laske_kantaman_sisalla_olevat_ruudut-metodista siten, että
+    # ruutu voi olla mikä tahansa ja tyhjiä ruutuja ei lasketa
     def kantamalla_olevat_viholliset(self, ruutu):
         viholliset_kantamalla = []
         for kohde in self.__kayttoliittyma.pelinohjain.kartta.ruudut:
@@ -223,7 +222,7 @@ class Yksikko:
         if self.omistaja == "PLR":
             self.kayttoliittyma.paivita_nappien_aktiivisuus()
             if len(self.__hyokkayksen_kohteet) == 0 or self.__hyokkays_kaytetty:
-                # poista yksiköistä, jotka voivat vielä tehdä jotain
+                # poista toimivista yksiköistä, jos yksikkö ei pysty enää tekemään mitään
                 self.__kayttoliittyma.pelinohjain.kartta.poista_toimivista_yksikoista(self)
 
     def liikuttu(self):
@@ -239,6 +238,7 @@ class Yksikko:
         self.__grafiikka.palauta_vari()
 
     def vieressa_monta_vihollista(self, yksi=False):
+        # palauttaa, onko yksikön vieressä useita (tai yksi) vihollisia
         viholliset = 0
         for ruutu in self.__ruutu.naapurit:
             if ruutu.yksikko is not None and ruutu.yksikko.omistaja != self.__omistaja:
@@ -248,7 +248,6 @@ class Yksikko:
         return False
 
     def hyokatty(self):
-        # poista listoista kantamalla olevat ruudut ja mahdolliset kohteet
         self.__tyhjenna_hyokkayksen_kohteet()
         self.tyhjenna_ruudut_kantamalla()
         self.__hyokkays_kaytetty = True
@@ -266,6 +265,7 @@ class Yksikko:
             self.__kayttoliittyma.pelinohjain.kartta.poista_toimivista_yksikoista(self)
 
     def hyokkayksen_kohde(self, hyokkaaja):
+        # self = puolustaja, hyokkaaja = hyökkääjä
         self.hyokkays(hyokkaaja)
         if hyokkaaja == self.__kayttoliittyma.valittu_yksikko:
             for vihollinen in hyokkaaja.hyokkayksen_kohteet:
@@ -288,6 +288,7 @@ class Yksikko:
                     (0.5 * (puolustaja.ominaisuudet.nyk_elama / puolustaja.ominaisuudet.max_elama) + 0.5)
         etaisyys = puolustaja.kayttoliittyma.pelinohjain.polunhaku.heuristiikka(puolustaja.ruutu, hyokkaaja.ruutu)
 
+        # hyokkäys ja puolustus > 0, jotta vältetään nollalla jakaminen
         if hyokkays < 0:
             hyokkays = 0.00001
         if puolustus < 0:
@@ -298,6 +299,7 @@ class Yksikko:
         # vahinko voi vaihdella +-15%
         # elämän vaikutus voimaan: kerroin = 0.5 * elämä + 0.5 (= 1, kun täysi elämä, 0.5, kun elämä 0)
         # flanking bonus: +15% hyökkäys
+        # kykyjen tms. antamat bonukset
 
         perusvahinko = 10
         min_vahinko = 2
@@ -443,7 +445,7 @@ class Yksikko:
                 # jatka käsittelyä, jos ei ole kuollut
                 if self.__ominaisuudet is not None and self.__ominaisuudet.tilavaikutukset is not None:
                     vaikutus.vahenna_kestoa()
-                    # jos vaikutus loppu, poista vaikutukset
+                    # jos vaikutuksen kesto on nolla, poista vaikutus (ja lisää loppuvaikutus)
                     if vaikutus.kesto <= 0:
                         self.muuta_hyokkaysta(-vaikutus.hyokkaysbonus)
                         self.muuta_puolustusta(-vaikutus.puolustusbonus)
@@ -474,7 +476,7 @@ class Yksikko:
 
     def tuhoudu(self):
         # poistaa kaikki olemassa olevat viittaukset yksikköön ja piilottaa sen graafiset komponentit
-        # jos valittu yksikkö, poista käyttöliittymästä
+        # jos yksikkö on valittu yksikkö, poistetaan se käyttöliittymästä
         if self.kayttoliittyma.__class__.__name__ == "Kayttoliittyma":
             teksti = self.__class__.__name__ + self.__omistaja_teksti + " tuhoutui"
             self.kayttoliittyma.lisaa_pelilokiin(teksti)
@@ -491,11 +493,13 @@ class Yksikko:
         # poista viittaus ominaisuuksiin
         self.__ominaisuudet = None
         if self.omistaja == "COM" and self.kayttoliittyma.__class__.__name__ == "Kayttoliittyma":
-            # tarkistetaan, koska tuhoutuminen voi muuttaa muiden pelaajien yksiköiden toiminnan mahdollisuuksia
+            # tarkistetaan toimivat yksiköt, koska tuhoutuminen voi muuttaa
+            # muiden pelaajien yksiköiden toiminnan mahdollisuuksia
             self.__kayttoliittyma.pelinohjain.kartta.tarkista_toimivat_yksikot()
             self.kayttoliittyma.pelinohjain.tarkista_voitto()
 
     def kyky1(self):
+        # luokat, joilla on alla olevan kaltainen kyky 1
         luokat = ["Jousimiehet", "Parantaja", "Tykisto"]
         if self.__class__.__name__ in luokat:
             # aloittaa kohteiden valitsemisen
