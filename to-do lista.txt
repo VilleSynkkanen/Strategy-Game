@@ -15,5 +15,8 @@ Huonot puolet:
 -tekoälyn optimisaatio
 -käyttöliittymän ulkoasu/muut puutteet
 
+Bugit:
+-joskus ei pysty vuoron alussa valitsemaan yksiköitä, mutta napit toimivat (ei tietoa miksi)
+
 Aikataulu
 -loppuun 7.5
