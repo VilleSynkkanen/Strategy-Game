@@ -19,4 +19,6 @@ Bugit:
 -joskus ei pysty vuoron alussa valitsemaan yksiköitä, mutta napit toimivat (ei tietoa miksi)
 
 Aikataulu
--loppuun 7.5
+-3.5 dokumentaation alkuosa
+-6.5 dokumentaatio loppuun
+-7.5 readme yms. viimeistely 
