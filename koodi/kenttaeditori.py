@@ -185,6 +185,8 @@ class Kenttaeditori(QtWidgets.QMainWindow):
     def __lue_koko(self):
         try:
             text = self.__koko.text().split(" ")
+            if int(text[0])*int(text[1]) > 10000:
+                raise ValueError
             self.__koko_x = int(text[0])
             self.__koko_y = int(text[1])
             self.__piirra_tyhja_kartta()

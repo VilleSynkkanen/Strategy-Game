@@ -1,0 +1,8 @@
+LYHYT KUVAUS PELIN MEKANIIKOISTA
+-vuoron kulku
+-hyökkääminen
+-energiasysteemi
+-kykyjen käyttäminen
+-tilavaikutukset
+-säännöt
+-...
