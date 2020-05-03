@@ -79,7 +79,7 @@ class Pelitilanteen_lukija:
                                    rivi[6], rivi[7])
                         hyokkaysvaikutus = None
                         if rivi[8] != "ei":
-                            hyokkaysvaikutus = self.lue_vaikutus(rivi, 8)
+                            hyokkaysvaikutus = self.__lue_vaikutus(rivi, 8)
                             if hyokkaysvaikutus is None:
                                 self.__ei_validi(tiedosto)
                                 return None, None, None
@@ -92,7 +92,7 @@ class Pelitilanteen_lukija:
                         tilavaikutukset = []
                         while i < len(rivi):
                             if rivi[i].split(":")[0] == "tilavaikutus":
-                                tilavaikutus = self.lue_vaikutus(rivi, i)
+                                tilavaikutus = self.__lue_vaikutus(rivi, i)
                                 if tilavaikutus is None:
                                     self.__ei_validi(tiedosto)
                                     return None, None, None
@@ -142,7 +142,7 @@ class Pelitilanteen_lukija:
             self.__ei_validi(tiedosto)
             return None, None, None
 
-    def lue_vaikutus(self, rivi, i):
+    def __lue_vaikutus(self, rivi, i):
         try:
             # mahdolliset totuusarvot
             tot_arvot = ["kylla", "ei"]
@@ -159,7 +159,7 @@ class Pelitilanteen_lukija:
             loppuvaikutus = None
             if rivi[i + 6].strip(";") != "ei":
                 # loppuvaikutus luetaan kuten kaikki muutkin vaikutukset
-                loppuvaikutus = self.lue_vaikutus(rivi, i + 6)
+                loppuvaikutus = self.__lue_vaikutus(rivi, i + 6)
             tilavaikutus = Tilavaikutus(None, int(rivi[i]), int(rivi[i + 1]), int(rivi[i + 2]),
                                         int(rivi[i + 3]), int(rivi[i + 4]), taintuminen, loppuvaikutus)
             return tilavaikutus
