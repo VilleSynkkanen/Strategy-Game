@@ -10,15 +10,6 @@ Testaus:
 -pelitestaus
 -kokeile läppärillä
 
-Huonot puolet:
--tekoälyn toiminnalliset puutteet
--tekoälyn optimisaatio
--käyttöliittymän ulkoasu/muut puutteet
-
-Bugit:
--joskus ei pysty vuoron alussa valitsemaan yksiköitä, mutta napit toimivat (ei tietoa miksi)
-
 Aikataulu
--3.5 dokumentaation alkuosa
 -6.5 dokumentaatio loppuun
 -7.5 readme yms. viimeistely 

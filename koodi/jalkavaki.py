@@ -1,4 +1,4 @@
-from yksikko import  Yksikko
+from yksikko import Yksikko
 from tilavaikutus import Tilavaikutus
 
 

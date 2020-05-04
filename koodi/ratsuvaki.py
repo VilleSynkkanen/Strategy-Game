@@ -22,7 +22,6 @@ class Ratsuvaki(Yksikko):
         # kykyä 2 varten
         self.__alkuperainen_kant = self.ominaisuudet.kantama
 
-
     @property
     def kyky1_hinta(self):
         return self.__kyky1_hinta

@@ -1,8 +1,23 @@
 LYHYT KUVAUS PELIN MEKANIIKOISTA
 -vuoron kulku
+	-pelaaja voi liikuttaa yksiköitään, hyökätä ja käyttää kykyjä missä tahansa järjestyksessä
+	-vuoron lopussa käsitellään tilavaikutukset ja poistetaan niitä, jos niiden kesto menee nollaan
 -hyökkääminen
+	-hyökkäämisessä molemmat yksiköt ottavat vahinkoa, jos ne ovat vierekkäisissä ruuduissa
+	-kauempaa hyökätessä hyökkääjä ei ota vahinkoa
+	-vahinko riippuu puolustajan ja hyökkääjän voimien suhteesta (kaavat dokumentaatiossa)
+	-hyökkäämisen jälkeen ei voi enää liikkua (paitsi ratsuväki), mutta liikkumisen jälkeen voi hyökätä
 -energiasysteemi
+	-yksikkö saa yhden energian vuoron lopussa
+	-jos yksikkö on tehnyt jotain, se saa toisen energian
 -kykyjen käyttäminen
+	-kykyjen käyttäminen vaatii energiaa
+	-kykyjen käyttäminen lasketaan hyökkäykseksi (ei pysty liikkumaan kyvyn jälkeen)
 -tilavaikutukset
--säännöt
--...
+	-aiheuttavat erilaisia vaikutuksia yksiköihin
+	-pelaajan yksiköiden vaikutukset käsitellään pelaajan vuoron lopussa
+	-tietokoneen yksiköiden vaikutukset käsitellään tietokoneen vuoron lopussa
+-sääntöjä
+	-ruutuun liikkumiseen tarvitaan vähintään ruudun liikkumishinnan mukaiset liikkumispisteet
+	-monta parantajaa pystyy inspiroimaan yhtä yksikköä samaan aikaan
+	-parantajat eivät inspiroi itseään
