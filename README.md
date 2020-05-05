@@ -2,10 +2,6 @@
 
 ## Tiedosto- ja kansiorakenne
 
-  - Mitä eri kansioiden alta löytyy
-  - Mistä löytyy omat koodit, onko muiden tekemää koodia yms
-  - Yksittäisiä tiedostoja ei välttämättä tarvitse käydä läpi
-
   - Repository on jaettu kahteen pääkansioon: koodi ja dokumentaatio
   - Koodi-kansiosta löytyy projektin lähdekoodi ja pelin käyttämät tiedostot
   - Maastot-, yksiköt- ja muut-kansioista löytyy asetustiedostot, joita muokkaamalla peliä voi konfiguroida
