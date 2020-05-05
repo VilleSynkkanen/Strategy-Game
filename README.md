@@ -1,34 +1,30 @@
 # Strategiapeli Y2
 
-1. Toteutetut ominaisuudet
-  
-  - Käyttöliittymän toiminnallisuus on tapahtumalokia ja ohjetekstejä vaille lähes valmis, mutta esitystapaa voisi vielä vähän hioa
-  - Polunhaku ja näkyvyysjärjestelmä
-  - Maastot ja niiden toiminta
-  - Yksiköiden toiminnallisuus (liikuttaminen, kykyjen käyttäminen, energiasysteemi, vahingon ottaminen, tilavaikutukset tms.)
-  - Pelin ohjaus on muuten toteutettu, mutta tällä hetkellä vihollisen vuorolla ei tapahdu mitään
-  - Polunhakua, näkyvyysjärjestelmää ja pelissä tapahtuvaa laskentaa on testattu
-  - Kartan, maastojen ja yksiköiden lukeminen tiedostosta on toteutettu, mutta ei vielä siedä virheitä
-  - Seuraavaksi olisi tarkoitus toteuttaa tekoäly
+## Tiedosto- ja kansiorakenne
 
-2. Käyttöohje
+  - Mitä eri kansioiden alta löytyy
+  - Mistä löytyy omat koodit, onko muiden tekemää koodia yms
+  - Yksittäisiä tiedostoja ei välttämättä tarvitse käydä läpi
 
-  - Ohjelmaa voi ajaa ajamalla main-moduuli (huom. käytetty Python-versio on 3.8, mutta pitäisi toimia ainakin vähän vanhemmilla)
-  - Pelaaja voi valita omia yksiköitään, liikutella niitä, hyökätä ja käyttää yksiköiden kykyjä. 
-  - Yksikön tiedot saa näkyviin painamalla yksikön tiedot-nappia
-  - Pitämällä hiirtä kykynapin, maaston tai kentällä olevan yksikön päällä saa näkyviin tooltipin, jossa on lisätietoa
-  - Hyökkäyksen yhteydessä tooltipissä näkyy myös odotettu vahinko
-  - Käytännössä ainoa pelattavuuteen liittyvä (merkittävä) puute on tekoälyn puute
+  - Repository on jaettu kahteen pääkansioon: koodi ja dokumentaatio
+  - Koodi-kansiosta löytyy projektin lähdekoodi ja pelin käyttämät tiedostot
+  - Maastot-, yksiköt- ja muut-kansioista löytyy asetustiedostot, joita muokkaamalla peliä voi konfiguroida
+  - Pelikentät löytyvät kartat-kansiosta
+  - Tallennettu pelitilanne löytyy pelitilanne-kansiosta
+  - Dokumentaatio-kansiosta löytyy alkuperäiset suunnitelmat suunnitelmat-kansiosta ja ohjelman dokumentaatio loppudokumentaatio-kansiosta
+  - Polunhakualgoritmi perustuu osittain netistä löydettyyn koodiin (tarkempi selitys koodin kommenteissa)
+  - Muuten koodi on itse kirjoitettua
 
-3. Aikataulu
+## Asennusohje
 
-  - En ole laskenut käyttämääni aikaa, mutta arvioisin käyttäneeni aikaa ainakin 50 tuntia
-  - Olen tehnyt asioita hieman eri järjestyksessä kuin alun perin suunnittelin, mutta aikataulu on muuten pitänyt melko hyvin
-  - Ominaisuuksien toteuttamiseen on mennyt hieman enemmän aikaa kuin olin arvioinut (arvio noin 40 tuntia)
+  - Ohjelma tarvitsee toimiakseen PyQt5-kirjaston.
+  - Käytetty Python-versio on 3.8, mutta hieman vanhempikin versio pitäisi toimia
 
-4. Muuta
+## Käyttöohje
 
-  - Ei ole ilmennyt mitään erityisiä ongelmia
-  - Olen poistanut muutaman turhan luokan ja lisännyt muutaman uuden luokan
-  - Olen päättänyt jättää pois yksiköiden valitsemisen ja asettelun, koska aikaa on mennyt odotettua enemmän
-  - Muuten suunnitelmasta ei ole tarvinnut juurikaan poiketa
+  - Ohjelma käynnistetään ajamalla main.py-tiedosto komentoriviltä tai IDE:stä käsin
+  - Asetustiedostoista pystyy muokkaamaan kaksoispisteiden jälkeisiä kohtia (pitäisi olla intuitiivistä)
+  - Karttojen muokkaus suoraan tiedostojen avulla on mahdollista, mutta suositeltavaa on käyttää kenttäeditoria
+  - Tallennettua peliä pystyy myös muokkamaan halutessaan tiedoston kautta
+  - Jos tallennustiedostoa muokkaa, se tulee sulkea kokonaan ennen ohjelman käynnistämistä
+  - Asetustiedostojen muokkauksen jälkeen ohjelma tulee käynnistää uudestaan, jotta muutokset tulevat voimaan

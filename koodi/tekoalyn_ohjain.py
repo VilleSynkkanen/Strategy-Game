@@ -29,7 +29,7 @@ class Tekoalyn_ohjain:
         maara = 0
         # kohderuutu saadaan laskemalla pelaajan yksiköiden koordinaattien painotettu keskiarvo
         for yksikko in self.__pelinohjain.kartta.pelaajan_yksikot:
-            kerroin = 0
+            kerroin = 1
             # priorisoitavat tyypit
             if yksikko.__class__.__name__ == "Tykisto":
                 kerroin *= self.tykisto_prio

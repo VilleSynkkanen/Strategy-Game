@@ -214,7 +214,7 @@ class Tekoaly:
         yksikot = 0
         for oma in yksikko.kayttoliittyma.pelinohjain.kartta.tietokoneen_yksikot:
             etaisyys = yksikko.kayttoliittyma.pelinohjain.polunhaku.heuristiikka(ruutu, oma.ruutu)
-            if 0 < etaisyys < yksikko.oma_max_kantama:
+            if 0 < etaisyys < yksikko.oma_max_kantama and oma is not yksikko:
                 yksikot += 1
         if yksikot >= yksikko.laheisyys_bonus_yksikot:
             etaisyyskerroin = yksikko.oma_lahestymisbonus
@@ -230,5 +230,7 @@ class Tekoaly:
             if hinnat is not False:
                 etaisyys = yksikko.kayttoliittyma.pelinohjain.polunhaku.laske_hinta(hinnat, vihollinen.ruutu)
                 if etaisyys < yksikko.ominaisuudet.kantama:
-                    kerroin = (etaisyys / yksikko.ominaisuudet.kantama)**yksikko.etaisyys_vihollisista_eksp
+                    uusi_kerroin = (etaisyys / yksikko.ominaisuudet.kantama)**yksikko.etaisyys_vihollisista_eksp
+                    if uusi_kerroin < kerroin:
+                        kerroin = uusi_kerroin
         return kerroin
