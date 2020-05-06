@@ -129,6 +129,8 @@ class Pelitilanteen_lukija:
                         self.__ei_validi(tiedosto)
                         return None, None, None
                     return nimi, yksikot, kiilat
+            if tiedosto is not None and not tiedosto.closed:
+                tiedosto.close()
         except OSError:
             self.__ei_validi(tiedosto)
             return None, None, None
