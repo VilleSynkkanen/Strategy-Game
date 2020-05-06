@@ -19,5 +19,5 @@ LYHYT KUVAUS PELIN MEKANIIKOISTA
 	-tietokoneen yksiköiden vaikutukset käsitellään tietokoneen vuoron lopussa
 -sääntöjä
 	-ruutuun liikkumiseen tarvitaan vähintään ruudun liikkumishinnan mukaiset liikkumispisteet
-	-monta parantajaa pystyy inspiroimaan yhtä yksikköä samaan aikaan
+	-monta parantajaa pystyy inspiroimaan samaa yksikköä samaan aikaan
 	-parantajat eivät inspiroi itseään

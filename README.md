@@ -9,12 +9,12 @@
   - Tallennettu pelitilanne löytyy pelitilanne-kansiosta
   - Dokumentaatio-kansiosta löytyy alkuperäiset suunnitelmat suunnitelmat-kansiosta ja ohjelman dokumentaatio loppudokumentaatio-kansiosta
   - Polunhakualgoritmi perustuu osittain netistä löydettyyn koodiin (tarkempi selitys koodin kommenteissa)
-  - Muuten koodi on itse kirjoitettua
+  - Muuten kaikki koodi on itse kirjoitettua
 
 ## Asennusohje
 
-  - Ohjelma tarvitsee toimiakseen PyQt5-kirjaston.
-  - Käytetty Python-versio on 3.8, mutta hieman vanhempikin versio pitäisi toimia
+  - Ohjelma tarvitsee toimiakseen PyQt5-kirjaston
+  - Käytetty Python-versio on 3.8, mutta hieman vanhempienkin versioiden pitäisi toimia
 
 ## Käyttöohje
 
