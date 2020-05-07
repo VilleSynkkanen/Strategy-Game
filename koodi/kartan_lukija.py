@@ -73,7 +73,9 @@ class Kartan_lukija:
                     koordinaatit = tiedosto.readline()
                     koordinaatit = koordinaatit.lower()
                     koordinaatit = koordinaatit.split(':')
-                    while koordinaatit[0] != "ruudutloppu":
+                    if koordinaatit[0].strip() == "ruudutloppu":
+                        ruudut_loydetty = True
+                    while koordinaatit[0].strip() != "ruudutloppu":
                         # lukee ruudut, jotka on annettu listana ja lisää ne annettuun
                         # kaksiulotteiseen listaan ja palauttaa sen
                         tyyppi = koordinaatit[0].lower()
