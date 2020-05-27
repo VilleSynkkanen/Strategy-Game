@@ -1,5 +1,10 @@
 # Strategiapeli Y2
 
+## Esittely
+  
+  - PyQt5:n avulla tehty strategiapeli
+  - Ohjelmointikurssin projektityö
+
 ## Tiedosto- ja kansiorakenne
 
   - Repository on jaettu kahteen pääkansioon: koodi ja dokumentaatio
