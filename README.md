@@ -1,4 +1,4 @@
-# Strategiapeli Y2
+# Strategiapeli
 
 ## Esittely
   
