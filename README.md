@@ -2,8 +2,8 @@
 
 ## Esittely
   
-  - PyQt5:n avulla tehty strategiapeli
-  - Ohjelmointikurssin projektityö
+  - Peli on Pythonin ja PyQt5:n avulla tehty vuoropohjainen strategiapeli, jossa pelataan tietokonevastustajaa vastaan
+  - Peli on ohjelmointikurssiin liittyvä projektityö
 
 ## Tiedosto- ja kansiorakenne
 
